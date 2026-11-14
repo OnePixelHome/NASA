@@ -1,5 +1,13 @@
 # BACKUP - NASA
 
+## 2026-11-14 (PC de Edgar) — Pantalla About & sources, HANDOFF §6-B3 (`feat/about-screen`, apilado sobre `feat/resource-panel`)
+
+- Botón "About & sources" en el encabezado, disponible en cualquier paso; al volver se conserva el estado de la partida.
+- La pantalla explica las etiquetas de fuente, lista los recursos NASA con enlace y cómo usa el juego cada uno, y muestra la declaración de uso de IA (HANDOFF §9) y un aviso de que el proyecto no está afiliado a NASA.
+- Los textos viven en `src/engine/sources.ts` (`use` por fuente, `AI_DISCLOSURE`, `PITCH`, `DISCLAIMER`), no en el JSX.
+- S9 (comunicaciones de satélites pequeños) aparece como lectura de referencia: ningún valor del juego sale de ahí todavía.
+- Verificado: 29 tests, build y prueba en navegador a 390 px. Pendiente: confirmar en CubeSat 101 la cita de la reserva del 10% (S2); revisión y merge después de los PR #1–#3.
+
 ## 2026-11-14 (PC de Edgar) — Panel de recursos, HANDOFF §6-B1 (`feat/resource-panel`, apilado sobre `fix/go-no-go`)
 
 - El encabezado muestra ahora cuatro medidores en vivo: Budget, Mass (kg vs capacidad del cohete), Power (W usados vs generados) y Data (Gbit/día recolectados vs bajados). Se actualizan al llenar el árbol.

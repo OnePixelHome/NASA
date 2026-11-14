@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from 'react'
 import * as C from './engine/catalog'
 import { budget, BUDGET_SOURCE, choose, evaluateMission, isComplete, orbitSources, orbitStats, resources, TEAM_POINTS_MAX, TEAM_ROLES, teamPoints, TIER_ORDER, tierOptions, type Choice, type NodeState } from './engine/game'
-import { SOURCES, type Reason } from './engine/sources'
+import { AI_DISCLOSURE, DISCLAIMER, PITCH, SOURCE_ORDER, SOURCES, type Reason } from './engine/sources'
 import { Bar, Gauge, Meter, ReasonList, ResourcePanel, SourceChip, SourceChips, Sourced } from './ui/components'
 
 type Screen = 'brief' | 'orbit' | 'tree' | 'go' | 'run' | 'score'
@@ -19,8 +19,10 @@ export default function App() {
   const scenario = C.byId(C.SCENARIOS, choice.scenarioId)
   const orbit = C.byId(C.ORBITS, choice.orbitId)
   const goVotes = Object.values(votes).filter((v) => v === true).length
+  const [about, setAbout] = useState(false)
 
   const restart = () => {
+    setAbout(false)
     setChoice({})
     setFocus(null)
     setVotes(NO_VOTES)
@@ -31,12 +33,21 @@ export default function App() {
     <div className="min-h-screen bg-slate-950 text-slate-100">
       <header className="sticky top-0 z-10 border-b border-slate-800 bg-slate-950/95 px-4 py-3 backdrop-blur">
         <div className="mx-auto max-w-3xl">
-          <button onClick={restart} className="text-left">
-            <div className="text-lg font-bold tracking-tight">Trajectory Ladder</div>
-            {/* The tagline gives way to the resource panel once a mission is picked, to save phone space. */}
-            {!scenario && <div className="text-xs text-slate-400">Design a space mission. Watch every choice ripple down.</div>}
-          </button>
-          {scenario && (
+          <div className="flex items-start justify-between gap-3">
+            <button onClick={restart} className="text-left">
+              <div className="text-lg font-bold tracking-tight">Trajectory Ladder</div>
+              {/* The tagline gives way to the resource panel once a mission is picked, to save phone space. */}
+              {!scenario && <div className="text-xs text-slate-400">Design a space mission. Watch every choice ripple down.</div>}
+            </button>
+            <button
+              onClick={() => setAbout((a) => !a)}
+              aria-pressed={about}
+              className="shrink-0 rounded-lg border border-slate-700 px-3 py-1.5 text-sm text-slate-200 hover:border-sky-400"
+            >
+              {about ? '← Back to mission' : 'About & sources'}
+            </button>
+          </div>
+          {scenario && !about && (
             <div className="mt-2">
               <ResourcePanel meters={resources(choice)} />
             </div>
@@ -44,7 +55,13 @@ export default function App() {
         </div>
       </header>
 
-      <main className="mx-auto max-w-3xl px-4 pb-24 pt-6">
+      {/* About overlays the game without unmounting its state, so "Back" returns to the same step. */}
+      {about && (
+        <main className="mx-auto max-w-3xl px-4 pb-24 pt-6">
+          <About onBack={() => setAbout(false)} />
+        </main>
+      )}
+      <main className="mx-auto max-w-3xl px-4 pb-24 pt-6" hidden={about}>
         {screen === 'brief' && (
           <Brief
             onPick={(id) => {
@@ -404,6 +421,57 @@ function Score({ choice, goVotes, onReplay, onRevise }: { choice: Choice; goVote
         </button>
         <button onClick={onReplay} className="rounded-lg bg-sky-500 px-5 py-2.5 font-semibold text-slate-950">
           Replay mission
+        </button>
+      </div>
+    </section>
+  )
+}
+
+function About({ onBack }: { onBack: () => void }) {
+  const nasa = SOURCE_ORDER.filter((id) => SOURCES[id].url)
+  const other = SOURCE_ORDER.filter((id) => !SOURCES[id].url)
+  return (
+    <section>
+      <h1 className="text-2xl font-bold">About & sources</h1>
+      <p className="mt-2 text-slate-300">{PITCH}</p>
+
+      <h2 className="mt-6 text-lg font-semibold">How to read the source tags</h2>
+      <p className="mt-1 text-sm text-slate-400">Every number in the game carries a tag saying where it comes from.</p>
+      <ul className="mt-3 space-y-3">
+        {other.map((id) => (
+          <li key={id} className="rounded-lg border border-slate-700 bg-slate-900 p-3 text-sm">
+            <div className="font-medium">
+              <span className="-ml-1">
+                <SourceChip id={id} />
+              </span>{' '}
+              {SOURCES[id].title}
+            </div>
+            <p className="mt-1 text-slate-300">{SOURCES[id].use}</p>
+          </li>
+        ))}
+      </ul>
+
+      <h2 className="mt-6 text-lg font-semibold">NASA data and resources</h2>
+      <ul className="mt-3 space-y-3">
+        {nasa.map((id) => (
+          <li key={id} className="rounded-lg border border-slate-700 bg-slate-900 p-3 text-sm">
+            <a className="font-medium underline" href={SOURCES[id].url} target="_blank" rel="noreferrer">
+              {SOURCES[id].title}
+            </a>
+            <SourceChip id={id} link={false} />
+            <p className="mt-1 text-slate-300">{SOURCES[id].use}</p>
+          </li>
+        ))}
+      </ul>
+
+      <h2 className="mt-6 text-lg font-semibold">Use of AI</h2>
+      <p className="mt-1 text-sm text-slate-300">{AI_DISCLOSURE}</p>
+
+      <p className="mt-6 text-xs text-slate-400">{DISCLAIMER}</p>
+
+      <div className="mt-6">
+        <button onClick={onBack} className="rounded-lg bg-sky-500 px-5 py-2.5 font-semibold text-slate-950">
+          ← Back to mission
         </button>
       </div>
     </section>

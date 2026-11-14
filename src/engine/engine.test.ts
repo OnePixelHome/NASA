@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest'
 import * as P from './physics'
 import * as C from './catalog'
 import { budget, choose, evaluateMission, orbitStats, resources, TEAM_POINTS_MAX, teamPoints, tierOptions, type Choice } from './game'
-import { reasonSources, SOURCES } from './sources'
+import { AI_DISCLOSURE, reasonSources, SOURCES } from './sources'
 
 const orbit = (id: string) => C.byId(C.ORBITS, id)!
 
@@ -148,6 +148,19 @@ function viablePaths(scenarioId: string) {
   }
   return out
 }
+
+describe('About screen content', () => {
+  it('every source explains how the game uses it, and NASA sources link out', () => {
+    for (const s of Object.values(SOURCES)) {
+      expect(s.use.length).toBeGreaterThan(20)
+      if (s.id.startsWith('S')) expect(s.url).toMatch(/^https:\/\/.*nasa\.gov\//)
+    }
+  })
+  it('carries the AI-use disclosure required by the Space Apps rules', () => {
+    expect(AI_DISCLOSURE).toContain('Claude (Anthropic)')
+    expect(AI_DISCLOSURE).toContain('reviewed, tested and adapted by the team')
+  })
+})
 
 describe('resource panel (budget, mass, power, data)', () => {
   const meters = (c: Choice) => Object.fromEntries(resources(c).map((m) => [m.id, m]))
