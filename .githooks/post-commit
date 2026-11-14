@@ -1,0 +1,21 @@
+#!/bin/sh
+# Sube cada commit a GitHub apenas se crea: un commit local no llega a la
+# otra computadora. Plantilla: Crescendo Labs/scripts/harness.
+git_dir=$(git rev-parse --git-dir)
+
+# En medio de un rebase o con HEAD suelto no se empuja nada.
+[ -d "$git_dir/rebase-merge" ] || [ -d "$git_dir/rebase-apply" ] && exit 0
+git symbolic-ref -q HEAD >/dev/null || exit 0
+
+if ! git remote get-url origin >/dev/null 2>&1; then
+  echo "Aviso: no hay origin; el commit quedo solo en esta computadora." >&2
+  exit 0
+fi
+
+if git rev-parse --abbrev-ref '@{u}' >/dev/null 2>&1; then
+  git push || echo "Aviso: el push fallo; el commit todavia no esta en GitHub." >&2
+else
+  # Rama nueva: se publica con upstream.
+  git push -u origin HEAD || echo "Aviso: el push fallo; el commit todavia no esta en GitHub." >&2
+fi
+exit 0

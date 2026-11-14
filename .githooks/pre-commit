@@ -1,0 +1,14 @@
+#!/bin/sh
+# Exige incluir BACKUP.md en cada commit, para que el traspaso entre
+# computadoras viaje junto con el codigo. Plantilla: Crescendo Labs/scripts/harness.
+set -eu
+
+# Al cerrar un merge con conflictos no se exige: el backup viene en las ramas.
+[ -f "$(git rev-parse --git-dir)/MERGE_HEAD" ] && exit 0
+
+files=$(git diff --cached --name-only)
+[ -z "$files" ] && exit 0
+if ! printf '%s\n' "$files" | grep -qix 'backup.md'; then
+  echo 'Actualiza e incluye BACKUP.md en este commit para mantener continuidad entre computadoras.' >&2
+  exit 1
+fi
