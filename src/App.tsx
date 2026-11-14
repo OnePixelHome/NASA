@@ -315,7 +315,7 @@ function GoNoGo(props: {
       ) : (
         b.reserveFraction < C.RESERVE_FRACTION && (
           <p className="mt-4 rounded-lg bg-amber-950 p-3 text-sm text-amber-200">
-            Budget reserve is {Math.round(b.reserveFraction * 100)}%. NASA guidance recommends keeping at least 10% in reserve.
+            Budget reserve is {Math.round(b.reserveFraction * 100)}%. NASA’s CubeSat 101 guide advises project reserves of at least {Math.round(C.RESERVE_FRACTION * 100)}% of the budget.
             <SourceChip id="S2" />
           </p>
         )
@@ -461,6 +461,11 @@ function About({ onBack }: { onBack: () => void }) {
             </a>
             <SourceChip id={id} link={false} />
             <p className="mt-1 text-slate-300">{SOURCES[id].use}</p>
+            {SOURCES[id].quote && (
+              <blockquote className="mt-2 border-l-2 border-slate-600 pl-3 text-slate-400">
+                “{SOURCES[id].quote}” <span className="whitespace-nowrap">— {SOURCES[id].cite}</span>
+              </blockquote>
+            )}
           </li>
         ))}
       </ul>

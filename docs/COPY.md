@@ -86,12 +86,14 @@ One sentence shown as "Lesson learned" on the scorecard, for the instrument the 
 
 `AI_DISCLOSURE` must match the project page. The tests check that it names Claude (Anthropic) and says the team reviewed the work.
 
+S2 also has `cite` and `quote`: the exact page and wording from CubeSat 101. Do not edit the quote; it is word for word.
+
 Source descriptions, field `use` in `SOURCES` (also reusable for the "NASA Data" field of the project page):
 
 | Tag | Title (`title`) | How the game uses it (`use`) |
 | --- | --- | --- |
 | S1 | NASA Earth Fact Sheet (radius, GM, solar irradiance) | Earth's radius and gravitational parameter behind every orbit formula: period, eclipse, coverage, transfers. |
-| S2 | NASA CSLI — CubeSat 101 (budget reserves, development timeline) | The rule of keeping at least 10% of the budget in reserve. |
+| S2 | NASA CSLI — CubeSat 101 (project reserves of at least 10%) | The budget rule: keep at least 10% in reserve. The budget meter turns amber and the budget score drops when a design eats into it. |
 | S3 | NASA — Design and Develop Science Missions (Launch, Space, Ground, User segments) | The four mission segments, used as the four team roles: Science, Spacecraft, Ground and Launch. |
 | S6 | NASA — Landsat 9 mission (705 km, 98.2°, 185 km swath, 16-day revisit) | The Sun-synchronous orbit card and the Multispectral Imager (30 m pixels, 185 km swath). The model reproduces its ~99-minute orbit and ~16-day revisit. |
 | S9 | NASA Small Spacecraft Technology State-of-the-Art — Communications | Background reading on spacecraft radio links. No game value is taken from it yet. |
@@ -124,7 +126,7 @@ These strings sit in the screen code. Edit only the words; leave tags, braces an
 | 4 (`GoNoGo`) | Like a real launch, every role is polled. Playing as a team? Each player votes for their role. A unanimous Go earns the full team score. |
 | 4 (`GoNoGo`) | waiting… / GO / NO-GO |
 | 4 (`GoNoGo`) | Over budget by $…M. An over-budget mission cannot succeed. |
-| 4 (`GoNoGo`) | Budget reserve is …%. NASA guidance recommends keeping at least 10% in reserve. |
+| 4 (`GoNoGo`) | Budget reserve is …%. NASA’s CubeSat 101 guide advises project reserves of at least 10% of the budget. |
 | 4 (`GoNoGo`) | A No-Go means someone sees a problem. Go back, discuss and change the design — or launch anyway and keep only … of 15 team points. |
 | 4 (`GoNoGo`) | ← Revise design / 🚀 Launch / Launch anyway (… of 4 Go) |
 | 5 (`MissionRun`) | 5 · Mission simulation |

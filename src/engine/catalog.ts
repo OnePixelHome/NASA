@@ -213,6 +213,6 @@ export const UPPER_STAGE_ISP_S = 320 // typical storable-propellant upper stage 
 export const LAUNCH_SITE_LAT_DEG = 28.5 // a GEO launch must remove this inclination [PHYS]
 /** Retrograde (SSO) launches lose Earth's eastward rotation boost (~0.4 km/s) [PHYS, simplified]. */
 export const SSO_ROTATION_PENALTY_KMS = 0.4
-export const RESERVE_FRACTION = 0.1 // keep ≥10% budget reserve [S2]
+export const RESERVE_FRACTION = 0.1 // "project reserves of at least 10%" [S2, CubeSat 101 p. 13 — verified, see sources.ts]
 
 export const byId = <T extends { id: string }>(list: T[], id?: string) => list.find((x) => x.id === id)

@@ -1,5 +1,12 @@
 # BACKUP - NASA
 
+## 2026-11-14 (PC de Edgar) — Cita del 10% de reserva verificada (`fix/reserve-citation`, apilado sobre `feat/node-tooltips`)
+
+- Se descargó el PDF de CubeSat 101 (96 páginas), se extrajo el texto y se buscó "reserve": hay una sola coincidencia, en el capítulo 2, página impresa 13 (página 21 del PDF): "When possible, project reserves of at least 10% should be part of the budget to address any unexpected events."
+- La regla sigue etiquetada como NASA S2. `src/engine/sources.ts` guarda ahora la página (`cite`) y la cita textual (`quote`); la pantalla About las muestra.
+- Se ajustó la redacción del aviso en Go/No-Go para que diga lo que dice la guía ("project reserves of at least 10% of the budget"), y se actualizaron README y `docs/COPY.md`.
+- Verificado: 34 tests (2 nuevos sobre la regla) y build. Pendiente: merge después de los PR #1 a #6.
+
 ## 2026-11-14 (PC de Edgar) — Tooltips de nodos, HANDOFF §6-B2 (`feat/node-tooltips`, apilado sobre `docs/handoff-decisions`)
 
 - Cada instrumento, sistema de energía, enlace y lanzador tiene un campo `tip` en `src/engine/catalog.ts` con 1–2 frases en inglés sencillo (texto borrador). Se muestra al tocar un nodo, encima de las razones.
