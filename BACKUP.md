@@ -1,5 +1,12 @@
 # BACKUP - NASA
 
+## 2026-11-14 (PC de Edgar) — Tooltips de nodos, HANDOFF §6-B2 (`feat/node-tooltips`, apilado sobre `docs/handoff-decisions`)
+
+- Cada instrumento, sistema de energía, enlace y lanzador tiene un campo `tip` en `src/engine/catalog.ts` con 1–2 frases en inglés sencillo (texto borrador). Se muestra al tocar un nodo, encima de las razones.
+- Nuevo `docs/COPY.md`: lista todos los textos que ve el jugador, dónde se editan y cuáles no debe tocar Belle (las frases generadas con números y etiquetas de fuente).
+- Los tests limitan los tooltips a 2 frases, 170 caracteres y sin números (un número exigiría etiqueta de fuente).
+- Verificado: 32 tests, build y recorrido a 390 px. Pendiente: revisión del texto por Belle; merge después de los PR #1 a #5.
+
 ## 2026-11-14 (PC de Edgar) — Decisiones aceptadas en HANDOFF §4 (`docs/handoff-decisions`, apilado sobre `feat/about-screen`)
 
 - Se registraron en `docs/HANDOFF.md` §4 las decisiones que Edgar aceptó tras la validación: repo `belleavm/NASA`, PRs apilados, Go/No-Go con "Launch anyway" y puntos parciales, re-toque no destructivo, lema oculto en celular, aviso de no afiliación, `BACKUP.md` en español (interno) y todo lo que ve el jurado en inglés, y se omiten §6-B4 y §6-B5 salvo aviso.

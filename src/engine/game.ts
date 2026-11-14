@@ -65,6 +65,8 @@ function sortSources(ids: SourceId[]): SourceId[] {
 export interface NodeState {
   id: string
   name: string
+  /** Plain-English description of the option, from the catalog. Contains no numbers, so it needs no source chip. */
+  tip: string
   ok: boolean
   reasons: Reason[]
   facts: string[]
@@ -95,7 +97,7 @@ function instrumentNode(o: C.Orbit, ins: C.Instrument): NodeState {
     reasons.push(reason(`Weather tracking needs a non-stop view; in ${o.short} the satellite flies past each place in minutes.`, 'PHYS'))
   }
   if (ok) reasons.push(reason(`Works from ${o.short}: ${fmtM(gsd)} per pixel.`, ins.source, 'PHYS'))
-  return { id: ins.id, name: ins.name, ok, reasons, facts: [`${fmtM(gsd)}/pixel`, `${ins.powerW} W`, `${ins.massKg} kg`, `$${ins.costM}M`], factsSource: 'GAME' }
+  return { id: ins.id, name: ins.name, tip: ins.tip, ok, reasons, facts: [`${fmtM(gsd)}/pixel`, `${ins.powerW} W`, `${ins.massKg} kg`, `$${ins.costM}M`], factsSource: 'GAME' }
 }
 
 /** Orbit-average electrical load: the bus plus the instrument at its duty cycle. */
@@ -132,7 +134,7 @@ function powerNode(o: C.Orbit, ins: C.Instrument, pw: C.PowerSystem): NodeState 
     reasons.push(reason(`Each ${fmt(b.eclipseMin)}-min eclipse needs a ${fmt(b.batteryNeedWh)} Wh battery; this one has ${fmt(pw.batteryWh)} Wh.`, 'PHYS', 'GAME'))
   }
   if (ok) reasons.push(reason(`${fmt(b.genW)} W generated vs ${fmt(b.avgLoadW)} W used; battery covers the ${fmt(b.eclipseMin)}-min eclipse.`, 'PHYS', 'GAME'))
-  return { id: pw.id, name: pw.name, ok, reasons, facts: [`${pw.peakW} W peak`, `${pw.batteryWh} Wh`, `${pw.massKg} kg`, `$${pw.costM}M`], factsSource: 'GAME' }
+  return { id: pw.id, name: pw.name, tip: pw.tip, ok, reasons, facts: [`${pw.peakW} W peak`, `${pw.batteryWh} Wh`, `${pw.massKg} kg`, `$${pw.costM}M`], factsSource: 'GAME' }
 }
 
 export function downlinkCapacity(o: C.Orbit, dl: C.Downlink): { gbitPerDay: number; note: Reason } {
@@ -164,7 +166,7 @@ function downlinkNode(o: C.Orbit, ins: C.Instrument, dl: C.Downlink): NodeState 
   if (cap.gbitPerDay > 0 && !ok)
     reasons.push(reason(`Only ${fmt((100 * cap.gbitPerDay) / ins.dataGbitPerDay)}% of the ${fmt(ins.dataGbitPerDay)} Gbit collected per day reaches Earth.`, 'GAME', 'PHYS'))
   if (ok) reasons.push(reason(`${fmt(cap.gbitPerDay)} Gbit/day capacity ≥ ${fmt(ins.dataGbitPerDay)} Gbit/day collected.`, 'GAME', 'PHYS'))
-  return { id: dl.id, name: dl.name, ok, reasons, facts: [`${fmt(cap.gbitPerDay)} Gbit/day`, `$${downlinkCostPerYear(o, dl)}M/yr`], factsSource: 'GAME' }
+  return { id: dl.id, name: dl.name, tip: dl.tip, ok, reasons, facts: [`${fmt(cap.gbitPerDay)} Gbit/day`, `$${downlinkCostPerYear(o, dl)}M/yr`], factsSource: 'GAME' }
 }
 
 const downlinkCostPerYear = (o: C.Orbit, dl: C.Downlink) => (dl.kind === 'continuous' && !isGeo(o) ? C.RELAY_COST_PER_YEAR_M : dl.costPerYearM)
@@ -186,7 +188,7 @@ function launchNode(o: C.Orbit, c: Choice, lv: C.LaunchVehicle): NodeState {
     reason(`Rocket equation: reaching ${o.short} costs ${fmt(orbitStats(o).extraDvKmS, 2)} km/s beyond a 200 km orbit, so ${fmt(lv.leoCapacityKg)} kg shrinks to ${fmt(cap)} kg.`, 'PHYS', 'GAME'),
     ok ? reason(`Your ${fmt(mass)} kg spacecraft fits.`, 'GAME') : reason(`Your spacecraft is ${fmt(mass)} kg — too heavy for this rocket.`, 'GAME'),
   ]
-  return { id: lv.id, name: lv.name, ok, reasons, facts: [`${fmt(cap)} kg to ${o.short}`, `$${lv.costM}M`], factsSource: 'GAME' }
+  return { id: lv.id, name: lv.name, tip: lv.tip, ok, reasons, facts: [`${fmt(cap)} kg to ${o.short}`, `$${lv.costM}M`], factsSource: 'GAME' }
 }
 
 /** Options for a tier given upstream choices. Empty if upstream not chosen yet. */

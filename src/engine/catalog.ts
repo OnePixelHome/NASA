@@ -127,6 +127,8 @@ export const ORBITS: Orbit[] = [
 export interface Instrument {
   id: string
   name: string
+  /** Plain-English tooltip: what this option is, in one or two sentences. Copy owner: Belle (see docs/COPY.md). */
+  tip: string
   gsdRefM: number
   swathRefKm: number
   refAltKm: number
@@ -141,16 +143,18 @@ export interface Instrument {
 }
 
 export const INSTRUMENTS: Instrument[] = [
-  { id: 'hires', name: 'High-Res Camera', gsdRefM: 0.5, swathRefKm: 15, refAltKm: 500, maxUsefulGsdM: 5, powerW: 80, massKg: 80, dataGbitPerDay: 500, costM: 60, source: 'GAME' },
-  { id: 'multispectral', name: 'Multispectral Imager', gsdRefM: 30, swathRefKm: 185, refAltKm: 705, maxUsefulGsdM: 100, powerW: 60, massKg: 70, dataGbitPerDay: 150, costM: 40, source: 'S6' },
-  { id: 'radar', name: 'Imaging Radar', gsdRefM: 10, swathRefKm: 100, refAltKm: 700, maxUsefulGsdM: 50, maxRangeKm: 1000, powerW: 400, massKg: 150, dataGbitPerDay: 200, costM: 90, source: 'GAME' },
-  { id: 'weather', name: 'Weather Imager', gsdRefM: 1000, swathRefKm: 2000, refAltKm: 35786, maxUsefulGsdM: 4000, needsContinuousView: true, powerW: 150, massKg: 200, dataGbitPerDay: 100, costM: 70, source: 'GAME' },
+  { id: 'hires', name: 'High-Res Camera', gsdRefM: 0.5, swathRefKm: 15, refAltKm: 500, maxUsefulGsdM: 5, powerW: 80, massKg: 80, dataGbitPerDay: 500, costM: 60, source: 'GAME', tip: "A telescope-like camera that sees fine detail, such as single buildings. It only captures a narrow strip of ground on each pass." },
+  { id: 'multispectral', name: 'Multispectral Imager', gsdRefM: 30, swathRefKm: 185, refAltKm: 705, maxUsefulGsdM: 100, powerW: 60, massKg: 70, dataGbitPerDay: 150, costM: 40, source: 'S6', tip: "A camera that records several colors of light, including some our eyes cannot see. Those extra colors reveal how healthy plants are." },
+  { id: 'radar', name: 'Imaging Radar', gsdRefM: 10, swathRefKm: 100, refAltKm: 700, maxUsefulGsdM: 50, maxRangeKm: 1000, powerW: 400, massKg: 150, dataGbitPerDay: 200, costM: 90, source: 'GAME', tip: "It sends out radio pulses and listens for the echo, so it can see at night and through clouds. It needs a lot of power." },
+  { id: 'weather', name: 'Weather Imager', gsdRefM: 1000, swathRefKm: 2000, refAltKm: 35786, maxUsefulGsdM: 4000, needsContinuousView: true, powerW: 150, massKg: 200, dataGbitPerDay: 100, costM: 70, source: 'GAME', tip: "A wide-angle camera that watches a whole side of the Earth at once. It trades fine detail for a constant view." },
 ]
 
 // ---------- Tier 3: power (Spacecraft role) ----------
 export interface PowerSystem {
   id: string
   name: string
+  /** Plain-English tooltip: what this option is, in one or two sentences. Copy owner: Belle (see docs/COPY.md). */
+  tip: string
   peakW: number
   sunFactor: number // body-mounted panels rarely face the Sun; deployable arrays track it
   batteryWh: number
@@ -159,9 +163,9 @@ export interface PowerSystem {
 }
 
 export const POWER: PowerSystem[] = [
-  { id: 'standard', name: 'Standard Power', peakW: 400, sunFactor: 0.35, batteryWh: 300, massKg: 20, costM: 5 },
-  { id: 'extended', name: 'Extended Power', peakW: 800, sunFactor: 0.8, batteryWh: 500, massKg: 60, costM: 15 },
-  { id: 'hybrid', name: 'Solar + Battery Hybrid', peakW: 600, sunFactor: 0.8, batteryWh: 2000, massKg: 90, costM: 20 },
+  { id: 'standard', name: 'Standard Power', peakW: 400, sunFactor: 0.35, batteryWh: 300, massKg: 20, costM: 5, tip: "Solar cells fixed to the spacecraft body, with a small battery. Light and cheap, but they rarely face the Sun directly." },
+  { id: 'extended', name: 'Extended Power', peakW: 800, sunFactor: 0.8, batteryWh: 500, massKg: 60, costM: 15, tip: "Large solar wings that turn to follow the Sun. Plenty of power in sunlight, with a medium battery for the shadow." },
+  { id: 'hybrid', name: 'Solar + Battery Hybrid', peakW: 600, sunFactor: 0.8, batteryWh: 2000, massKg: 90, costM: 20, tip: "Sun-tracking solar wings plus a big battery. The battery keeps a power-hungry instrument running through Earth's shadow." },
 ]
 export const BUS_POWER_W = 50
 export const BUS_MASS_KG = 150
@@ -173,6 +177,8 @@ export const maxDepthOfDischarge = (altKm: number) => (altKm > 20000 ? 0.7 : 0.3
 export interface Downlink {
   id: string
   name: string
+  /** Plain-English tooltip: what this option is, in one or two sentences. Copy owner: Belle (see docs/COPY.md). */
+  tip: string
   rateMbps: number
   kind: 'single-station' | 'polar-network' | 'continuous'
   costPerYearM: number
@@ -180,9 +186,9 @@ export interface Downlink {
 }
 
 export const DOWNLINKS: Downlink[] = [
-  { id: 'daily', name: 'Daily Pass (1 ground station)', rateMbps: 300, kind: 'single-station', costPerYearM: 2, stationLatDeg: 35 },
-  { id: 'polar', name: 'Polar Station Network', rateMbps: 300, kind: 'polar-network', costPerYearM: 4, stationLatDeg: 78 },
-  { id: 'continuous', name: 'Continuous Link', rateMbps: 150, kind: 'continuous', costPerYearM: 1 },
+  { id: 'daily', name: 'Daily Pass (1 ground station)', rateMbps: 300, kind: 'single-station', costPerYearM: 2, stationLatDeg: 35, tip: "One ground antenna that talks to the spacecraft whenever it flies overhead. Simple and cheap, but contact time is short." },
+  { id: 'polar', name: 'Polar Station Network', rateMbps: 300, kind: 'polar-network', costPerYearM: 4, stationLatDeg: 78, tip: "Antennas near the pole, where satellites on polar orbits fly over on almost every lap. More contacts mean more data." },
+  { id: 'continuous', name: 'Continuous Link', rateMbps: 150, kind: 'continuous', costPerYearM: 1, tip: "A link that never drops. It comes naturally from an orbit that hovers over one spot; lower orbits need a relay satellite to pass the signal on." },
 ]
 /** Continuous link from LEO/SSO needs a relay satellite — much more expensive per year [GAME]. */
 export const RELAY_COST_PER_YEAR_M = 6
@@ -191,14 +197,16 @@ export const RELAY_COST_PER_YEAR_M = 6
 export interface LaunchVehicle {
   id: string
   name: string
+  /** Plain-English tooltip: what this option is, in one or two sentences. Copy owner: Belle (see docs/COPY.md). */
+  tip: string
   leoCapacityKg: number // to a 200 km parking orbit
   costM: number
 }
 
 export const LAUNCHERS: LaunchVehicle[] = [
-  { id: 'small', name: 'Small Launcher', leoCapacityKg: 300, costM: 10 },
-  { id: 'medium', name: 'Medium Launcher', leoCapacityKg: 1500, costM: 50 },
-  { id: 'heavy', name: 'Heavy Launcher', leoCapacityKg: 8000, costM: 120 },
+  { id: 'small', name: 'Small Launcher', leoCapacityKg: 300, costM: 10, tip: "A small rocket for light spacecraft. The cheapest ride, but it cannot lift much or push it far." },
+  { id: 'medium', name: 'Medium Launcher', leoCapacityKg: 1500, costM: 50, tip: "A mid-size rocket with room to spare for most Earth-observation spacecraft." },
+  { id: 'heavy', name: 'Heavy Launcher', leoCapacityKg: 8000, costM: 120, tip: "A large rocket that can carry heavy spacecraft to distant orbits. The most expensive option." },
 ]
 export const PARKING_ALT_KM = 200
 export const UPPER_STAGE_ISP_S = 320 // typical storable-propellant upper stage [GAME]
