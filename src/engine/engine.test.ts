@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import * as P from './physics'
 import * as C from './catalog'
-import { budget, choose, evaluateMission, orbitStats, tierOptions, type Choice } from './game'
+import { budget, choose, evaluateMission, orbitStats, TEAM_POINTS_MAX, teamPoints, tierOptions, type Choice } from './game'
 import { reasonSources, SOURCES } from './sources'
 
 const orbit = (id: string) => C.byId(C.ORBITS, id)!
@@ -103,6 +103,26 @@ describe('sources (every number shown carries one)', () => {
     // The radar range limit is illustrative too, even though the distance⁴ law is physics.
     const radar = tierOptions('instrument', { orbitId: 'geo' }).find((n) => n.id === 'radar')!
     for (const r of radar.reasons) expect(reasonSources(r)).toEqual(['PHYS', 'GAME'])
+  })
+})
+
+describe('Go/No-Go poll (team collaboration)', () => {
+  const full: Choice = { scenarioId: 'ice', orbitId: 'sso', instrumentId: 'radar', powerId: 'hybrid', downlinkId: 'daily', launchId: 'medium' }
+  const team = (votes: number) => evaluateMission(full, votes).breakdown.find((b) => b.label === 'Team Go/No-Go')!.points
+
+  it('a unanimous Go earns the full team score', () => {
+    expect(teamPoints(4)).toBe(TEAM_POINTS_MAX)
+    expect(team(4)).toBe(15)
+  })
+  it('launching over No-Go votes costs team points and total score', () => {
+    expect(team(3)).toBe(11)
+    expect(team(2)).toBe(8)
+    expect(team(0)).toBe(0)
+    expect(evaluateMission(full, 2).score).toBe(evaluateMission(full, 4).score - 7)
+  })
+  it('vote counts outside 0–4 are clamped', () => {
+    expect(teamPoints(9)).toBe(TEAM_POINTS_MAX)
+    expect(teamPoints(-1)).toBe(0)
   })
 })
 

@@ -227,6 +227,15 @@ export function budget(c: Choice) {
   return { items, spentM, totalM, reserveFraction: totalM ? (totalM - spentM) / totalM : 0 }
 }
 
+// ---------------- Go/No-Go poll ----------------
+export const TEAM_ROLES = 4
+export const TEAM_POINTS_MAX = 15
+/**
+ * Collaboration points: a unanimous Go earns them all. A mission launched over No-Go votes
+ * keeps only the share of roles that agreed, so overriding a teammate has a visible cost [GAME].
+ */
+export const teamPoints = (goVotes: number) => Math.round((TEAM_POINTS_MAX * Math.max(0, Math.min(TEAM_ROLES, goVotes))) / TEAM_ROLES)
+
 // ---------------- Mission run + scorecard ----------------
 export interface TimelineStep extends Reason {
   label: string
@@ -269,7 +278,7 @@ export function evaluateMission(c: Choice, goVotes: number): Scorecard {
 
   const sciencePts = Math.round(50 * fit.fit * Math.min(1, coverage) * (0.5 + 0.5 * revisitFactor))
   const dataPts = Math.round(20 * dataFactor)
-  const teamPts = Math.round((15 * goVotes) / 4)
+  const teamPts = teamPoints(goVotes)
   const score = Math.min(100, sciencePts + dataPts + budgetPts + teamPts)
 
   const factors = [
@@ -317,7 +326,7 @@ export function evaluateMission(c: Choice, goVotes: number): Scorecard {
       { label: 'Science return', points: sciencePts, max: 50 },
       { label: 'Data delivered', points: dataPts, max: 20 },
       { label: 'Budget & reserve', points: budgetPts, max: 15 },
-      { label: 'Team Go/No-Go', points: teamPts, max: 15 },
+      { label: 'Team Go/No-Go', points: teamPts, max: TEAM_POINTS_MAX },
     ],
     primaryConstraint,
     biggestImpact,
