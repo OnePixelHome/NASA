@@ -1,5 +1,13 @@
 # BACKUP - NASA
 
+## 2026-11-14 (PC de Edgar) — Chips de fuente en todos los números (`fix/source-chips`)
+
+- Cada número en pantalla lleva ahora su chip de fuente: presupuestos, medidor de presupuesto, datos de cada nodo, pasos de la simulación y los tres insights del scorecard.
+- `Reason` admite fuentes adicionales (`also`) para frases que mezclan física con valores ilustrativos; se corrigieron etiquetas que presentaban supuestos del juego como física (pasadas por día, alcance del radar, batería).
+- La lista de fuentes del scorecard se calcula a partir de lo citado en la misión, ya no está escrita a mano.
+- Los chips dentro de botones ya no son enlaces (era HTML inválido).
+- Verificado: 19 tests, build y recorrido a 390 px. Pendiente: revisión del equipo y merge del PR.
+
 ## 2026-11-14 (PC de Edgar) — Importación del prototipo "Trajectory Ladder" v0.1
 
 - Se importó el prototipo jugable (Vite + React 19 + TS, Tailwind v4, Vitest, pnpm): `src/engine` (física, catálogo, juego, fuentes, 15 tests) y `src/App.tsx` con las pantallas Brief → Órbita → Árbol → Go/No-Go → Simulación → Scorecard.

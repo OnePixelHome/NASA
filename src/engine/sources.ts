@@ -22,4 +22,18 @@ export const SOURCES: Record<SourceId, Source> = {
 export interface Reason {
   text: string
   source: SourceId
+  /** Extra sources when a statement mixes kinds, e.g. a physics formula fed with an illustrative catalog value. */
+  also?: SourceId[]
 }
+
+/** Build a Reason; extra ids become `also` (duplicates of the main source are dropped). */
+export function reason(text: string, source: SourceId, ...also: SourceId[]): Reason {
+  const extra = [...new Set(also)].filter((id) => id !== source)
+  return extra.length ? { text, source, also: extra } : { text, source }
+}
+
+/** All source ids a reason cites, main one first. */
+export const reasonSources = (r: Reason): SourceId[] => [r.source, ...(r.also ?? [])]
+
+/** Display order for source lists: NASA resources first, then physics, then illustrative values. */
+export const SOURCE_ORDER = Object.keys(SOURCES) as SourceId[]

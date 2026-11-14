@@ -1,6 +1,6 @@
 import * as P from './physics'
 import * as C from './catalog'
-import type { Reason } from './sources'
+import { reason, reasonSources, SOURCE_ORDER, type Reason, type SourceId } from './sources'
 
 export interface Choice {
   scenarioId?: string
@@ -50,6 +50,17 @@ export function orbitStats(o: C.Orbit): OrbitStats {
   }
 }
 
+/** Sources behind an orbit card: its catalog sources plus the physics used for period, coverage and Δv. */
+export const orbitSources = (o: C.Orbit): SourceId[] => sortSources([...o.sources, 'PHYS'])
+
+/** The NASA resource(s) an orbit's altitude and inclination come from (empty for a purely physical orbit like GEO). */
+const orbitNasaSources = (o: C.Orbit) => o.sources.filter((s) => s !== 'GAME' && s !== 'PHYS')
+
+function sortSources(ids: SourceId[]): SourceId[] {
+  const set = new Set(ids)
+  return SOURCE_ORDER.filter((id) => set.has(id))
+}
+
 // ---------------- Act 2: per-option viability ----------------
 export interface NodeState {
   id: string
@@ -57,6 +68,8 @@ export interface NodeState {
   ok: boolean
   reasons: Reason[]
   facts: string[]
+  /** Source of the numbers in `facts` (catalog values, so usually illustrative). */
+  factsSource: SourceId
 }
 
 const orbitOf = (c: Choice) => C.byId(C.ORBITS, c.orbitId)
@@ -68,19 +81,21 @@ function instrumentNode(o: C.Orbit, ins: C.Instrument): NodeState {
   let ok = true
   if (gsd > ins.maxUsefulGsdM) {
     ok = false
-    reasons.push({ text: `From ${fmt(o.altKm)} km each pixel would cover ${fmtM(gsd)} — too blurry (needs ≤ ${fmtM(ins.maxUsefulGsdM)}).`, source: 'PHYS' })
+    // The scaling is physics; the "useful" threshold is a game value.
+    reasons.push(reason(`From ${fmt(o.altKm)} km each pixel would cover ${fmtM(gsd)} — too blurry (needs ≤ ${fmtM(ins.maxUsefulGsdM)}).`, 'PHYS', 'GAME'))
   }
   if (ins.maxRangeKm && o.altKm > ins.maxRangeKm) {
     ok = false
     const weaker = (o.altKm / ins.maxRangeKm) ** 4
-    reasons.push({ text: `Radar echoes fade with distance⁴: at ${fmt(o.altKm)} km the signal is ~${fmt(weaker)}× weaker than at ${fmt(ins.maxRangeKm)} km.`, source: 'PHYS' })
+    // The distance⁴ law is physics; the practical range limit is a game value.
+    reasons.push(reason(`Radar echoes fade with distance⁴: at ${fmt(o.altKm)} km the signal is ~${fmt(weaker)}× weaker than at ${fmt(ins.maxRangeKm)} km.`, 'PHYS', 'GAME'))
   }
   if (ins.needsContinuousView && !isGeo(o)) {
     ok = false
-    reasons.push({ text: `Weather tracking needs a non-stop view; in ${o.short} the satellite flies past each place in minutes.`, source: 'PHYS' })
+    reasons.push(reason(`Weather tracking needs a non-stop view; in ${o.short} the satellite flies past each place in minutes.`, 'PHYS'))
   }
-  if (ok) reasons.push({ text: `Works from ${o.short}: ${fmtM(gsd)} per pixel.`, source: ins.source })
-  return { id: ins.id, name: ins.name, ok, reasons, facts: [`${fmtM(gsd)}/pixel`, `${ins.powerW} W`, `${ins.massKg} kg`, `$${ins.costM}M`] }
+  if (ok) reasons.push(reason(`Works from ${o.short}: ${fmtM(gsd)} per pixel.`, ins.source, 'PHYS'))
+  return { id: ins.id, name: ins.name, ok, reasons, facts: [`${fmtM(gsd)}/pixel`, `${ins.powerW} W`, `${ins.massKg} kg`, `$${ins.costM}M`], factsSource: 'GAME' }
 }
 
 export function powerBudget(o: C.Orbit, ins: C.Instrument, pw: C.PowerSystem) {
@@ -99,32 +114,39 @@ function powerNode(o: C.Orbit, ins: C.Instrument, pw: C.PowerSystem): NodeState 
   const b = powerBudget(o, ins, pw)
   const reasons: Reason[] = []
   let ok = true
+  // Eclipse time is physics; panel output, loads and battery depth of discharge are game values.
   if (b.genW < b.avgLoadW) {
     ok = false
-    reasons.push({ text: `Panels make ~${fmt(b.genW)} W on average, but the spacecraft needs ${fmt(b.avgLoadW)} W.`, source: 'PHYS' })
+    reasons.push(reason(`Panels make ~${fmt(b.genW)} W on average, but the spacecraft needs ${fmt(b.avgLoadW)} W.`, 'PHYS', 'GAME'))
   }
   if (pw.batteryWh < b.batteryNeedWh) {
     ok = false
-    reasons.push({ text: `Each ${fmt(b.eclipseMin)}-min eclipse needs a ${fmt(b.batteryNeedWh)} Wh battery; this one has ${fmt(pw.batteryWh)} Wh.`, source: 'PHYS' })
+    reasons.push(reason(`Each ${fmt(b.eclipseMin)}-min eclipse needs a ${fmt(b.batteryNeedWh)} Wh battery; this one has ${fmt(pw.batteryWh)} Wh.`, 'PHYS', 'GAME'))
   }
-  if (ok) reasons.push({ text: `${fmt(b.genW)} W generated vs ${fmt(b.avgLoadW)} W used; battery covers the ${fmt(b.eclipseMin)}-min eclipse.`, source: 'PHYS' })
-  return { id: pw.id, name: pw.name, ok, reasons, facts: [`${pw.peakW} W peak`, `${pw.batteryWh} Wh`, `${pw.massKg} kg`, `$${pw.costM}M`] }
+  if (ok) reasons.push(reason(`${fmt(b.genW)} W generated vs ${fmt(b.avgLoadW)} W used; battery covers the ${fmt(b.eclipseMin)}-min eclipse.`, 'PHYS', 'GAME'))
+  return { id: pw.id, name: pw.name, ok, reasons, facts: [`${pw.peakW} W peak`, `${pw.batteryWh} Wh`, `${pw.massKg} kg`, `$${pw.costM}M`], factsSource: 'GAME' }
 }
 
 export function downlinkCapacity(o: C.Orbit, dl: C.Downlink): { gbitPerDay: number; note: Reason } {
   if (dl.kind === 'continuous') {
     const g = (dl.rateMbps * 86400 * 0.9) / 1000
     return isGeo(o)
-      ? { gbitPerDay: g, note: { text: 'GEO is always in view of its ground station.', source: 'PHYS' } }
-      : { gbitPerDay: g, note: { text: `From ${o.short} a non-stop link needs a relay satellite (+$${C.RELAY_COST_PER_YEAR_M}M/yr).`, source: 'GAME' } }
+      ? { gbitPerDay: g, note: reason('GEO is always in view of its ground station.', 'PHYS') }
+      : { gbitPerDay: g, note: reason(`From ${o.short} a non-stop link needs a relay satellite (+$${C.RELAY_COST_PER_YEAR_M}M/yr).`, 'GAME') }
   }
-  if (isGeo(o)) return { gbitPerDay: 0, note: { text: 'A GEO satellite never "passes" a station — it is always in view. Use Continuous Link.', source: 'PHYS' } }
+  if (isGeo(o)) return { gbitPerDay: 0, note: reason('A GEO satellite never "passes" a station — it is always in view. Use Continuous Link.', 'PHYS') }
   const lat = dl.stationLatDeg ?? 0
   const reach = P.maxLatitudeDeg(o.inclDeg) + P.stationHalfAngleDeg(o.altKm)
-  if (lat > reach) return { gbitPerDay: 0, note: { text: `A ${fmt(lat)}° station is out of reach: ${o.short} never goes beyond ${fmt(P.maxLatitudeDeg(o.inclDeg), 1)}°.`, source: 'S10' } }
+  if (lat > reach)
+    return {
+      gbitPerDay: 0,
+      // Geometry is physics; the orbit's inclination comes from its NASA source; the station latitude is a game value.
+      note: reason(`A ${fmt(lat)}° station is out of reach: ${o.short} never goes beyond ${fmt(P.maxLatitudeDeg(o.inclDeg), 1)}°.`, 'PHYS', ...orbitNasaSources(o), 'GAME'),
+    }
   const passes = dl.kind === 'polar-network' ? 10 : 4 // [GAME, verify with mentor]
   const sec = passes * P.avgPassSec(o.altKm)
-  return { gbitPerDay: (sec * dl.rateMbps) / 1000, note: { text: `${passes} passes/day × ${fmt(P.avgPassSec(o.altKm) / 60, 1)} min each.`, source: 'PHYS' } }
+  // Pass length is physics; the number of passes per day is a game value.
+  return { gbitPerDay: (sec * dl.rateMbps) / 1000, note: reason(`${passes} passes/day × ${fmt(P.avgPassSec(o.altKm) / 60, 1)} min each.`, 'GAME', 'PHYS') }
 }
 
 function downlinkNode(o: C.Orbit, ins: C.Instrument, dl: C.Downlink): NodeState {
@@ -132,9 +154,9 @@ function downlinkNode(o: C.Orbit, ins: C.Instrument, dl: C.Downlink): NodeState 
   const ok = cap.gbitPerDay >= ins.dataGbitPerDay
   const reasons: Reason[] = [cap.note]
   if (cap.gbitPerDay > 0 && !ok)
-    reasons.push({ text: `Only ${fmt((100 * cap.gbitPerDay) / ins.dataGbitPerDay)}% of the ${fmt(ins.dataGbitPerDay)} Gbit collected per day reaches Earth.`, source: 'PHYS' })
-  if (ok) reasons.push({ text: `${fmt(cap.gbitPerDay)} Gbit/day capacity ≥ ${fmt(ins.dataGbitPerDay)} Gbit/day collected.`, source: 'PHYS' })
-  return { id: dl.id, name: dl.name, ok, reasons, facts: [`${fmt(cap.gbitPerDay)} Gbit/day`, `$${downlinkCostPerYear(o, dl)}M/yr`] }
+    reasons.push(reason(`Only ${fmt((100 * cap.gbitPerDay) / ins.dataGbitPerDay)}% of the ${fmt(ins.dataGbitPerDay)} Gbit collected per day reaches Earth.`, 'GAME', 'PHYS'))
+  if (ok) reasons.push(reason(`${fmt(cap.gbitPerDay)} Gbit/day capacity ≥ ${fmt(ins.dataGbitPerDay)} Gbit/day collected.`, 'GAME', 'PHYS'))
+  return { id: dl.id, name: dl.name, ok, reasons, facts: [`${fmt(cap.gbitPerDay)} Gbit/day`, `$${downlinkCostPerYear(o, dl)}M/yr`], factsSource: 'GAME' }
 }
 
 const downlinkCostPerYear = (o: C.Orbit, dl: C.Downlink) => (dl.kind === 'continuous' && !isGeo(o) ? C.RELAY_COST_PER_YEAR_M : dl.costPerYearM)
@@ -151,11 +173,12 @@ function launchNode(o: C.Orbit, c: Choice, lv: C.LaunchVehicle): NodeState {
   const cap = launchCapacityKg(o, lv)
   const mass = spacecraftMassKg(c)
   const ok = cap >= mass
+  // The rocket equation is physics; rocket capacity, engine efficiency and component masses are game values.
   const reasons: Reason[] = [
-    { text: `Rocket equation: reaching ${o.short} costs ${fmt(orbitStats(o).extraDvKmS, 2)} km/s beyond a 200 km orbit, so ${fmt(lv.leoCapacityKg)} kg shrinks to ${fmt(cap)} kg.`, source: 'PHYS' },
+    reason(`Rocket equation: reaching ${o.short} costs ${fmt(orbitStats(o).extraDvKmS, 2)} km/s beyond a 200 km orbit, so ${fmt(lv.leoCapacityKg)} kg shrinks to ${fmt(cap)} kg.`, 'PHYS', 'GAME'),
+    ok ? reason(`Your ${fmt(mass)} kg spacecraft fits.`, 'GAME') : reason(`Your spacecraft is ${fmt(mass)} kg — too heavy for this rocket.`, 'GAME'),
   ]
-  reasons.push(ok ? { text: `Your ${fmt(mass)} kg spacecraft fits.`, source: 'PHYS' } : { text: `Your spacecraft is ${fmt(mass)} kg — too heavy for this rocket.`, source: 'PHYS' })
-  return { id: lv.id, name: lv.name, ok, reasons, facts: [`${fmt(cap)} kg to ${o.short}`, `$${lv.costM}M`] }
+  return { id: lv.id, name: lv.name, ok, reasons, facts: [`${fmt(cap)} kg to ${o.short}`, `$${lv.costM}M`], factsSource: 'GAME' }
 }
 
 /** Options for a tier given upstream choices. Empty if upstream not chosen yet. */
@@ -183,6 +206,9 @@ export function choose(c: Choice, tier: C.Tier | 'orbit', id: string): Choice {
 export const isComplete = (c: Choice) => Boolean(c.scenarioId && c.orbitId && c.instrumentId && c.powerId && c.downlinkId && c.launchId)
 
 // ---------------- Budget meter ----------------
+/** Budgets and costs are illustrative game values. */
+export const BUDGET_SOURCE: SourceId = 'GAME'
+
 export function budget(c: Choice) {
   const s = C.byId(C.SCENARIOS, c.scenarioId)
   const o = orbitOf(c)
@@ -202,14 +228,22 @@ export function budget(c: Choice) {
 }
 
 // ---------------- Mission run + scorecard ----------------
+export interface TimelineStep extends Reason {
+  label: string
+}
+
 export interface Scorecard {
   score: number
   success: boolean
+  /** The score and its breakdown are an illustrative game formula. */
+  scoreSource: SourceId
   breakdown: { label: string; points: number; max: number }[]
-  primaryConstraint: string
-  biggestImpact: string
-  lesson: string
-  timeline: { label: string; detail: string }[]
+  primaryConstraint: Reason
+  biggestImpact: Reason
+  lesson: Reason
+  timeline: TimelineStep[]
+  /** Every source cited anywhere in this mission (design reasons, simulation, scorecard), in display order. */
+  sources: SourceId[]
 }
 
 export function evaluateMission(c: Choice, goVotes: number): Scorecard {
@@ -220,6 +254,7 @@ export function evaluateMission(c: Choice, goVotes: number): Scorecard {
   const lv = C.byId(C.LAUNCHERS, c.launchId)!
   const st = orbitStats(o)
   const b = budget(c)
+  const nasa = orbitNasaSources(o)
 
   const fit = s.instrumentFit[ins.id]
   const coverage = isGeo(o)
@@ -243,27 +278,51 @@ export function evaluateMission(c: Choice, goVotes: number): Scorecard {
     { name: `revisit (${revisit < 0.1 ? 'continuous' : fmt(revisit, 1) + ' days'} vs ${s.targetRevisitDays} wanted)`, loss: (1 - revisitFactor) / 2 },
   ].sort((a, b2) => b2.loss - a.loss)
 
+  const primaryConstraint = reason(
+    `Choosing ${o.short} (${fmt(o.altKm)} km, ${o.inclDeg}°) set everything else: ` +
+      (isGeo(o) ? 'it gave a non-stop view but put the spacecraft so far away that only coarse imagers work and a heavy rocket is needed.' : `the ground track reaches ${fmt(st.maxLatDeg, 1)}° and each look covers a ${fmt(swath)} km swath.`),
+    'PHYS',
+    ...nasa,
+    ins.source,
+  )
+  const biggestImpact = reason(factors[0].loss > 0.01 ? `Biggest point loss: ${factors[0].name}.` : 'No major losses — every choice fit the objective.', 'GAME')
+  const lesson = reason(fit.why, fit.source)
+
+  const delivered = Math.min(ins.dataGbitPerDay, downlinkCapacity(o, dl).gbitPerDay)
+  const timeline: TimelineStep[] = [
+    { label: 'Launch', ...reason(`${lv.name} lifts ${fmt(spacecraftMassKg(c))} kg (capacity ${fmt(launchCapacityKg(o, lv))} kg to ${o.short}).`, 'PHYS', 'GAME') },
+    { label: 'Orbit reached', ...reason(`${o.name}: one lap every ${fmt(st.periodMin, 1)} min, ${fmt(st.eclipseMin)} min in shadow.`, 'PHYS', ...nasa) },
+    { label: 'First light', ...reason(`${ins.name} sees ${fmtM(P.scaleWithAltitude(ins.gsdRefM, ins.refAltKm, o.altKm))} per pixel.`, ins.source, 'PHYS') },
+    { label: 'Daily operations', ...reason(`${fmt(delivered)} of ${fmt(ins.dataGbitPerDay)} Gbit/day reach Earth.`, 'GAME', 'PHYS') },
+    { label: 'Coverage', ...reason(revisit < 0.1 ? 'Same hemisphere in view all the time.' : `Revisits each spot about every ${fmt(revisit, 1)} days.`, 'PHYS', ins.source) },
+    { label: 'End of mission', ...reason(`~${o.lifetimeYears} years of operations. Budget used: $${fmt(b.spentM)}M of $${b.totalM}M.`, 'GAME') },
+  ]
+
+  // Collect every source the player saw on the way here, so the scorecard list is never out of date.
+  const chosen = TIER_ORDER.flatMap((tier) => tierOptions(tier, c).filter((n) => n.id === c[TIER_KEY[tier]]))
+  const cited: SourceId[] = [
+    'S1', // physical constants behind every formula
+    'S3', // the four mission segments used as team roles
+    'S2', // 10% budget reserve rule
+    ...orbitSources(o),
+    ...chosen.flatMap((n) => [n.factsSource, ...n.reasons.flatMap(reasonSources)]),
+    ...[primaryConstraint, biggestImpact, lesson, ...timeline].flatMap(reasonSources),
+  ]
+
   return {
     score,
     success: !overBudget && score >= 50,
+    scoreSource: 'GAME',
     breakdown: [
       { label: 'Science return', points: sciencePts, max: 50 },
       { label: 'Data delivered', points: dataPts, max: 20 },
       { label: 'Budget & reserve', points: budgetPts, max: 15 },
       { label: 'Team Go/No-Go', points: teamPts, max: 15 },
     ],
-    primaryConstraint:
-      `Choosing ${o.short} (${fmt(o.altKm)} km, ${o.inclDeg}°) set everything else: ` +
-      (isGeo(o) ? 'it gave a non-stop view but put the spacecraft so far away that only coarse imagers work and a heavy rocket is needed.' : `the ground track reaches ${fmt(st.maxLatDeg, 1)}° and each look covers a ${fmt(swath)} km swath.`),
-    biggestImpact: factors[0].loss > 0.01 ? `Biggest point loss: ${factors[0].name}.` : 'No major losses — every choice fit the objective.',
-    lesson: fit.why,
-    timeline: [
-      { label: 'Launch', detail: `${lv.name} lifts ${fmt(spacecraftMassKg(c))} kg (capacity ${fmt(launchCapacityKg(o, lv))} kg to ${o.short}).` },
-      { label: 'Orbit reached', detail: `${o.name}: one lap every ${fmt(st.periodMin, 1)} min, ${fmt(st.eclipseMin)} min in shadow.` },
-      { label: 'First light', detail: `${ins.name} sees ${fmtM(P.scaleWithAltitude(ins.gsdRefM, ins.refAltKm, o.altKm))} per pixel.` },
-      { label: 'Daily operations', detail: `${fmt(Math.min(ins.dataGbitPerDay, downlinkCapacity(o, dl).gbitPerDay))} of ${fmt(ins.dataGbitPerDay)} Gbit/day reach Earth.` },
-      { label: 'Coverage', detail: revisit < 0.1 ? 'Same hemisphere in view all the time.' : `Revisits each spot about every ${fmt(revisit, 1)} days.` },
-      { label: 'End of mission', detail: `~${o.lifetimeYears} years of operations. Budget used: $${fmt(b.spentM)}M of $${b.totalM}M.` },
-    ],
+    primaryConstraint,
+    biggestImpact,
+    lesson,
+    timeline,
+    sources: sortSources(cited),
   }
 }
