@@ -1,5 +1,13 @@
 # BACKUP - NASA
 
+## 2026-11-14 (PC de Edgar) — Go/No-Go con puntaje real (`fix/go-no-go`, apilado sobre `fix/source-chips`)
+
+- Antes el botón Launch exigía cuatro Go, así que el puntaje de equipo siempre era 15/15. Ahora se puede lanzar cuando los cuatro roles votaron; con algún No-Go el botón dice "Launch anyway" y solo se conserva la parte proporcional de los 15 puntos.
+- Cambiar el diseño (órbita o cualquier nodo) reinicia la votación; antes los votos viejos seguían valiendo.
+- Volver a tocar un nodo ya elegido solo muestra sus razones; antes borraba los niveles de abajo.
+- El aviso de reserva ya no muestra porcentajes negativos: si se pasa del presupuesto lo dice directamente.
+- Verificado: 22 tests, build y recorrido en navegador (2 Go + 2 No-Go → 8/15, puntaje 79). Pendiente: revisión y merge después del PR #1.
+
 ## 2026-11-14 (PC de Edgar) — Chips de fuente en todos los números (`fix/source-chips`)
 
 - Cada número en pantalla lleva ahora su chip de fuente: presupuestos, medidor de presupuesto, datos de cada nodo, pasos de la simulación y los tres insights del scorecard.

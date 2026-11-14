@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react'
 import * as C from './engine/catalog'
-import { budget, BUDGET_SOURCE, choose, evaluateMission, isComplete, orbitSources, orbitStats, TIER_ORDER, tierOptions, type Choice, type NodeState } from './engine/game'
+import { budget, BUDGET_SOURCE, choose, evaluateMission, isComplete, orbitSources, orbitStats, TEAM_POINTS_MAX, TEAM_ROLES, teamPoints, TIER_ORDER, tierOptions, type Choice, type NodeState } from './engine/game'
 import { SOURCES, type Reason } from './engine/sources'
 import { Bar, Gauge, Meter, ReasonList, SourceChip, SourceChips, Sourced } from './ui/components'
 
@@ -8,18 +8,22 @@ type Screen = 'brief' | 'orbit' | 'tree' | 'go' | 'run' | 'score'
 const ORBIT_COLOR: Record<string, string> = { leo: 'bg-sky-400', sso: 'bg-violet-400', geo: 'bg-amber-400' }
 const ROLE_COLOR: Record<C.Role, string> = { science: 'bg-pink-600', space: 'bg-indigo-600', ground: 'bg-teal-600', launch: 'bg-orange-600' }
 
+type Votes = Record<C.Role, boolean | null>
+const NO_VOTES: Votes = { science: null, space: null, ground: null, launch: null }
+
 export default function App() {
   const [screen, setScreen] = useState<Screen>('brief')
   const [choice, setChoice] = useState<Choice>({})
   const [focus, setFocus] = useState<{ tier: C.Tier; node: NodeState } | null>(null)
-  const [votes, setVotes] = useState<Record<C.Role, boolean | null>>({ science: null, space: null, ground: null, launch: null })
+  const [votes, setVotes] = useState<Votes>(NO_VOTES)
   const scenario = C.byId(C.SCENARIOS, choice.scenarioId)
   const orbit = C.byId(C.ORBITS, choice.orbitId)
+  const goVotes = Object.values(votes).filter((v) => v === true).length
 
   const restart = () => {
     setChoice({})
     setFocus(null)
-    setVotes({ science: null, space: null, ground: null, launch: null })
+    setVotes(NO_VOTES)
     setScreen('brief')
   }
 
@@ -50,6 +54,7 @@ export default function App() {
             selected={choice.orbitId}
             onPick={(id) => {
               setChoice((c) => choose(c, 'orbit', id))
+              setVotes(NO_VOTES) // a changed design needs a fresh poll
               setFocus(null)
               setScreen('tree')
             }}
@@ -61,7 +66,10 @@ export default function App() {
             orbit={orbit}
             focus={focus}
             onFocus={setFocus}
-            onPick={(tier, id) => setChoice((c) => choose(c, tier, id))}
+            onPick={(tier, id) => {
+              setChoice((c) => choose(c, tier, id))
+              setVotes(NO_VOTES) // a changed design needs a fresh poll
+            }}
             onChangeOrbit={() => setScreen('orbit')}
             onDone={() => setScreen('go')}
           />
@@ -69,8 +77,8 @@ export default function App() {
         {screen === 'go' && (
           <GoNoGo votes={votes} setVotes={setVotes} choice={choice} onBack={() => setScreen('tree')} onLaunch={() => setScreen('run')} />
         )}
-        {screen === 'run' && <MissionRun choice={choice} onDone={() => setScreen('score')} />}
-        {screen === 'score' && <Score choice={choice} goVotes={Object.values(votes).filter(Boolean).length} onReplay={restart} onRevise={() => setScreen('tree')} />}
+        {screen === 'run' && <MissionRun choice={choice} goVotes={goVotes} onDone={() => setScreen('score')} />}
+        {screen === 'score' && <Score choice={choice} goVotes={goVotes} onReplay={restart} onRevise={() => setScreen('tree')} />}
       </main>
     </div>
   )
@@ -194,7 +202,8 @@ function Tree(props: {
                         aria-label={`${n.name}: ${n.ok ? 'available' : 'locked'}`}
                         onClick={() => {
                           onFocus({ tier, node: n })
-                          if (n.ok) onPick(tier, n.id)
+                          // Re-tapping the current pick only shows its reasons; it must not wipe the tiers below.
+                          if (n.ok && !sel) onPick(tier, n.id)
                         }}
                         className={`rounded-lg border p-2 text-left text-sm transition focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-400 ${
                           n.ok
@@ -246,20 +255,22 @@ function Tree(props: {
 }
 
 function GoNoGo(props: {
-  votes: Record<C.Role, boolean | null>
-  setVotes: (v: Record<C.Role, boolean | null>) => void
+  votes: Votes
+  setVotes: (v: Votes) => void
   choice: Choice
   onBack: () => void
   onLaunch: () => void
 }) {
   const { votes, setVotes, choice } = props
   const b = budget(choice)
-  const all = Object.values(votes).every((v) => v === true)
-  const anyNo = Object.values(votes).some((v) => v === false)
+  const cast = Object.values(votes)
+  const allVoted = cast.every((v) => v !== null)
+  const goCount = cast.filter((v) => v === true).length
+  const anyNo = cast.some((v) => v === false)
   return (
     <section>
       <h1 className="text-2xl font-bold">4 · Go / No-Go poll</h1>
-      <p className="mt-1 text-slate-400">Like a real launch: every role must say “Go”. Playing as a team? Each player votes for their role.</p>
+      <p className="mt-1 text-slate-400">Like a real launch, every role is polled. Playing as a team? Each player votes for their role. A unanimous Go earns the full team score.</p>
       <div className="mt-4 grid gap-3 sm:grid-cols-2">
         {(Object.keys(votes) as C.Role[]).map((r) => (
           <div key={r} className="rounded-xl border border-slate-700 bg-slate-900 p-4">
@@ -278,27 +289,43 @@ function GoNoGo(props: {
           </div>
         ))}
       </div>
-      {b.reserveFraction < C.RESERVE_FRACTION && (
-        <p className="mt-4 rounded-lg bg-amber-950 p-3 text-sm text-amber-200">
-          Budget reserve is {Math.round(b.reserveFraction * 100)}%. NASA guidance recommends keeping at least 10% in reserve.
-          <SourceChip id="S2" />
+      {b.spentM > b.totalM ? (
+        <p className="mt-4 rounded-lg bg-red-950 p-3 text-sm text-red-200">
+          Over budget by ${Math.round(b.spentM - b.totalM)}M. An over-budget mission cannot succeed.
+          <SourceChip id={BUDGET_SOURCE} />
+        </p>
+      ) : (
+        b.reserveFraction < C.RESERVE_FRACTION && (
+          <p className="mt-4 rounded-lg bg-amber-950 p-3 text-sm text-amber-200">
+            Budget reserve is {Math.round(b.reserveFraction * 100)}%. NASA guidance recommends keeping at least 10% in reserve.
+            <SourceChip id="S2" />
+          </p>
+        )
+      )}
+      {anyNo && (
+        <p className="mt-4 rounded-lg bg-red-950 p-3 text-sm text-red-200">
+          A No-Go means someone sees a problem. Go back, discuss and change the design — or launch anyway and keep only {teamPoints(goCount)} of {TEAM_POINTS_MAX} team points.
+          <SourceChip id="GAME" />
         </p>
       )}
-      {anyNo && <p className="mt-4 rounded-lg bg-red-950 p-3 text-sm text-red-200">A No-Go means someone sees a problem. Go back, discuss and change the design.</p>}
-      <div className="mt-6 flex justify-between">
+      <div className="mt-6 flex justify-between gap-2">
         <button onClick={props.onBack} className="rounded-lg bg-slate-800 px-4 py-2.5">
           ← Revise design
         </button>
-        <button disabled={!all} onClick={props.onLaunch} className="rounded-lg bg-sky-500 px-5 py-2.5 font-semibold text-slate-950 disabled:opacity-40">
-          🚀 Launch
+        <button
+          disabled={!allVoted}
+          onClick={props.onLaunch}
+          className={`rounded-lg px-5 py-2.5 font-semibold text-slate-950 disabled:opacity-40 ${anyNo ? 'bg-orange-400' : 'bg-sky-500'}`}
+        >
+          {anyNo ? `Launch anyway (${goCount} of ${TEAM_ROLES} Go)` : '🚀 Launch'}
         </button>
       </div>
     </section>
   )
 }
 
-function MissionRun({ choice, onDone }: { choice: Choice; onDone: () => void }) {
-  const card = useMemo(() => evaluateMission(choice, 4), [choice])
+function MissionRun({ choice, goVotes, onDone }: { choice: Choice; goVotes: number; onDone: () => void }) {
+  const card = useMemo(() => evaluateMission(choice, goVotes), [choice, goVotes])
   const [step, setStep] = useState(0)
   useEffect(() => {
     if (step >= card.timeline.length) return
