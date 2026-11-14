@@ -217,6 +217,7 @@ function Tree(props: {
                         key={n.id}
                         aria-pressed={sel}
                         aria-label={`${n.name}: ${n.ok ? 'available' : 'locked'}`}
+                        title={n.tip}
                         onClick={() => {
                           onFocus({ tier, node: n })
                           // Re-tapping the current pick only shows its reasons; it must not wipe the tiers below.
@@ -250,9 +251,9 @@ function Tree(props: {
                 </div>
                 {focus?.tier === tier && (
                   <div className={`mt-3 rounded-lg p-3 ${focus.node.ok ? 'bg-emerald-950/60' : 'bg-slate-800'}`}>
-                    <div className="mb-1 text-sm font-semibold">
-                      {focus.node.ok ? 'Why it works' : 'Why it is locked'}: {focus.node.name}
-                    </div>
+                    <div className="text-sm font-semibold">{focus.node.name}</div>
+                    <p className="mt-1 text-sm text-slate-300">{focus.node.tip}</p>
+                    <div className="mb-1 mt-2 text-xs font-semibold uppercase tracking-wide text-slate-400">{focus.node.ok ? 'Why it works' : 'Why it is locked'}</div>
                     <ReasonList reasons={focus.node.reasons} />
                   </div>
                 )}

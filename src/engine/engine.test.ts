@@ -149,6 +149,27 @@ function viablePaths(scenarioId: string) {
   return out
 }
 
+describe('node tooltips (copy lives in catalog.ts)', () => {
+  const all = [...C.INSTRUMENTS, ...C.POWER, ...C.DOWNLINKS, ...C.LAUNCHERS]
+
+  it('every option has a tooltip of one or two sentences', () => {
+    for (const x of all) {
+      const sentences = x.tip.split(/(?<=[.!?])\s+/).filter(Boolean)
+      expect(sentences.length, x.id).toBeGreaterThanOrEqual(1)
+      expect(sentences.length, x.id).toBeLessThanOrEqual(2)
+      expect(x.tip.length, x.id).toBeLessThanOrEqual(170)
+    }
+  })
+  it('tooltips state no numbers, so they never need a source chip', () => {
+    for (const x of all) expect(x.tip, x.id).not.toMatch(/\d/)
+  })
+  it('the tree exposes the tooltip of every node, locked or not', () => {
+    const nodes = tierOptions('instrument', { orbitId: 'geo' })
+    expect(nodes.find((n) => n.id === 'radar')!.tip).toBe(C.byId(C.INSTRUMENTS, 'radar')!.tip)
+    expect(nodes.every((n) => n.tip.length > 0)).toBe(true)
+  })
+})
+
 describe('About screen content', () => {
   it('every source explains how the game uses it, and NASA sources link out', () => {
     for (const s of Object.values(SOURCES)) {
