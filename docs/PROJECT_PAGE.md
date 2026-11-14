@@ -1,0 +1,127 @@
+# Project page draft — Trajectory Ladder
+
+Draft text for the NASA Space Apps 2026 project page. Paste each section into the matching field.
+Owner: Edgar. Copy review: Belle. Status: **draft**, written Sat 2026-11-14 against the code in PRs #1 to #7.
+
+Items marked **TODO** must be filled in or confirmed before submitting.
+
+---
+
+## Project name
+
+Trajectory Ladder
+
+## Team
+
+One Pixel Home
+
+## Challenge
+
+Space Mission Design Game
+
+## High-level summary
+
+Real missions fail when one choice breaks another, and students rarely get to see that. Trajectory Ladder is a browser game
+where one to four players design an Earth-observation mission step by step: pick a science goal, choose an orbit, then build
+a dependency tree of instrument, power system, data downlink and launch vehicle. Every option is either available or locked,
+and every lock explains itself with a number computed from real orbital mechanics and NASA data. A Go/No-Go poll, a mission
+simulation and a scorecard close the loop, so players can change one choice and watch the consequences ripple down.
+
+## Link to demo
+
+**TODO:** 30-second video with English subtitles, or 7 slides at most. Paste the public link here.
+
+## Link to final project
+
+**TODO:** public game URL (Vercel) and public repository URL.
+
+## Detailed description
+
+**What it does.** The game has six steps.
+
+1. **Mission brief.** Choose a science objective: Crop Watch, Storm Watch or Polar Ice. Each has its own budget.
+2. **Trajectory.** Choose Low Earth Orbit, Sun-synchronous orbit or geostationary orbit. Each card shows period, reachable
+   latitude and the extra velocity needed to get there.
+3. **Mission tree.** Fill four tiers, one per team role: scientific instrument (Science), power system (Spacecraft),
+   data downlink (Ground) and launch vehicle (Launch). An option that cannot work with the choices above it is locked,
+   and tapping it shows why. Four live meters track budget, mass, power and data.
+4. **Go/No-Go poll.** Every role votes. A unanimous Go earns the full team score; launching over a No-Go costs points.
+5. **Mission simulation.** A short timeline plays the mission with the numbers of the chosen design.
+6. **Scorecard.** A 0–100 score split into science return, data delivered, budget and team, plus the primary constraint,
+   the biggest point loss and a lesson. Players can revise the design and fly again.
+
+**How it works.** A small physics engine computes orbit period, eclipse time, reachable latitude, ground resolution and
+revisit time, ground-station contact time, transfer velocity and the rocket equation from the chosen design. Locks are
+decided by those results, not by a lookup table. For example, a camera with 30 m pixels at 705 km would have about
+1.5 km pixels from geostationary altitude, so the game locks it there and says so.
+
+**How we know it is right.** The engine is covered by automated tests. It reproduces Landsat 9's orbit period of about
+99 minutes and a revisit of about 15 days against the mission's 16, the 92.6-minute period at 400 km, and the
+35,786 km geostationary altitude. A balance test checks that every mission has several workable designs.
+
+**Honest numbers.** Every number on screen carries a tag: a NASA source, "physics" for standard formulas, or
+"illustrative" for simplified game values such as costs and masses. An About screen lists every source and how it is used.
+
+**Who it is for.** Students with no background in space engineering. Text is plain English, locked options are marked
+with an icon and words as well as color, every control works from the keyboard, and the layout is built for phones.
+
+**Team play.** Up to four players share one screen and each owns one tier of the tree, following the four segments of a
+NASA science mission. The Go/No-Go poll turns disagreement into a visible decision.
+
+**Tools.** TypeScript, React, Vite, Tailwind CSS and Vitest. The game runs entirely in the browser; there is no backend
+and no player data is collected.
+
+## NASA data and resources
+
+| Source | How we used it |
+| --- | --- |
+| [NASA Earth Fact Sheet](https://nssdc.gsfc.nasa.gov/planetary/factsheet/earthfact.html) | Earth's radius and gravitational parameter, used by every orbit formula in the game: period, eclipse, coverage and transfers. |
+| [NASA Landsat 9 mission page](https://science.nasa.gov/mission/landsat-9) | The Sun-synchronous orbit card (705 km, 98.2°) and the Multispectral Imager (30 m pixels, 185 km swath). Also our validation case: the model reproduces its orbit period and revisit time. |
+| [NASA International Space Station FAQ](https://www.nasa.gov/?p=532244) | The 51.6° inclination of the Low Earth Orbit card, which is why that orbit never passes over the poles. |
+| [NASA CSLI, CubeSat 101](https://www.nasa.gov/wp-content/uploads/2017/03/nasa_csli_cubesat_101_508.pdf) | The budget rule. Page 13: "When possible, project reserves of at least 10% should be part of the budget to address any unexpected events." The game warns and removes points when a design eats into that reserve. |
+| [NASA, Design and Develop Science Missions](https://www.nasa.gov/wp-content/uploads/2025/04/250323-design-and-develop-science-mission.pdf) | The four mission segments (Launch, Space, Ground, User), used as the four team roles. |
+
+Resources from the challenge page that shaped the design but supply no game value: JPL Concept Maturity Levels and the
+GSFC Mission Design Lab (the brief → trade → point design → review flow), and the Webb "Build It Yourself" game
+(connecting a science goal to an instrument and showing the result).
+
+**TODO (Edgar):** the code also lists NASA's Small Spacecraft Technology State-of-the-Art, Communications chapter, as
+background reading. No game value comes from it today. Either use it for the downlink rates after the mentor review, or
+leave it out of this table.
+
+## Space agency partner and other data
+
+None. No data from other space agencies or third parties is used.
+
+## Other tools, libraries and licenses
+
+| Tool | Use | License |
+| --- | --- | --- |
+| React, React DOM | User interface | MIT |
+| Vite, @vitejs/plugin-react, vite-plugin-singlefile | Build and development server | MIT |
+| Tailwind CSS | Styling | MIT |
+| TypeScript | Language and type checking | Apache-2.0 |
+| Vitest | Automated tests | MIT |
+| oxlint | Linting | MIT |
+| pnpm | Package manager | MIT |
+| Vercel | Hosting of the public demo | Hosted service |
+| GitHub | Source code hosting | Hosted service |
+
+Our own code is released under the MIT License.
+
+**TODO (Thais, Belle):** add the design and video tools actually used (for example Figma, a video editor, fonts and their
+licenses), and any music or sound with its license.
+
+## Use of artificial intelligence
+
+Code scaffolding, the physics engine and documentation were drafted with Claude (Anthropic) and reviewed, tested and
+adapted by the team. Physics formulas are covered by automated tests; illustrative values are labelled in the game.
+
+**TODO:** keep this identical to the text on the game's About screen (`AI_DISCLOSURE` in `src/engine/sources.ts`). If any
+AI-generated image, illustration, voice or video is used, name the tool here, and make sure every AI-generated image
+carries a visible "AI-generated" watermark and contains no NASA logos, insignia, flags or mission patches.
+
+## Notice
+
+Trajectory Ladder is a hackathon project by team One Pixel Home for the NASA Space Apps Challenge 2026. It is not
+affiliated with or endorsed by NASA.

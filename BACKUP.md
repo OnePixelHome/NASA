@@ -1,5 +1,11 @@
 # BACKUP - NASA
 
+## 2026-11-14 (PC de Edgar) — Borrador de la página del proyecto (`docs/project-page`, apilado sobre `fix/reserve-citation`)
+
+- Nuevo `docs/PROJECT_PAGE.md` en inglés, con un apartado por campo de la página de Space Apps: resumen, descripción detallada, datos NASA y cómo se usa cada fuente, otras herramientas con su licencia, y la declaración de uso de IA.
+- Las licencias se leyeron de los `package.json` instalados (todo MIT salvo TypeScript, Apache-2.0).
+- Pendientes marcados como TODO en el archivo: enlaces del demo, del juego y del repo; herramientas de diseño y video de Thais y Belle; decidir si la fuente S9 se usa o se quita; ampliar la declaración de IA si se usan imágenes o voz generadas.
+
 ## 2026-11-14 (PC de Edgar) — Cita del 10% de reserva verificada (`fix/reserve-citation`, apilado sobre `feat/node-tooltips`)
 
 - Se descargó el PDF de CubeSat 101 (96 páginas), se extrajo el texto y se buscó "reserve": hay una sola coincidencia, en el capítulo 2, página impresa 13 (página 21 del PDF): "When possible, project reserves of at least 10% should be part of the budget to address any unexpected events."
