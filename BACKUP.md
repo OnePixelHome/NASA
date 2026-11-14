@@ -1,5 +1,11 @@
 # BACKUP - NASA
 
+## 2026-11-14 (Mac de Thais) — Hooks ejecutables
+
+- `.githooks/pre-commit` y `.githooks/post-commit` pasaron a modo ejecutable (100755). En la Mac git los ignoraba por falta de permiso, así que no corrían ni la exigencia de `BACKUP.md` ni el push automático.
+- Al clonar en otra computadora: `git config core.hooksPath .githooks` (el permiso de ejecución ya viaja en el repo).
+- Pendiente: prompts de Claude Design por fase (fase 1: sistema visual).
+
 ## 2026-11-14 (Mac de Thais) — Clon, hooks y validación local
 
 - Se clonó `belleavm/NASA` en la Mac, se activaron los hooks (`git config core.hooksPath .githooks`) y se hizo `pull` de `main` (prototipo Trajectory Ladder v0.1).
