@@ -1,5 +1,12 @@
 # BACKUP - NASA
 
+## 2026-11-14 (PC de Edgar) — Lista de entrega (`docs/submission-checklist`, apilado sobre `docs/project-page`)
+
+- Nuevo `docs/SUBMISSION.md`: los seis requisitos de entrega con responsable, estado y cómo verificar cada uno (repo público, demo en Vercel que funcione en celular, video de 30 s con subtítulos en inglés, fuentes citadas, sin logos de NASA, licencia MIT), más listas para el repo, el demo, el video, la página del proyecto y la última hora.
+- Estado hoy: licencia MIT lista; fuentes y logos en curso; repo público, demo y video sin hacer.
+- Se revisó todo el historial con patrones de secretos antes de recomendar hacer público el repo: no se encontró ninguno. Repetir tras el último merge.
+- Pendiente: que cada responsable marque su ítem; la descripción del repo en GitHub sigue en español ("Proyecto personal NASA") y el favicon sigue siendo el de la plantilla de Vite.
+
 ## 2026-11-14 (PC de Edgar) — Borrador de la página del proyecto (`docs/project-page`, apilado sobre `fix/reserve-citation`)
 
 - Nuevo `docs/PROJECT_PAGE.md` en inglés, con un apartado por campo de la página de Space Apps: resumen, descripción detallada, datos NASA y cómo se usa cada fuente, otras herramientas con su licencia, y la declaración de uso de IA.
