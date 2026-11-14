@@ -7,6 +7,26 @@
 - La lista de fuentes del scorecard se calcula a partir de lo citado en la misión, ya no está escrita a mano.
 - Los chips dentro de botones ya no son enlaces (era HTML inválido).
 - Verificado: 19 tests, build y recorrido a 390 px. Pendiente: revisión del equipo y merge del PR.
+## 2026-11-14 (Mac de Thais) — Prompts de Claude Design
+
+- Se creó `docs/design-prompts.md` con las decisiones base del diseño visual y el prompt de la fase 1 (sistema visual: paleta, tipografía, tokens, componentes base y tarjeta de nodo).
+- Es documentación; no cambia código ni el motor.
+- Pendiente: ejecutar la fase 1 en Claude Design; con su resultado escribir el prompt de la fase 2 (escalera + nave) y añadirlo a este archivo.
+
+## 2026-11-14 (Mac de Thais) — Hooks ejecutables
+
+- `.githooks/pre-commit` y `.githooks/post-commit` pasaron a modo ejecutable (100755). En la Mac git los ignoraba por falta de permiso, así que no corrían ni la exigencia de `BACKUP.md` ni el push automático.
+- Al clonar en otra computadora: `git config core.hooksPath .githooks` (el permiso de ejecución ya viaja en el repo).
+- Pendiente: prompts de Claude Design por fase (fase 1: sistema visual).
+
+## 2026-11-14 (Mac de Thais) — Clon, hooks y validación local
+
+- Se clonó `belleavm/NASA` en la Mac, se activaron los hooks (`git config core.hooksPath .githooks`) y se hizo `pull` de `main` (prototipo Trajectory Ladder v0.1).
+- Validación HANDOFF §6-A1 en la Mac: `pnpm install`, `pnpm test` (15/15) y `pnpm build` pasan. `pnpm` no está instalado globalmente; se usó `corepack pnpm ...` (`corepack enable` falla por permisos en `/usr/local/bin`).
+- Revisión estática del código: UI en inglés, sin logos de NASA, nodos y tarjetas accesibles con teclado. Sin verificar visualmente: móvil a 390 px y cobertura completa de chips de fuente (no hubo navegador en la sesión).
+- Plan de diseño visual (rol de Thais, en Claude Design, luego implementan José y Edgar): estilo ilustrado y amigable con paleta de espacio nocturno; móvil primero (390 px); la escalera de 4 niveles y sus bloqueos NO cambian (el motor y los tests dependen de ella) y una nave SVG en capas se arma al lado; 4 personajes por rol con una sola base; SVG propios, imágenes de IA solo en fondos con marca "AI-generated"; entrega como componentes React + Tailwind v4 con las mismas props.
+- Fases cortables para ahorrar tokens: sistema visual, escalera + nave, Brief y Órbita, Scorecard, Go/No-Go y Simulación, About/Sources, escritorio, extras.
+- Pendiente: generar los prompts de Claude Design por fase; actualizar `docs/HANDOFF.md` con el rediseño de la experiencia cuando se apruebe.
 
 ## 2026-11-14 (PC de Edgar) — Importación del prototipo "Trajectory Ladder" v0.1
 
