@@ -1,6 +1,6 @@
 # NASA
 
-Repositorio personal y privado de Belle (`belleavm/NASA`), en `C:\Lab\Belle\NASA` (Windows). Solo rama `main`. El propósito y el stack del proyecto todavía no están definidos.
+Repositorio personal y privado de Belle (`belleavm/NASA`), en `C:\Lab\Belle\NASA` (Windows). Solo rama `main`. El proyecto explorará un juego educativo interactivo de diseño y simulación de misiones espaciales basado en el desafío Space Apps 2026. El stack y el alcance concreto todavía no están definidos.
 
 ## Al empezar
 
