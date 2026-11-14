@@ -1,5 +1,14 @@
 # BACKUP - NASA
 
+## 2026-11-14 (Mac de Thais) — Clon, hooks y validación local
+
+- Se clonó `belleavm/NASA` en la Mac, se activaron los hooks (`git config core.hooksPath .githooks`) y se hizo `pull` de `main` (prototipo Trajectory Ladder v0.1).
+- Validación HANDOFF §6-A1 en la Mac: `pnpm install`, `pnpm test` (15/15) y `pnpm build` pasan. `pnpm` no está instalado globalmente; se usó `corepack pnpm ...` (`corepack enable` falla por permisos en `/usr/local/bin`).
+- Revisión estática del código: UI en inglés, sin logos de NASA, nodos y tarjetas accesibles con teclado. Sin verificar visualmente: móvil a 390 px y cobertura completa de chips de fuente (no hubo navegador en la sesión).
+- Plan de diseño visual (rol de Thais, en Claude Design, luego implementan José y Edgar): estilo ilustrado y amigable con paleta de espacio nocturno; móvil primero (390 px); la escalera de 4 niveles y sus bloqueos NO cambian (el motor y los tests dependen de ella) y una nave SVG en capas se arma al lado; 4 personajes por rol con una sola base; SVG propios, imágenes de IA solo en fondos con marca "AI-generated"; entrega como componentes React + Tailwind v4 con las mismas props.
+- Fases cortables para ahorrar tokens: sistema visual, escalera + nave, Brief y Órbita, Scorecard, Go/No-Go y Simulación, About/Sources, escritorio, extras.
+- Pendiente: generar los prompts de Claude Design por fase; actualizar `docs/HANDOFF.md` con el rediseño de la experiencia cuando se apruebe.
+
 ## 2026-11-14 (PC de Edgar) — Importación del prototipo "Trajectory Ladder" v0.1
 
 - Se importó el prototipo jugable (Vite + React 19 + TS, Tailwind v4, Vitest, pnpm): `src/engine` (física, catálogo, juego, fuentes, 15 tests) y `src/App.tsx` con las pantallas Brief → Órbita → Árbol → Go/No-Go → Simulación → Scorecard.
