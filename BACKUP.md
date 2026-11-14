@@ -1,5 +1,11 @@
 # BACKUP - NASA
 
+## 2026-11-14 (Mac de Thais) — Prompts de Claude Design
+
+- Se creó `docs/design-prompts.md` con las decisiones base del diseño visual y el prompt de la fase 1 (sistema visual: paleta, tipografía, tokens, componentes base y tarjeta de nodo).
+- Es documentación; no cambia código ni el motor.
+- Pendiente: ejecutar la fase 1 en Claude Design; con su resultado escribir el prompt de la fase 2 (escalera + nave) y añadirlo a este archivo.
+
 ## 2026-11-14 (Mac de Thais) — Hooks ejecutables
 
 - `.githooks/pre-commit` y `.githooks/post-commit` pasaron a modo ejecutable (100755). En la Mac git los ignoraba por falta de permiso, así que no corrían ni la exigencia de `BACKUP.md` ni el push automático.
