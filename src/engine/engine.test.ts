@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import * as P from './physics'
 import * as C from './catalog'
-import { budget, choose, evaluateMission, orbitStats, TEAM_POINTS_MAX, teamPoints, tierOptions, type Choice } from './game'
+import { budget, choose, evaluateMission, orbitStats, resources, TEAM_POINTS_MAX, teamPoints, tierOptions, type Choice } from './game'
 import { reasonSources, SOURCES } from './sources'
 
 const orbit = (id: string) => C.byId(C.ORBITS, id)!
@@ -148,6 +148,48 @@ function viablePaths(scenarioId: string) {
   }
   return out
 }
+
+describe('resource panel (budget, mass, power, data)', () => {
+  const meters = (c: Choice) => Object.fromEntries(resources(c).map((m) => [m.id, m]))
+
+  it('shows only the budget before an orbit is chosen', () => {
+    expect(resources({ scenarioId: 'ice' }).map((m) => m.id)).toEqual(['budget'])
+  })
+  it('limits appear as each tier is chosen', () => {
+    const m = meters({ scenarioId: 'ice', orbitId: 'sso', instrumentId: 'radar' })
+    expect(m.mass.used).toBe(300) // 150 kg bus + 150 kg radar
+    expect(m.mass.limit).toBeNull()
+    expect(m.mass.hint).toBe('pick a launch vehicle')
+    expect(m.power.used).toBe(170) // 50 W bus + 400 W radar at 30% duty
+    expect(m.power.limit).toBeNull()
+    expect(m.data.used).toBe(200)
+  })
+  it('matches the numbers of a full design', () => {
+    const m = meters({ scenarioId: 'ice', orbitId: 'sso', instrumentId: 'radar', powerId: 'hybrid', downlinkId: 'daily', launchId: 'medium' })
+    expect(m.budget.text).toBe('$210 / $250M')
+    expect(m.mass.text).toBe('390 / 1,207 kg')
+    expect(m.power.used).toBe(170)
+    expect(m.power.limit).toBeGreaterThan(300)
+    expect(m.data.text).toBe('200 / 485 Gbit/day')
+    expect(Object.values(m).some((x) => x.over)).toBe(false)
+  })
+  it('never contradicts the locks: every viable path keeps mass, power and data within limits', () => {
+    for (const s of C.SCENARIOS) {
+      for (const p of viablePaths(s.id)) {
+        for (const m of resources(p.c).filter((x) => x.id !== 'budget')) {
+          expect(m.limit).not.toBeNull()
+          expect(m.over, `${s.id} ${JSON.stringify(p.c)} ${m.id}`).toBe(false)
+        }
+      }
+    }
+  })
+  it('flags an over-budget design', () => {
+    // Crop Watch with radar, a relay link and a heavy rocket costs $320M against a $200M budget.
+    const m = meters({ scenarioId: 'crops', orbitId: 'sso', instrumentId: 'radar', powerId: 'hybrid', downlinkId: 'continuous', launchId: 'heavy' })
+    expect(m.budget.used).toBeGreaterThan(m.budget.limit!)
+    expect(m.budget.over).toBe(true)
+  })
+})
 
 describe('game balance', () => {
   for (const s of C.SCENARIOS) {

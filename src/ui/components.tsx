@@ -1,3 +1,4 @@
+import type { ResourceMeter } from '../engine/game'
 import { reasonSources, SOURCES, type Reason, type SourceId } from '../engine/sources'
 
 export function Bar({ label, value, max = 5, color }: { label: string; value: number; max?: number; color: string }) {
@@ -91,6 +92,36 @@ export function Gauge({ score, success }: { score: number; success: boolean }) {
         / 100
       </text>
     </svg>
+  )
+}
+
+/** Live resource meters (budget, mass, power, data). State is shown with words as well as color. */
+export function ResourcePanel({ meters }: { meters: ResourceMeter[] }) {
+  return (
+    <div className="grid grid-cols-2 gap-x-4 gap-y-2 sm:grid-cols-4" aria-label="Mission resources">
+      {meters.map((m) => {
+        const pct = m.limit ? Math.min(100, (100 * m.used) / m.limit) : 0
+        const warn = !m.over && m.warnAbove !== undefined && m.used > m.warnAbove
+        const state = m.over ? 'over limit' : warn ? 'low reserve' : m.hint
+        return (
+          <div key={m.id} className="text-xs" role="group" aria-label={`${m.label}: ${m.text}${state ? `, ${state}` : ''}`}>
+            <div className="flex items-baseline justify-between gap-1 text-slate-300">
+              <span className="font-medium">{m.label}</span>
+              <span className={`text-right tabular-nums ${m.over ? 'font-semibold text-red-300' : ''}`}>{m.text}</span>
+            </div>
+            <div className="mt-1 h-1.5 rounded bg-slate-700">
+              <div className={`h-1.5 rounded ${m.over ? 'bg-red-500' : warn ? 'bg-amber-400' : 'bg-emerald-500'}`} style={{ width: `${pct}%` }} />
+            </div>
+            <div className="mt-0.5 flex items-center justify-between gap-1">
+              <span className={`text-[10px] ${m.over ? 'text-red-300' : warn ? 'text-amber-300' : 'text-slate-400'}`}>{state ? (m.over ? `⚠ ${state}` : state) : ' '}</span>
+              <span className="shrink-0">
+                <SourceChips ids={m.sources} link={false} />
+              </span>
+            </div>
+          </div>
+        )
+      })}
+    </div>
   )
 }
 

@@ -98,12 +98,20 @@ function instrumentNode(o: C.Orbit, ins: C.Instrument): NodeState {
   return { id: ins.id, name: ins.name, ok, reasons, facts: [`${fmtM(gsd)}/pixel`, `${ins.powerW} W`, `${ins.massKg} kg`, `$${ins.costM}M`], factsSource: 'GAME' }
 }
 
+/** Orbit-average electrical load: the bus plus the instrument at its duty cycle. */
+export function averageLoadW(o: C.Orbit, ins?: C.Instrument) {
+  const duty = isGeo(o) ? 1 : 0.3 // LEO imagers only work over targets in daylight [GAME]
+  return C.BUS_POWER_W + (ins?.powerW ?? 0) * duty
+}
+
+/** Orbit-average generation: panels only produce power outside Earth's shadow. */
+export const averageGenerationW = (o: C.Orbit, pw: C.PowerSystem) => pw.peakW * pw.sunFactor * (1 - P.eclipseFraction(o.altKm))
+
 export function powerBudget(o: C.Orbit, ins: C.Instrument, pw: C.PowerSystem) {
   const geo = isGeo(o)
-  const duty = geo ? 1 : 0.3 // LEO imagers only work over targets in daylight [GAME]
-  const avgLoadW = C.BUS_POWER_W + ins.powerW * duty
+  const avgLoadW = averageLoadW(o, ins)
   const ecl = P.eclipseFraction(o.altKm)
-  const genW = pw.peakW * pw.sunFactor * (1 - ecl)
+  const genW = averageGenerationW(o, pw)
   const eclipseH = (ecl * P.periodSec(o.altKm)) / 3600
   const peakLoadW = C.BUS_POWER_W + ins.powerW * (geo ? 1 : 0.6)
   const batteryNeedWh = (peakLoadW * eclipseH) / C.maxDepthOfDischarge(o.altKm)
@@ -225,6 +233,70 @@ export function budget(c: Choice) {
   const spentM = items.reduce((a, b) => a + b.costM, 0)
   const totalM = s?.budgetM ?? 0
   return { items, spentM, totalM, reserveFraction: totalM ? (totalM - spentM) / totalM : 0 }
+}
+
+// ---------------- Resource panel ----------------
+export interface ResourceMeter {
+  id: 'budget' | 'mass' | 'power' | 'data'
+  label: string
+  used: number
+  /** What `used` must stay under. Null until the tier that sets it has been chosen. */
+  limit: number | null
+  /** Ready-to-show value, e.g. "390 / 1,207 kg". */
+  text: string
+  /** What to pick to get a limit, shown while `limit` is null. */
+  hint?: string
+  /** Above this the meter turns amber (still within the limit). */
+  warnAbove?: number
+  over: boolean
+  sources: SourceId[]
+}
+
+/**
+ * The four resources the challenge asks players to manage, recomputed from the current design.
+ * They use the same numbers as the tier locks, so a meter can never disagree with a lock.
+ */
+export function resources(c: Choice): ResourceMeter[] {
+  const o = orbitOf(c)
+  const ins = C.byId(C.INSTRUMENTS, c.instrumentId)
+  const pw = C.byId(C.POWER, c.powerId)
+  const dl = C.byId(C.DOWNLINKS, c.downlinkId)
+  const lv = C.byId(C.LAUNCHERS, c.launchId)
+  const b = budget(c)
+
+  const meter = (id: ResourceMeter['id'], label: string, used: number, limit: number | null, unit: string, hint: string, sources: SourceId[]): ResourceMeter => ({
+    id,
+    label,
+    used,
+    limit,
+    text: limit === null ? `${fmt(used)} ${unit}` : `${fmt(used)} / ${fmt(limit)} ${unit}`,
+    hint: limit === null ? hint : undefined,
+    over: limit !== null && used > limit,
+    sources,
+  })
+
+  const out: ResourceMeter[] = [
+    {
+      id: 'budget',
+      label: 'Budget',
+      used: b.spentM,
+      limit: b.totalM,
+      text: `$${fmt(b.spentM)} / $${fmt(b.totalM)}M`,
+      warnAbove: b.totalM * (1 - C.RESERVE_FRACTION), // eating into the 10% reserve [S2]
+      over: b.spentM > b.totalM,
+      sources: [BUDGET_SOURCE],
+    },
+  ]
+  if (!o) return out
+  out.push(
+    // Capacity to orbit comes from the rocket equation; component and rocket masses are game values.
+    meter('mass', 'Mass', spacecraftMassKg(c), lv ? launchCapacityKg(o, lv) : null, 'kg', 'pick a launch vehicle', lv ? ['PHYS', 'GAME'] : ['GAME']),
+    // Used vs generated, both averaged over one orbit including the eclipse.
+    meter('power', 'Power', averageLoadW(o, ins), pw ? averageGenerationW(o, pw) : null, 'W', 'pick a power system', pw ? ['PHYS', 'GAME'] : ['GAME']),
+    // Collected by the instrument vs what the downlink can deliver per day.
+    meter('data', 'Data', ins?.dataGbitPerDay ?? 0, dl ? downlinkCapacity(o, dl).gbitPerDay : null, 'Gbit/day', 'pick a downlink', dl ? ['GAME', 'PHYS'] : ['GAME']),
+  )
+  return out
 }
 
 // ---------------- Go/No-Go poll ----------------

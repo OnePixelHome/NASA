@@ -1,8 +1,8 @@
 import { useEffect, useMemo, useState } from 'react'
 import * as C from './engine/catalog'
-import { budget, BUDGET_SOURCE, choose, evaluateMission, isComplete, orbitSources, orbitStats, TEAM_POINTS_MAX, TEAM_ROLES, teamPoints, TIER_ORDER, tierOptions, type Choice, type NodeState } from './engine/game'
+import { budget, BUDGET_SOURCE, choose, evaluateMission, isComplete, orbitSources, orbitStats, resources, TEAM_POINTS_MAX, TEAM_ROLES, teamPoints, TIER_ORDER, tierOptions, type Choice, type NodeState } from './engine/game'
 import { SOURCES, type Reason } from './engine/sources'
-import { Bar, Gauge, Meter, ReasonList, SourceChip, SourceChips, Sourced } from './ui/components'
+import { Bar, Gauge, Meter, ReasonList, ResourcePanel, SourceChip, SourceChips, Sourced } from './ui/components'
 
 type Screen = 'brief' | 'orbit' | 'tree' | 'go' | 'run' | 'score'
 const ORBIT_COLOR: Record<string, string> = { leo: 'bg-sky-400', sso: 'bg-violet-400', geo: 'bg-amber-400' }
@@ -30,12 +30,17 @@ export default function App() {
   return (
     <div className="min-h-screen bg-slate-950 text-slate-100">
       <header className="sticky top-0 z-10 border-b border-slate-800 bg-slate-950/95 px-4 py-3 backdrop-blur">
-        <div className="mx-auto flex max-w-3xl items-center justify-between gap-4">
+        <div className="mx-auto max-w-3xl">
           <button onClick={restart} className="text-left">
             <div className="text-lg font-bold tracking-tight">Trajectory Ladder</div>
-            <div className="text-xs text-slate-400">Design a space mission. Watch every choice ripple down.</div>
+            {/* The tagline gives way to the resource panel once a mission is picked, to save phone space. */}
+            {!scenario && <div className="text-xs text-slate-400">Design a space mission. Watch every choice ripple down.</div>}
           </button>
-          {scenario && <div className="w-44 shrink-0"><BudgetMeter choice={choice} /></div>}
+          {scenario && (
+            <div className="mt-2">
+              <ResourcePanel meters={resources(choice)} />
+            </div>
+          )}
         </div>
       </header>
 
@@ -82,11 +87,6 @@ export default function App() {
       </main>
     </div>
   )
-}
-
-function BudgetMeter({ choice }: { choice: Choice }) {
-  const b = budget(choice)
-  return <Meter label="Budget" value={b.spentM} max={b.totalM} unit="$" warnAt={b.totalM * (1 - C.RESERVE_FRACTION)} source={BUDGET_SOURCE} />
 }
 
 function Brief({ onPick }: { onPick: (id: string) => void }) {

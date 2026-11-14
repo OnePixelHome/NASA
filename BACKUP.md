@@ -1,5 +1,13 @@
 # BACKUP - NASA
 
+## 2026-11-14 (PC de Edgar) — Panel de recursos, HANDOFF §6-B1 (`feat/resource-panel`, apilado sobre `fix/go-no-go`)
+
+- El encabezado muestra ahora cuatro medidores en vivo: Budget, Mass (kg vs capacidad del cohete), Power (W usados vs generados) y Data (Gbit/día recolectados vs bajados). Se actualizan al llenar el árbol.
+- Nuevo `resources(choice)` en `src/engine/game.ts`; usa los mismos números que los candados, y un test comprueba que ningún camino viable exceda un medidor.
+- Mientras falta elegir el nivel que fija el límite, el medidor indica qué elegir ("pick a launch vehicle"). El exceso se marca con texto además de color.
+- En el celular el lema del encabezado se oculta al elegir misión para dejar espacio al panel.
+- Verificado: 27 tests, build y recorrido a 390 px. Pendiente: revisión y merge después de los PR #1 y #2.
+
 ## 2026-11-14 (PC de Edgar) — Go/No-Go con puntaje real (`fix/go-no-go`, apilado sobre `fix/source-chips`)
 
 - Antes el botón Launch exigía cuatro Go, así que el puntaje de equipo siempre era 15/15. Ahora se puede lanzar cuando los cuatro roles votaron; con algún No-Go el botón dice "Launch anyway" y solo se conserva la parte proporcional de los 15 puntos.
