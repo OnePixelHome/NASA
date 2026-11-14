@@ -1,5 +1,11 @@
 # BACKUP - NASA
 
+## 2026-11-14 (PC de Edgar) — Decisiones aceptadas en HANDOFF §4 (`docs/handoff-decisions`, apilado sobre `feat/about-screen`)
+
+- Se registraron en `docs/HANDOFF.md` §4 las decisiones que Edgar aceptó tras la validación: repo `belleavm/NASA`, PRs apilados, Go/No-Go con "Launch anyway" y puntos parciales, re-toque no destructivo, lema oculto en celular, aviso de no afiliación, `BACKUP.md` en español (interno) y todo lo que ve el jurado en inglés, y se omiten §6-B4 y §6-B5 salvo aviso.
+- Se integró `main` (commits de Thais: prompts de diseño y hooks ejecutables) en los PR #1 a #4; el único conflicto era este archivo y se conservaron todas las entradas.
+- Pendiente: tooltips (§6-B2), verificación de la cita del 10% de reserva, borrador de la página del proyecto y lista de entrega.
+
 ## 2026-11-14 (PC de Edgar) — Pantalla About & sources, HANDOFF §6-B3 (`feat/about-screen`, apilado sobre `feat/resource-panel`)
 
 - Botón "About & sources" en el encabezado, disponible en cualquier paso; al volver se conserva el estado de la partida.

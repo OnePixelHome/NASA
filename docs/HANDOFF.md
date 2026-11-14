@@ -15,7 +15,7 @@ with Claude (chat) up to Sat 2026-11-14 14:50 Lima time. If code and this file d
   - **José Gómez** — full-stack dev, has a laptop. Owns repo, Vercel deploy, UI implementation.
   - **Thais Rodríguez** — product designer (Figma). Owns visual design, video visuals.
   - **Belle Vásquez Machado** — MarTech specialist. Owns copy (briefs, lessons, tooltips), pitch script, video.
-- Repo: `github.com/belleavm/NASA` (private as of Sat 15:00; moved from `edgarcardona872/one-pixel-home` by team decision). License: MIT.
+- Repo: `github.com/belleavm/NASA` (private as of Sat afternoon; it must be public before submission, see `docs/SUBMISSION.md`). License: MIT.
 
 ## 2. The challenge (official statement — Space Mission Design Game)
 Create an interactive game where participants design, manage and simulate a complete space mission, making engineering
@@ -68,6 +68,19 @@ Levels, GSFC Mission Design Lab, CubeSat 101, Webb "Build it yourself" game, GMA
   10. No Google Analytics/Mixpanel.
 - **DROPPED / post-hackathon:** Mars & interplanetary level, 3D (React Three Fiber), the earlier CubeSat-only spec
   (`engine-spec.md` from Friday is superseded), real-time multiplayer, accounts, backend.
+- **ACCEPTED after the §6-A validation** (confirmed by Edgar, Sat 2026-11-14 afternoon):
+  1. **Repo is `belleavm/NASA`.** The prototype was imported there; `edgarcardona872/one-pixel-home` is no longer used.
+  2. **Workflow:** one concern per PR, stacked, merged in order. `main` stays deployable.
+  3. **Go/No-Go:** Launch is enabled once all four roles have voted. A unanimous Go earns the full 15 team points.
+     With any No-Go the button reads "Launch anyway" and the mission keeps only the agreeing share (2 of 4 Go → 8 of 15).
+     Changing the design resets the poll.
+  4. **Re-tapping a selected node is non-destructive:** it shows the node's reasons and keeps the tiers below it.
+  5. **Phone header:** the tagline hides once a mission is picked, to make room for the resource panel.
+  6. **Non-affiliation line** on the About screen: the project is not affiliated with or endorsed by NASA.
+  7. **Languages:** `BACKUP.md` stays in Spanish because it is internal only. Everything judges can see
+     (UI, README, project page, video, PR-facing docs) stays in English.
+  8. **Scope:** §6-B4 (difficulty) and §6-B5 (stretch) are skipped unless Edgar says otherwise.
+     §6-B6 waits for the mentor answers.
 
 ## 5. Current state of the code (prototype v0.1 — playable end to end)
 Stack: Vite + React 19 + TS, Tailwind v4, Vitest, pnpm. `pnpm build:single` makes one self-contained HTML (preview).
