@@ -8,6 +8,10 @@ export interface Source {
   url?: string
   /** How the game uses this source, shown on the About screen. */
   use: string
+  /** Where in the document the cited statement is, when it has been checked. */
+  cite?: string
+  /** The cited statement, word for word. */
+  quote?: string
 }
 
 export const SOURCES: Record<SourceId, Source> = {
@@ -19,9 +23,12 @@ export const SOURCES: Record<SourceId, Source> = {
   },
   S2: {
     id: 'S2',
-    title: 'NASA CSLI — CubeSat 101 (budget reserves, development timeline)',
+    title: 'NASA CSLI — CubeSat 101 (project reserves of at least 10%)',
     url: 'https://www.nasa.gov/wp-content/uploads/2017/03/nasa_csli_cubesat_101_508.pdf',
-    use: 'The rule of keeping at least 10% of the budget in reserve.',
+    use: 'The budget rule: keep at least 10% in reserve. The budget meter turns amber and the budget score drops when a design eats into it.',
+    // Verified against the PDF text on 2026-11-14 (search for "reserve": this is the only match in the document).
+    cite: 'Chapter 2, p. 13 (page 21 of the PDF)',
+    quote: 'When possible, project reserves of at least 10% should be part of the budget to address any unexpected events.',
   },
   S3: {
     id: 'S3',

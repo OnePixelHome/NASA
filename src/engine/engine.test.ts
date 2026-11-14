@@ -170,6 +170,29 @@ describe('node tooltips (copy lives in catalog.ts)', () => {
   })
 })
 
+describe('10% budget reserve rule [S2]', () => {
+  it('quotes CubeSat 101 with its page, and the game value matches the quote', () => {
+    const s2 = SOURCES.S2
+    expect(s2.cite).toContain('p. 13')
+    expect(s2.quote).toContain(`reserves of at least ${C.RESERVE_FRACTION * 100}%`)
+  })
+  it('a design inside the reserve scores full budget points; eating into it costs points', () => {
+    const pts = (c: Choice) => evaluateMission(c, 4).breakdown.find((b) => b.label === 'Budget & reserve')!.points
+    // Polar Ice, $250M: $210M leaves a 16% reserve; a heavy rocket ($280M) goes over budget.
+    const base: Choice = { scenarioId: 'ice', orbitId: 'sso', instrumentId: 'radar', powerId: 'hybrid', downlinkId: 'daily', launchId: 'medium' }
+    expect(budget(base).reserveFraction).toBeCloseTo(0.16, 2)
+    expect(pts(base)).toBe(15)
+    expect(pts({ ...base, launchId: 'heavy' })).toBe(0)
+    // Crop Watch, $200M: this design costs $195M, inside the budget but with only a 2.5% reserve.
+    const tight: Choice = { scenarioId: 'crops', orbitId: 'sso', instrumentId: 'hires', powerId: 'extended', downlinkId: 'polar', launchId: 'medium' }
+    const b = budget(tight)
+    expect(b.spentM).toBe(195)
+    expect(b.reserveFraction).toBeGreaterThanOrEqual(0)
+    expect(b.reserveFraction).toBeLessThan(C.RESERVE_FRACTION)
+    expect(pts(tight)).toBe(9)
+  })
+})
+
 describe('About screen content', () => {
   it('every source explains how the game uses it, and NASA sources link out', () => {
     for (const s of Object.values(SOURCES)) {
