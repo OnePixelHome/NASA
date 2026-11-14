@@ -1,24 +1,40 @@
-# NASA
+# Trajectory Ladder
 
-Repositorio personal y privado de Belle (`belleavm/NASA`). Solo rama `main`.
+*One Pixel Home · NASA Space Apps Challenge 2026 · Space Mission Design Game*
 
-## Space Mission Design Game
+A game where you design a space mission and it calculates the orbit and resources your journey needs to succeed.
+Pick a science goal, choose a trajectory, then watch a live dependency tree show which instruments, power systems,
+data links and rockets still work — and exactly why the others are locked.
 
-This project will explore an interactive educational game based on the NASA
-Space Apps Challenge 2026, [Space Mission Design Game](https://www.spaceappschallenge.org/2026/challenges/space-mission-design-game/).
-Players design and manage a space mission, learning how engineering decisions
-affect mission objectives and compete for limited resources.
+## Run
+```bash
+pnpm install
+pnpm dev        # local
+pnpm test       # physics + balance tests
+pnpm build
+```
 
-The experience may support solo play and teams of up to four. Players could
-choose mission objectives, spacecraft systems and scientific instruments,
-launch vehicles, and orbits, then simulate the mission and review its results.
-Key trade-offs include budget, mass, power, communications, data, and mission
-lifetime. The game should explain the consequences of choices and make space
-engineering accessible to learners with different levels of experience.
+## How it works
+- Orbit period, eclipse, coverage, ground-station passes, Hohmann transfers and the rocket equation are computed
+  with standard formulas and NASA constants (`src/engine/physics.ts`).
+- Instrument, power, downlink and launch catalog values are illustrative and labelled as such in the UI.
+- Sanity checks: the model reproduces Landsat 9's ~99-min orbit and ~16-day revisit, the ~92.6-min orbit at 400 km,
+  and the ~35,786 km geostationary altitude (`src/engine/engine.test.ts`).
 
-Specific gameplay, technology stack, and implementation scope are still to be
-defined. This project brief describes the challenge, not a finalized feature
-commitment.
+## NASA data & resources
+- S1 NASA Earth Fact Sheet — https://nssdc.gsfc.nasa.gov/planetary/factsheet/earthfact.html
+- S2 NASA CubeSat 101 — https://www.nasa.gov/wp-content/uploads/2017/03/nasa_csli_cubesat_101_508.pdf
+- S3 NASA Design and Develop Science Missions — https://www.nasa.gov/wp-content/uploads/2025/04/250323-design-and-develop-science-mission.pdf
+- S6 NASA Landsat 9 — https://science.nasa.gov/mission/landsat-9
+- S9 NASA SST State-of-the-Art: Communications — https://www.nasa.gov/smallsat-institute/sst-soa/communications
+- S10 NASA ISS FAQ — https://www.nasa.gov/?p=532244
+
+## Use of AI
+Code scaffolding, the physics engine and documentation were drafted with Claude (Anthropic) and reviewed by the team.
+Formulas are covered by automated tests; illustrative values are labelled in the UI.
+
+## License
+MIT
 
 ## Challenge Resources
 

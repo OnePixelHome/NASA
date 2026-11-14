@@ -1,5 +1,15 @@
 # BACKUP - NASA
 
+## 2026-11-14 (PC de Edgar) — Importación del prototipo "Trajectory Ladder" v0.1
+
+- Se importó el prototipo jugable (Vite + React 19 + TS, Tailwind v4, Vitest, pnpm): `src/engine` (física, catálogo, juego, fuentes, 15 tests) y `src/App.tsx` con las pantallas Brief → Órbita → Árbol → Go/No-Go → Simulación → Scorecard.
+- Se agregaron `docs/HANDOFF.md` (decisiones del equipo, fuente de verdad) y `docs/REQUIREMENTS.md` (mapa requisito del reto → pantalla, con brechas).
+- `README.md`: descripción del prototipo arriba; se conservó la sección de recursos del desafío. `CLAUDE.md`: se conservaron los imports y se añadieron las reglas del proyecto. `AGENTS.md`: sección Verificar con los comandos pnpm.
+- `pnpm-workspace.yaml` fija `postcss` en 8.5.32: la 8.5.33 del lockfile original se publicó el 2026-11-13 y pnpm 12 la rechaza por antigüedad mínima. Se puede quitar el override después.
+- Verificado: `pnpm test` (15/15) y `pnpm build` pasan; el flujo completo se recorrió a 390 px sin desbordes.
+- Este cambio va en la rama `feat/prototype-import` con PR, no directo a `main`, porque ahora trabajan cuatro personas.
+- Pendiente: HANDOFF §6-B (panel de recursos, tooltips, pantalla About/Sources, dificultad); chips de fuente faltantes; el puntaje de equipo siempre da 15/15; el repo sigue privado y la entrega necesita un enlace que el jurado pueda abrir (confirmar).
+
 ## 2026-11-14 (Windows) — Ideas de juego propuestas (hackatón desde el sábado 2026-11-15, 9 a. m.)
 
 - Se propusieron 10 conceptos: 1) chat del equipo limitado por el enlace de comunicaciones de la nave; 2) consolas por rol en el celular (QR) con eventos en vivo; 3) comité de revisión con IA siguiendo CML 1→4; 4) juego de cartas de componentes con el lanzador como límite; 5) misión de observación sobre la ciudad del jugador con globo 3D; 6) satélite mascota para público juvenil; 7) misión diaria compartible comparada con misiones reales; 8) concurso de propuestas entre equipos; 9) sonificación de subsistemas; 10) autopsia narrada de misiones fallidas.

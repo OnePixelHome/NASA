@@ -9,7 +9,8 @@ Repositorio personal y privado de Belle (`belleavm/NASA`), en `C:\Lab\Belle\NASA
 
 ## Verificar
 
-- Aún no hay código ni comandos de verificación. Agregarlos aquí cuando se defina el stack.
+- Stack: Vite + React 19 + TypeScript, Tailwind v4, Vitest, pnpm (prototipo "Trajectory Ladder", ver `docs/HANDOFF.md`).
+- `pnpm install`, `pnpm test` y `pnpm build` deben pasar antes de subir cambios.
 
 ## Reglas
 
