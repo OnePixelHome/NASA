@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest'
 import * as P from './physics'
 import * as C from './catalog'
 import { budget, choose, evaluateMission, orbitStats, tierOptions, type Choice } from './game'
+import { reasonSources, SOURCES } from './sources'
 
 const orbit = (id: string) => C.byId(C.ORBITS, id)!
 
@@ -61,6 +62,47 @@ describe('Act 2 dependency cascade', () => {
   it('changing an upstream choice clears downstream choices', () => {
     const c: Choice = { scenarioId: 'crops', orbitId: 'sso', instrumentId: 'radar', powerId: 'hybrid', downlinkId: 'daily', launchId: 'medium' }
     expect(choose(c, 'instrument', 'multispectral')).toEqual({ scenarioId: 'crops', orbitId: 'sso', instrumentId: 'multispectral' })
+  })
+})
+
+describe('sources (every number shown carries one)', () => {
+  const full: Choice = { scenarioId: 'ice', orbitId: 'sso', instrumentId: 'radar', powerId: 'hybrid', downlinkId: 'daily', launchId: 'medium' }
+  const known = (id: string) => expect(SOURCES).toHaveProperty(id)
+
+  it('every node, locked or not, has sourced reasons and sourced facts', () => {
+    for (const o of C.ORBITS) {
+      const c: Choice = { scenarioId: 'ice', orbitId: o.id, instrumentId: 'multispectral', powerId: 'standard', downlinkId: 'daily' }
+      for (const tier of ['instrument', 'power', 'downlink', 'launch'] as C.Tier[]) {
+        for (const n of tierOptions(tier, c)) {
+          expect(n.reasons.length).toBeGreaterThan(0)
+          known(n.factsSource)
+          n.reasons.flatMap(reasonSources).forEach(known)
+        }
+      }
+    }
+  })
+  it('every simulation step and scorecard insight is a sourced reason', () => {
+    const card = evaluateMission(full, 4)
+    for (const r of [...card.timeline, card.primaryConstraint, card.biggestImpact, card.lesson]) {
+      expect(r.text.length).toBeGreaterThan(0)
+      reasonSources(r).forEach(known)
+    }
+    known(card.scoreSource)
+  })
+  it('the scorecard lists exactly the sources cited along the way', () => {
+    const card = evaluateMission(full, 4)
+    // Landsat 9 orbit [S6], constants [S1], roles [S3], reserve rule [S2] — but not the ISS source: this path never uses LEO.
+    expect(card.sources).toEqual(['S1', 'S2', 'S3', 'S6', 'PHYS', 'GAME'])
+    const leo = evaluateMission({ scenarioId: 'crops', orbitId: 'leo', instrumentId: 'multispectral', powerId: 'standard', downlinkId: 'daily', launchId: 'small' }, 4)
+    expect(leo.sources).toContain('S10')
+  })
+  it('game assumptions are not passed off as physics', () => {
+    // Passes per day is an illustrative value awaiting mentor review, so its reason must say so.
+    const daily = tierOptions('downlink', { orbitId: 'sso', instrumentId: 'multispectral', powerId: 'standard' }).find((n) => n.id === 'daily')!
+    expect(reasonSources(daily.reasons[0])).toContain('GAME')
+    // The radar range limit is illustrative too, even though the distance⁴ law is physics.
+    const radar = tierOptions('instrument', { orbitId: 'geo' }).find((n) => n.id === 'radar')!
+    for (const r of radar.reasons) expect(reasonSources(r)).toEqual(['PHYS', 'GAME'])
   })
 })
 

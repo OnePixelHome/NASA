@@ -1,4 +1,4 @@
-import { SOURCES, type Reason, type SourceId } from '../engine/sources'
+import { reasonSources, SOURCES, type Reason, type SourceId } from '../engine/sources'
 
 export function Bar({ label, value, max = 5, color }: { label: string; value: number; max?: number; color: string }) {
   return (
@@ -14,17 +14,43 @@ export function Bar({ label, value, max = 5, color }: { label: string; value: nu
   )
 }
 
-export function SourceChip({ id }: { id: SourceId }) {
+const chipLabel = (id: SourceId) => (id === 'GAME' ? 'illustrative' : id === 'PHYS' ? 'physics' : `NASA ${id}`)
+
+/**
+ * Source tag for a number. Links to the NASA resource when there is one.
+ * Pass `link={false}` inside buttons: a link nested in a button is invalid HTML and steals the tap.
+ */
+export function SourceChip({ id, link = true }: { id: SourceId; link?: boolean }) {
   const s = SOURCES[id]
   const cls = 'ml-1 inline-block rounded bg-slate-700 px-1.5 py-0.5 align-middle text-[10px] font-semibold text-slate-200'
-  return s.url ? (
+  return s.url && link ? (
     <a href={s.url} target="_blank" rel="noreferrer" title={s.title} className={`${cls} hover:bg-sky-700`}>
-      {id === 'GAME' ? 'illustrative' : id === 'PHYS' ? 'physics' : `NASA ${id}`}
+      {chipLabel(id)}
     </a>
   ) : (
     <span title={s.title} className={cls}>
-      {id === 'GAME' ? 'illustrative' : 'physics'}
+      {chipLabel(id)}
     </span>
+  )
+}
+
+export function SourceChips({ ids, link = true }: { ids: SourceId[]; link?: boolean }) {
+  return (
+    <>
+      {ids.map((id) => (
+        <SourceChip key={id} id={id} link={link} />
+      ))}
+    </>
+  )
+}
+
+/** A sentence followed by the chips of every source it cites. */
+export function Sourced({ reason }: { reason: Reason }) {
+  return (
+    <>
+      {reason.text}
+      <SourceChips ids={reasonSources(reason)} />
+    </>
   )
 }
 
@@ -33,8 +59,7 @@ export function ReasonList({ reasons }: { reasons: Reason[] }) {
     <ul className="space-y-1 text-sm">
       {reasons.map((r, i) => (
         <li key={i} className="leading-snug">
-          {r.text}
-          <SourceChip id={r.source} />
+          <Sourced reason={r} />
         </li>
       ))}
     </ul>
@@ -69,14 +94,17 @@ export function Gauge({ score, success }: { score: number; success: boolean }) {
   )
 }
 
-export function Meter({ label, value, max, unit, warnAt }: { label: string; value: number; max: number; unit: string; warnAt?: number }) {
+export function Meter({ label, value, max, unit, warnAt, source }: { label: string; value: number; max: number; unit: string; warnAt?: number; source?: SourceId }) {
   const pct = max ? Math.min(100, (100 * value) / max) : 0
   const over = value > max
   const warn = !over && warnAt !== undefined && value > warnAt
   return (
     <div className="text-xs">
       <div className="flex justify-between text-slate-300">
-        <span>{label}</span>
+        <span>
+          {label}
+          {source && <SourceChip id={source} link={false} />}
+        </span>
         <span className="tabular-nums">
           {unit}
           {Math.round(value)} / {unit}

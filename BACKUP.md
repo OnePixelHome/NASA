@@ -1,5 +1,12 @@
 # BACKUP - NASA
 
+## 2026-11-14 (PC de Edgar) — Chips de fuente en todos los números (`fix/source-chips`)
+
+- Cada número en pantalla lleva ahora su chip de fuente: presupuestos, medidor de presupuesto, datos de cada nodo, pasos de la simulación y los tres insights del scorecard.
+- `Reason` admite fuentes adicionales (`also`) para frases que mezclan física con valores ilustrativos; se corrigieron etiquetas que presentaban supuestos del juego como física (pasadas por día, alcance del radar, batería).
+- La lista de fuentes del scorecard se calcula a partir de lo citado en la misión, ya no está escrita a mano.
+- Los chips dentro de botones ya no son enlaces (era HTML inválido).
+- Verificado: 19 tests, build y recorrido a 390 px. Pendiente: revisión del equipo y merge del PR.
 ## 2026-11-14 (Mac de Thais) — Prompts de Claude Design
 
 - Se creó `docs/design-prompts.md` con las decisiones base del diseño visual y el prompt de la fase 1 (sistema visual: paleta, tipografía, tokens, componentes base y tarjeta de nodo).

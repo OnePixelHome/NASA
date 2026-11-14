@@ -1,8 +1,8 @@
 import { useEffect, useMemo, useState } from 'react'
 import * as C from './engine/catalog'
-import { budget, choose, evaluateMission, isComplete, orbitStats, TIER_ORDER, tierOptions, type Choice, type NodeState } from './engine/game'
-import { SOURCES, type SourceId } from './engine/sources'
-import { Bar, Gauge, Meter, ReasonList, SourceChip } from './ui/components'
+import { budget, BUDGET_SOURCE, choose, evaluateMission, isComplete, orbitSources, orbitStats, TIER_ORDER, tierOptions, type Choice, type NodeState } from './engine/game'
+import { SOURCES, type Reason } from './engine/sources'
+import { Bar, Gauge, Meter, ReasonList, SourceChip, SourceChips, Sourced } from './ui/components'
 
 type Screen = 'brief' | 'orbit' | 'tree' | 'go' | 'run' | 'score'
 const ORBIT_COLOR: Record<string, string> = { leo: 'bg-sky-400', sso: 'bg-violet-400', geo: 'bg-amber-400' }
@@ -78,7 +78,7 @@ export default function App() {
 
 function BudgetMeter({ choice }: { choice: Choice }) {
   const b = budget(choice)
-  return <Meter label="Budget" value={b.spentM} max={b.totalM} unit="$" warnAt={b.totalM * (1 - C.RESERVE_FRACTION)} />
+  return <Meter label="Budget" value={b.spentM} max={b.totalM} unit="$" warnAt={b.totalM * (1 - C.RESERVE_FRACTION)} source={BUDGET_SOURCE} />
 }
 
 function Brief({ onPick }: { onPick: (id: string) => void }) {
@@ -91,7 +91,10 @@ function Brief({ onPick }: { onPick: (id: string) => void }) {
           <button key={s.id} onClick={() => onPick(s.id)} className="rounded-xl border border-slate-700 bg-slate-900 p-4 text-left transition hover:border-sky-400 focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-400">
             <div className="text-lg font-semibold">{s.title}</div>
             <p className="mt-1 text-sm text-slate-300">{s.story}</p>
-            <div className="mt-3 text-xs text-slate-400">Budget ${s.budgetM}M</div>
+            <div className="mt-3 text-xs text-slate-400">
+              Budget ${s.budgetM}M
+              <SourceChip id={BUDGET_SOURCE} link={false} />
+            </div>
           </button>
         ))}
       </div>
@@ -133,7 +136,9 @@ function OrbitPick({ scenario, selected, onPick }: { scenario: C.Scenario; selec
                 <li>{st.continuousView ? 'Fixed view of one hemisphere' : `Reaches ±${st.maxLatDeg.toFixed(1)}° latitude`}</li>
                 <li>+{st.extraDvKmS.toFixed(2)} km/s beyond a 200 km orbit</li>
               </ul>
-              <div className="mt-2">{o.sources.map((s) => <SourceChip key={s} id={s} />)}</div>
+              <div className="mt-2 -ml-1">
+                <SourceChips ids={orbitSources(o)} link={false} />
+              </div>
             </button>
           )
         })}
@@ -162,6 +167,9 @@ function Tree(props: {
         <button onClick={props.onChangeOrbit} className={`rounded-full px-5 py-2 font-semibold text-slate-950 ${ORBIT_COLOR[orbit.id]}`} title="Change trajectory">
           {orbit.short} · {orbit.altKm.toLocaleString()} km ↺
         </button>
+        <div className="mt-1">
+          <SourceChips ids={orbitSources(orbit)} />
+        </div>
 
         {TIER_ORDER.map((tier) => {
           const nodes = tierOptions(tier, choice)
@@ -200,7 +208,16 @@ function Tree(props: {
                           {n.ok ? (sel ? '✓ ' : '') : '🔒 '}
                           {n.name}
                         </div>
-                        <div className="mt-1 text-[11px] opacity-80">{n.ok ? n.facts.join(' · ') : 'Locked — tap for why'}</div>
+                        <div className="mt-1 text-[11px] opacity-80">
+                          {n.ok ? (
+                            <>
+                              {n.facts.join(' · ')}
+                              <SourceChip id={n.factsSource} link={false} />
+                            </>
+                          ) : (
+                            'Locked — tap for why'
+                          )}
+                        </div>
                       </button>
                     )
                   })}
@@ -299,7 +316,9 @@ function MissionRun({ choice, onDone }: { choice: Choice; onDone: () => void }) 
         {card.timeline.slice(0, step).map((e, i) => (
           <li key={i} className="rounded-lg border border-slate-700 bg-slate-900 p-3">
             <div className="text-sm font-semibold text-sky-300">{e.label}</div>
-            <div className="text-sm text-slate-200">{e.detail}</div>
+            <div className="text-sm text-slate-200">
+              <Sourced reason={e} />
+            </div>
           </li>
         ))}
       </ol>
@@ -319,7 +338,6 @@ function MissionRun({ choice, onDone }: { choice: Choice; onDone: () => void }) 
 
 function Score({ choice, goVotes, onReplay, onRevise }: { choice: Choice; goVotes: number; onReplay: () => void; onRevise: () => void }) {
   const card = evaluateMission(choice, goVotes)
-  const used: SourceId[] = ['S1', 'S2', 'S3', 'S6', 'S10', 'PHYS', 'GAME']
   return (
     <section>
       <h1 className="text-2xl font-bold">6 · Mission scorecard</h1>
@@ -327,7 +345,10 @@ function Score({ choice, goVotes, onReplay, onRevise }: { choice: Choice; goVote
         <div className="flex flex-col items-center">
           <Gauge score={card.score} success={card.success} />
           <div className={`mt-1 font-semibold ${card.success ? 'text-emerald-400' : 'text-orange-400'}`}>{card.success ? 'Mission success' : 'Mission fell short'}</div>
-          <div className="text-[11px] text-slate-500">Illustrative score</div>
+          <div className="text-[11px] text-slate-400">
+            Score and breakdown
+            <SourceChip id={card.scoreSource} />
+          </div>
         </div>
         <div className="w-full flex-1 space-y-2">
           {card.breakdown.map((b) => (
@@ -336,14 +357,14 @@ function Score({ choice, goVotes, onReplay, onRevise }: { choice: Choice; goVote
         </div>
       </div>
       <div className="mt-6 space-y-3">
-        <Insight title="Primary constraint" text={card.primaryConstraint} />
-        <Insight title="Biggest impact" text={card.biggestImpact} />
-        <Insight title="Lesson learned" text={card.lesson} />
+        <Insight title="Primary constraint" reason={card.primaryConstraint} />
+        <Insight title="Biggest impact" reason={card.biggestImpact} />
+        <Insight title="Lesson learned" reason={card.lesson} />
       </div>
       <details className="mt-6 rounded-lg bg-slate-900 p-3 text-sm">
         <summary className="cursor-pointer font-semibold">Sources & assumptions</summary>
         <ul className="mt-2 space-y-1 text-slate-300">
-          {used.map((id) => (
+          {card.sources.map((id) => (
             <li key={id}>
               <SourceChip id={id} /> {SOURCES[id].url ? <a className="underline" href={SOURCES[id].url} target="_blank" rel="noreferrer">{SOURCES[id].title}</a> : SOURCES[id].title}
             </li>
@@ -362,11 +383,13 @@ function Score({ choice, goVotes, onReplay, onRevise }: { choice: Choice; goVote
   )
 }
 
-function Insight({ title, text }: { title: string; text: string }) {
+function Insight({ title, reason }: { title: string; reason: Reason }) {
   return (
     <div className="rounded-lg border border-slate-700 bg-slate-900 p-3">
       <div className="text-xs font-semibold uppercase tracking-wide text-slate-400">{title}</div>
-      <div className="mt-1 text-sm">{text}</div>
+      <div className="mt-1 text-sm">
+        <Sourced reason={reason} />
+      </div>
     </div>
   )
 }
