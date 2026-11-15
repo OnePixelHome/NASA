@@ -1,5 +1,13 @@
 # BACKUP - NASA
 
+## 2026-11-15 (PC de José) — Despliegue en GitHub Pages en lugar de Vercel
+
+- El equipo decidió publicar el juego en GitHub Pages: https://belleavm.github.io/NASA/. Vercel quedó descartado: el repo es de `belleavm` y la app de Vercel de José solo ve su cuenta; además el plan Hobby bloquea despliegues de repos privados cuando el autor del commit no es del equipo de Vercel.
+- Nuevo `.github/workflows/deploy-pages.yml`: en cada push a `main` instala con pnpm, corre `pnpm test`, compila con `BASE_PATH=/NASA/` y publica `dist` en Pages. `vite.config.ts` toma la base de `BASE_PATH` (por defecto `/`, así `pnpm dev` y `build:single` no cambian).
+- Pages ya estaba activado en modo "legacy" desde la rama `main`, que sirve el `index.html` sin compilar (pantalla en blanco). Hay que cambiar Settings → Pages → Source a "GitHub Actions"; requiere admin del repo (Belle).
+- Se reemplazó Vercel por GitHub Pages en `CLAUDE.md`, `AGENTS.md`, `README.md` (enlace "Play it"), `docs/SUBMISSION.md`, `docs/PROJECT_PAGE.md` y `docs/HANDOFF.md`.
+- Pendiente: cambiar la fuente de Pages a GitHub Actions; confirmar que el workflow termina en verde y que el juego carga en un celular; poner la URL en el cuadro "About" del repo.
+
 ## 2026-11-15 (PC de Edgar) — Película de la misión, renderizada cuadro a cuadro (`feat/mission-film`, PR sin merge, apilado sobre `feat/day-in-orbit`)
 
 - Edgar aclaró que quería ver la simulación como un video o una animación de juego, no como un gráfico. La pantalla 5 tiene ahora una película en canvas de 40 segundos, dibujada cuadro a cuadro con el diseño del jugador: (1) despegue del cohete elegido, con cuenta regresiva, humo y ascenso hasta el espacio; (2) la nave se separa y despliega sus paneles y antena; (3) primera imagen; (4 y 5) un día en órbita alrededor de la Tierra; (6) cierre.

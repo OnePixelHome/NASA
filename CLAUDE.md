@@ -8,7 +8,7 @@ Browser game: pick a mission brief → choose a trajectory (LEO / SSO / GEO) →
 Go/No-Go poll → mission simulation → scorecard. Up to 4 players share one screen, one role per tier.
 
 ## Stack
-Vite + React 19 + TypeScript, Tailwind v4, Vitest. pnpm. Deploy: Vercel. No backend.
+Vite + React 19 + TypeScript, Tailwind v4, Vitest. pnpm. Deploy: GitHub Pages (`.github/workflows/deploy-pages.yml`). No backend.
 
 ## Layout
 - `src/engine/` — pure TS, no React. `physics.ts` (formulas), `catalog.ts` (all game data),

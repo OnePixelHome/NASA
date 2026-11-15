@@ -33,7 +33,7 @@ simulation and a scorecard close the loop, so players can change one choice and 
 
 ## Link to final project
 
-**TODO:** public game URL (Vercel) and public repository URL.
+**TODO:** confirm the public game URL (https://belleavm.github.io/NASA/) works, and add the public repository URL.
 
 ## Detailed description
 
@@ -112,8 +112,7 @@ None. No data from other space agencies or third parties is used.
 | Fredoka (via @fontsource/fredoka) | Font for titles and numbers, bundled with the game | SIL Open Font License 1.1 |
 | Atkinson Hyperlegible (via @fontsource/atkinson-hyperlegible) | Font for body text, bundled with the game | SIL Open Font License 1.1 |
 | Claude Design (Anthropic) | Visual system, screen designs and illustrations | Hosted service |
-| Vercel | Hosting of the public demo | Hosted service |
-| GitHub | Source code hosting | Hosted service |
+| GitHub | Source code hosting; GitHub Pages and GitHub Actions host and build the public demo | Hosted service |
 
 Our own code is released under the MIT License.
 

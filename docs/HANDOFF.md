@@ -12,7 +12,7 @@ with Claude (chat) up to Sat 2026-11-14 14:50 Lima time. If code and this file d
 - **Team "One Pixel Home"**
   - **Edgar Cardona** — software architect. Phone only (no laptop at the venue). Drives Claude Code by Remote Control
     on his home PC (Windows 10, 16 GB, PowerShell, GitHub CLI logged in) or Claude Code on the web. Owns engine, sources, QA, project-page text.
-  - **José Gómez** — full-stack dev, has a laptop. Owns repo, Vercel deploy, UI implementation.
+  - **José Gómez** — full-stack dev, has a laptop. Owns repo, GitHub Pages deploy, UI implementation.
   - **Thais Rodríguez** — product designer (Figma). Owns visual design, video visuals.
   - **Belle Vásquez Machado** — MarTech specialist. Owns copy (briefs, lessons, tooltips), pitch script, video.
 - Repo: `github.com/belleavm/NASA` (private as of Sat afternoon; it must be public before submission, see `docs/SUBMISSION.md`). License: MIT.

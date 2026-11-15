@@ -6,6 +6,8 @@ A game where you design a space mission and it calculates the orbit and resource
 Pick a science goal, choose a trajectory, then watch a live dependency tree show which instruments, power systems,
 data links and rockets still work — and exactly why the others are locked.
 
+**Play it:** https://belleavm.github.io/NASA/
+
 ## Run
 ```bash
 pnpm install

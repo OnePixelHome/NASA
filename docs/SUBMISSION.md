@@ -11,7 +11,7 @@ Whoever closes an item changes its status here and adds the evidence (link or da
 | # | Item | Owner | Status | How to verify |
 | --- | --- | --- | --- | --- |
 | 1 | Public repository | Belle (repo owner) | ❌ | Open `github.com/belleavm/NASA` in a private browser window, signed out. It must load. Today it is private. |
-| 2 | Public demo URL (Vercel) that works on a phone | José | ❌ | Open the URL on a phone on mobile data, signed out of Vercel. Play one mission to the scorecard. No Vercel login wall. |
+| 2 | Public demo URL (GitHub Pages, https://belleavm.github.io/NASA/) that works on a phone | José | 🟡 | Open the URL on a phone on mobile data, signed out of GitHub. Play one mission to the scorecard. |
 | 3 | 30-second video with English subtitles | Belle, Thais | ❌ | Length is 30 s or less. Subtitles are in English and burned in or enabled by default. The link opens signed out. |
 | 4 | All sources cited | Edgar | 🟡 | In the game: every number has a source tag and the About screen lists every source (PRs #1, #4, #7). On the project page: the "NASA data" table from `docs/PROJECT_PAGE.md` is pasted in. |
 | 5 | No NASA logos, insignia, flags or mission patches | Thais, Edgar | 🟡 | The code has none today. Re-check after the visual redesign: the game, the video, the slides, the favicon and every image. |
@@ -29,9 +29,9 @@ Whoever closes an item changes its status here and adds the evidence (link or da
 
 ## Demo URL (item 2)
 
-- [ ] The Vercel project is connected to `belleavm/NASA` and deploys `main`.
-- [ ] Build command `pnpm build`, output folder `dist`.
-- [ ] Deployment protection is off for the production URL, so judges are not asked to log in.
+- [x] `.github/workflows/deploy-pages.yml` runs `pnpm test` and `pnpm build` (base `/NASA/`) and publishes `dist` on every push to `main`.
+- [ ] Settings → Pages → Source is "GitHub Actions" (needs repo admin: Belle). The legacy branch source serves the raw `index.html` and the game does not load.
+- [ ] The Pages site is public, so judges are not asked to log in.
 - [ ] Tested on a real phone at about 390 px wide: no sideways scrolling, every button reachable with a thumb.
 - [ ] Tested in a second browser.
 - [ ] The URL is in the README, in the GitHub repository's "About" box and on the project page.
