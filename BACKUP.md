@@ -1,5 +1,12 @@
 # BACKUP - NASA
 
+## 2026-11-15 (Mac de Belle) — Se reconecta Azure Static Web Apps (`ci/reconnect-azure`)
+
+- Belle pidió volver a conectar Azure. El recurso `victorious-pebble-0fcf34b10` sigue vivo (https://victorious-pebble-0fcf34b10.6.azurestaticapps.net/ responde 200, con la página de espera de Azure), así que no se creó uno nuevo.
+- Nuevo `.github/workflows/azure-static-web-apps.yml` (corrige el que generó Azure en `638eec1`): en cada push a `main` instala con pnpm, corre `pnpm test` y `pnpm build` sin `BASE_PATH` (Azure sirve desde la raíz) y sube `dist/` con `Azure/static-web-apps-deploy@v1` y `skip_app_build`. Antes fallaba porque buscaba `build/`. Sin vistas previas por PR. Si falta el secreto, el job avisa y termina en verde en vez de fallar. GitHub Pages sigue igual.
+- `server/leaderboard.ts`: CORS acepta también el origen de Azure. **Falta redesplegar la función** (`bash server/deploy.sh`, con sesión de Neon; José), si no el leaderboard no carga desde Azure.
+- `AGENTS.md` (Verificar) menciona el segundo despliegue.
+- Pendiente (Belle): copiar el token del portal de Azure (Static Web App → Manage deployment token) y guardarlo con `gh secret set AZURE_STATIC_WEB_APPS_API_TOKEN -R OnePixelHome/NASA`; luego merge del PR y comprobar que el sitio de Azure carga el simulador. El secreto viejo se borró en la desconexión; el token del recurso no cambió, pero desde aquí no hay acceso a Azure para leerlo.
 ## 2026-11-15 (PC de José) — Botón Home en el scorecard; README y CLAUDE.md al día
 
 - Pedido de José: al terminar una misión, un botón para volver a la página principal. El scorecard tiene ahora "⌂ Home" (a la izquierda; ancho completo en celular) junto a "← Try another design" y "Replay mission"; reinicia el diseño y los votos y vuelve a la página de inicio con el selector de jugadores. Verificado en Chrome.

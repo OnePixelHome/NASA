@@ -11,7 +11,7 @@ Repositorio público del equipo One Pixel Home (`OnePixelHome/NASA`, antes `bell
 
 - Stack: Vite + React 19 + TypeScript, Tailwind v4, Vitest, pnpm (juego "Status: GO", antes "Trajectory Ladder"; ver `docs/HANDOFF.md`).
 - `pnpm install`, `pnpm test` y `pnpm build` deben pasar antes de subir cambios.
-- Despliegue: cada push a `main` publica el juego en GitHub Pages (https://onepixelhome.github.io/NASA/) con `.github/workflows/deploy-pages.yml`.
+- Despliegue: cada push a `main` publica el juego en GitHub Pages (https://onepixelhome.github.io/NASA/) con `.github/workflows/deploy-pages.yml`, y también en Azure Static Web Apps (https://victorious-pebble-0fcf34b10.6.azurestaticapps.net/) con `.github/workflows/azure-static-web-apps.yml`, que necesita el secreto `AZURE_STATIC_WEB_APPS_API_TOKEN`.
 
 ## Reglas
 
