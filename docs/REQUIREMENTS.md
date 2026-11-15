@@ -24,7 +24,7 @@ Audited against prototype v0.1 on Sat 2026-11-14; updated that night after PRs #
 | Clear user interface | Six numbered screens in `src/App.tsx` | ✅ | — |
 | Mission configuration system | `Choice` + `choose()` (an upstream change clears downstream tiers) | ✅ | — |
 | Resource management mechanics | Four live meters (budget, mass, power, data) with written states; the same numbers drive the locks | ✅ | — |
-| Single-player and/or multiplayer (up to 4) | Shared screen; each tier is labelled with a role; Go/No-Go poll with four votes | 🟡 | Roles are labels only. A solo player casts all four votes. |
+| Single-player and/or multiplayer (up to 4) | Team size (1–4) is chosen on the landing page; the four roles are split among the players (`playerRoles()`); one Go/No-Go vote per player | ✅ | A solo player holds all four roles and needs a single Go. |
 | Simulation and evaluation/scoring system | `evaluateMission()`: science 50, data 20, budget 15, team 15 | ✅ | See "team collaboration" below. |
 
 ## What the game should reward
@@ -35,7 +35,7 @@ Audited against prototype v0.1 on Sat 2026-11-14; updated that night after PRs #
 | Scientific value | "Science return": instrument fit × coverage × revisit | ✅ | — |
 | Efficient use of resources | "Budget & reserve": 15 with ≥10% reserve, 9 within budget, 0 over | ✅ | — |
 | Quality of decisions | Scorecard insights: primary constraint, biggest impact, lesson learned, each with its source tags | ✅ | — |
-| Team collaboration | "Team Go/No-Go": a unanimous Go earns 15 points; launching over No-Go votes keeps only the agreeing share (`teamPoints()`) | ✅ | A solo player casts all four votes. |
+| Team collaboration | "Team Go/No-Go": a unanimous Go earns 15 points; launching over No-Go votes keeps only the agreeing share of players (`teamPoints(goVotes, players)`) | ✅ | A solo player casts all four votes. |
 
 ## Suggested considerations
 

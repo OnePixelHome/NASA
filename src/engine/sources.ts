@@ -174,7 +174,7 @@ export const HOW_TO_PLAY: { title: string; text: string }[] = [
   { title: 'Pick a mission', text: 'Choose a science goal. Its requirements set what success means.' },
   { title: 'Choose a trajectory', text: 'Compare the three orbits and pick the one that fits the mission.' },
   { title: 'Build the ladder', text: 'Pick instrument, power, downlink and launcher. Each choice can lock the next.' },
-  { title: 'Vote Go / No-Go and watch the simulation', text: 'Every role votes. Then follow the mission and read your scorecard.' },
+  { title: 'Vote Go / No-Go and watch the simulation', text: 'Every player votes. Then follow the mission and read your scorecard.' },
 ]
 export const ROLES_NOTE = 'Four roles, one for each of NASA’s four mission segments: Science, Spacecraft, Ground, Launch.'
 

@@ -45,7 +45,7 @@ https://onepixelhome.github.io/NASA/ · Code: https://github.com/OnePixelHome/NA
 3. **Mission tree.** Fill four tiers, one per team role: scientific instrument (Science), power system (Spacecraft),
    data downlink (Ground) and launch vehicle (Launch). An option that cannot work with the choices above it is locked,
    and tapping it shows why. Four live meters track budget, mass, power and data.
-4. **Go/No-Go poll.** Every role votes. A unanimous Go earns the full team score; launching over a No-Go costs points.
+4. **Go/No-Go poll.** Players pick the team size (1–4) before starting and share the four roles. Every player votes once; a unanimous Go earns the full team score, and launching over a No-Go costs points.
 5. **Mission simulation.** A rendered film plays the player's own mission: their rocket lifts off, their spacecraft
    unfolds its panels, takes a first picture, then circles a real image of the Earth for a day, dimming in Earth's
    shadow and sending data down on each pass over the ground station. A timeline and a telemetry plot show the numbers.
