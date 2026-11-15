@@ -162,8 +162,8 @@ export const AI_DISCLOSURE =
   'All of it was reviewed, tested and adapted by the team. ' +
   'Physics formulas are covered by automated tests; illustrative values are labelled in the game.'
 
-/** Second line of the AI notice: every illustration in the game carries the visible "AI-generated" label it refers to. */
-export const AI_IMAGES_NOTE = 'Images marked “AI-generated” were drafted with AI and then checked and adapted by the team.'
+/** Second line of the SI notice: every illustration in the game carries the visible "SI content" watermark it refers to. */
+export const AI_IMAGES_NOTE = 'Images marked “SI content” were drafted with Super Intelligence (SI) tools and then checked and adapted by the team.'
 
 export const DISCLAIMER =
   'Status: GO is an independent project made by team One Pixel Home for the NASA Space Apps Challenge 2026. ' +

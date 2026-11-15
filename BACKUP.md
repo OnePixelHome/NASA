@@ -1,5 +1,11 @@
 # BACKUP - NASA
 
+## 2026-11-15 (Mac de Belle) — Marca de agua "SI content" en lugar de "AI-generated"
+
+- Pedido de Belle: las guías de Space Apps llaman "Super Intelligence (SI)" a la IA y solo piden una marca de agua visible. La etiqueta de las ilustraciones (`AiGeneratedLabel` en `src/ui/components.tsx`) dice ahora **"SI content"** y es más discreta: texto de 10 px, sin borde ni estrella, fondo semitransparente. Aplica a todas las pantallas que la usan: arte de misión, panel de la nave, escenas, película y About.
+- En About, el título "Use of AI" pasó a "Use of SI (Super Intelligence)" y `AI_IMAGES_NOTE` habla de "SI content". `AI_DISCLOSURE` no cambió. También se actualizaron `docs/COPY.md`, `docs/PROJECT_PAGE.md` y `README.md`.
+- Verificado: 73 tests, lint, build y captura a tamaño celular.
+
 ## 2026-11-15 (Mac de Belle) — Video del pitch fuera del repo
 
 - El commit `5b51c2e` (PR #24) incluyó por error `video/pitch-video.mp4` (34 MB), porque se hizo `git add -A` con ese archivo recién puesto en la carpeta. Se quitó del repo con `git rm --cached` y se agregó `video/` a `.gitignore`. El archivo sigue en el disco de Belle y en `~/Desktop/Status GO - video/1-pitch (HeyGen)/`; también sigue en el historial de git.

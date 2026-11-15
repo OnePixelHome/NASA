@@ -75,8 +75,8 @@ rate-limited. If the leaderboard is unreachable, the game keeps working. Deploy 
 ## Use of AI
 Code scaffolding, the physics engine and documentation were drafted with Claude (Anthropic). The visual design and
 illustrations were drafted with Claude Design (Anthropic). All of it was reviewed, tested and adapted by the team.
-Physics formulas are covered by automated tests; illustrative values are labelled in the game. Every AI-generated
-illustration carries a visible "AI-generated" label.
+Physics formulas are covered by automated tests; illustrative values are labelled in the game. Every SI-generated
+illustration carries a small visible "SI content" watermark.
 
 ## Credits
 - Earth image: NASA Earth Observatory, Blue Marble: Next Generation.
