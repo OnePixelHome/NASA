@@ -9,6 +9,27 @@ const STARS: [number, number, number][] = [
   [30, 40, 1.4], [70, 20, 1], [250, 30, 1.6], [280, 90, 1], [18, 230, 1.2], [60, 280, 1], [240, 270, 1.4], [290, 210, 1], [150, 14, 1], [120, 288, 1.2],
 ]
 
+// The globe is the centred disc (60% of the 300-unit box, so radius 90). Its upper half, in the orbit's own tilted
+// frame, is where the far side of the orbit passes behind the planet.
+const GLOBE_R = 90
+const BEHIND_GLOBE = `M ${150 - GLOBE_R} 150 A ${GLOBE_R} ${GLOBE_R} 0 0 1 ${150 + GLOBE_R} 150 Z`
+const BEHIND_OPACITY = 0.2
+
+/** The orbit line and the satellite riding it. Drawn twice (in front, and faded behind the globe), in sync. */
+function Orbit({ reduced }: { reduced: boolean }) {
+  return (
+    <>
+      <path d={ORBIT} fill="none" stroke="var(--color-orbit-sso)" strokeWidth="5" strokeLinecap="round" />
+      <g transform={reduced ? 'translate(250 120)' : undefined}>
+        {!reduced && <animateMotion dur="9s" repeatCount="indefinite" path={ORBIT} />}
+        <rect x="-9" y="-9" width="18" height="18" rx="3" fill="var(--color-ink)" stroke="var(--color-space-page)" strokeWidth="3" />
+        <rect x="-24" y="-4" width="12" height="8" rx="1.5" fill="var(--color-role-spacecraft)" />
+        <rect x="12" y="-4" width="12" height="8" rx="1.5" fill="var(--color-role-spacecraft)" />
+      </g>
+    </>
+  )
+}
+
 export function HomeHero({ className = '' }: { className?: string }) {
   const reduced = useMemo(() => typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches, [])
   return (
@@ -30,12 +51,21 @@ export function HomeHero({ className = '' }: { className?: string }) {
       />
       <svg viewBox="0 0 300 300" className="absolute inset-0 size-full">
         <g transform="rotate(-22 150 150)">
-          <path d={ORBIT} fill="none" stroke="var(--color-orbit-sso)" strokeWidth="5" strokeLinecap="round" />
-          <g transform={reduced ? 'translate(250 120)' : undefined}>
-            {!reduced && <animateMotion dur="9s" repeatCount="indefinite" path={ORBIT} />}
-            <rect x="-9" y="-9" width="18" height="18" rx="3" fill="var(--color-ink)" stroke="var(--color-space-page)" strokeWidth="3" />
-            <rect x="-24" y="-4" width="12" height="8" rx="1.5" fill="var(--color-role-spacecraft)" />
-            <rect x="12" y="-4" width="12" height="8" rx="1.5" fill="var(--color-role-spacecraft)" />
+          <defs>
+            {/* The far half of the orbit (above the ellipse's long axis) is hidden by the globe wherever the two overlap. */}
+            <mask id="home-orbit-front" maskUnits="userSpaceOnUse" x="-100" y="-100" width="500" height="500">
+              <rect x="-100" y="-100" width="500" height="500" fill="white" />
+              <path d={BEHIND_GLOBE} fill="black" />
+            </mask>
+            <mask id="home-orbit-behind" maskUnits="userSpaceOnUse" x="-100" y="-100" width="500" height="500">
+              <path d={BEHIND_GLOBE} fill="white" />
+            </mask>
+          </defs>
+          <g mask="url(#home-orbit-front)">
+            <Orbit reduced={reduced} />
+          </g>
+          <g mask="url(#home-orbit-behind)" opacity={BEHIND_OPACITY}>
+            <Orbit reduced={reduced} />
           </g>
         </g>
       </svg>

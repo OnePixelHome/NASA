@@ -11,7 +11,7 @@ import { MissionFilm, type FilmProgress } from './ui/MissionFilm'
 import { MissionScene } from './ui/MissionScene'
 import { ShipSvg } from './ui/Ship'
 import { ROLE_UI, shipParts } from './ui/theme'
-import { AiGeneratedLabel, Bar, BTN_PRIMARY, BTN_SECONDARY, BTN_WARNING, Gauge, Meter, ReasonList, ResourcePanel, RoleTag, SourceChip, SourceChips, Sourced } from './ui/components'
+import { AiGeneratedLabel, Bar, BTN_GO, BTN_PRIMARY, BTN_SECONDARY, BTN_WARNING, Gauge, Meter, ReasonList, ResourcePanel, RoleTag, SourceChip, SourceChips, Sourced } from './ui/components'
 
 type Screen = 'home' | 'brief' | 'orbit' | 'tree' | 'go' | 'run' | 'score'
 /** The landing page is not a step, so it has no number. */
@@ -186,7 +186,7 @@ function Home({ onStart, onAbout }: { onStart: () => void; onAbout: () => void }
           </h1>
           <p className="max-w-[46ch] text-[1.125rem] leading-relaxed text-ink-2">{PITCH}</p>
           <div className="flex w-full flex-col gap-3 sm:w-auto sm:flex-row">
-            <button type="button" onClick={onStart} className={`${BTN_PRIMARY} min-h-[56px] px-8 text-[1.125rem]`}>
+            <button type="button" onClick={onStart} className={`${BTN_GO} min-h-[56px] px-8 text-[1.125rem]`}>
               Start mission →
             </button>
             <button type="button" onClick={onAbout} className={BTN_SECONDARY}>
