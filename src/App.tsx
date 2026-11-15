@@ -3,6 +3,7 @@ import * as C from './engine/catalog'
 import { budget, BUDGET_SOURCE, choose, clampPlayers, evaluateMission, isComplete, MAX_PLAYERS, missionRequirements, orbitSources, orbitStats, playerRoles, resources, SUCCESS_SCORE_MIN, TEAM_POINTS_MAX, teamPoints, TIER_ORDER, tierOptions, type Choice, type NodeState } from './engine/game'
 import { missionDay } from './engine/missionDay'
 import { AI_DISCLOSURE, AI_IMAGES_NOTE, DISCLAIMER, FOOTER_NOTES, HOW_TO_PLAY, PITCH, ROLES_NOTE, SOURCE_ORDER, SOURCES, TEAM, type Reason } from './engine/sources'
+import { MissionBadges, MissionLogPanel } from './ui/Badges'
 import { RoleCharacter } from './ui/Crew'
 import { DayView } from './ui/DayView'
 import { HomeHero } from './ui/HomeHero'
@@ -235,6 +236,8 @@ function Home({ players, setPlayers, onStart, onAbout, onLeaderboard }: { player
         </div>
         <HomeHero className="order-first mx-auto max-w-[210px] sm:max-w-[300px] lg:order-none lg:max-w-[320px]" />
       </div>
+
+      <MissionLogPanel />
 
       <section aria-labelledby="h-home-how">
         <h2 id="h-home-how" className="text-section">
@@ -862,6 +865,7 @@ function Score({ choice, goVotes, players, onReplay, onRevise, onHome }: { choic
         <Insight title="Biggest impact" reason={card.biggestImpact} />
         <Insight title="Lesson learned" reason={card.lesson} />
       </div>
+      <MissionBadges choice={choice} goVotes={goVotes} players={players} />
       {leaderboardEnabled && <SaveScore choice={choice} goVotes={goVotes} players={players} />}
       <details className={`${CARD} mt-4 p-3.5 text-small`}>
         <summary className="min-h-[44px] cursor-pointer content-center font-display text-card">Sources & assumptions</summary>

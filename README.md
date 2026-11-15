@@ -43,6 +43,13 @@ pnpm build:single  # one self-contained HTML file for quick previews
   and the ~35,786 km geostationary altitude (`src/engine/engine.test.ts`). A balance test keeps at least three viable
   designs per mission.
 
+## Badges
+A successful mission earns badges (best instrument, all data delivered, 10% reserve kept, unanimous Go and more). They
+are worked out by the game engine from the design, the votes and the team size (`src/engine/achievements.ts`), never
+typed in. The scorecard shows them, and a mission log on the start page keeps the collection **in the player's browser
+only** (localStorage): nothing about it is sent anywhere, and "Clear my log" erases it. The leaderboard shows how many
+badges each saved mission earned; the server recomputes them from the saved design.
+
 ## Online leaderboard
 Saving a score sends only the name the player types and the mission design. The server (an Azure Static Web Apps function next to
 an Azure Database for PostgreSQL, `server/handler.ts`) **recalculates every score with the game engine**, so a forged
@@ -53,6 +60,7 @@ rate-limited. If the leaderboard is unreachable, the game keeps working. Deploy 
 - `src/engine/` — pure TypeScript game logic: physics, catalog, scoring, mission day, sources.
 - `src/ui/` and `src/App.tsx` — screens and components (React + Tailwind v4).
 - `src/leaderboard/` — leaderboard client and the shared name rules.
+- `src/achievements/` — the mission log kept in the browser; the badge rules are in `src/engine/achievements.ts`.
 - `server/` — the leaderboard function and its deploy script.
 - Every push to `main` is tested, built and published to Azure Static Web Apps by `.github/workflows/azure-static-web-apps.yml`.
 
