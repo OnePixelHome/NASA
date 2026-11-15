@@ -6,7 +6,7 @@ A game where you design a space mission and it calculates the orbit and resource
 Pick a science goal, choose a trajectory, then watch a live dependency tree show which instruments, power systems,
 data links and rockets still work — and exactly why the others are locked.
 
-**Play it:** https://victorious-pebble-0fcf34b10.6.azurestaticapps.net/
+**Play it:** https://statusgo.earth/
 
 ## How to play
 1. **Choose the team.** On the start page, pick 1 to 4 players. The four mission roles (Science, Spacecraft, Ground,

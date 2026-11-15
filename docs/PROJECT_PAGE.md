@@ -33,7 +33,7 @@ simulation and a scorecard close the loop, so players can change one choice and 
 
 ## Link to final project
 
-https://victorious-pebble-0fcf34b10.6.azurestaticapps.net/ · Code: https://github.com/OnePixelHome/NASA
+https://statusgo.earth/ · Code: https://github.com/OnePixelHome/NASA
 
 ## Detailed description
 

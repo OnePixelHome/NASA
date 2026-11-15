@@ -15,7 +15,7 @@ with Claude (chat) up to Sat 2026-11-14 14:50 Lima time. If code and this file d
   - **José Gómez** — full-stack dev, has a laptop. Owns repo, GitHub Pages deploy, UI implementation.
   - **Thais Rodríguez** — product designer (Figma). Owns visual design, video visuals.
   - **Belle Vásquez Machado** — MarTech specialist. Owns copy (briefs, lessons, tooltips), pitch script, video.
-- Repo: `github.com/OnePixelHome/NASA` (public; moved from `belleavm/NASA` to the One Pixel Home org on Sun 2026-11-15). Simulator: https://onepixelhome.github.io/NASA/. License: MIT.
+- Repo: `github.com/OnePixelHome/NASA` (public; moved from `belleavm/NASA` to the One Pixel Home org on Sun 2026-11-15). Simulator: https://statusgo.earth/ (Azure Static Web Apps). License: MIT.
 
 ## 2. The challenge (official statement — Space Mission Design Game)
 Create an interactive game where participants design, manage and simulate a complete space mission, making engineering

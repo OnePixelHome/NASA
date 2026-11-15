@@ -1,5 +1,11 @@
 # BACKUP - NASA
 
+## 2026-11-15 (Mac de Belle) — URL pública `statusgo.earth` en la documentación
+
+- Belle indicó que el demo público queda en **https://statusgo.earth/**. Se reemplazó la URL de Azure (y dos de GitHub Pages que quedaban) en `README.md`, `CLAUDE.md`, `AGENTS.md`, `docs/PITCH.md`, `docs/PROJECT_PAGE.md`, `docs/SUBMISSION.md`, `docs/HANDOFF.md` y `docs/SUBMISSION-PLAN.md`. El host de Azure queda mencionado en `AGENTS.md`, `CLAUDE.md` y `docs/SUBMISSION.md` como respaldo. `server/handler.ts` ya aceptaba el dominio en su CORS y no se tocó.
+- **Pendiente bloqueante**: al momento de este cambio `statusgo.earth` todavía resuelve al estacionamiento de Porkbun (207.207.210.107 / .229) y no carga; el simulador responde en `https://victorious-pebble-0fcf34b10.6.azurestaticapps.net/`. Faltan los pasos de Azure y Porkbun de la entrada "Dominio `statusgo.earth`". No enviar esta URL al jurado hasta comprobar que abre en una ventana privada.
+- GitHub Pages ya no existe (`onepixelhome.github.io/NASA` da 404).
+
 ## 2026-11-15 (Mac de Belle) — Leaderboard en Azure: base PostgreSQL creada y juego apuntando a `/api/leaderboard` (`feat/azure-leaderboard-db`)
 
 - Belle pidió terminar la migración como la planeó José. Se evaluaron opciones más baratas (seguir con Neon, que es gratis; Azure SQL gratis; Cosmos DB gratis) y se decidió hacerlo así para el hackatón y revisarlo después.
