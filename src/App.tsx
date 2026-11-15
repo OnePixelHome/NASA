@@ -214,7 +214,7 @@ function Home({ players, setPlayers, onStart, onAbout, onLeaderboard }: { player
         <div className="flex flex-col items-center gap-5 text-center lg:items-start lg:text-left">
           <p className="text-caption font-bold uppercase tracking-widest text-ink-muted">NASA Space Apps Challenge 2026 · Space Mission Design Game</p>
           <h1 className="font-display text-[3.25rem] leading-none sm:text-[4.5rem]">
-            Status: <span className="text-st-selected">GO</span>
+            Status: <span className="font-semibold text-st-selected">GO</span>
           </h1>
           <p className="max-w-[46ch] text-[1.125rem] leading-relaxed text-ink-2">{PITCH}</p>
           <PlayerPicker players={players} setPlayers={setPlayers} />

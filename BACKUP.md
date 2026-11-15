@@ -1,5 +1,15 @@
 # BACKUP - NASA
 
+## 2026-11-15 (Mac de Belle) — Órbita translúcida detrás del planeta en las tarjetas de órbita
+
+- Pedido de Belle, en la tarjeta de órbita de la pantalla 2 (`OrbitDiagram` en `src/ui/MissionArt.tsx`). Antes la órbita se dibujaba debajo del planeta y en SSO desaparecía sobre él. Ahora la mitad de adelante y el satélite van sólidos por encima, y la mitad de atrás se ve al 20 % donde cruza el planeta. Es el mismo método de la página de inicio: dos copias sincronizadas con máscaras SVG, con ids únicos por instancia (`useId`). En LEO y GEO la órbita no se cruza con el planeta, así que se ven igual que antes.
+- Verificado: 73 tests, lint y build. Se capturaron 4 cuadros de la tarjeta SSO a tamaño celular; el satélite se atenúa al pasar por detrás.
+
+## 2026-11-15 (Mac de Belle) — "GO" más grueso en la página de inicio
+
+- Pedido de Belle: el "GO" de "Status: GO" en el título de la página de inicio pasó de peso 400 a 600 (`font-semibold`, en `src/App.tsx`). Fredoka 600 ya venía incluida, así que no se carga ninguna fuente nueva. El resto del título no cambia.
+- Verificado: 73 tests, lint y build. La comparación antes/después se capturó a tamaño celular.
+- Si cambia la página de inicio, hay que volver a tomar las capturas `01` y `03` para el video.
 ## 2026-11-15 (PC temporal de Edgar) — El brief de Storm Watch coincide con el motor
 
 - El brief decía "a new image every few minutes", pero el requisito que mide el motor es una revisita cada 6 horas (`targetRevisitDays: 0.25`) y así lo muestran las fichas de requisitos ("6 h"). Se cambió el texto, no el valor, para no tocar el puntaje ni el balance: "Follow hurricanes over the Americas with a new image at least every 6 hours." (`src/engine/catalog.ts`, `docs/COPY.md` §2; ítem marcado en `docs/BELLE-TASKS.md`).
@@ -44,7 +54,7 @@
 ## 2026-11-15 (Mac de Belle) — Pitch: cierre sin "for free" y capturas para el video
 
 - Belle pidió quitar "for free". El cierre del video queda así: "Learn to manage a real mission — on any phone." Se cambió en el guion, en los subtítulos y en la frase del pitch de `docs/PITCH.md`. El guion baja a unas 70 palabras.
-- Capturas de respaldo para el video: 29 PNG en tamaño iPhone (1170×2532), tomadas del simulador público con Chrome headless controlado por DevTools Protocol. Incluyen recortes de la película y una guía que dice qué captura va con cada línea del guion. Están en `~/Desktop/Status GO - pitch screens/` (fuera del repo), junto con el script `capture.mjs`, que permite volver a tomarlas.
+- Capturas de respaldo para el video: 29 PNG en tamaño iPhone (1170×2532), tomadas del simulador público con Chrome headless controlado por DevTools Protocol. Incluyen recortes de la película y una guía que dice qué captura va con cada línea del guion. Están en `~/Desktop/Status GO - video/4-pitch screens (captures)/` (fuera del repo), junto con el script `capture.mjs`, que permite volver a tomarlas.
 - Se volvieron a tomar las capturas cerca de las 14:15, después de que José activó el leaderboard en línea y Edgar agregó las fuentes de agencias (NISAR, ESA Sentinel-1, GOES-R). Cambiaron la página de inicio (nuevo botón Leaderboard), el candado del radar (ahora cita NISAR y Sentinel-1) y los chips de fuente. Los números del pitch siguen iguales: 511 m, 390 kg, $210M y 86/100. Las capturas viejas quedaron en `_old (13h02, before leaderboard)/`.
 - Para editar el video se creó `~/Desktop/Status GO - video/`, con tres carpetas: `1-pitch (HeyGen)`, `2-screen recording (phone)` y `3-export`. Esta Mac no tiene `ffmpeg`.
 - Pendiente: la página de inicio todavía dice "the game calculates…" (`PITCH` en `src/engine/sources.ts`). Si se cambia a "simulator", hay que volver a tomar las capturas `01` y `03`.
