@@ -1,6 +1,6 @@
-import { useCallback, useEffect, useMemo, useState, type ReactNode } from 'react'
+import { useCallback, useEffect, useMemo, useState, type Dispatch, type ReactNode, type SetStateAction } from 'react'
 import * as C from './engine/catalog'
-import { budget, BUDGET_SOURCE, choose, evaluateMission, isComplete, missionRequirements, orbitSources, orbitStats, resources, SUCCESS_SCORE_MIN, TEAM_POINTS_MAX, TEAM_ROLES, teamPoints, TIER_ORDER, tierOptions, type Choice, type NodeState } from './engine/game'
+import { budget, BUDGET_SOURCE, choose, clampPlayers, evaluateMission, isComplete, MAX_PLAYERS, missionRequirements, orbitSources, orbitStats, playerRoles, resources, SUCCESS_SCORE_MIN, TEAM_POINTS_MAX, teamPoints, TIER_ORDER, tierOptions, type Choice, type NodeState } from './engine/game'
 import { missionDay } from './engine/missionDay'
 import { AI_DISCLOSURE, AI_IMAGES_NOTE, DISCLAIMER, FOOTER_NOTES, HOW_TO_PLAY, PITCH, ROLES_NOTE, SOURCE_ORDER, SOURCES, TEAM, type Reason } from './engine/sources'
 import { RoleCharacter } from './ui/Crew'
@@ -21,8 +21,9 @@ type Step = Exclude<Screen, 'home' | 'board'>
 const SCREEN_NUMBER: Record<Step, number> = { brief: 1, orbit: 2, tree: 3, go: 4, run: 5, score: 6 }
 const ORBIT_COLOR: Record<string, string> = { leo: 'var(--color-orbit-leo)', sso: 'var(--color-orbit-sso)', geo: 'var(--color-orbit-geo)' }
 
-type Votes = Record<C.Role, boolean | null>
-const NO_VOTES: Votes = { science: null, space: null, ground: null, launch: null }
+/** One vote per player: true = Go, false = No-Go, null = not voted yet. */
+type Votes = (boolean | null)[]
+const noVotes = (players: number): Votes => Array(clampPlayers(players)).fill(null)
 
 const CARD = 'rounded-lg border border-space-border bg-space-card'
 const PICK_CARD = `${CARD} border-2 p-4 text-left shadow-raised transition duration-[var(--duration-fast)] hover:border-st-available`
@@ -31,10 +32,16 @@ export default function App() {
   const [screen, setScreen] = useState<Screen>('home')
   const [choice, setChoice] = useState<Choice>({})
   const [focus, setFocus] = useState<{ tier: C.Tier; node: NodeState } | null>(null)
-  const [votes, setVotes] = useState<Votes>(NO_VOTES)
+  const [players, setPlayersState] = useState(1)
+  const [votes, setVotes] = useState<Votes>(() => noVotes(1))
   const scenario = C.byId(C.SCENARIOS, choice.scenarioId)
   const orbit = C.byId(C.ORBITS, choice.orbitId)
-  const goVotes = Object.values(votes).filter((v) => v === true).length
+  const goVotes = votes.filter((v) => v === true).length
+  // A new team size needs a fresh poll with one vote per player.
+  const setPlayers = (n: number) => {
+    setPlayersState(clampPlayers(n))
+    setVotes(noVotes(n))
+  }
   const [about, setAbout] = useState(false)
   const [panelOpen, setPanelOpen] = useState(true) // phones can fold the resource panel into one line
 
@@ -47,7 +54,7 @@ export default function App() {
     setAbout(false)
     setChoice({})
     setFocus(null)
-    setVotes(NO_VOTES)
+    setVotes(noVotes(players))
     setScreen(to)
   }
 
@@ -109,7 +116,7 @@ export default function App() {
         </main>
       )}
       <main className="mx-auto max-w-5xl px-4 pb-24 pt-5" hidden={about}>
-        {screen === 'home' && <Home onStart={() => setScreen('brief')} onAbout={() => setAbout(true)} onLeaderboard={() => setScreen('board')} />}
+        {screen === 'home' && <Home players={players} setPlayers={setPlayers} onStart={() => setScreen('brief')} onAbout={() => setAbout(true)} onLeaderboard={() => setScreen('board')} />}
         {screen === 'board' && <LeaderboardScreen onBack={() => setScreen('home')} onStart={() => setScreen('brief')} />}
         {screen === 'brief' && (
           <Brief
@@ -125,7 +132,7 @@ export default function App() {
             selected={choice.orbitId}
             onPick={(id) => {
               setChoice((c) => choose(c, 'orbit', id))
-              setVotes(NO_VOTES) // a changed design needs a fresh poll
+              setVotes(noVotes(players)) // a changed design needs a fresh poll
               setFocus(null)
               setScreen('tree')
             }}
@@ -139,15 +146,15 @@ export default function App() {
             onFocus={setFocus}
             onPick={(tier, id) => {
               setChoice((c) => choose(c, tier, id))
-              setVotes(NO_VOTES) // a changed design needs a fresh poll
+              setVotes(noVotes(players)) // a changed design needs a fresh poll
             }}
             onChangeOrbit={() => setScreen('orbit')}
             onDone={() => setScreen('go')}
           />
         )}
-        {screen === 'go' && <GoNoGo votes={votes} setVotes={setVotes} choice={choice} onBack={() => setScreen('tree')} onLaunch={() => setScreen('run')} />}
-        {screen === 'run' && <MissionRun choice={choice} goVotes={goVotes} onDone={() => setScreen('score')} />}
-        {screen === 'score' && <Score choice={choice} goVotes={goVotes} onReplay={() => startOver('brief')} onRevise={() => setScreen('tree')} />}
+        {screen === 'go' && <GoNoGo votes={votes} setVotes={setVotes} players={players} choice={choice} onBack={() => setScreen('tree')} onLaunch={() => setScreen('run')} />}
+        {screen === 'run' && <MissionRun choice={choice} goVotes={goVotes} players={players} onDone={() => setScreen('score')} />}
+        {screen === 'score' && <Score choice={choice} goVotes={goVotes} players={players} onReplay={() => startOver('brief')} onRevise={() => setScreen('tree')} onHome={() => startOver('home')} />}
       </main>
     </div>
   )
@@ -177,8 +184,30 @@ function Notice({ kind, children }: { kind: 'warning' | 'error'; children: React
   )
 }
 
+/** Team size, chosen before the game: each player holds one or more roles and casts one Go / No-Go vote. */
+function PlayerPicker({ players, setPlayers }: { players: number; setPlayers: (n: number) => void }) {
+  return (
+    <fieldset className="flex flex-col items-center gap-2 lg:items-start">
+      <legend className="mb-2 font-display text-card">How many players?</legend>
+      <div className="flex gap-2">
+        {Array.from({ length: MAX_PLAYERS }, (_, i) => i + 1).map((n) => (
+          <label key={n} className="cursor-pointer">
+            <input type="radio" name="players" value={n} checked={players === n} onChange={() => setPlayers(n)} className="peer sr-only" />
+            <span className="grid size-12 place-items-center rounded-md border-2 border-space-border bg-space-card font-display text-[1.25rem] tabular-nums text-ink-2 hover:border-st-available peer-checked:border-st-selected peer-checked:bg-space-raised peer-checked:text-ink peer-focus-visible:outline peer-focus-visible:outline-3 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-[var(--color-focus)]">
+              {n}
+            </span>
+          </label>
+        ))}
+      </div>
+      <p className="text-small text-ink-muted">
+        {players === 1 ? 'You hold all four roles and cast the launch vote.' : `The four roles are shared by ${players} players; each player casts one vote.`}
+      </p>
+    </fieldset>
+  )
+}
+
 /** Landing page: the game's name, what it is, and one button to start. */
-function Home({ onStart, onAbout, onLeaderboard }: { onStart: () => void; onAbout: () => void; onLeaderboard: () => void }) {
+function Home({ players, setPlayers, onStart, onAbout, onLeaderboard }: { players: number; setPlayers: (n: number) => void; onStart: () => void; onAbout: () => void; onLeaderboard: () => void }) {
   return (
     <section className="flex flex-col gap-10">
       <div className="grid items-center gap-6 lg:grid-cols-[minmax(0,1fr)_320px] lg:gap-10">
@@ -188,6 +217,7 @@ function Home({ onStart, onAbout, onLeaderboard }: { onStart: () => void; onAbou
             Status: <span className="text-st-selected">GO</span>
           </h1>
           <p className="max-w-[46ch] text-[1.125rem] leading-relaxed text-ink-2">{PITCH}</p>
+          <PlayerPicker players={players} setPlayers={setPlayers} />
           <div className="flex w-full flex-col gap-3 sm:w-auto sm:flex-row">
             <button type="button" onClick={onStart} className={`${BTN_GO} min-h-[56px] px-8 text-[1.125rem]`}>
               Start mission →
@@ -201,7 +231,7 @@ function Home({ onStart, onAbout, onLeaderboard }: { onStart: () => void; onAbou
               About & sources
             </button>
           </div>
-          <p className="text-small text-ink-muted">1 to 4 players on one screen · no sign-up</p>
+          <p className="text-small text-ink-muted">Everyone plays on one screen · no sign-up</p>
         </div>
         <HomeHero className="order-first mx-auto max-w-[210px] sm:max-w-[300px] lg:order-none lg:max-w-[320px]" />
       </div>
@@ -551,41 +581,55 @@ function Tree(props: {
   )
 }
 
-function GoNoGo(props: { votes: Votes; setVotes: (v: Votes) => void; choice: Choice; onBack: () => void; onLaunch: () => void }) {
-  const { votes, setVotes, choice } = props
+function GoNoGo(props: { votes: Votes; setVotes: Dispatch<SetStateAction<Votes>>; players: number; choice: Choice; onBack: () => void; onLaunch: () => void }) {
+  const { votes, setVotes, players, choice } = props
   const b = budget(choice)
-  const cast = Object.values(votes)
-  const allVoted = cast.every((v) => v !== null)
-  const goCount = cast.filter((v) => v === true).length
-  const noCount = cast.filter((v) => v === false).length
+  const roles = playerRoles(players)
+  const allVoted = votes.every((v) => v !== null)
+  const goCount = votes.filter((v) => v === true).length
+  const noCount = votes.filter((v) => v === false).length
   const anyNo = noCount > 0
+  const solo = players === 1
+  // Functional update: two players tapping at almost the same time must both be counted.
+  const vote = (i: number, v: boolean) => setVotes((prev) => prev.map((x, j) => (j === i ? v : x)))
+  const who = (i: number) => (solo ? 'You' : `Player ${i + 1}`)
   return (
     <section>
       <ScreenTitle screen="go" title="4 · Go / No-Go poll">
-        Like a real launch, every role is polled. Playing as a team? Each player votes for their role. A unanimous Go earns the full team score.
+        {solo
+          ? 'Like a real launch, the mission needs a Go. You hold all four roles, so your vote decides.'
+          : `Like a real launch, the team is polled. Each of the ${players} players votes once for the roles they hold. A unanimous Go earns the full team score.`}
       </ScreenTitle>
 
       <div className="mt-5 flex items-baseline justify-between gap-2">
-        <h2 className="text-section">Team poll</h2>
+        <h2 className="text-section">{solo ? 'Your call' : 'Team poll'}</h2>
         <span role="status" className="font-display tabular-nums text-ink-2">
-          {goCount} Go · {noCount} No-Go · {TEAM_ROLES - goCount - noCount} waiting
+          {goCount} Go · {noCount} No-Go · {players - goCount - noCount} waiting
         </span>
       </div>
-      <div className="mt-2 grid grid-cols-2 gap-2.5 sm:grid-cols-4">
-        {(Object.keys(votes) as C.Role[]).map((r) => {
-          const v = votes[r]
+      <div className={`mt-2 grid gap-2.5 ${solo ? 'max-w-sm' : players === 2 ? 'grid-cols-2 sm:max-w-xl' : players === 3 ? 'grid-cols-2 sm:grid-cols-3' : 'grid-cols-2 sm:grid-cols-4'}`}>
+        {roles.map((held, i) => {
+          const v = votes[i] ?? null
           const status = v === true ? '✓ GO' : v === false ? '✕ NO-GO' : '… waiting…'
+          const roleNames = held.map((r) => C.ROLE_LABEL[r]).join(', ')
           return (
             <section
-              key={r}
-              aria-label={`${C.ROLE_LABEL[r]}: ${v === true ? 'GO' : v === false ? 'NO-GO' : 'waiting'}`}
+              key={i}
+              aria-label={`${who(i)} (${roleNames}): ${v === true ? 'GO' : v === false ? 'NO-GO' : 'waiting'}`}
               className={`flex min-w-0 flex-col items-center gap-2 rounded-lg border-2 px-2.5 pb-2.5 pt-3.5 ${v === true ? 'border-st-success bg-space-raised' : v === false ? 'border-st-error bg-space-raised' : 'border-space-border bg-space-card'}`}
             >
-              {/* Re-keyed on each vote so the character pops once. */}
-              <span key={String(v)} className={v === null ? '' : 'motion-safe:animate-pop'}>
-                <RoleCharacter role={r} mood={v === false ? 'worried' : v === true ? 'cheer' : 'neutral'} decorative bg={v === null ? undefined : 'var(--color-space-raised)'} className="size-14" />
+              <span className="font-display text-card">{who(i)}</span>
+              {/* Re-keyed on each vote so the characters pop once. */}
+              <span key={String(v)} className={`flex flex-wrap justify-center gap-1 ${v === null ? '' : 'motion-safe:animate-pop'}`}>
+                {held.map((r) => (
+                  <RoleCharacter key={r} role={r} mood={v === false ? 'worried' : v === true ? 'cheer' : 'neutral'} decorative bg={v === null ? undefined : 'var(--color-space-raised)'} className={held.length > 2 ? 'size-10' : 'size-12'} />
+                ))}
               </span>
-              <RoleTag role={r} label={C.ROLE_LABEL[r]} />
+              <div className="flex flex-wrap justify-center gap-1">
+                {held.map((r) => (
+                  <RoleTag key={r} role={r} label={C.ROLE_LABEL[r]} />
+                ))}
+              </div>
               <span className={`font-display text-[18px] tracking-wide ${v === true ? 'text-st-success' : v === false ? 'text-st-error' : 'text-ink-2'}`}>
                 {status}
               </span>
@@ -593,8 +637,8 @@ function GoNoGo(props: { votes: Votes; setVotes: (v: Votes) => void; choice: Cho
                 <button
                   type="button"
                   aria-pressed={v === true}
-                  aria-label={`${C.ROLE_LABEL[r]} votes Go`}
-                  onClick={() => setVotes({ ...votes, [r]: true })}
+                  aria-label={`${who(i)} votes Go`}
+                  onClick={() => vote(i, true)}
                   className={`min-h-12 flex-1 rounded-md border-2 font-display transition active:scale-[.92] ${v === true ? 'border-st-success bg-st-success text-space-page' : 'border-space-border bg-space-card hover:border-st-available'}`}
                 >
                   ✓ Go
@@ -602,8 +646,8 @@ function GoNoGo(props: { votes: Votes; setVotes: (v: Votes) => void; choice: Cho
                 <button
                   type="button"
                   aria-pressed={v === false}
-                  aria-label={`${C.ROLE_LABEL[r]} votes No-Go`}
-                  onClick={() => setVotes({ ...votes, [r]: false })}
+                  aria-label={`${who(i)} votes No-Go`}
+                  onClick={() => vote(i, false)}
                   className={`min-h-12 flex-1 whitespace-nowrap rounded-md border-2 font-display transition active:scale-[.92] ${v === false ? 'border-st-error bg-st-error text-space-page' : 'border-space-border bg-space-card hover:border-st-available'}`}
                 >
                   ✕ No-Go
@@ -630,7 +674,7 @@ function GoNoGo(props: { votes: Votes; setVotes: (v: Votes) => void; choice: Cho
         )}
         {anyNo && (
           <Notice kind="error">
-            A No-Go means someone sees a problem. Go back, discuss and change the design — or launch anyway and keep only {teamPoints(goCount)} of {TEAM_POINTS_MAX} team points.
+            {solo ? 'A No-Go means you see a problem.' : 'A No-Go means someone sees a problem.'} Go back{solo ? ' and' : ', discuss and'} change the design — or launch anyway and keep only {teamPoints(goCount, players)} of {TEAM_POINTS_MAX} team points.
             <SourceChip id="GAME" />
           </Notice>
         )}
@@ -643,14 +687,14 @@ function GoNoGo(props: { votes: Votes; setVotes: (v: Votes) => void; choice: Cho
         </button>
         {anyNo ? (
           <button type="button" disabled={!allVoted} onClick={props.onLaunch} className={`flex-1 whitespace-nowrap sm:flex-none ${BTN_WARNING}`}>
-            <span aria-hidden>⚠</span> Launch anyway ({goCount} of {TEAM_ROLES} Go)
+            <span aria-hidden>⚠</span> Launch anyway ({goCount} of {players} Go)
           </button>
         ) : (
           <button
             type="button"
             disabled={!allVoted}
             onClick={props.onLaunch}
-            aria-label={allVoted ? 'Launch' : 'Launch, disabled until all four roles have voted'}
+            aria-label={allVoted ? 'Launch' : solo ? 'Launch, disabled until you vote' : 'Launch, disabled until every player has voted'}
             className={`flex-1 sm:flex-none ${BTN_PRIMARY} ${allVoted ? 'motion-safe:animate-launch-pulse' : ''}`}
           >
             🚀 Launch
@@ -661,8 +705,8 @@ function GoNoGo(props: { votes: Votes; setVotes: (v: Votes) => void; choice: Cho
   )
 }
 
-function MissionRun({ choice, goVotes, onDone }: { choice: Choice; goVotes: number; onDone: () => void }) {
-  const card = useMemo(() => evaluateMission(choice, goVotes), [choice, goVotes])
+function MissionRun({ choice, goVotes, players, onDone }: { choice: Choice; goVotes: number; players: number; onDone: () => void }) {
+  const card = useMemo(() => evaluateMission(choice, goVotes, players), [choice, goVotes, players])
   const day = useMemo(() => missionDay(choice), [choice])
   // Stable references: the film's animation loop must not restart every time this screen re-renders.
   const parts = useMemo(() => shipParts(choice), [choice])
@@ -773,8 +817,8 @@ function MissionRun({ choice, goVotes, onDone }: { choice: Choice; goVotes: numb
   )
 }
 
-function Score({ choice, goVotes, onReplay, onRevise }: { choice: Choice; goVotes: number; onReplay: () => void; onRevise: () => void }) {
-  const card = evaluateMission(choice, goVotes)
+function Score({ choice, goVotes, players, onReplay, onRevise, onHome }: { choice: Choice; goVotes: number; players: number; onReplay: () => void; onRevise: () => void; onHome: () => void }) {
+  const card = evaluateMission(choice, goVotes, players)
   const b = budget(choice)
   // The engine only says success or not; the screen explains which of the two rules failed.
   const failure = card.success ? null : b.spentM > b.totalM ? 'budget' : 'score'
@@ -818,7 +862,7 @@ function Score({ choice, goVotes, onReplay, onRevise }: { choice: Choice; goVote
         <Insight title="Biggest impact" reason={card.biggestImpact} />
         <Insight title="Lesson learned" reason={card.lesson} />
       </div>
-      {leaderboardEnabled && <SaveScore choice={choice} goVotes={goVotes} />}
+      {leaderboardEnabled && <SaveScore choice={choice} goVotes={goVotes} players={players} />}
       <details className={`${CARD} mt-4 p-3.5 text-small`}>
         <summary className="min-h-[44px] cursor-pointer content-center font-display text-card">Sources & assumptions</summary>
         <ul className="mt-2 flex flex-col gap-2 text-ink-2">
@@ -840,6 +884,9 @@ function Score({ choice, goVotes, onReplay, onRevise }: { choice: Choice; goVote
       </details>
       {/* After a failure the recommended action is to fix the design, not to start over. */}
       <div className="mt-5 flex flex-wrap justify-end gap-2.5">
+        <button type="button" onClick={onHome} className={`w-full sm:mr-auto sm:w-auto ${BTN_SECONDARY}`}>
+          <span aria-hidden>⌂</span> Home
+        </button>
         <button type="button" onClick={onRevise} className={`flex-1 sm:flex-none ${card.success ? BTN_SECONDARY : BTN_PRIMARY}`}>
           ← Try another design
         </button>

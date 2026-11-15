@@ -15,6 +15,7 @@ export interface BoardEntry {
   success: boolean
   scenario_id: string
   orbit_id: string
+  players?: number
   created_at: string
 }
 
@@ -47,8 +48,8 @@ export async function fetchBoard(scenarioId?: string): Promise<Board | null> {
 }
 
 /** The server recomputes the score from the design; only the name, the design and the votes are sent. */
-export async function saveScore(name: string, choice: Choice, goVotes: number): Promise<SaveResult> {
-  const res = await call('', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ name, choice, goVotes }) })
+export async function saveScore(name: string, choice: Choice, goVotes: number, players: number): Promise<SaveResult> {
+  const res = await call('', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ name, choice, goVotes, players }) })
   if (!res) return { ok: false, error: 'The leaderboard is unavailable right now. Your game is not affected.' }
   const body = (await res.json().catch(() => null)) as { id: number; score: number; rank: number; total: number; error?: string } | null
   if (!res.ok || !body) return { ok: false, error: body?.error ?? 'The leaderboard is unavailable right now. Your game is not affected.' }
