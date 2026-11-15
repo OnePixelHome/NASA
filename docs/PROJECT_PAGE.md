@@ -46,7 +46,7 @@ simulation and a scorecard close the loop, so players can change one choice and 
    data downlink (Ground) and launch vehicle (Launch). An option that cannot work with the choices above it is locked,
    and tapping it shows why. Four live meters track budget, mass, power and data.
 4. **Go/No-Go poll.** Every role votes. A unanimous Go earns the full team score; launching over a No-Go costs points.
-5. **Mission simulation.** A rendered film plays the player's own mission: their rocket lifts off, their spacecraft
+5. **Status: GO (mission simulation).** A rendered film plays the player's own mission: their rocket lifts off, their spacecraft
    unfolds its panels, takes a first picture, then circles a real image of the Earth for a day, dimming in Earth's
    shadow and sending data down on each pass over the ground station. A timeline and a telemetry plot show the numbers.
 6. **Scorecard.** A 0–100 score split into science return, data delivered, budget and team, plus the primary constraint,

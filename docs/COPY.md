@@ -135,7 +135,7 @@ These strings sit in the screen code. Edit only the words; leave tags, braces an
 | 4 (`GoNoGo`) | A No-Go means someone sees a problem. Go back, discuss and change the design — or launch anyway and keep only … of 15 team points. |
 | 4 (`GoNoGo`) | Team poll / … Go · … No-Go · … waiting |
 | 4 (`GoNoGo`) | ← Revise design / 🚀 Launch / ⚠ Launch anyway (… of 4 Go) |
-| 5 (`MissionRun`) | 5 · Mission simulation |
+| 5 (`MissionRun`) | 5 · Status: GO |
 | 5 (`MissionRun`) | Skip / See scorecard → |
 | 6 (`Score`) | 6 · Mission scorecard |
 | 6 (`Score`) | ✓ Mission success / ✕ Mission failed |

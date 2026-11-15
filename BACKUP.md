@@ -1,5 +1,10 @@
 # BACKUP - NASA
 
+## 2026-11-15 (PC de José) — La simulación se llama "Status: GO"
+
+- Pedido de José: el título de la pantalla 5 pasa de "5 · Mission simulation" a "5 · Status: GO" (`src/App.tsx`). Se actualizaron `docs/COPY.md`, `docs/PROJECT_PAGE.md` y `docs/REQUIREMENTS.md`; `docs/design-prompts.md` no se tocó porque registra los prompts tal como se enviaron.
+- "How to play" sigue diciendo "watch the simulation" (descripción, no nombre). Pendiente: que Belle confirme el nombre y decida si "How to play" también lo usa.
+
 ## 2026-11-15 (PC de José) — Favicon propio
 
 - `public/favicon.svg` reemplaza el rayo de la plantilla de Vite: planeta azul con tierras verdes, órbita inclinada en el ámbar de SSO y un satélite sobre la órbita, sobre el fondo `space-page`. Dibujo original, sin marcas de NASA; revisado en Edge a 200, 32 y 16 px.

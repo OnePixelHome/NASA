@@ -623,7 +623,7 @@ function MissionRun({ choice, goVotes, onDone }: { choice: Choice; goVotes: numb
   const done = film ? filmDone : step >= total
   return (
     <section>
-      <ScreenTitle screen="run" title="5 · Mission simulation" />
+      <ScreenTitle screen="run" title="5 · Status: GO" />
       <div className="mt-3 flex justify-between text-small">
         <span className="text-ink-2">Mission progress</span>
         <span className="font-display tabular-nums">
