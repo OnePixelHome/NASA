@@ -1,5 +1,10 @@
 # BACKUP - NASA
 
+## 2026-11-15 (Mac de Belle) — About: equipo, aviso de NASA y uso de SI en otro orden
+
+- Pedido de Belle: en About (`src/App.tsx`, `About`), las tres cajas del final de la columna derecha van ahora en este orden: "Team · One Pixel Home", "Not affiliated with NASA" y "Use of SI (Super Intelligence)". Antes era SI, NASA y equipo. Siguen debajo de "NASA and partner agency data and resources" (Belle eligió dejar las fuentes arriba). En celular, con una sola columna, aparecen en ese mismo orden después de las fuentes. Ningún texto cambió.
+- Verificado: 73 tests, build y lint.
+
 ## 2026-11-15 (Mac de Belle) — Presentación de 7 diapositivas
 
 - `docs/slides/`: las 7 diapositivas del pitch como PNG (1920×1080) y `Status-GO-slides.pdf`. Siguen `docs/PITCH.md`: título y equipo, el problema, para quién es, cómo funciona, la misión Polar Ice por recursos, los recursos de NASA y lo que sigue, con `statusgo.earth`. Se dibujaron con un script de Python (PIL) con la paleta del simulador y capturas tomadas de `statusgo.earth`; el script quedó en `~/Desktop/Status GO - video/6-slides/make.py`.
