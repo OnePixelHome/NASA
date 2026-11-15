@@ -1,6 +1,6 @@
 # NASA
 
-Repositorio personal y privado de Belle (`belleavm/NASA`), en `C:\Lab\Belle\NASA` (Windows). Ramas por persona/tema con PR a `main`. El proyecto explorará un juego educativo interactivo de diseño y simulación de misiones espaciales basado en el desafío Space Apps 2026. El stack y el alcance concreto todavía no están definidos.
+Repositorio público del equipo One Pixel Home (`OnePixelHome/NASA`, antes `belleavm/NASA`), en `C:\Lab\Belle\NASA` (Windows). Ramas por persona/tema con PR a `main`. El proyecto explorará un juego educativo interactivo de diseño y simulación de misiones espaciales basado en el desafío Space Apps 2026. El stack y el alcance concreto todavía no están definidos.
 
 ## Al empezar
 
@@ -11,7 +11,7 @@ Repositorio personal y privado de Belle (`belleavm/NASA`), en `C:\Lab\Belle\NASA
 
 - Stack: Vite + React 19 + TypeScript, Tailwind v4, Vitest, pnpm (juego "Status: GO", antes "Trajectory Ladder"; ver `docs/HANDOFF.md`).
 - `pnpm install`, `pnpm test` y `pnpm build` deben pasar antes de subir cambios.
-- Despliegue: cada push a `main` publica el juego en GitHub Pages (https://belleavm.github.io/NASA/) con `.github/workflows/deploy-pages.yml`.
+- Despliegue: cada push a `main` publica el juego en GitHub Pages (https://onepixelhome.github.io/NASA/) con `.github/workflows/deploy-pages.yml`.
 
 ## Reglas
 

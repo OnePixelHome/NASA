@@ -6,7 +6,7 @@ The online leaderboard is a Neon Function (`leaderboard`) running next to a Neon
   submitted design and votes with `evaluateMission()`; the client never sends a score.
 - Name rules: `src/leaderboard/name.ts` (shared with the game, tested in `name.test.ts`): 2–24 characters, letters in any
   language, digits, spaces and `. ' _ -`, plus a short English/Spanish blocklist.
-- Abuse limits: 6 saves per minute per IP, CORS limited to `https://belleavm.github.io` and local dev.
+- Abuse limits: 6 saves per minute per IP, CORS limited to `https://onepixelhome.github.io` and local dev.
 - Database: Neon project `status-go-leaderboard-use1` (`crimson-shadow-12546769`, aws-us-east-1), table `scores`.
   `DATABASE_URL` is injected by Neon; there are no secrets in this repo.
 

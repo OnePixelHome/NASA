@@ -1,4 +1,4 @@
-# Builds the game and publishes it to GitHub Pages (https://belleavm.github.io/NASA/) on every push to main.
+# Builds the game and publishes it to GitHub Pages (https://onepixelhome.github.io/NASA/) on every push to main.
 # Requires Settings → Pages → Source: "GitHub Actions".
 name: Deploy to GitHub Pages
 

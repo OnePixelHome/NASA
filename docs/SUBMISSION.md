@@ -10,8 +10,8 @@ Whoever closes an item changes its status here and adds the evidence (link or da
 
 | # | Item | Owner | Status | How to verify |
 | --- | --- | --- | --- | --- |
-| 1 | Public repository | Belle (repo owner) | ❌ | Open `github.com/belleavm/NASA` in a private browser window, signed out. It must load. Today it is private. |
-| 2 | Public demo URL (GitHub Pages, https://belleavm.github.io/NASA/) that works on a phone | José | 🟡 | Open the URL on a phone on mobile data, signed out of GitHub. Play one mission to the scorecard. |
+| 1 | Public repository | Belle (repo owner) | ✅ | `github.com/OnePixelHome/NASA` is public (moved to the One Pixel Home org on 2026-11-15). Open it in a private window, signed out, to re-check. |
+| 2 | Public demo URL (GitHub Pages, https://onepixelhome.github.io/NASA/) that works on a phone | José | 🟡 | Open the URL on a phone on mobile data, signed out of GitHub. Play one mission to the scorecard. |
 | 3 | 30-second video with English subtitles | Belle, Thais | ❌ | Length is 30 s or less. Subtitles are in English and burned in or enabled by default. The link opens signed out. |
 | 4 | All sources cited | Edgar | 🟡 | In the game: every number has a source tag and the About screen lists every source (PRs #1, #4, #7). On the project page: the "NASA data" table from `docs/PROJECT_PAGE.md` is pasted in. |
 | 5 | No NASA logos, insignia, flags or mission patches | Thais, Edgar | 🟡 | The code has none today. Re-check after the visual redesign: the game, the video, the slides, the favicon and every image. |
