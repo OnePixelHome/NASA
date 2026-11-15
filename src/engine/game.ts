@@ -1,6 +1,7 @@
 import * as P from './physics'
 import * as C from './catalog'
 import { reason, reasonSources, SOURCE_ORDER, type Reason, type SourceId } from './sources'
+import { contactPlan } from './track'
 
 export interface Choice {
   scenarioId?: string
@@ -181,10 +182,13 @@ export function downlinkCapacity(o: C.Orbit, dl: C.Downlink): { gbitPerDay: numb
       // Geometry is physics; the orbit's inclination comes from its NASA source; the station latitude is a game value.
       note: reason(`A ${fmt(lat)}° station is out of reach: ${o.short} never goes beyond ${fmt(P.maxLatitudeDeg(o.inclDeg), 1)}°.`, 'PHYS', ...orbitNasaSources(o), 'GAME'),
     }
-  const passes = dl.kind === 'polar-network' ? 10 : 4 // [GAME, verify with mentor]
-  const sec = passes * P.avgPassSec(o.altKm)
-  // Pass length is physics; the number of passes per day is a game value.
-  return { gbitPerDay: (sec * dl.rateMbps) / 1000, note: reason(`${passes} passes/day × ${fmt(P.avgPassSec(o.altKm) / 60, 1)} min each.`, 'GAME', 'PHYS') }
+  // Passes are not assumed: they come from the orbit's ground track over the station on the reference day [PHYS].
+  // The station's position and the downlink rate are game values [GAME].
+  const plan = contactPlan(o, lat, dl.stationLonDeg ?? 0)
+  return {
+    gbitPerDay: (plan.contactSec * dl.rateMbps) / 1000,
+    note: reason(`${plan.passes} passes a day over the station, ${fmt(plan.contactSec / 60)} min in contact in total.`, 'PHYS', 'GAME'),
+  }
 }
 
 function downlinkNode(o: C.Orbit, ins: C.Instrument, dl: C.Downlink): NodeState {

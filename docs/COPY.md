@@ -168,6 +168,8 @@ About screen text added with the design, in `src/engine/sources.ts` (**Belle: pl
 
 About headings, in `src/App.tsx`: What is Trajectory Ladder? / How to play / Where the numbers come from / NASA data and resources / Use of AI / Not affiliated with NASA / Team · One Pixel Home.
 
+"A day in orbit" on screen 5, in `src/ui/DayView.tsx`: A day in orbit / In sunlight / In Earth’s shadow / Always connected / Pass … of …: sending data / Waiting for the next pass / All passes done today / Battery / Delivered to Earth / Waiting on board / Shadow each lap / Path over the ground / Mission needs ±…° / Never seen from this orbit / Ground station and its range / Equator / Replay the day / Pause / Play. The one-sentence day summary and the note under it are generated there too; send wording changes to Edgar.
+
 Requirement labels, in `src/engine/game.ts` (`missionRequirements`): latitude reach / coverage / revisit, and the values Global / Regional.
 
 ## 8. Generated sentences — `src/engine/game.ts` (ask Edgar before changing)

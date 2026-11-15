@@ -1,5 +1,15 @@
 # BACKUP - NASA
 
+## 2026-11-15 (PC de Edgar) — "A day in orbit": simulación visible y pasadas por geometría (`feat/day-in-orbit`, PR sin merge)
+
+- Se hizo merge de los PR #14 (Brief y Órbita) y #15 (About, equipo y etiqueta "AI-generated"). Se detuvo la revisión automática de PRs a pedido de Edgar.
+- Pedido de Edgar: que la simulación se vea "como algo real". Nueva vista en la pantalla 5, "A day in orbit": un día de misión en 18 segundos con la traza sobre el suelo, la nave entrando y saliendo de la sombra, la batería bajando y recargando, y los datos que se acumulan a bordo y bajan en cada pasada sobre la estación. Se puede pausar y repetir; con `prefers-reduced-motion` muestra el día terminado sin animación.
+- Motor: `src/engine/track.ts` (traza sobre una Tierra que gira y contactos con la estación a 10° de elevación mínima) y `src/engine/missionDay.ts` (batería y datos segundo a segundo, con los mismos números que los candados). La vista es un gráfico de latitud y longitud, sin costas, para no sugerir nada que el modelo no calcule.
+- Cambio de regla: las pasadas por día ya no son un supuesto (4 y 10); salen de la geometría de la órbita sobre la estación. Resultado para SSO: 4 pasadas y 28 min con la estación de 35°, 11 pasadas y 93 min con la de 78°. Esto responde con física la pregunta 3 para los mentores (`docs/HANDOFF.md` §7). La longitud de cada estación es un valor del juego (`stationLonDeg` en el catálogo).
+- Efecto en el juego: la capacidad de "Daily Pass" en SSO pasa de 485 a 498 Gbit/día y la de la red polar de 1,213 a 1,674. Los candados y la prueba de balance no cambian de resultado.
+- Verificado: 55 tests (12 nuevos, entre ellos que en todo diseño viable la batería no se vacía y los datos del día se entregan), build, lint, y la vista capturada en Edge para SSO, LEO y GEO a 390 y 1280 px.
+- Pendiente: revisión de Edgar antes del merge; respuestas de los mentores (preguntas 1, 2 y 4).
+
 ## 2026-11-14 (PC de Edgar) — Paso 6 del diseño: About, equipo y etiqueta "AI-generated" (`feat/about-team`)
 
 - Se hizo merge del PR #14 (Brief y Órbita).

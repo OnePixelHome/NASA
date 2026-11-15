@@ -126,6 +126,9 @@ re-balance the catalog instead; conventional commits; one concern per PR; run `p
 1. Mission lifetime by orbit: LEO 500 km ≈ 5 yr, SSO 705 km ≈ 10 yr, GEO ≈ 15 yr (station-keeping fuel). Reasonable?
 2. Battery max depth of discharge: LEO ~30% vs GEO ~70% (cycle count). Reasonable?
 3. Ground passes per day at 500–700 km, 10° min elevation: mid-latitude station ≈ 4, polar station network ≈ 10 for SSO?
+   **Answered by geometry (Sat night):** the engine now computes passes from the ground track over the station
+   (`src/engine/track.ts`). A 35° station sees the 705 km orbit 3 to 5 times a day and a 78° station 11 to 12 times,
+   depending on the station's longitude. Still worth a mentor's sanity check, but no longer an assumption.
 4. Imaging radar practical max altitude ~1,000 km for a small mission? SSO launch penalty ~0.4 km/s (no Earth-rotation boost)?
 
 ## 8. Timeline & owners

@@ -183,11 +183,13 @@ export interface Downlink {
   kind: 'single-station' | 'polar-network' | 'continuous'
   costPerYearM: number
   stationLatDeg?: number
+  /** Station longitude [GAME]. With the start of the reference day it decides which passes happen (src/engine/track.ts). */
+  stationLonDeg?: number
 }
 
 export const DOWNLINKS: Downlink[] = [
-  { id: 'daily', name: 'Daily Pass (1 ground station)', rateMbps: 300, kind: 'single-station', costPerYearM: 2, stationLatDeg: 35, tip: "One ground antenna that talks to the spacecraft whenever it flies overhead. Simple and cheap, but contact time is short." },
-  { id: 'polar', name: 'Polar Station Network', rateMbps: 300, kind: 'polar-network', costPerYearM: 4, stationLatDeg: 78, tip: "Antennas near the pole, where satellites on polar orbits fly over on almost every lap. More contacts mean more data." },
+  { id: 'daily', name: 'Daily Pass (1 ground station)', rateMbps: 300, kind: 'single-station', costPerYearM: 2, stationLatDeg: 35, stationLonDeg: -150, tip: "One ground antenna that talks to the spacecraft whenever it flies overhead. Simple and cheap, but contact time is short." },
+  { id: 'polar', name: 'Polar Station Network', rateMbps: 300, kind: 'polar-network', costPerYearM: 4, stationLatDeg: 78, stationLonDeg: 15, tip: "Antennas near the pole, where satellites on polar orbits fly over on almost every lap. More contacts mean more data." },
   { id: 'continuous', name: 'Continuous Link', rateMbps: 150, kind: 'continuous', costPerYearM: 1, tip: "A link that never drops. It comes naturally from an orbit that hovers over one spot; lower orbits need a relay satellite to pass the signal on." },
 ]
 /** Continuous link from LEO/SSO needs a relay satellite — much more expensive per year [GAME]. */
