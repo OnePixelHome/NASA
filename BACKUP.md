@@ -1,5 +1,11 @@
 # BACKUP - NASA
 
+## 2026-11-15 (Mac de Belle) — URL pública `statusgo.earth` en la documentación
+
+- Belle indicó que el demo público queda en **https://statusgo.earth/**. Se reemplazó la URL de Azure (y dos de GitHub Pages que quedaban) en `README.md`, `CLAUDE.md`, `AGENTS.md`, `docs/PITCH.md`, `docs/PROJECT_PAGE.md`, `docs/SUBMISSION.md`, `docs/HANDOFF.md` y `docs/SUBMISSION-PLAN.md`. El host de Azure queda mencionado en `AGENTS.md`, `CLAUDE.md` y `docs/SUBMISSION.md` como respaldo. `server/handler.ts` ya aceptaba el dominio en su CORS y no se tocó.
+- **Pendiente bloqueante**: al momento de este cambio `statusgo.earth` todavía resuelve al estacionamiento de Porkbun (207.207.210.107 / .229) y no carga; el simulador responde en `https://victorious-pebble-0fcf34b10.6.azurestaticapps.net/`. Faltan los pasos de Azure y Porkbun de la entrada "Dominio `statusgo.earth`". No enviar esta URL al jurado hasta comprobar que abre en una ventana privada.
+- GitHub Pages ya no existe (`onepixelhome.github.io/NASA` da 404).
+
 ## 2026-11-15 (Mac de Belle) — Marca de agua "SI content" en lugar de "AI-generated"
 
 - Pedido de Belle: las guías de Space Apps llaman "Super Intelligence (SI)" a la IA y solo piden una marca de agua visible. La etiqueta de las ilustraciones (`AiGeneratedLabel` en `src/ui/components.tsx`) dice ahora **"SI content"** y es más discreta: texto de 10 px, sin borde ni estrella, fondo semitransparente. Aplica a todas las pantallas que la usan: arte de misión, panel de la nave, escenas, película y About.
