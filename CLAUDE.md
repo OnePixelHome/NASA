@@ -30,7 +30,8 @@ no longer used by the game.
   `MissionFilm.tsx` + `film/` (canvas film), `DayView.tsx`, `MissionScene.tsx`, `Ship.tsx`, `Crew.tsx`, `MissionArt.tsx`.
 - `src/engine/achievements.ts` — badges: `missionBadges(choice, goVotes, players)` (one mission) and
   `recordMission(log, …)` (collection on one device). `src/achievements/store.ts` keeps that log in localStorage;
-  `src/ui/Badges.tsx` draws the scorecard block and the mission log on the start page.
+  `src/ui/Badges.tsx` draws the new-badge celebration, the scorecard block and the mission log on the start page
+  (`src/achievements/useFlownMission.ts` records the mission and says which badges are new).
 - `src/leaderboard/` — `api.ts` (client, `LEADERBOARD_URL` kill switch, 6 s timeout) and `name.ts` (name rules shared
   with the server).
 - `server/` — `handler.ts` (API logic), `azure/` (Azure Functions entry + build), `schema.ts`, `README.md`;

@@ -140,6 +140,19 @@
   }
 }
 
+/* New-badge celebration (src/ui/Badges.tsx): stars fall once and fade out; the banner glows twice. */
+@keyframes badge-fall {
+  0% { opacity: 0; transform: translateY(-8vh) rotate(0deg); }
+  12% { opacity: 1; }
+  70% { opacity: 1; }
+  100% { opacity: 0; transform: translateY(104vh) rotate(300deg); }
+}
+@keyframes badge-glow {
+  0% { box-shadow: 0 0 0 0 #ffd166aa; }
+  70% { box-shadow: 0 0 0 16px #ffd16600; }
+  100% { box-shadow: 0 0 0 0 #ffd16600; }
+}
+
 /* Simulation scenes (src/ui/MissionScene.tsx) */
 @keyframes ms-lift { 0%, 30% { transform: translateY(0); } 100% { transform: translateY(-78px); } }
 @keyframes ms-flame { 0%, 25% { opacity: 0; transform: scaleY(0.2); } 35%, 100% { opacity: 1; transform: scaleY(1); } }

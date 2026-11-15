@@ -234,5 +234,5 @@ One sentence per hint, 70 characters at most (a test checks it). A number in a h
 
 Screen text in `src/ui/Badges.tsx`: Badges / This mission earned N of 9. / Badges are earned by successful missions. /
 New / Locked / N more to earn / Mission log / Mission log: N of 13 badges collected in this browser. It is kept only here
-and never sent anywhere. / Your mission log / N of 13 badges. Kept only in this browser. / Clear my log.
+and never sent anywhere. / New badge earned! / N new badges earned! / See my badges / Your mission log / N of 13 badges. Kept only in this browser. / Clear my log.
 Leaderboard row, in `src/ui/Leaderboard.tsx`: ★ N badges.

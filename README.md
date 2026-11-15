@@ -46,7 +46,7 @@ pnpm build:single  # one self-contained HTML file for quick previews
 ## Badges
 A successful mission earns badges (best instrument, all data delivered, 10% reserve kept, unanimous Go and more). They
 are worked out by the game engine from the design, the votes and the team size (`src/engine/achievements.ts`), never
-typed in. The scorecard shows them, and a mission log on the start page keeps the collection **in the player's browser
+typed in. The scorecard shows them, with a banner and a short shower of stars when a badge is new, and a mission log on the start page keeps the collection **in the player's browser
 only** (localStorage): nothing about it is sent anywhere, and "Clear my log" erases it. The leaderboard shows how many
 badges each saved mission earned; the server recomputes them from the saved design.
 
