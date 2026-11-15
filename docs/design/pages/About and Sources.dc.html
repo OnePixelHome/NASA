@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="design_doc_mode" content="canvas">
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#070B1C;color:#F2F4FF;font-family:"Atkinson Hyperlegible",system-ui,sans-serif;}
+a{color:#62B4FF;} a:hover{color:#F2F4FF;}
+</style>
+</helmet>
+<section id="mobile" style="background:#070B1C;box-sizing:border-box;width:max-content;min-width:100%;display:flex;flex-direction:column;gap:24px;padding:48px;">
+<header style="display:flex;flex-direction:column;gap:8px;max-width:900px;">
+<span style="font:700 12px/1.2 'Atkinson Hyperlegible';letter-spacing:.12em;text-transform:uppercase;color:#969FCC;">About &amp; sources · 390 px</span>
+<h1 style="margin:0;font:600 40px/1.1 Fredoka,sans-serif;">About &amp; sources</h1>
+<p style="margin:0;font-size:17px;line-height:1.5;color:#C3CAEE;">One scroll shown as three 844 px frames. React handoff: <a href="handoff/About.tsx">handoff/About.tsx</a>.</p>
+</header>
+<div style="display:flex;flex-wrap:wrap;gap:40px;align-items:flex-start;">
+<div style="display:flex;flex-direction:column;gap:12px;"><span style="align-self:flex-start;padding:4px 10px;border-radius:999px;background:#FFD166;color:#0B1026;font:700 13px 'Atkinson Hyperlegible';">Top</span><div style="width:390px;height:844px;overflow:hidden;border:1px solid #34407A;border-radius:24px;"><dc-import name="About" layout="mobile" hint-size="390px,2600px"></dc-import></div></div>
+<div style="display:flex;flex-direction:column;gap:12px;"><span style="align-self:flex-start;padding:4px 10px;border-radius:999px;background:#FFD166;color:#0B1026;font:700 13px 'Atkinson Hyperlegible';">Middle</span><div style="width:390px;height:844px;overflow:hidden;border:1px solid #34407A;border-radius:24px;"><div style="margin-top:-800px;"><dc-import name="About" layout="mobile" hint-size="390px,2600px"></dc-import></div></div></div>
+<div style="display:flex;flex-direction:column;gap:12px;"><span style="align-self:flex-start;padding:4px 10px;border-radius:999px;background:#FFD166;color:#0B1026;font:700 13px 'Atkinson Hyperlegible';">Bottom</span><div style="width:390px;height:844px;overflow:hidden;border:1px solid #34407A;border-radius:24px;display:flex;flex-direction:column;justify-content:flex-end;"><dc-import name="About" layout="mobile" hint-size="390px,2600px"></dc-import></div></div>
+</div>
+</section>
+<section id="entry" style="background:#070B1C;box-sizing:border-box;width:max-content;min-width:100%;display:flex;flex-direction:column;gap:24px;padding:48px;">
+<h2 style="margin:0;font:600 28px/1.2 Fredoka,sans-serif;">Entry point · About button in the app header</h2>
+<div style="display:flex;flex-wrap:wrap;gap:40px;align-items:flex-start;">
+<div style="display:flex;flex-direction:column;gap:12px;"><span style="align-self:flex-start;padding:4px 10px;border-radius:999px;background:#FFD166;color:#0B1026;font:700 13px 'Atkinson Hyperlegible';">On screen 2</span><div style="width:390px;height:640px;overflow:hidden;border:1px solid #34407A;border-radius:24px;background:#0B1026;"><dc-import name="OrbitPick" scenario="crop" layout="mobile" hint-size="390px,1900px"></dc-import></div></div>
+<div style="display:flex;flex-direction:column;gap:12px;"><span style="align-self:flex-start;padding:4px 10px;border-radius:999px;background:#FFD166;color:#0B1026;font:700 13px 'Atkinson Hyperlegible';">On screen 4</span><div style="width:390px;height:640px;overflow:hidden;border:1px solid #34407A;border-radius:24px;background:#0B1026;"><dc-import name="GoNoGo" preset="three" layout="mobile" hint-size="390px,1400px"></dc-import></div></div>
+<div style="display:flex;flex-direction:column;gap:12px;"><span style="align-self:flex-start;padding:4px 10px;border-radius:999px;background:#FFD166;color:#0B1026;font:700 13px 'Atkinson Hyperlegible';">AiGeneratedLabel</span><div style="display:flex;flex-direction:column;gap:12px;padding:16px;background:#151C3D;border:1px solid #34407A;border-radius:18px;">
+<dc-import name="AiGeneratedLabel" hint-size="110px,24px"></dc-import>
+<div style="position:relative;width:300px;height:170px;border-radius:12px;overflow:hidden;background:repeating-linear-gradient(135deg,#1F2852 0 10px,#26305C 10px 20px);display:flex;align-items:center;justify-content:center;"><span style="font:12px ui-monospace,Menlo,monospace;color:#C3CAEE;">AI background image</span><span style="position:absolute;right:8px;bottom:8px;"><dc-import name="AiGeneratedLabel" hint-size="110px,24px"></dc-import></span></div>
+<span style="font-size:13px;color:#C3CAEE;max-width:300px;">Ink on page-dark with a light outline, readable on light or dark images. Always bottom-right, 8 px inset.</span>
+</div></div>
+</div>
+</section>
+<section id="desktop" style="background:#070B1C;box-sizing:border-box;width:max-content;min-width:100%;display:flex;flex-direction:column;gap:16px;padding:48px;">
+<span style="align-self:flex-start;padding:4px 10px;border-radius:999px;background:#FFD166;color:#0B1026;font:700 13px 'Atkinson Hyperlegible';">About at 1280 px</span>
+<div style="align-self:flex-start;border:1px solid #34407A;border-radius:24px;overflow:hidden;"><dc-import name="About" layout="desktop" hint-size="1280px,1600px"></dc-import></div>
+<h2 style="margin:24px 0 0;font:600 28px/1.2 Fredoka,sans-serif;">React structure</h2>
+<pre style="margin:0;padding:16px;background:#151C3D;border:1px solid #34407A;border-radius:18px;overflow:auto;font:13px/1.6 ui-monospace,Menlo,monospace;color:#C3CAEE;">&lt;AppHeader onAbout active? /&gt;            every screen; "ⓘ About", 44 px
+&lt;About onBack&gt;                         fade-in 240 ms (off with reduced motion)
+  &lt;BackButton /&gt;  h1 About &amp; sources
+  h2 What is Trajectory Ladder?  · ShipSvg + 4× RoleCharacter
+  h2 How to play                  · 4 steps + roles
+  h2 Where the numbers come from  · 3 example chips
+  h2 Sources                      · SOURCES from src/engine/sources.ts (incl. S9)
+  h2 AI use                       · exact HANDOFF text + &lt;AiGeneratedLabel /&gt;
+  h2 Not affiliated with NASA
+  h2 Team · One Pixel Home        · 4× portrait + role title
+  footer MIT License · No accounts, no cookies, no analytics.
+&lt;AiGeneratedLabel /&gt;                   absolute bottom-2 right-2 inside any AI image</pre>
+</section>
+</x-dc>
+</body>
+</html>

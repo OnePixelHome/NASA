@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>
+@keyframes shipIn{0%{opacity:0;transform:translateY(-16px)}70%{opacity:1;transform:translateY(2px)}100%{transform:none}}
+@keyframes shipShake{0%,100%{transform:none}20%{transform:translateX(-5px) rotate(-2deg)}40%{transform:translateX(5px) rotate(2deg)}60%{transform:translateX(-3px)}80%{transform:translateX(2px)}}
+@media (prefers-reduced-motion: reduce){svg *{animation:none!important}}
+</style>
+</helmet>
+<svg viewBox="0 0 240 320" width="{{ w }}" height="{{ h }}" role="img" aria-label="{{ desc }}" style="display:block;overflow:visible;">
+<title>{{ desc }}</title>
+<g id="launcher" style="opacity:{{ L.op }};animation:{{ L.anim }};transform-box:fill-box;transform-origin:center;">
+<g style="display:{{ L.ghost }};"><rect x="98" y="180" width="44" height="110" rx="14" fill="none" stroke="#FF8552" stroke-width="2.5" stroke-dasharray="6 6"></rect><text x="120" y="242" text-anchor="middle" font-family="Fredoka" font-size="22" fill="#FF8552">▮</text></g>
+<g data-variant="small" style="display:{{ L.small }};animation:shipIn 420ms cubic-bezier(.3,1.3,.5,1) both;">
+<polygon points="104,176 136,176 142,190 98,190" fill="#C3CAEE" stroke="#0B1026" stroke-width="4" stroke-linejoin="round"></polygon>
+<path d="M106 270 L94 290 L106 286 Z M134 270 L146 290 L134 286 Z" fill="#FF8552" stroke="#0B1026" stroke-width="4" stroke-linejoin="round"></path>
+<rect x="106" y="190" width="28" height="90" rx="10" fill="#F2F4FF" stroke="#0B1026" stroke-width="4"></rect>
+<rect x="106" y="222" width="28" height="10" fill="#FF8552"></rect>
+<rect x="112" y="280" width="16" height="9" rx="3" fill="#1F2852" stroke="#0B1026" stroke-width="3"></rect></g>
+<g data-variant="medium" style="display:{{ L.medium }};animation:shipIn 420ms cubic-bezier(.3,1.3,.5,1) both;">
+<polygon points="100,176 140,176 146,190 94,190" fill="#C3CAEE" stroke="#0B1026" stroke-width="4" stroke-linejoin="round"></polygon>
+<path d="M100 270 L84 300 L100 294 Z M140 270 L156 300 L140 294 Z" fill="#FF8552" stroke="#0B1026" stroke-width="4" stroke-linejoin="round"></path>
+<rect x="100" y="190" width="40" height="106" rx="12" fill="#F2F4FF" stroke="#0B1026" stroke-width="4"></rect>
+<rect x="100" y="222" width="40" height="12" fill="#FF8552"></rect><rect x="100" y="244" width="40" height="6" fill="#FF8552"></rect>
+<rect x="110" y="296" width="20" height="10" rx="3" fill="#1F2852" stroke="#0B1026" stroke-width="3"></rect></g>
+<g data-variant="heavy" style="display:{{ L.heavy }};animation:shipIn 420ms cubic-bezier(.3,1.3,.5,1) both;">
+<polygon points="100,176 140,176 146,190 94,190" fill="#C3CAEE" stroke="#0B1026" stroke-width="4" stroke-linejoin="round"></polygon>
+<path d="M72 228 Q72 210 84 206 Q96 210 96 228 L96 300 L72 300 Z" fill="#F2F4FF" stroke="#0B1026" stroke-width="4" stroke-linejoin="round"></path>
+<path d="M144 228 Q144 210 156 206 Q168 210 168 228 L168 300 L144 300 Z" fill="#F2F4FF" stroke="#0B1026" stroke-width="4" stroke-linejoin="round"></path>
+<rect x="72" y="250" width="24" height="10" fill="#FF8552"></rect><rect x="144" y="250" width="24" height="10" fill="#FF8552"></rect>
+<rect x="98" y="190" width="44" height="116" rx="12" fill="#F2F4FF" stroke="#0B1026" stroke-width="4"></rect>
+<rect x="98" y="222" width="44" height="12" fill="#FF8552"></rect><rect x="98" y="244" width="44" height="6" fill="#FF8552"></rect>
+<rect x="76" y="300" width="16" height="9" rx="3" fill="#1F2852" stroke="#0B1026" stroke-width="3"></rect><rect x="148" y="300" width="16" height="9" rx="3" fill="#1F2852" stroke="#0B1026" stroke-width="3"></rect><rect x="110" y="306" width="20" height="9" rx="3" fill="#1F2852" stroke="#0B1026" stroke-width="3"></rect></g>
+<g style="display:{{ L.bad }};"><path d="M104 200 L118 222 L110 236 L126 256 L118 276" fill="none" stroke="#0B1026" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"></path><path d="M156 186 L172 214 L140 214 Z" fill="#FFB547" stroke="#0B1026" stroke-width="3.5" stroke-linejoin="round"></path><text x="156" y="210" text-anchor="middle" font-family="Fredoka" font-weight="700" font-size="16" fill="#0B1026">!</text></g>
+</g>
+<g id="power" style="opacity:{{ P.op }};animation:{{ P.anim }};transform-box:fill-box;transform-origin:center;">
+<g style="display:{{ P.ghost }};"><rect x="40" y="108" width="34" height="38" rx="8" fill="none" stroke="#62B4FF" stroke-width="2.5" stroke-dasharray="6 6"></rect><rect x="166" y="108" width="34" height="38" rx="8" fill="none" stroke="#62B4FF" stroke-width="2.5" stroke-dasharray="6 6"></rect><text x="57" y="135" text-anchor="middle" font-family="Fredoka" font-size="18" fill="#62B4FF">◆</text><text x="183" y="135" text-anchor="middle" font-family="Fredoka" font-size="18" fill="#62B4FF">◆</text></g>
+<g data-variant="standard" style="display:{{ P.small }};animation:shipIn 420ms cubic-bezier(.3,1.3,.5,1) both;">
+<rect x="72" y="122" width="22" height="8" rx="3" fill="#C3CAEE" stroke="#0B1026" stroke-width="3"></rect><rect x="146" y="122" width="22" height="8" rx="3" fill="#C3CAEE" stroke="#0B1026" stroke-width="3"></rect>
+<rect x="40" y="108" width="34" height="38" rx="6" fill="#62B4FF" stroke="#0B1026" stroke-width="4"></rect><rect x="166" y="108" width="34" height="38" rx="6" fill="#62B4FF" stroke="#0B1026" stroke-width="4"></rect>
+<path d="M57 110 V144 M42 127 H72 M183 110 V144 M168 127 H198" stroke="#0B1026" stroke-width="2.5"></path></g>
+<g data-variant="extended" style="display:{{ P.big }};animation:shipIn 420ms cubic-bezier(.3,1.3,.5,1) both;">
+<rect x="72" y="122" width="22" height="8" rx="3" fill="#C3CAEE" stroke="#0B1026" stroke-width="3"></rect><rect x="146" y="122" width="22" height="8" rx="3" fill="#C3CAEE" stroke="#0B1026" stroke-width="3"></rect>
+<rect x="6" y="102" width="68" height="50" rx="7" fill="#62B4FF" stroke="#0B1026" stroke-width="4"></rect><rect x="166" y="102" width="68" height="50" rx="7" fill="#62B4FF" stroke="#0B1026" stroke-width="4"></rect>
+<path d="M29 104 V150 M51 104 V150 M8 127 H72 M189 104 V150 M211 104 V150 M168 127 H232" stroke="#0B1026" stroke-width="2.5"></path></g>
+<g data-variant="hybrid" style="display:{{ P.hybrid }};animation:shipIn 420ms cubic-bezier(.3,1.3,.5,1) both;">
+<rect x="72" y="122" width="22" height="8" rx="3" fill="#C3CAEE" stroke="#0B1026" stroke-width="3"></rect><rect x="146" y="122" width="22" height="8" rx="3" fill="#C3CAEE" stroke="#0B1026" stroke-width="3"></rect>
+<rect x="22" y="104" width="52" height="46" rx="7" fill="#62B4FF" stroke="#0B1026" stroke-width="4"></rect><rect x="166" y="104" width="52" height="46" rx="7" fill="#62B4FF" stroke="#0B1026" stroke-width="4"></rect>
+<path d="M48 106 V148 M24 127 H72 M192 106 V148 M168 127 H216" stroke="#0B1026" stroke-width="2.5"></path>
+<rect x="100" y="158" width="40" height="18" rx="6" fill="#62B4FF" stroke="#0B1026" stroke-width="4"></rect><path d="M110 167 H118 M114 163 V171 M124 167 H131" stroke="#0B1026" stroke-width="2.5" stroke-linecap="round"></path></g>
+<g style="display:{{ P.bad }};"><path d="M16 110 L34 126 L26 136 L44 148 M196 106 L210 124 L202 132 L222 146" fill="none" stroke="#0B1026" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"></path><path d="M20 80 L36 108 L4 108 Z" fill="#FFB547" stroke="#0B1026" stroke-width="3.5" stroke-linejoin="round"></path><text x="20" y="104" text-anchor="middle" font-family="Fredoka" font-weight="700" font-size="16" fill="#0B1026">!</text></g>
+</g>
+<g id="bus">
+<rect x="92" y="96" width="56" height="64" rx="16" fill="#F2F4FF" stroke="#0B1026" stroke-width="4"></rect>
+<rect x="94" y="136" width="52" height="10" fill="#C3CAEE"></rect>
+<circle cx="120" cy="118" r="9" fill="#1F2852" stroke="#0B1026" stroke-width="3"></circle><circle cx="117" cy="115" r="2.5" fill="#F2F4FF"></circle>
+</g>
+<g id="antenna" style="opacity:{{ A.op }};animation:{{ A.anim }};transform-box:fill-box;transform-origin:center;">
+<g style="display:{{ A.ghost }};"><circle cx="176" cy="66" r="20" fill="none" stroke="#FF93B8" stroke-width="2.5" stroke-dasharray="6 6"></circle><text x="176" y="73" text-anchor="middle" font-family="Fredoka" font-size="18" fill="#FF93B8">▲</text></g>
+<g data-variant="daily" style="display:{{ A.small }};animation:shipIn 420ms cubic-bezier(.3,1.3,.5,1) both;">
+<path d="M142 100 L170 68" stroke="#0B1026" stroke-width="7" stroke-linecap="round"></path><path d="M142 100 L170 68" stroke="#C3CAEE" stroke-width="3" stroke-linecap="round"></path>
+<circle cx="173" cy="64" r="8" fill="#FF93B8" stroke="#0B1026" stroke-width="4"></circle></g>
+<g data-variant="polar" style="display:{{ A.polar }};animation:shipIn 420ms cubic-bezier(.3,1.3,.5,1) both;">
+<path d="M142 100 L164 78" stroke="#0B1026" stroke-width="7" stroke-linecap="round"></path><path d="M142 100 L164 78" stroke="#C3CAEE" stroke-width="3" stroke-linecap="round"></path>
+<path d="M150 74 Q172 96 194 58 Z" fill="#FF93B8" stroke="#0B1026" stroke-width="4" stroke-linejoin="round"></path>
+<path d="M172 76 L184 60" stroke="#0B1026" stroke-width="3" stroke-linecap="round"></path><circle cx="185" cy="58" r="4" fill="#F2F4FF" stroke="#0B1026" stroke-width="2.5"></circle></g>
+<g data-variant="relay" style="display:{{ A.relay }};animation:shipIn 420ms cubic-bezier(.3,1.3,.5,1) both;">
+<path d="M142 100 L160 82" stroke="#0B1026" stroke-width="7" stroke-linecap="round"></path><path d="M142 100 L160 82" stroke="#C3CAEE" stroke-width="3" stroke-linecap="round"></path>
+<path d="M140 76 Q174 112 212 44 Z" fill="#FF93B8" stroke="#0B1026" stroke-width="4" stroke-linejoin="round"></path>
+<path d="M166 76 Q176 70 184 62" fill="none" stroke="#0B1026" stroke-width="2.5" opacity="0.35"></path>
+<path d="M174 76 L194 50" stroke="#0B1026" stroke-width="3" stroke-linecap="round"></path><circle cx="196" cy="47" r="5" fill="#F2F4FF" stroke="#0B1026" stroke-width="2.5"></circle></g>
+<g style="display:{{ A.bad }};"><path d="M156 66 L170 78 L164 86 L180 92" fill="none" stroke="#0B1026" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"></path><path d="M214 14 L230 42 L198 42 Z" fill="#FFB547" stroke="#0B1026" stroke-width="3.5" stroke-linejoin="round"></path><text x="214" y="38" text-anchor="middle" font-family="Fredoka" font-weight="700" font-size="16" fill="#0B1026">!</text></g>
+</g>
+<g id="payload" style="opacity:{{ Y.op }};animation:{{ Y.anim }};transform-box:fill-box;transform-origin:center;">
+<g style="display:{{ Y.ghost }};"><rect x="98" y="46" width="44" height="46" rx="12" fill="none" stroke="#7FE28E" stroke-width="2.5" stroke-dasharray="6 6"></rect><text x="120" y="77" text-anchor="middle" font-family="Fredoka" font-size="20" fill="#7FE28E">◎</text></g>
+<g data-variant="camera" style="display:{{ Y.camera }};animation:shipIn 420ms cubic-bezier(.3,1.3,.5,1) both;">
+<rect x="102" y="70" width="36" height="28" rx="7" fill="#7FE28E" stroke="#0B1026" stroke-width="4"></rect>
+<circle cx="120" cy="64" r="16" fill="#1F2852" stroke="#0B1026" stroke-width="4"></circle><circle cx="120" cy="64" r="8" fill="#4FD8C8" stroke="#0B1026" stroke-width="3"></circle><circle cx="116" cy="60" r="3" fill="#F2F4FF"></circle></g>
+<g data-variant="multispectral" style="display:{{ Y.prism }};animation:shipIn 420ms cubic-bezier(.3,1.3,.5,1) both;">
+<rect x="100" y="80" width="40" height="18" rx="6" fill="#7FE28E" stroke="#0B1026" stroke-width="4"></rect>
+<path d="M120 42 L142 80 L98 80 Z" fill="#F2F4FF" stroke="#0B1026" stroke-width="4" stroke-linejoin="round"></path>
+<path d="M114 72 L120 52 M120 72 L124 58 M126 72 L128 64" stroke-width="3" stroke-linecap="round" stroke="#C29BFF"></path></g>
+<g data-variant="radar" style="display:{{ Y.radar }};animation:shipIn 420ms cubic-bezier(.3,1.3,.5,1) both;">
+<rect x="114" y="74" width="12" height="24" rx="4" fill="#7FE28E" stroke="#0B1026" stroke-width="3.5"></rect>
+<path d="M94 58 Q120 96 146 58 Z" fill="#7FE28E" stroke="#0B1026" stroke-width="4" stroke-linejoin="round"></path>
+<path d="M120 72 V48" stroke="#0B1026" stroke-width="3" stroke-linecap="round"></path><circle cx="120" cy="46" r="5" fill="#F2F4FF" stroke="#0B1026" stroke-width="2.5"></circle></g>
+<g data-variant="weather" style="display:{{ Y.weather }};animation:shipIn 420ms cubic-bezier(.3,1.3,.5,1) both;">
+<rect x="102" y="56" width="36" height="42" rx="11" fill="#7FE28E" stroke="#0B1026" stroke-width="4"></rect>
+<circle cx="120" cy="76" r="10" fill="#1F2852" stroke="#0B1026" stroke-width="3"></circle><path d="M114 78 Q120 70 126 78" fill="none" stroke="#F2F4FF" stroke-width="2.5" stroke-linecap="round"></path>
+<rect x="96" y="48" width="48" height="10" rx="5" fill="#F2F4FF" stroke="#0B1026" stroke-width="3.5"></rect></g>
+<g style="display:{{ Y.bad }};"><path d="M106 56 L118 70 L112 80 L128 92" fill="none" stroke="#0B1026" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"></path><path d="M82 30 L98 58 L66 58 Z" fill="#FFB547" stroke="#0B1026" stroke-width="3.5" stroke-linejoin="round"></path><text x="82" y="54" text-anchor="middle" font-family="Fredoka" font-weight="700" font-size="16" fill="#0B1026">!</text></g>
+</g>
+</svg>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:240,&quot;height&quot;:320},&quot;payload&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;camera&quot;,&quot;prism&quot;,&quot;radar&quot;,&quot;weather&quot;],&quot;default&quot;:&quot;radar&quot;,&quot;tsType&quot;:&quot;'camera'|'prism'|'radar'|'weather'|null&quot;},&quot;power&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;small&quot;,&quot;big&quot;,&quot;hybrid&quot;],&quot;default&quot;:&quot;big&quot;,&quot;tsType&quot;:&quot;'small'|'big'|'hybrid'|null&quot;},&quot;antenna&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;small&quot;,&quot;polar&quot;,&quot;relay&quot;],&quot;default&quot;:&quot;polar&quot;,&quot;tsType&quot;:&quot;'small'|'polar'|'relay'|null&quot;},&quot;launcher&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;small&quot;,&quot;medium&quot;,&quot;heavy&quot;],&quot;default&quot;:&quot;medium&quot;,&quot;tsType&quot;:&quot;'small'|'medium'|'heavy'|null&quot;},&quot;bad&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;payload&quot;,&quot;power&quot;,&quot;antenna&quot;,&quot;launcher&quot;],&quot;default&quot;:null,&quot;tsType&quot;:&quot;'payload'|'power'|'antenna'|'launcher'|null&quot;},&quot;badText&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;height&quot;:{&quot;editor&quot;:&quot;int&quot;,&quot;default&quot;:260,&quot;tsType&quot;:&quot;number&quot;}}">
+class Component extends DCLogic {
+  layer(val, opts, key, bad) {
+    const o = { ghost: val ? 'none' : 'inline', bad: bad === key && val ? 'inline' : 'none' };
+    opts.forEach(k => { o[k] = val === k ? 'inline' : 'none'; });
+    o.op = bad === key && val ? 0.5 : 1;
+    o.anim = bad === key && val ? 'shipShake 420ms ease-in-out 1' : 'none';
+    return o;
+  }
+  renderVals() {
+    const p = this.props, bad = p.bad ?? null;
+    const N = { camera: 'High-Res Camera', prism: 'Multispectral Imager', radar: 'Imaging Radar', weather: 'Weather Imager',
+      small: 'standard', big: 'extended', hybrid: 'solar + battery hybrid', polar: 'polar-tracking', relay: 'big relay' };
+    const parts = [
+      p.payload ? N[p.payload] + ' payload' : 'empty payload slot',
+      p.power ? N[p.power] + ' solar panels' : 'empty power slot',
+      p.antenna ? (p.antenna === 'small' ? 'small' : N[p.antenna]) + ' antenna' : 'empty antenna slot',
+      p.launcher ? p.launcher + ' rocket' : 'empty launcher slot',
+    ];
+    const h = p.height ?? 260;
+    return {
+      h, w: Math.round(h * 0.75),
+      desc: 'Spacecraft: ' + parts.join(', ') + '.' + (bad ? ' Warning: the ' + bad + ' part does not fit. ' + (p.badText || '') : ''),
+      Y: this.layer(p.payload, ['camera', 'prism', 'radar', 'weather'], 'payload', bad),
+      P: this.layer(p.power, ['small', 'big', 'hybrid'], 'power', bad),
+      A: this.layer(p.antenna, ['small', 'polar', 'relay'], 'antenna', bad),
+      L: this.layer(p.launcher, ['small', 'medium', 'heavy'], 'launcher', bad),
+    };
+  }
+}
+</script>
+</body>
+</html>

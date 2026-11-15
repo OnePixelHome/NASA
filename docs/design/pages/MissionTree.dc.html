@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
+<style>
+@keyframes flashA{0%{box-shadow:0 0 0 0 #FFD16600;background:#151C3D}30%{box-shadow:0 0 0 3px #FFD166aa;background:#1F2852}100%{box-shadow:0 0 0 0 #FFD16600;background:#151C3D}}
+@keyframes flashB{0%{box-shadow:0 0 0 0 #FFD16600;background:#151C3D}30%{box-shadow:0 0 0 3px #FFD166aa;background:#1F2852}100%{box-shadow:0 0 0 0 #FFD16600;background:#151C3D}}
+@keyframes flipA{0%{transform:perspective(600px) rotateX(0)}50%{transform:perspective(600px) rotateX(90deg)}100%{transform:perspective(600px) rotateX(0)}}
+@keyframes flipB{0%{transform:perspective(600px) rotateX(0)}50%{transform:perspective(600px) rotateX(90deg)}100%{transform:perspective(600px) rotateX(0)}}
+@keyframes spinA{to{transform:rotate(360deg)}}
+@keyframes spinB{to{transform:rotate(360deg)}}
+@keyframes bubbleIn{from{opacity:0;transform:translateY(4px) scale(.96)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion: reduce){*{animation:none!important;transition:none!important}}
+</style>
+</helmet>
+<div style="box-sizing:border-box;width:{{ frameW }};background:#0B1026;color:#F2F4FF;font-family:'Atkinson Hyperlegible',system-ui,sans-serif;display:flex;flex-direction:column;">
+<dc-import name="AppHeader" hint-size="100%,57px"></dc-import>
+<header style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px 24px;padding:{{ pad }};border-bottom:1px solid #34407A;">
+<div style="display:flex;flex-direction:column;gap:2px;min-width:0;">
+<span style="font:700 12px/1.2 'Atkinson Hyperlegible';letter-spacing:.1em;text-transform:uppercase;color:#969FCC;">Screen 3 of 6</span>
+<h1 style="margin:0;font:600 {{ titleSize }}/1.15 Fredoka,sans-serif;">Build the mission tree</h1>
+</div>
+<div style="flex:1;min-width:220px;max-width:{{ meterMax }};display:flex;flex-direction:column;gap:6px;padding:10px 12px;background:#151C3D;border:1px solid #34407A;border-radius:12px;">
+<div style="display:flex;justify-content:space-between;gap:8px;font-size:14px;"><span style="color:#C3CAEE;">Budget</span><span style="font:600 15px Fredoka;font-variant-numeric:tabular-nums;">{{ budget.text }}</span></div>
+<div style="position:relative;height:10px;border-radius:999px;background:#0B1026;"><div style="height:100%;width:{{ budget.pct }};border-radius:999px;background:{{ budget.color }};transition:width 220ms cubic-bezier(.3,1.3,.5,1);"></div><span style="position:absolute;top:-3px;left:{{ budget.warn }};width:2px;height:16px;background:#969FCC;"></span></div>
+<span style="font:700 12px 'Atkinson Hyperlegible';color:{{ budget.color }};">{{ budget.status }}</span>
+</div>
+</header>
+<div style="display:grid;grid-template-columns:{{ cols }};gap:{{ gap }};padding:{{ pad }};align-items:start;">
+<aside aria-label="Your spacecraft" style="position:sticky;top:0;z-index:2;display:flex;flex-direction:{{ shipDir }};align-items:center;flex-wrap:wrap;gap:16px;padding:12px;background:#151C3D;border:1px solid #34407A;border-radius:18px;box-shadow:0 2px 0 #0006, 0 8px 24px #0005;">
+<sc-if value="{{ coachShip }}" hint-placeholder-val="{{ false }}">
+<div role="dialog" aria-modal="false" aria-labelledby="coach-text" style="position:relative;display:flex;flex-direction:column;gap:10px;width:100%;box-sizing:border-box;padding:12px 14px;background:#F2F4FF;color:#0B1026;border-radius:12px;box-shadow:0 0 0 3px #FFD166, 0 10px 28px #0008;animation:bubbleIn 220ms cubic-bezier(.3,1.3,.5,1) both;">
+<span style="position:absolute;left:28px;bottom:-7px;width:14px;height:14px;background:#F2F4FF;transform:rotate(45deg);"></span>
+<span style="position:relative;font:700 12px 'Atkinson Hyperlegible';color:#34407A;font-variant-numeric:tabular-nums;">Tip {{ coach.n }} of 3</span>
+<p id="coach-text" style="position:relative;margin:0;font:600 16px/1.35 Fredoka,sans-serif;">{{ coach.text }}</p>
+<div style="position:relative;display:flex;justify-content:flex-end;gap:8px;">
+<button type="button" onClick="{{ coachSkip }}" style="all:unset;box-sizing:border-box;min-height:44px;padding:0 14px;display:flex;align-items:center;border-radius:999px;border:2px solid #34407A;color:#0B1026;font:600 15px Fredoka;cursor:pointer;" style-focus="outline:3px solid #0B1026;outline-offset:2px;">Skip</button>
+<button type="button" onClick="{{ coachNext }}" style="all:unset;box-sizing:border-box;min-height:44px;padding:0 18px;display:flex;align-items:center;border-radius:999px;background:#0B1026;color:#F2F4FF;font:600 15px Fredoka;cursor:pointer;" style-focus="outline:3px solid #FFD166;outline-offset:2px;">{{ coach.next }}</button>
+</div>
+</div>
+</sc-if>
+<dc-import name="Ship" payload="{{ ship.payload }}" power="{{ ship.power }}" antenna="{{ ship.antenna }}" launcher="{{ ship.launcher }}" bad="{{ ship.bad }}" bad-text="{{ ship.badText }}" height="{{ shipH }}" hint-size="120px,160px"></dc-import>
+<div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:6px;width:100%;">
+<span style="font:600 15px Fredoka;color:#F2F4FF;font-variant-numeric:tabular-nums;">{{ partsCount }}</span>
+<sc-for list="{{ parts }}" as="pt" hint-placeholder-count="4">
+<div style="display:flex;align-items:center;gap:6px;font-size:13px;line-height:1.3;color:{{ pt.textColor }};"><span style="width:16px;text-align:center;color:{{ pt.color }};">{{ pt.icon }}</span><span style="min-width:0;">{{ pt.text }}</span></div>
+</sc-for>
+<sc-if value="{{ shipWarn }}" hint-placeholder-val="{{ false }}"><span role="status" style="font:700 12px/1.35 'Atkinson Hyperlegible';color:#FFB547;">{{ shipWarn }}</span></sc-if>
+</div>
+</aside>
+<div id="ladder" style="display:flex;flex-direction:column;gap:12px;min-width:0;">
+<button type="button" onClick="{{ changeOrbit }}" aria-label="{{ orbit.aria }}" style="all:unset;box-sizing:border-box;align-self:flex-start;display:flex;align-items:center;gap:10px;min-height:44px;padding:6px 14px 6px 6px;border-radius:999px;border:2px solid {{ orbit.color }};background:#151C3D;cursor:pointer;" style-focus="outline:3px solid #F2F4FF;outline-offset:2px;">
+<span style="width:32px;height:32px;display:flex;align-items:center;justify-content:center;animation:{{ orbitAnim }};">
+<svg viewBox="0 0 32 32" width="32" height="32" aria-hidden="true"><ellipse cx="16" cy="16" rx="15" ry="6" fill="none" stroke="{{ orbit.color }}" stroke-width="2.5" transform="rotate(-20 16 16)"></ellipse><circle cx="16" cy="16" r="8" fill="#62B4FF" stroke="#0B1026" stroke-width="2.5"></circle><path d="M11 14 Q14 12 16 15 Q18 18 21 16" fill="none" stroke="#7FE28E" stroke-width="2.5" stroke-linecap="round"></path><circle cx="29" cy="11" r="3" fill="{{ orbit.color }}" stroke="#0B1026" stroke-width="2"></circle></svg>
+</span>
+<span style="display:flex;flex-direction:column;line-height:1.2;"><span style="font:600 16px Fredoka;color:{{ orbit.color }};white-space:nowrap;">{{ orbit.code }} · {{ orbit.name }}</span><span style="font-size:12px;color:#C3CAEE;">Orbit · tap to change</span></span>
+</button>
+<ol style="margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:12px;">
+<sc-for list="{{ steps }}" as="s" hint-placeholder-count="4">
+<li id="{{ s.domId }}" tabindex="-1" aria-label="Step {{ s.num }}: {{ s.title }}" style="display:flex;flex-direction:column;gap:12px;padding:14px;background:#151C3D;border:1px solid #34407A;border-radius:18px;opacity:{{ s.opacity }};animation:{{ s.flash }};">
+<div style="display:flex;align-items:flex-start;gap:10px;">
+<div style="flex-shrink:0;"><dc-import name="Character" role="{{ s.role }}" mood="{{ s.mood }}" size="{{ charSize }}" hint-size="44px,44px"></dc-import></div>
+<div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:4px;">
+<div style="display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:2px 8px;">
+<h2 style="margin:0;font:600 17px/1.3 Fredoka,sans-serif;white-space:nowrap;"><span style="font-variant-numeric:tabular-nums;color:#C3CAEE;">{{ s.num }} ·</span> {{ s.title }}</h2>
+<span style="font:700 12px 'Atkinson Hyperlegible';color:{{ s.color }};white-space:nowrap;">{{ s.icon }} {{ s.roleLabel }}</span>
+</div>
+<span style="font:700 13px 'Atkinson Hyperlegible';color:{{ s.statusColor }};">{{ s.statusText }}</span>
+<sc-if value="{{ s.hasBubble }}" hint-placeholder-val="{{ false }}">
+<span style="position:relative;align-self:flex-start;margin-top:4px;padding:6px 10px;background:#F2F4FF;color:#0B1026;border-radius:12px;font:700 13px/1.3 'Atkinson Hyperlegible';animation:bubbleIn 220ms cubic-bezier(.3,1.3,.5,1) both;"><span style="position:absolute;left:-5px;top:9px;width:10px;height:10px;background:#F2F4FF;transform:rotate(45deg);"></span><span style="position:relative;">{{ s.bubble }}</span></span>
+</sc-if>
+</div>
+</div>
+<sc-if value="{{ s.showCoach }}" hint-placeholder-val="{{ false }}">
+<div role="dialog" aria-modal="false" aria-labelledby="coach-text" style="position:relative;display:flex;flex-direction:column;gap:10px;width:100%;box-sizing:border-box;padding:12px 14px;background:#F2F4FF;color:#0B1026;border-radius:12px;box-shadow:0 0 0 3px #FFD166, 0 10px 28px #0008;animation:bubbleIn 220ms cubic-bezier(.3,1.3,.5,1) both;">
+<span style="position:absolute;left:28px;bottom:-7px;width:14px;height:14px;background:#F2F4FF;transform:rotate(45deg);"></span>
+<span style="position:relative;font:700 12px 'Atkinson Hyperlegible';color:#34407A;font-variant-numeric:tabular-nums;">Tip {{ coach.n }} of 3</span>
+<p id="coach-text" style="position:relative;margin:0;font:600 16px/1.35 Fredoka,sans-serif;">{{ coach.text }}</p>
+<div style="position:relative;display:flex;justify-content:flex-end;gap:8px;">
+<button type="button" onClick="{{ coachSkip }}" style="all:unset;box-sizing:border-box;min-height:44px;padding:0 14px;display:flex;align-items:center;border-radius:999px;border:2px solid #34407A;color:#0B1026;font:600 15px Fredoka;cursor:pointer;" style-focus="outline:3px solid #0B1026;outline-offset:2px;">Skip</button>
+<button type="button" onClick="{{ coachNext }}" style="all:unset;box-sizing:border-box;min-height:44px;padding:0 18px;display:flex;align-items:center;border-radius:999px;background:#0B1026;color:#F2F4FF;font:600 15px Fredoka;cursor:pointer;" style-focus="outline:3px solid #FFD166;outline-offset:2px;">{{ coach.next }}</button>
+</div>
+</div>
+</sc-if>
+<sc-if value="{{ s.deadEnd }}" hint-placeholder-val="{{ false }}">
+<div role="status" style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px;padding:12px 14px;background:#1F2852;border:2px dashed #FFB547;border-radius:12px;">
+<span style="flex:1 1 180px;font-size:14px;line-height:1.45;color:#F2F4FF;"><span aria-hidden="true" style="color:#FFB547;font-weight:700;">⚠ </span>Every option in this step is locked by an earlier choice. That happens to real teams too.</span>
+<button type="button" onClick="{{ s.onBackUp }}" style="all:unset;box-sizing:border-box;min-height:44px;padding:0 16px;display:flex;align-items:center;border-radius:999px;background:#FFD166;color:#0B1026;font:600 15px Fredoka;white-space:nowrap;cursor:pointer;" style-focus="outline:3px solid #F2F4FF;outline-offset:2px;">↑ Change the step above</button>
+</div>
+</sc-if>
+<sc-if value="{{ s.disabled }}" hint-placeholder-val="{{ false }}">
+<div aria-disabled="true" style="display:flex;align-items:center;gap:8px;min-height:44px;padding:0 12px;border:2px dashed #34407A;border-radius:12px;font-size:14px;color:#C3CAEE;">{{ s.waitCount }}</div>
+</sc-if>
+<sc-if value="{{ s.enabled }}" hint-placeholder-val="{{ true }}">
+<div style="display:grid;grid-template-columns:{{ cardCols }};gap:8px;">
+<sc-for list="{{ s.nodes }}" as="n" hint-placeholder-count="3">
+<div style="position:relative;display:flex;animation:{{ n.flip }};">
+<button type="button" onClick="{{ n.onMain }}" aria-pressed="{{ n.pressed }}" aria-expanded="{{ n.expanded }}" aria-label="{{ n.aria }}" style="all:unset;box-sizing:border-box;flex:1;display:flex;flex-direction:column;gap:4px;min-height:96px;padding:12px 12px 10px;border:{{ n.border }};border-radius:12px;background:{{ n.bg }};box-shadow:{{ n.shadow }};cursor:pointer;transition:background 120ms,border-color 120ms;" style-hover="border-color:#62B4FF;" style-focus="outline:3px solid #F2F4FF;outline-offset:2px;">
+<span style="font:600 15px/1.25 Fredoka,sans-serif;color:{{ n.nameColor }};padding-right:28px;text-wrap:pretty;">{{ n.name }}</span>
+<span style="font-size:13px;line-height:1.35;color:#C3CAEE;">{{ n.fact }}</span>
+<span style="margin-top:auto;font:700 12px/1.3 'Atkinson Hyperlegible';color:{{ n.statusColor }};">{{ n.status }}</span>
+</button>
+<sc-if value="{{ n.showWhy }}" hint-placeholder-val="{{ true }}">
+<button type="button" onClick="{{ n.onWhy }}" aria-label="{{ n.whyAria }}" aria-expanded="{{ n.expanded }}" style="all:unset;position:absolute;top:0;right:0;width:44px;height:44px;display:flex;align-items:center;justify-content:center;cursor:pointer;border-radius:12px;" style-focus="outline:3px solid #F2F4FF;outline-offset:-4px;"><span style="width:22px;height:22px;border-radius:999px;border:1.5px solid #34407A;background:#1F2852;display:flex;align-items:center;justify-content:center;font:700 13px Fredoka;color:#C3CAEE;">?</span></button>
+</sc-if>
+</div>
+</sc-for>
+</div>
+</sc-if>
+<sc-if value="{{ s.panel }}" hint-placeholder-val="{{ false }}">
+<div role="region" aria-label="{{ s.panel.title }}" style="display:flex;flex-direction:column;gap:8px;padding:14px;background:#1F2852;border:1px solid #34407A;border-radius:12px;animation:bubbleIn 220ms cubic-bezier(.3,1.3,.5,1) both;">
+<span style="font:600 16px Fredoka;color:{{ s.panel.titleColor }};">{{ s.panel.title }}</span>
+<sc-for list="{{ s.panel.reasons }}" as="r" hint-placeholder-count="1">
+<p style="margin:0;font-size:15px;line-height:1.5;color:#C3CAEE;">{{ r.text }} <span style="display:inline-flex;align-items:center;height:22px;padding:0 8px;border-radius:999px;border:1px solid #34407A;background:#151C3D;font:700 12px 'Atkinson Hyperlegible';color:#C3CAEE;vertical-align:1px;">{{ r.chip }}</span></p>
+</sc-for>
+<sc-if value="{{ s.panel.hasFix }}" hint-placeholder-val="{{ false }}"><p style="margin:0;font-size:14px;color:#F2F4FF;">To unlock: {{ s.panel.fix }}</p></sc-if>
+</div>
+</sc-if>
+</li>
+</sc-for>
+</ol>
+</div>
+</div>
+<footer style="position:sticky;bottom:0;display:flex;flex-wrap:wrap;align-items:center;justify-content:flex-end;gap:8px 16px;padding:{{ pad }};background:#0B1026;border-top:1px solid #34407A;">
+<span role="status" style="flex:1;min-width:180px;font:700 13px/1.35 'Atkinson Hyperlegible';color:{{ goNoteColor }};">{{ goNote }}</span>
+<button type="button" onClick="{{ onDone }}" disabled="{{ notDone }}" aria-label="{{ goAria }}" style="all:unset;box-sizing:border-box;min-height:52px;padding:0 24px;display:flex;align-items:center;justify-content:center;flex-grow:1;max-width:360px;border-radius:999px;background:{{ goBg }};color:{{ goColor }};border:2px solid {{ goBorder }};font:600 16px Fredoka,sans-serif;white-space:nowrap;cursor:pointer;" style-focus="outline:3px solid #F2F4FF;outline-offset:3px;">Go to Go / No-Go →</button>
+</footer>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:390,&quot;height&quot;:1400},&quot;preset&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;start&quot;,&quot;mid&quot;,&quot;complete&quot;,&quot;conflict&quot;,&quot;deadend&quot;],&quot;default&quot;:&quot;start&quot;,&quot;tsType&quot;:&quot;'start'|'mid'|'complete'|'conflict'|'deadend'&quot;},&quot;coach&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;},&quot;layout&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;mobile&quot;,&quot;desktop&quot;],&quot;default&quot;:&quot;mobile&quot;,&quot;tsType&quot;:&quot;'mobile'|'desktop'&quot;}}">
+class Component extends DCLogic {
+  static ORBITS = {
+    LEO: { code: 'LEO', name: 'Low Earth orbit', color: '#4FD8C8' },
+    SSO: { code: 'SSO', name: 'Sun-synchronous', color: '#FFB547' },
+    GEO: { code: 'GEO', name: 'Geostationary', color: '#C29BFF' },
+  };
+  // Mock data standing in for src/engine (shape: { id, name, ok, facts[], reasons[] }).
+  static TIERS = [
+    { key: 'instrument', title: 'Scientific instrument', role: 'science', roleLabel: 'Science', icon: '◎', color: '#7FE28E', layer: 'payload', nodes: [
+      { id: 'hires', name: 'High-Res Camera', facts: ['Sees 0.5 m details', '120 kg'], cost: 30, v: 'camera', reasons: [{ text: 'Sharp photos need a low, close orbit.', source: 'S1' }] },
+      { id: 'multi', name: 'Multispectral Imager', facts: ['8 colors of light', '150 kg'], cost: 35, v: 'prism', reasons: [{ text: 'Extra colors reveal crop health and water.', source: 'S2' }] },
+      { id: 'radar', name: 'Imaging Radar', facts: ['Sees through clouds', 'Needs lots of power'], cost: 50, v: 'radar', reasons: [{ text: 'Radar brings its own light, so it works at night.', source: 'S3' }] },
+      { id: 'weather', name: 'Weather Imager', facts: ['Whole-Earth views', 'Best from GEO'], cost: 40, v: 'weather', reasons: [{ text: 'Watches storms grow minute by minute.', source: 'S10' }] } ] },
+    { key: 'power', title: 'Power system', role: 'spacecraft', roleLabel: 'Spacecraft', icon: '◆', color: '#62B4FF', layer: 'power', nodes: [
+      { id: 'std', name: 'Standard', facts: ['1.5 kW', 'Lightest option'], cost: 10, v: 'small', reasons: [{ text: 'Enough for cameras and small imagers.', source: 'PHYS' }] },
+      { id: 'ext', name: 'Extended', facts: ['3 kW', 'Big panels, heavier'], cost: 20, v: 'big', reasons: [{ text: 'Bigger panels collect more sunlight.', source: 'PHYS' }] },
+      { id: 'hybrid', name: 'Solar + Battery Hybrid', facts: ['2.5 kW + battery', 'Works in shadow'], cost: 25, v: 'hybrid', reasons: [{ text: 'The battery covers the minutes in Earth’s shadow.', source: 'S6' }] } ] },
+    { key: 'downlink', title: 'Data downlink', role: 'ground', roleLabel: 'Ground', icon: '▲', color: '#FF93B8', layer: 'antenna', nodes: [
+      { id: 'daily', name: 'Daily Pass', facts: ['1 contact a day', 'Small data volume'], cost: 5, v: 'small', reasons: [{ text: 'Cheap, and fine for small images.', source: 'GAME' }] },
+      { id: 'polar', name: 'Polar Station Network', facts: ['Contact every orbit', 'Suits polar orbits'], cost: 15, v: 'polar', reasons: [{ text: 'Polar orbits pass over the poles every lap.', source: 'S6' }] },
+      { id: 'cont', name: 'Continuous Link', facts: ['Always connected', 'Big relay dish'], cost: 30, v: 'relay', reasons: [{ text: 'A relay satellite keeps the line open.', source: 'S10' }] } ] },
+    { key: 'launch', title: 'Launch vehicle', role: 'launch', roleLabel: 'Launch', icon: '▮', color: '#FF8552', layer: 'launcher', nodes: [
+      { id: 'small', name: 'Small', facts: ['Up to 500 kg', 'Lowest cost'], cost: 15, v: 'small', reasons: [{ text: 'Light ships can ride a small rocket.', source: 'PHYS' }] },
+      { id: 'medium', name: 'Medium', facts: ['Up to 3 t', 'Mid cost'], cost: 30, v: 'medium', reasons: [{ text: 'Room for big panels and dishes.', source: 'PHYS' }] },
+      { id: 'heavy', name: 'Heavy', facts: ['Up to 20 t', 'Highest cost'], cost: 60, v: 'heavy', reasons: [{ text: 'Can reach GEO directly.', source: 'S1' }] } ] },
+  ];
+  static PRESETS = {
+    start: { orbit: 'SSO', choice: {}, focus: null },
+    mid: { orbit: 'SSO', choice: { instrument: 'radar', power: 'ext' }, focus: 'power:std' },
+    complete: { orbit: 'SSO', choice: { instrument: 'radar', power: 'ext', downlink: 'polar', launch: 'medium' }, focus: null },
+    conflict: { orbit: 'SSO', choice: { instrument: 'hires', power: 'ext', downlink: 'polar', launch: 'small' }, focus: 'launch:small' },
+    deadend: { orbit: 'SSO', choice: { instrument: 'radar', power: 'hybrid', downlink: 'cont' }, focus: null, budget: 120 },
+  };
+  constructor(p) {
+    super(p);
+    const pr = Component.PRESETS[p.preset ?? 'start'] || Component.PRESETS.start;
+    this.state = { orbit: pr.orbit, choice: { ...pr.choice }, focus: pr.focus, gen: 0, pickedTier: -1, orbitGen: 0, budget: pr.budget ?? 200, coach: p.coach ? 1 : 0 };
+  }
+  componentDidMount() {
+    this.onKey = e => { if (e.key === 'Escape' && this.state.coach) this.setState({ coach: 0 }); };
+    document.addEventListener('keydown', this.onKey);
+  }
+  componentWillUnmount() { document.removeEventListener('keydown', this.onKey); }
+  spentExcept(c, tier) {
+    return Component.TIERS.reduce((s, t) => { if (t.key === tier || !c[t.key]) return s; const n = t.nodes.find(x => x.id === c[t.key]); return s + (n ? n.cost : 0); }, 0);
+  }
+  // Mock of engine "ok" — illustrative only, real rules live in src/engine.
+  lock(tier, id, c, orbit) {
+    const node = Component.TIERS.find(t => t.key === tier).nodes.find(n => n.id === id);
+    if (tier === 'launch' && id !== 'small' && this.spentExcept(c, tier) + node.cost > this.state.budget) return { text: 'This rocket costs more than the budget you have left.', source: 'GAME', fix: 'Pick a cheaper part in an earlier step.' };
+    if (tier === 'instrument' && id === 'weather' && orbit !== 'GEO') return { text: 'Weather Imager needs GEO to watch one half of Earth all day.', source: 'S10', fix: 'Change the orbit to GEO.' };
+    if (tier === 'power' && id === 'std' && c.instrument === 'radar') return { text: 'Imaging Radar uses more power than Standard can give.', source: 'PHYS', fix: 'Pick another instrument in step 1.' };
+    if (tier === 'downlink' && id === 'daily' && (c.instrument === 'radar' || c.instrument === 'multi')) return { text: 'This instrument makes more data than one pass a day can send.', source: 'S3', fix: 'Pick the High-Res Camera in step 1.' };
+    if (tier === 'downlink' && id === 'polar' && orbit === 'GEO') return { text: 'GEO ships stay over the equator, so polar stations never see them.', source: 'PHYS', fix: 'Change the orbit.' };
+    if (tier === 'launch' && id === 'small' && (c.power === 'ext' || c.power === 'hybrid' || c.downlink === 'cont')) return { text: 'Big panels or a relay dish make the ship heavier than 500 kg.', source: 'PHYS', fix: 'Pick Standard power in step 2.' };
+    return null;
+  }
+  pick(ti, id) {
+    const t = Component.TIERS[ti];
+    this.setState(s => ({ choice: { ...s.choice, [t.key]: s.choice[t.key] === id ? undefined : id }, gen: s.gen + 1, pickedTier: ti, focus: null }));
+    this.props.onPick?.(t.key, id);
+  }
+  setFocus(k) { this.setState(s => ({ focus: s.focus === k ? null : k })); this.props.onFocus?.(k); }
+  renderVals() {
+    const desk = (this.props.layout ?? 'mobile') === 'desktop';
+    const { orbit, choice, focus, gen, pickedTier, orbitGen } = this.state;
+    const T = Component.TIERS, O = Component.ORBITS[orbit];
+    const chip = { S1: 'NASA S1', S2: 'NASA S2', S3: 'NASA S3', S6: 'NASA S6', S10: 'NASA S10', PHYS: 'physics', GAME: 'illustrative' };
+    const AB = gen % 2 ? 'A' : 'B';
+    let flipIdx = 0, cost = 0, conflict = null;
+    const steps = T.map((t, ti) => {
+      const enabled = ti === 0 || !!choice[T[ti - 1].key];
+      const chosen = choice[t.key];
+      const below = gen > 0 && ti > pickedTier;
+      const nodes = t.nodes.map(n => {
+        const why = this.lock(t.key, n.id, choice, orbit);
+        const sel = chosen === n.id, bad = sel && !!why, locked = !sel && !!why;
+        if (sel) cost += n.cost;
+        if (bad && !conflict) conflict = { tier: t, node: n, why };
+        const st = bad ? 'chosen but no longer fits' : sel ? 'selected' : locked ? 'locked' : 'available';
+        const k = t.key + ':' + n.id;
+        const flip = below && locked ? 'flip' + AB + ' 420ms ease-in-out ' + (flipIdx++ * 80 + 120) + 'ms both' : 'none';
+        return {
+          ...n, k, fact: n.facts.join(' · '), aria: n.name + ': ' + st, pressed: String(sel), expanded: String(focus === k),
+          border: bad ? '2px solid #FFB547' : sel ? '2px solid #FFD166' : locked ? '2px dashed #34407A' : '2px solid #34407A',
+          bg: sel ? '#1F2852' : locked ? '#0B1026' : '#151C3D',
+          shadow: sel && !bad ? '0 0 0 2px #FFD166, 0 0 24px #FFD16655' : locked ? 'none' : '0 2px 0 #0006, 0 8px 24px #0005',
+          nameColor: locked ? '#C3CAEE' : '#F2F4FF',
+          statusColor: bad ? '#FFB547' : sel ? '#FFD166' : locked ? '#C3CAEE' : '#62B4FF',
+          status: bad ? '⚠ No longer fits — tap for why' : sel ? '◉ Selected' : locked ? '🔒 Locked — tap for why' : '○ Available',
+          flip, showWhy: !locked && !bad,
+          onMain: () => (locked || bad ? this.setFocus(k) : this.pick(ti, n.id)),
+          onWhy: () => this.setFocus(k),
+          whyAria: 'Why ' + n.name + ' works',
+          panel: focus === k ? {
+            title: bad ? '⚠ Why it no longer fits' : locked ? '⚠ Why it is locked' : '✓ Why it works',
+            titleColor: locked || bad ? '#FFB547' : '#66E39A',
+            reasons: (why ? [why] : n.reasons).map(r => ({ text: r.text, chip: chip[r.source] })),
+            fix: why ? why.fix : '', hasFix: !!why,
+          } : null,
+        };
+      });
+      const panelNode = nodes.find(n => n.panel);
+      const lockedCount = nodes.filter(n => n.status.startsWith('🔒')).length;
+      const hasBad = nodes.some(n => n.status.startsWith('⚠'));
+      const chosenName = chosen ? t.nodes.find(n => n.id === chosen).name : '';
+      const deadEnd = enabled && !chosen && nodes.every(n => n.status.startsWith('🔒'));
+      const prev = ti > 0 ? T[ti - 1] : null;
+      const bubble = deadEnd ? 'Nothing fits here. Go back and change an earlier choice.' : !enabled ? 'I’m waiting for step ' + ti + '.' : hasBad ? 'Uh-oh, our pick no longer fits!' : !chosen && lockedCount ? lockedCount + ' locked. Tap 🔒 to see why.' : !chosen ? 'Your pick, team!' : '';
+      return {
+        ...t, num: ti + 1, enabled, disabled: !enabled, nodes, panel: panelNode ? panelNode.panel : null,
+        statusText: !enabled ? 'Choose the step above first' : chosen ? (hasBad ? '⚠ ' : '✓ ') + chosenName : 'Choose one',
+        statusColor: !enabled ? '#C3CAEE' : hasBad ? '#FFB547' : chosen ? '#66E39A' : '#62B4FF',
+        bubble, hasBubble: !!bubble, deadEnd, mood: deadEnd || hasBad ? 'worried' : 'neutral', domId: 'mt-step-' + (ti + 1),
+        showCoach: (this.state.coach === 1 || this.state.coach === 2) && ti === 0,
+        onBackUp: () => { if (!prev) return; this.setFocus(prev.key + ':' + choice[prev.key]); const el = document.getElementById('mt-step-' + ti); el && el.focus(); }, waitCount: t.nodes.length + ' options waiting',
+        flash: below ? 'flash' + AB + ' 600ms ease-out ' + ((ti - pickedTier - 1) * 80) + 'ms' : 'none',
+        opacity: 1,
+      };
+    });
+    const B = this.state.budget;
+    const pct = Math.min(100, cost / B * 100);
+    const bs = cost > B ? ['#FF7070', '✕ Over budget'] : cost >= B * 0.9 ? ['#FFB547', '⚠ Close to budget'] : ['#66E39A', '✓ Within budget'];
+    const vOf = t => { const id = choice[t.key]; return id ? t.nodes.find(n => n.id === id).v : null; };
+    const done = T.every(t => choice[t.key]);
+    const count = T.filter(t => choice[t.key]).length;
+    const CO = [null, { n: 1, text: 'Tap an option to choose it.', next: 'Next' }, { n: 2, text: 'A 🔒 means something above doesn’t fit — tap it to see why.', next: 'Next' }, { n: 3, text: 'The ship builds as you choose.', next: 'Got it' }];
+    return {
+      coach: CO[this.state.coach] || CO[1], coachShip: this.state.coach === 3,
+      coachNext: () => this.setState(s => ({ coach: s.coach >= 3 ? 0 : s.coach + 1 })), coachSkip: () => this.setState({ coach: 0 }),
+      frameW: desk ? '1280px' : '390px', pad: desk ? '24px 40px' : '16px', titleSize: desk ? '40px' : '28px', meterMax: desk ? '360px' : '100%',
+      cols: desk ? '360px minmax(0,1fr)' : 'minmax(0,1fr)', gap: desk ? '32px' : '16px', shipDir: desk ? 'column' : 'row', shipH: desk ? 380 : 150,
+      cardCols: desk ? 'repeat(auto-fill,minmax(200px,1fr))' : 'repeat(2,minmax(0,1fr))', charSize: desk ? 56 : 44,
+      budget: { text: '$' + cost + 'M / $' + B + 'M', pct: pct + '%', warn: '90%', color: bs[0], status: bs[1] },
+      orbit: { ...O, aria: 'Orbit: ' + O.code + ', ' + O.name + '. Tap to change.' },
+      orbitAnim: orbitGen ? 'spin' + (orbitGen % 2 ? 'A' : 'B') + ' 600ms cubic-bezier(.3,1.3,.5,1)' : 'none',
+      changeOrbit: () => { const ks = ['LEO', 'SSO', 'GEO']; const nx = ks[(ks.indexOf(orbit) + 1) % 3]; this.setState(s => ({ orbit: nx, orbitGen: s.orbitGen + 1, gen: s.gen + 1, pickedTier: -1 })); this.props.onChangeOrbit?.(nx); },
+      ship: { payload: vOf(T[0]), power: vOf(T[1]), antenna: vOf(T[2]), launcher: vOf(T[3]), bad: conflict ? conflict.tier.layer : null, badText: conflict ? conflict.why.text : '' },
+      shipWarn: conflict ? '⚠ ' + conflict.node.name + ': ' + conflict.why.text : '',
+      partsCount: count + ' of 4 parts',
+      parts: T.map(t => { const id = choice[t.key]; const n = id && t.nodes.find(x => x.id === id); return { icon: t.icon, color: t.color, text: n ? n.name : t.roleLabel + ' · empty slot', textColor: n ? '#F2F4FF' : '#C3CAEE' }; }),
+      steps, done, notDone: !done,
+      goAria: done ? 'Go to Go / No-Go' : 'Go to Go / No-Go, disabled: choose all 4 steps first',
+      goBg: done ? '#FFD166' : '#1F2852', goColor: done ? '#0B1026' : '#C3CAEE', goBorder: done ? '#FFD166' : '#34407A',
+      goNote: done ? (conflict ? '⚠ 1 part no longer fits. Check ' + conflict.tier.title + '.' : '✓ All 4 steps chosen.') : (4 - count) + ' steps left to choose.',
+      goNoteColor: done ? (conflict ? '#FFB547' : '#66E39A') : '#C3CAEE',
+      onDone: () => done && this.props.onDone?.(),
+    };
+  }
+}
+</script>
+</body>
+</html>

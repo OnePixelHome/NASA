@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
+<style>
+@keyframes aboutIn{from{opacity:0}to{opacity:1}}
+@media (prefers-reduced-motion: reduce){*{animation:none!important}}
+</style>
+</helmet>
+<div style="box-sizing:border-box;width:{{ frameW }};background:#0B1026;color:#F2F4FF;font-family:'Atkinson Hyperlegible',system-ui,sans-serif;display:flex;flex-direction:column;animation:aboutIn 240ms ease-out both;">
+<dc-import name="AppHeader" active="{{ true }}" hint-size="100%,57px"></dc-import>
+<main style="display:flex;flex-direction:column;gap:20px;padding:{{ pad }};">
+<div style="display:flex;flex-direction:column;gap:12px;">
+<button type="button" onClick="{{ onBack }}" style="all:unset;box-sizing:border-box;align-self:flex-start;display:flex;align-items:center;min-height:44px;padding:0 16px;border-radius:999px;border:2px solid #34407A;background:#151C3D;color:#F2F4FF;font:600 15px Fredoka,sans-serif;cursor:pointer;" style-hover="border-color:#62B4FF;" style-focus="outline:3px solid #F2F4FF;outline-offset:2px;">← Back to the game</button>
+<h1 style="margin:0;font:600 {{ titleSize }}/1.15 Fredoka,sans-serif;">About &amp; sources</h1>
+</div>
+<div style="display:grid;grid-template-columns:{{ cols }};gap:{{ gap }};align-items:start;">
+<div id="left" style="display:flex;flex-direction:column;gap:16px;min-width:0;">
+<section aria-labelledby="h-what" style="display:flex;flex-direction:column;gap:12px;padding:18px;background:#151C3D;border:1px solid #34407A;border-radius:18px;">
+<h2 id="h-what" style="margin:0;font:600 22px/1.25 Fredoka,sans-serif;">What is Trajectory Ladder?</h2>
+<p style="margin:0;font-size:16px;line-height:1.55;color:#C3CAEE;text-wrap:pretty;">Design a space mission and watch every choice ripple down. The game calculates the orbit and resources your mission needs to succeed.</p>
+<div style="display:flex;align-items:flex-end;justify-content:center;gap:4px;padding-top:8px;flex-wrap:wrap;">
+<dc-import name="Character" role="science" mood="cheer" size="48" hint-size="48px,48px"></dc-import>
+<dc-import name="Character" role="spacecraft" size="48" hint-size="48px,48px"></dc-import>
+<dc-import name="Ship" payload="prism" power="small" antenna="polar" launcher="medium" height="{{ shipH }}" hint-size="105px,140px"></dc-import>
+<dc-import name="Character" role="ground" size="48" hint-size="48px,48px"></dc-import>
+<dc-import name="Character" role="launch" mood="cheer" size="48" hint-size="48px,48px"></dc-import>
+</div>
+</section>
+<section aria-labelledby="h-how" style="display:flex;flex-direction:column;gap:12px;padding:18px;background:#151C3D;border:1px solid #34407A;border-radius:18px;">
+<h2 id="h-how" style="margin:0;font:600 22px/1.25 Fredoka,sans-serif;">How to play</h2>
+<ol style="margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:10px;">
+<sc-for list="{{ steps }}" as="s" hint-placeholder-count="4">
+<li style="display:flex;gap:12px;align-items:flex-start;">
+<span aria-hidden="true" style="flex-shrink:0;width:40px;height:40px;display:flex;align-items:center;justify-content:center;border-radius:12px;background:#1F2852;border:1px solid #34407A;font:600 18px Fredoka;color:{{ s.color }};">{{ s.icon }}</span>
+<div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:2px;">
+<h3 style="margin:0;font:600 16px/1.3 Fredoka;"><span style="color:#C3CAEE;font-variant-numeric:tabular-nums;">{{ s.n }} ·</span> {{ s.title }}</h3>
+<p style="margin:0;font-size:14px;line-height:1.45;color:#C3CAEE;text-wrap:pretty;">{{ s.text }}</p>
+</div>
+</li>
+</sc-for>
+</ol>
+<div style="display:flex;flex-direction:column;gap:8px;padding:12px;background:#1F2852;border-radius:12px;">
+<p style="margin:0;font-size:14px;line-height:1.45;color:#F2F4FF;">Four roles, one for each of NASA’s four mission segments:</p>
+<div style="display:flex;flex-wrap:wrap;gap:6px 14px;">
+<sc-for list="{{ roles }}" as="r" hint-placeholder-count="4"><span style="font:700 13px 'Atkinson Hyperlegible';color:{{ r.color }};white-space:nowrap;">{{ r.icon }} {{ r.label }}</span></sc-for>
+</div>
+</div>
+</section>
+<section aria-labelledby="h-numbers" style="display:flex;flex-direction:column;gap:12px;padding:18px;background:#151C3D;border:1px solid #34407A;border-radius:18px;">
+<h2 id="h-numbers" style="margin:0;font:600 22px/1.25 Fredoka,sans-serif;">Where the numbers come from</h2>
+<p style="margin:0;font-size:15px;line-height:1.5;color:#C3CAEE;">Every number in the game carries one of three chips.</p>
+<dl style="margin:0;display:flex;flex-direction:column;gap:10px;">
+<div style="display:flex;gap:12px;align-items:flex-start;"><dt style="flex-shrink:0;width:96px;"><span style="display:inline-flex;align-items:center;height:26px;padding:0 10px;border-radius:999px;border:1px solid #34407A;background:#1F2852;font:700 12px 'Atkinson Hyperlegible';color:#C3CAEE;">NASA S1 ↗</span></dt><dd style="margin:0;font-size:14px;line-height:1.45;color:#F2F4FF;">An official NASA resource. Tap the chip to open it.</dd></div>
+<div style="display:flex;gap:12px;align-items:flex-start;"><dt style="flex-shrink:0;width:96px;"><span style="display:inline-flex;align-items:center;height:26px;padding:0 10px;border-radius:999px;border:1px dashed #34407A;font:700 12px 'Atkinson Hyperlegible';color:#C3CAEE;">physics</span></dt><dd style="margin:0;font-size:14px;line-height:1.45;color:#F2F4FF;">Standard orbital mechanics, calculated by the game.</dd></div>
+<div style="display:flex;gap:12px;align-items:flex-start;"><dt style="flex-shrink:0;width:96px;"><span style="display:inline-flex;align-items:center;height:26px;padding:0 10px;border-radius:999px;border:1px dashed #34407A;font:700 12px 'Atkinson Hyperlegible';color:#C3CAEE;">illustrative</span></dt><dd style="margin:0;font-size:14px;line-height:1.45;color:#F2F4FF;">A simplified game value, used to make an idea easy to see.</dd></div>
+</dl>
+</section>
+</div>
+<div id="right" style="display:flex;flex-direction:column;gap:16px;min-width:0;">
+<section aria-labelledby="h-sources" style="display:flex;flex-direction:column;gap:8px;padding:18px;background:#151C3D;border:1px solid #34407A;border-radius:18px;">
+<h2 id="h-sources" style="margin:0;font:600 22px/1.25 Fredoka,sans-serif;">Sources</h2>
+<ul style="margin:0;padding:0;list-style:none;display:flex;flex-direction:column;">
+<sc-for list="{{ sources }}" as="s" hint-placeholder-count="8">
+<li style="display:flex;align-items:flex-start;gap:10px;padding:8px 0;border-top:1px solid #34407A;">
+<span style="flex-shrink:0;width:84px;"><span style="display:inline-flex;align-items:center;height:24px;padding:0 9px;border-radius:999px;border:1px solid #34407A;background:#1F2852;font:700 12px 'Atkinson Hyperlegible';color:#C3CAEE;white-space:nowrap;">{{ s.chip }}</span></span>
+<sc-if value="{{ s.link }}" hint-placeholder-val="{{ true }}"><a href="{{ s.href }}" target="_blank" rel="noreferrer" aria-label="{{ s.aria }}" style="flex:1;min-width:0;min-height:44px;margin:-10px 0;display:flex;align-items:center;gap:6px;font-size:14px;line-height:1.4;color:#62B4FF;text-underline-offset:3px;border-radius:6px;" style-hover="color:#F2F4FF;" style-focus="outline:3px solid #F2F4FF;outline-offset:2px;"><span style="text-wrap:pretty;">{{ s.title }}<span aria-hidden="true"> ↗</span></span></a></sc-if>
+<sc-if value="{{ s.plain }}" hint-placeholder-val="{{ false }}"><span style="flex:1;min-width:0;font-size:14px;line-height:1.4;color:#F2F4FF;">{{ s.title }} <span style="color:#C3CAEE;">No link.</span></span></sc-if>
+</li>
+</sc-for>
+</ul>
+</section>
+<section aria-labelledby="h-ai" style="display:flex;flex-direction:column;gap:12px;padding:18px;background:#1F2852;border:2px solid #62B4FF;border-radius:18px;">
+<h2 id="h-ai" style="margin:0;display:flex;align-items:center;gap:10px;font:600 22px/1.25 Fredoka,sans-serif;"><span aria-hidden="true" style="width:32px;height:32px;display:flex;align-items:center;justify-content:center;border-radius:10px;background:#62B4FF;"><svg viewBox="0 0 12 12" width="16" height="16"><path d="M6 0 L7.4 4.6 L12 6 L7.4 7.4 L6 12 L4.6 7.4 L0 6 L4.6 4.6 Z" fill="#0B1026"></path></svg></span>AI use</h2>
+<p style="margin:0;font-size:15px;line-height:1.55;color:#F2F4FF;text-wrap:pretty;">Code scaffolding, the physics engine and documentation were drafted with Claude (Anthropic) and reviewed, tested and adapted by the team. Physics formulas are covered by automated tests; illustrative values are labelled in the game.</p>
+<p style="margin:0;font-size:15px;line-height:1.55;color:#F2F4FF;">Images marked 'AI-generated' were made with AI.</p>
+<figure style="margin:0;display:flex;flex-direction:column;gap:6px;">
+<div style="position:relative;height:120px;border-radius:12px;overflow:hidden;border:1px solid #34407A;background:repeating-linear-gradient(135deg,#151C3D 0 10px,#1A2247 10px 20px);display:flex;align-items:center;justify-content:center;">
+<span style="font:12px ui-monospace,Menlo,monospace;color:#C3CAEE;">background image</span>
+<span style="position:absolute;right:8px;bottom:8px;"><dc-import name="AiGeneratedLabel" hint-size="110px,24px"></dc-import></span>
+</div>
+<figcaption style="font-size:13px;color:#C3CAEE;">Sample: the label sits bottom-right on every AI-generated image.</figcaption>
+</figure>
+</section>
+<section aria-labelledby="h-nasa" style="display:flex;flex-direction:column;gap:8px;padding:18px;background:#151C3D;border:1px solid #34407A;border-radius:18px;">
+<h2 id="h-nasa" style="margin:0;font:600 22px/1.25 Fredoka,sans-serif;">Not affiliated with NASA</h2>
+<p style="margin:0;font-size:15px;line-height:1.55;color:#C3CAEE;text-wrap:pretty;">Trajectory Ladder is an independent project made for the NASA Space Apps Challenge 2026. It is not affiliated with or endorsed by NASA. NASA does not endorse any non-U.S. Government entity.</p>
+</section>
+<section aria-labelledby="h-team" style="display:flex;flex-direction:column;gap:12px;padding:18px;background:#151C3D;border:1px solid #34407A;border-radius:18px;">
+<h2 id="h-team" style="margin:0;font:600 22px/1.25 Fredoka,sans-serif;">Team · One Pixel Home</h2>
+<ul style="margin:0;padding:0;list-style:none;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;">
+<sc-for list="{{ team }}" as="t" hint-placeholder-count="4">
+<li style="display:flex;flex-direction:column;align-items:center;gap:6px;padding:12px 8px;background:#1F2852;border-radius:12px;text-align:center;">
+<dc-import name="Character" role="{{ t.role }}" size="52" bg="#1F2852" hint-size="52px,52px"></dc-import>
+<span style="font:600 15px Fredoka;color:#F2F4FF;">[Name]</span>
+<span style="font-size:13px;line-height:1.3;color:#C3CAEE;">{{ t.title }}</span>
+</li>
+</sc-for>
+</ul>
+</section>
+</div>
+</div>
+</main>
+<footer style="display:flex;flex-wrap:wrap;justify-content:space-between;gap:6px 16px;margin-top:20px;padding:{{ footPad }};border-top:1px solid #34407A;font-size:13px;color:#C3CAEE;">
+<span>MIT License</span>
+<span>No accounts, no cookies, no analytics.</span>
+</footer>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:390,&quot;height&quot;:2600},&quot;layout&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;mobile&quot;,&quot;desktop&quot;],&quot;default&quot;:&quot;mobile&quot;,&quot;tsType&quot;:&quot;'mobile'|'desktop'&quot;},&quot;onBack&quot;:{&quot;editor&quot;:null,&quot;tsType&quot;:&quot;() =&gt; void&quot;}}">
+class Component extends DCLogic {
+  static SOURCES = [
+    { chip: 'NASA S1', title: 'NASA Earth Fact Sheet', href: 'https://nssdc.gsfc.nasa.gov/planetary/factsheet/earthfact.html' },
+    { chip: 'NASA S2', title: 'NASA CubeSat 101', href: 'https://www.nasa.gov/wp-content/uploads/2017/03/nasa_csli_cubesat_101_508.pdf' },
+    { chip: 'NASA S3', title: 'NASA Design and Develop Science Missions', href: 'https://www.nasa.gov/wp-content/uploads/2025/04/250323-design-and-develop-science-mission.pdf' },
+    { chip: 'NASA S6', title: 'NASA Landsat 9', href: 'https://science.nasa.gov/mission/landsat-9' },
+    { chip: 'NASA S9', title: 'NASA Small Spacecraft Technology State-of-the-Art, Communications', href: 'https://www.nasa.gov/smallsat-institute/sst-soa/communications' },
+    { chip: 'NASA S10', title: 'NASA International Space Station FAQ', href: 'https://www.nasa.gov/?p=532244' },
+    { chip: 'physics', title: 'Standard orbital mechanics (Kepler, Hohmann, rocket equation).', href: '' },
+    { chip: 'illustrative', title: 'Simplified game value for educational purposes.', href: '' },
+  ];
+  renderVals() {
+    const desk = (this.props.layout ?? 'mobile') === 'desktop';
+    return {
+      frameW: desk ? '1280px' : '390px', pad: desk ? '24px 40px 0' : '16px 16px 0', titleSize: desk ? '40px' : '28px',
+      cols: desk ? 'minmax(0,1fr) minmax(0,1fr)' : 'minmax(0,1fr)', gap: desk ? '24px' : '16px', shipH: desk ? 160 : 120, footPad: desk ? '20px 40px 28px' : '16px 16px 24px',
+      steps: [
+        { n: 1, icon: '◉', color: '#7FE28E', title: 'Pick a mission', text: 'Choose a science goal. It sets what success means.' },
+        { n: 2, icon: '◯', color: '#FFB547', title: 'Choose a trajectory', text: 'Compare LEO, SSO and GEO and pick the orbit.' },
+        { n: 3, icon: '☰', color: '#62B4FF', title: 'Build the ladder', text: 'Pick instrument, power, downlink and launcher. Each choice can lock the next.' },
+        { n: 4, icon: '▲', color: '#FF8552', title: 'Vote Go / No-Go and watch the simulation', text: 'Every role must say Go. Then follow the mission and read your scorecard.' },
+      ],
+      roles: [
+        { icon: '◎', label: 'Science', color: '#7FE28E' }, { icon: '◆', label: 'Spacecraft', color: '#62B4FF' },
+        { icon: '▲', label: 'Ground', color: '#FF93B8' }, { icon: '▮', label: 'Launch', color: '#FF8552' },
+      ],
+      sources: Component.SOURCES.map(s => ({ ...s, link: !!s.href, plain: !s.href, aria: s.title + ', opens in a new tab' })),
+      team: [
+        { role: 'science', title: 'Software architect' }, { role: 'spacecraft', title: 'Full-stack developer' },
+        { role: 'ground', title: 'Product designer' }, { role: 'launch', title: 'MarTech specialist' },
+      ],
+      onBack: () => this.props.onBack?.(),
+    };
+  }
+}
+</script>
+</body>
+</html>

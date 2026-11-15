@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#0B1026;color:#F2F4FF;font-family:"Atkinson Hyperlegible",system-ui,sans-serif;}
+a{color:#62B4FF;} a:hover{color:#F2F4FF;}
+:focus-visible{outline:3px solid #F2F4FF;outline-offset:2px;}
+@media (prefers-reduced-motion: reduce){*{transition-duration:1ms!important;animation-duration:1ms!important;}}
+</style>
+</helmet>
+<main style="max-width:1280px;margin:0 auto;padding:32px 16px 64px;display:flex;flex-direction:column;gap:48px;box-sizing:border-box;">
+<header style="display:flex;flex-direction:column;gap:8px;">
+<p style="margin:0;font:700 12px/1.2 'Atkinson Hyperlegible';letter-spacing:.12em;text-transform:uppercase;color:#969FCC;">Phase 1 · Visual system</p>
+<h1 style="margin:0;font:600 40px/1.1 Fredoka,sans-serif;color:#F2F4FF;">Trajectory Ladder</h1>
+<p style="margin:0;max-width:60ch;font-size:17px;line-height:1.5;color:#C3CAEE;text-wrap:pretty;">Night-space tokens, type and base components for React 19 + Tailwind v4. Mobile first at 390 px; sections reflow up to 1280 px. Handoff files: <a href="handoff/theme.css">handoff/theme.css</a> and <a href="handoff/components.tsx">handoff/components.tsx</a>.</p>
+</header>
+
+<section id="tokens" style="display:flex;flex-direction:column;gap:16px;">
+<h2 style="margin:0;font:600 28px/1.2 Fredoka,sans-serif;">(a) Tokens</h2>
+<pre style="margin:0;padding:16px;background:#151C3D;border:1px solid #34407A;border-radius:18px;overflow:auto;max-height:340px;font:13px/1.55 ui-monospace,Menlo,monospace;color:#C3CAEE;">@theme {
+  --color-space-page:#0B1026; --color-space-card:#151C3D;
+  --color-space-raised:#1F2852; --color-space-border:#34407A;
+  --color-ink:#F2F4FF; --color-ink-2:#C3CAEE; --color-ink-muted:#969FCC;
+  --color-orbit-leo:#4FD8C8; --color-orbit-sso:#FFB547; --color-orbit-geo:#C29BFF;
+  --color-role-science:#7FE28E; --color-role-spacecraft:#62B4FF;
+  --color-role-ground:#FF93B8; --color-role-launch:#FF8552;
+  --color-st-available:#62B4FF; --color-st-selected:#FFD166; --color-st-locked:#969FCC;
+  --color-st-warning:#FFB547; --color-st-error:#FF7070; --color-st-success:#66E39A;
+  --color-focus:#F2F4FF;
+  --font-display:"Fredoka"; --font-body:"Atkinson Hyperlegible";
+  --radius-sm:8px; --radius-md:12px; --radius-lg:18px; --radius-xl:24px; --radius-pill:999px;
+  --spacing:4px;
+  --shadow-raised:0 2px 0 #0006, 0 8px 24px #0005;
+  --shadow-selected:0 0 0 2px #FFD166, 0 0 24px #FFD16655;
+  --ease-orbit:cubic-bezier(.3,1.3,.5,1);
+  --duration-fast:120ms; --duration-base:220ms; --duration-slow:420ms;
+}
+/* type scale, @lg overrides, focus + reduced-motion rules: see handoff/theme.css */</pre>
+</section>
+
+<section id="color" style="display:flex;flex-direction:column;gap:24px;">
+<h2 style="margin:0;font:600 28px/1.2 Fredoka,sans-serif;">(b) Color</h2>
+<p style="margin:0;font-size:15px;color:#C3CAEE;">Ratios are computed live against the surface each color sits on (AA: 4.5 body, 3.0 large).</p>
+<sc-for list="{{ swatchGroups }}" as="g" hint-placeholder-count="5">
+<div style="display:flex;flex-direction:column;gap:12px;">
+<h3 style="margin:0;font:600 20px/1.3 Fredoka,sans-serif;">{{ g.title }}</h3>
+<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:12px;">
+<sc-for list="{{ g.items }}" as="s" hint-placeholder-count="4">
+<div style="display:flex;flex-direction:column;border:1px solid #34407A;border-radius:12px;overflow:hidden;background:#151C3D;">
+<div style="height:56px;background:{{ s.hex }};display:flex;align-items:center;justify-content:center;font:600 22px Fredoka;color:{{ s.glyphColor }};">{{ s.glyph }}</div>
+<div style="padding:10px 12px;display:flex;flex-direction:column;gap:2px;">
+<span style="font-weight:700;font-size:15px;color:#F2F4FF;">{{ s.name }}</span>
+<span style="font:12px ui-monospace,Menlo,monospace;color:#C3CAEE;">{{ s.token }}</span>
+<span style="font:12px ui-monospace,Menlo,monospace;color:#C3CAEE;font-variant-numeric:tabular-nums;">{{ s.hex }} · {{ s.ratio }}</span>
+</div>
+</div>
+</sc-for>
+</div>
+</div>
+</sc-for>
+</section>
+
+<section id="type" style="display:flex;flex-direction:column;gap:16px;">
+<h2 style="margin:0;font:600 28px/1.2 Fredoka,sans-serif;">Typography</h2>
+<p style="margin:0;font-size:15px;color:#C3CAEE;">Display: Fredoka (rounded, titles + numbers, tabular figures). Body: Atkinson Hyperlegible. Sizes shown as mobile → desktop (≥1024 px).</p>
+<div style="display:flex;flex-direction:column;border:1px solid #34407A;border-radius:18px;background:#151C3D;overflow:hidden;">
+<div style="display:flex;flex-wrap:wrap;align-items:baseline;gap:8px 24px;padding:16px;border-bottom:1px solid #34407A;"><span style="width:130px;font:12px ui-monospace,monospace;color:#969FCC;">screen · 28→40</span><span style="font:600 28px/1.15 Fredoka;">Build your mission</span></div>
+<div style="display:flex;flex-wrap:wrap;align-items:baseline;gap:8px 24px;padding:16px;border-bottom:1px solid #34407A;"><span style="width:130px;font:12px ui-monospace,monospace;color:#969FCC;">section · 20→28</span><span style="font:600 20px/1.25 Fredoka;">Step 2 · Choose an orbit</span></div>
+<div style="display:flex;flex-wrap:wrap;align-items:baseline;gap:8px 24px;padding:16px;border-bottom:1px solid #34407A;"><span style="width:130px;font:12px ui-monospace,monospace;color:#969FCC;">card · 17→20</span><span style="font:600 17px/1.3 Fredoka;">Sun-synchronous orbit</span></div>
+<div style="display:flex;flex-wrap:wrap;align-items:baseline;gap:8px 24px;padding:16px;border-bottom:1px solid #34407A;"><span style="width:130px;font:12px ui-monospace,monospace;color:#969FCC;">body · 16→17</span><span style="flex:1;min-width:200px;font-size:16px;line-height:1.5;color:#C3CAEE;">Every choice you make here changes what is possible on the next step.</span></div>
+<div style="display:flex;flex-wrap:wrap;align-items:baseline;gap:8px 24px;padding:16px;border-bottom:1px solid #34407A;"><span style="width:130px;font:12px ui-monospace,monospace;color:#969FCC;">small · 14→15</span><span style="font-size:14px;color:#C3CAEE;">Passes over the same spot at the same local time.</span></div>
+<div style="display:flex;flex-wrap:wrap;align-items:baseline;gap:8px 24px;padding:16px;border-bottom:1px solid #34407A;"><span style="width:130px;font:12px ui-monospace,monospace;color:#969FCC;">caption · 12→13</span><span style="font:700 12px 'Atkinson Hyperlegible';color:#C3CAEE;">NASA S1 · physics · illustrative</span></div>
+<div style="display:flex;flex-wrap:wrap;align-items:baseline;gap:8px 24px;padding:16px;"><span style="width:130px;font:12px ui-monospace,monospace;color:#969FCC;">score · 48→72</span><span style="font:600 48px/1 Fredoka;font-variant-numeric:tabular-nums;">086 · 100</span></div>
+</div>
+</section>
+
+<section id="shape" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:16px;">
+<div style="display:flex;flex-direction:column;gap:12px;padding:16px;background:#151C3D;border:1px solid #34407A;border-radius:18px;">
+<h3 style="margin:0;font:600 20px Fredoka;">Radius</h3>
+<div style="display:flex;flex-wrap:wrap;gap:12px;">
+<div style="display:flex;flex-direction:column;align-items:center;gap:4px;"><div style="width:48px;height:48px;background:#1F2852;border:2px solid #34407A;border-radius:8px;"></div><span style="font:12px ui-monospace,monospace;color:#C3CAEE;">sm 8</span></div>
+<div style="display:flex;flex-direction:column;align-items:center;gap:4px;"><div style="width:48px;height:48px;background:#1F2852;border:2px solid #34407A;border-radius:12px;"></div><span style="font:12px ui-monospace,monospace;color:#C3CAEE;">md 12</span></div>
+<div style="display:flex;flex-direction:column;align-items:center;gap:4px;"><div style="width:48px;height:48px;background:#1F2852;border:2px solid #34407A;border-radius:18px;"></div><span style="font:12px ui-monospace,monospace;color:#C3CAEE;">lg 18</span></div>
+<div style="display:flex;flex-direction:column;align-items:center;gap:4px;"><div style="width:48px;height:48px;background:#1F2852;border:2px solid #34407A;border-radius:24px;"></div><span style="font:12px ui-monospace,monospace;color:#C3CAEE;">xl 24</span></div>
+<div style="display:flex;flex-direction:column;align-items:center;gap:4px;"><div style="width:72px;height:48px;background:#1F2852;border:2px solid #34407A;border-radius:999px;"></div><span style="font:12px ui-monospace,monospace;color:#C3CAEE;">pill</span></div>
+</div>
+</div>
+<div style="display:flex;flex-direction:column;gap:12px;padding:16px;background:#151C3D;border:1px solid #34407A;border-radius:18px;">
+<h3 style="margin:0;font:600 20px Fredoka;">Spacing · 4 px base</h3>
+<div style="display:flex;align-items:flex-end;gap:10px;flex-wrap:wrap;">
+<div style="display:flex;flex-direction:column;align-items:center;gap:4px;"><div style="width:4px;height:4px;background:#4FD8C8;"></div><span style="font:12px ui-monospace,monospace;color:#C3CAEE;">1·4</span></div>
+<div style="display:flex;flex-direction:column;align-items:center;gap:4px;"><div style="width:8px;height:8px;background:#4FD8C8;"></div><span style="font:12px ui-monospace,monospace;color:#C3CAEE;">2·8</span></div>
+<div style="display:flex;flex-direction:column;align-items:center;gap:4px;"><div style="width:12px;height:12px;background:#4FD8C8;"></div><span style="font:12px ui-monospace,monospace;color:#C3CAEE;">3·12</span></div>
+<div style="display:flex;flex-direction:column;align-items:center;gap:4px;"><div style="width:16px;height:16px;background:#4FD8C8;"></div><span style="font:12px ui-monospace,monospace;color:#C3CAEE;">4·16</span></div>
+<div style="display:flex;flex-direction:column;align-items:center;gap:4px;"><div style="width:24px;height:24px;background:#4FD8C8;"></div><span style="font:12px ui-monospace,monospace;color:#C3CAEE;">6·24</span></div>
+<div style="display:flex;flex-direction:column;align-items:center;gap:4px;"><div style="width:32px;height:32px;background:#4FD8C8;"></div><span style="font:12px ui-monospace,monospace;color:#C3CAEE;">8·32</span></div>
+<div style="display:flex;flex-direction:column;align-items:center;gap:4px;"><div style="width:44px;height:44px;border:2px dashed #FFD166;box-sizing:border-box;"></div><span style="font:12px ui-monospace,monospace;color:#FFD166;">touch 44</span></div>
+</div>
+</div>
+<div style="display:flex;flex-direction:column;gap:12px;padding:16px;background:#151C3D;border:1px solid #34407A;border-radius:18px;">
+<h3 style="margin:0;font:600 20px Fredoka;">Elevation, focus, motion</h3>
+<div style="display:flex;flex-wrap:wrap;gap:16px;">
+<div style="width:84px;height:56px;background:#1F2852;border-radius:12px;box-shadow:0 2px 0 #0006, 0 8px 24px #0005;display:flex;align-items:center;justify-content:center;font-size:12px;color:#C3CAEE;">raised</div>
+<div style="width:84px;height:56px;background:#1F2852;border-radius:12px;box-shadow:0 0 0 2px #FFD166, 0 0 24px #FFD16655;display:flex;align-items:center;justify-content:center;font-size:12px;color:#FFD166;">◉ selected</div>
+<div style="width:84px;height:56px;background:#1F2852;border-radius:12px;outline:3px solid #F2F4FF;outline-offset:2px;display:flex;align-items:center;justify-content:center;font-size:12px;color:#F2F4FF;">focus</div>
+</div>
+<p style="margin:0;font:13px/1.6 ui-monospace,monospace;color:#C3CAEE;">fast 120ms · base 220ms · slow 420ms<br>ease-orbit cubic-bezier(.3,1.3,.5,1)<br>reduced-motion → 1ms, no overshoot</p>
+</div>
+</section>
+
+<section id="components" style="display:flex;flex-direction:column;gap:16px;">
+<h2 style="margin:0;font:600 28px/1.2 Fredoka,sans-serif;">(c) Base components · 390 px</h2>
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,358px),1fr));gap:16px;align-items:start;">
+
+<div style="display:flex;flex-direction:column;gap:14px;padding:16px;background:#151C3D;border:1px solid #34407A;border-radius:18px;">
+<h3 style="margin:0;font:600 17px Fredoka;">Bar <span style="font:12px ui-monospace,monospace;color:#969FCC;">label, value, max=5, color</span></h3>
+<sc-for list="{{ bars }}" as="b" hint-placeholder-count="4">
+<div style="display:flex;align-items:center;gap:12px;">
+<span style="width:84px;flex-shrink:0;font-size:14px;color:#C3CAEE;">{{ b.label }}</span>
+<div style="flex:1;display:flex;gap:4px;">
+<sc-for list="{{ b.segs }}" as="sg" hint-placeholder-count="5"><span style="flex:1;height:12px;border-radius:4px;background:{{ sg.bg }};"></span></sc-for>
+</div>
+<span style="width:36px;text-align:right;font:600 17px Fredoka;font-variant-numeric:tabular-nums;">{{ b.text }}</span>
+</div>
+</sc-for>
+</div>
+
+<div style="display:flex;flex-direction:column;gap:12px;padding:16px;background:#151C3D;border:1px solid #34407A;border-radius:18px;">
+<h3 style="margin:0;font:600 17px Fredoka;">Meter <span style="font:12px ui-monospace,monospace;color:#969FCC;">ok · warn · over</span></h3>
+<sc-for list="{{ meters }}" as="m" hint-placeholder-count="3">
+<div style="display:flex;flex-direction:column;gap:6px;padding:12px;background:#1F2852;border-radius:12px;">
+<div style="display:flex;justify-content:space-between;gap:8px;font-size:14px;"><span style="color:#C3CAEE;">{{ m.label }}</span><span style="font:600 15px Fredoka;font-variant-numeric:tabular-nums;">{{ m.text }}</span></div>
+<div style="position:relative;height:12px;border-radius:999px;background:#0B1026;">
+<div style="height:100%;width:{{ m.pct }};border-radius:999px;background:{{ m.color }};"></div>
+<span style="position:absolute;top:-3px;left:{{ m.warn }};width:2px;height:18px;background:#969FCC;"></span>
+</div>
+<span style="font:700 12px 'Atkinson Hyperlegible';color:{{ m.color }};">{{ m.status }}</span>
+</div>
+</sc-for>
+</div>
+
+<div style="display:flex;flex-direction:column;gap:12px;padding:16px;background:#151C3D;border:1px solid #34407A;border-radius:18px;">
+<h3 style="margin:0;font:600 17px Fredoka;">Gauge <span style="font:12px ui-monospace,monospace;color:#969FCC;">success · fell short</span></h3>
+<div style="display:flex;justify-content:space-around;gap:12px;flex-wrap:wrap;">
+<sc-for list="{{ gauges }}" as="gg" hint-placeholder-count="2">
+<div style="display:flex;flex-direction:column;align-items:center;gap:8px;">
+<div style="position:relative;width:136px;height:136px;">
+<svg viewBox="0 0 120 120" width="136" height="136" style="transform:rotate(-90deg);"><circle cx="60" cy="60" r="52" fill="none" stroke="#1F2852" stroke-width="12"></circle><circle cx="60" cy="60" r="52" fill="none" stroke="{{ gg.color }}" stroke-width="12" stroke-linecap="round" stroke-dasharray="{{ gg.dash }}"></circle></svg>
+<span style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font:600 44px Fredoka;font-variant-numeric:tabular-nums;">{{ gg.score }}</span>
+</div>
+<span style="font:700 14px 'Atkinson Hyperlegible';color:{{ gg.color }};">{{ gg.label }}</span>
+</div>
+</sc-for>
+</div>
+</div>
+
+<div style="display:flex;flex-direction:column;gap:12px;padding:16px;background:#151C3D;border:1px solid #34407A;border-radius:18px;">
+<h3 style="margin:0;font:600 17px Fredoka;">SourceChip <span style="font:12px ui-monospace,monospace;color:#969FCC;">linked ↗ = 44 px hit area</span></h3>
+<div style="display:flex;flex-wrap:wrap;gap:4px;">
+<sc-for list="{{ chips }}" as="c" hint-placeholder-count="7">
+<sc-if value="{{ c.link }}" hint-placeholder-val="{{ true }}">
+<a href="#components" style="min-height:44px;display:inline-flex;align-items:center;text-decoration:none;border-radius:999px;">
+<span style="display:inline-flex;align-items:center;gap:4px;height:26px;padding:0 10px;border-radius:999px;border:1px solid #34407A;background:#1F2852;font:700 12px 'Atkinson Hyperlegible';color:#C3CAEE;" style-hover="color:#F2F4FF;border-color:#62B4FF;">{{ c.label }} ↗</span></a>
+</sc-if>
+<sc-if value="{{ c.static }}" hint-placeholder-val="{{ false }}">
+<span style="min-height:44px;display:inline-flex;align-items:center;"><span style="display:inline-flex;align-items:center;height:26px;padding:0 10px;border-radius:999px;border:1px dashed #34407A;background:#151C3D;font:700 12px 'Atkinson Hyperlegible';color:#C3CAEE;">{{ c.label }}</span></span>
+</sc-if>
+</sc-for>
+</div>
+<h3 style="margin:8px 0 0;font:600 17px Fredoka;">ReasonList</h3>
+<ul style="margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:10px;">
+<sc-for list="{{ reasons }}" as="r" hint-placeholder-count="3">
+<li style="display:flex;gap:8px;font-size:15px;line-height:1.5;color:#C3CAEE;"><span style="color:#969FCC;">•</span><span>{{ r.text }} <span style="display:inline-flex;align-items:center;height:22px;padding:0 8px;border-radius:999px;border:1px solid #34407A;background:#1F2852;font:700 12px 'Atkinson Hyperlegible';color:#C3CAEE;vertical-align:1px;">{{ r.chip }}</span></span></li>
+</sc-for>
+</ul>
+</div>
+
+</div>
+</section>
+
+<section id="node" style="display:flex;flex-direction:column;gap:16px;">
+<h2 style="margin:0;font:600 28px/1.2 Fredoka,sans-serif;">(d) Node card</h2>
+<p style="margin:0;font-size:15px;color:#C3CAEE;">Anatomy: name · role tag · 1–2 facts · status line. Tap the selected or locked card to toggle its panel.</p>
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:16px;align-items:start;">
+
+<div style="display:flex;flex-direction:column;gap:8px;">
+<span style="font:12px ui-monospace,monospace;color:#969FCC;">available</span>
+<button type="button" style="all:unset;box-sizing:border-box;display:flex;flex-direction:column;gap:6px;width:100%;min-height:44px;padding:16px;border:2px solid #34407A;border-radius:18px;background:#151C3D;box-shadow:0 2px 0 #0006, 0 8px 24px #0005;cursor:pointer;" style-hover="border-color:#62B4FF;" style-focus="outline:3px solid #F2F4FF;outline-offset:2px;">
+<span style="display:flex;justify-content:space-between;gap:8px;align-items:flex-start;"><span style="font:600 17px/1.3 Fredoka;color:#F2F4FF;">Low Earth orbit</span><span style="font:700 12px 'Atkinson Hyperlegible';color:#62B4FF;white-space:nowrap;">◆ Spacecraft</span></span>
+<span style="font-size:14px;line-height:1.45;color:#C3CAEE;">~500 km up · one lap every 95 min</span>
+<span style="font:700 12px 'Atkinson Hyperlegible';color:#62B4FF;">○ Available</span>
+</button>
+</div>
+
+<div style="display:flex;flex-direction:column;gap:8px;">
+<span style="font:12px ui-monospace,monospace;color:#969FCC;">focused (keyboard)</span>
+<div style="box-sizing:border-box;display:flex;flex-direction:column;gap:6px;width:100%;padding:16px;border:2px solid #34407A;border-radius:18px;background:#151C3D;outline:3px solid #F2F4FF;outline-offset:2px;">
+<span style="display:flex;justify-content:space-between;gap:8px;align-items:flex-start;"><span style="font:600 17px/1.3 Fredoka;color:#F2F4FF;">Geostationary orbit</span><span style="font:700 12px 'Atkinson Hyperlegible';color:#FF93B8;white-space:nowrap;">▲ Ground</span></span>
+<span style="font-size:14px;line-height:1.45;color:#C3CAEE;">35,786 km · stays over one spot</span>
+<span style="font:700 12px 'Atkinson Hyperlegible';color:#62B4FF;">○ Available</span>
+</div>
+</div>
+
+<div style="display:flex;flex-direction:column;gap:8px;">
+<span style="font:12px ui-monospace,monospace;color:#969FCC;">selected + “Why it works”</span>
+<button type="button" onClick="{{ toggleSelected }}" aria-pressed="true" aria-expanded="{{ selectedExpanded }}" style="all:unset;box-sizing:border-box;display:flex;flex-direction:column;gap:6px;width:100%;min-height:44px;padding:16px;border:2px solid #FFD166;border-radius:18px;background:#1F2852;box-shadow:0 0 0 2px #FFD166, 0 0 24px #FFD16655;cursor:pointer;" style-focus="outline:3px solid #F2F4FF;outline-offset:4px;">
+<span style="display:flex;justify-content:space-between;gap:8px;align-items:flex-start;"><span style="font:600 17px/1.3 Fredoka;color:#F2F4FF;">Sun-synchronous orbit</span><span style="font:700 12px 'Atkinson Hyperlegible';color:#7FE28E;white-space:nowrap;">◎ Science</span></span>
+<span style="font-size:14px;line-height:1.45;color:#C3CAEE;">~700 km · same local time every pass</span>
+<span style="font:700 12px 'Atkinson Hyperlegible';color:#FFD166;">◉ Selected · tap for why</span>
+</button>
+<sc-if value="{{ selectedOpen }}" hint-placeholder-val="{{ false }}">
+<div style="display:flex;flex-direction:column;gap:10px;padding:16px;border:1px solid #34407A;border-radius:18px;background:#1F2852;">
+<span style="font:600 17px Fredoka;color:#66E39A;">✓ Why it works</span>
+<ul style="margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:8px;">
+<sc-for list="{{ reasons }}" as="r" hint-placeholder-count="3"><li style="font-size:15px;line-height:1.5;color:#C3CAEE;">{{ r.text }} <span style="display:inline-flex;align-items:center;height:22px;padding:0 8px;border-radius:999px;border:1px solid #34407A;background:#151C3D;font:700 12px 'Atkinson Hyperlegible';color:#C3CAEE;">{{ r.chip }}</span></li></sc-for>
+</ul>
+</div>
+</sc-if>
+</div>
+
+<div style="display:flex;flex-direction:column;gap:8px;">
+<span style="font:12px ui-monospace,monospace;color:#969FCC;">locked + “Why it is locked”</span>
+<button type="button" onClick="{{ toggleLocked }}" aria-expanded="{{ lockedExpanded }}" style="all:unset;box-sizing:border-box;display:flex;flex-direction:column;gap:6px;width:100%;min-height:44px;padding:16px;border:2px dashed #34407A;border-radius:18px;background:#0B1026;cursor:pointer;" style-hover="border-color:#969FCC;" style-focus="outline:3px solid #F2F4FF;outline-offset:2px;">
+<span style="display:flex;justify-content:space-between;gap:8px;align-items:flex-start;"><span style="font:600 17px/1.3 Fredoka;color:#C3CAEE;">Heavy-lift rocket</span><span style="font:700 12px 'Atkinson Hyperlegible';color:#FF8552;white-space:nowrap;">▮ Launch</span></span>
+<span style="font-size:14px;line-height:1.45;color:#C3CAEE;">Up to 20 t to orbit · highest cost</span>
+<span style="font:700 12px 'Atkinson Hyperlegible';color:#C3CAEE;">🔒 Locked — tap for why</span>
+</button>
+<sc-if value="{{ lockedOpen }}" hint-placeholder-val="{{ true }}">
+<div style="display:flex;flex-direction:column;gap:10px;padding:16px;border:1px solid #34407A;border-radius:18px;background:#1F2852;">
+<span style="font:600 17px Fredoka;color:#FFB547;">⚠ Why it is locked</span>
+<p style="margin:0;font-size:15px;line-height:1.5;color:#C3CAEE;">Your budget step left $40M. This rocket costs more than that. <span style="display:inline-flex;align-items:center;height:22px;padding:0 8px;border-radius:999px;border:1px solid #34407A;background:#151C3D;font:700 12px 'Atkinson Hyperlegible';color:#C3CAEE;">illustrative</span></p>
+<p style="margin:0;font-size:14px;color:#F2F4FF;">To unlock: go back to <a href="#node">Step 1 · Budget</a>.</p>
+</div>
+</sc-if>
+</div>
+
+</div>
+</section>
+
+<section id="rules" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,320px),1fr));gap:16px;">
+<div style="display:flex;flex-direction:column;gap:10px;padding:16px;background:#151C3D;border:1px solid #34407A;border-radius:18px;">
+<h2 style="margin:0;font:600 20px Fredoka;color:#66E39A;">✓ Do</h2>
+<ul style="margin:0;padding-left:18px;display:flex;flex-direction:column;gap:6px;font-size:15px;line-height:1.5;color:#C3CAEE;">
+<li>Pair every color with an icon and a text label.</li>
+<li>Use Fredoka with tabular figures for every number.</li>
+<li>Keep hit areas at 44 px, even on small chips.</li>
+<li>Illustrations: flat vector, rounded shapes, thick soft outlines, token palette only.</li>
+<li>Use hand-made SVG for interface elements.</li>
+<li>Mark any AI-generated background with a visible “AI-generated” label.</li>
+</ul>
+</div>
+<div style="display:flex;flex-direction:column;gap:10px;padding:16px;background:#151C3D;border:1px solid #34407A;border-radius:18px;">
+<h2 style="margin:0;font:600 20px Fredoka;color:#FF7070;">✕ Don’t</h2>
+<ul style="margin:0;padding-left:18px;display:flex;flex-direction:column;gap:6px;font-size:15px;line-height:1.5;color:#C3CAEE;">
+<li>No NASA logos, insignias, flags or mission patches.</li>
+<li>Don’t put muted text on accent fills; use page ink (#0B1026).</li>
+<li>Don’t remove the focus ring or rely on hover alone.</li>
+<li>Don’t use AI imagery for UI, icons or characters.</li>
+<li>Don’t animate with overshoot when reduced motion is on.</li>
+</ul>
+</div>
+</section>
+</main>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = { openCard: 'locked' };
+  lum(hex) {
+    const c = [1,3,5].map(i => parseInt(hex.slice(i, i + 2), 16) / 255).map(v => v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4));
+    return 0.2126 * c[0] + 0.7152 * c[1] + 0.0722 * c[2];
+  }
+  cr(a, b) { const x = this.lum(a), y = this.lum(b); return (Math.max(x, y) + 0.05) / (Math.min(x, y) + 0.05); }
+  sw(name, token, hex, on, glyph, onLabel) {
+    const r = this.cr(hex, on);
+    return { name, token, hex, glyph: glyph || '', glyphColor: this.lum(hex) > 0.2 ? '#0B1026' : '#F2F4FF',
+      ratio: (onLabel ? onLabel + ' ' : 'on card ') + r.toFixed(1) + ':1 ' + (r >= 4.5 ? 'AA' : r >= 3 ? 'AA large' : '—') };
+  }
+  renderVals() {
+    const P = '#0B1026', C = '#151C3D', R = '#1F2852';
+    const s = (...a) => this.sw(...a);
+    const swatchGroups = [
+      { title: 'Surfaces', items: [
+        s('Page', 'space-page', P, '#F2F4FF', '', 'ink on it'),
+        s('Card', 'space-card', C, '#F2F4FF', '', 'ink on it'),
+        s('Raised', 'space-raised', R, '#F2F4FF', '', 'ink on it'),
+        s('Border', 'space-border', '#34407A', C, '', 'vs card')] },
+      { title: 'Text (worst case: on raised)', items: [
+        s('Primary', 'ink', '#F2F4FF', R, '', 'on raised'),
+        s('Secondary', 'ink-2', '#C3CAEE', R, '', 'on raised'),
+        s('Muted', 'ink-muted', '#969FCC', R, '', 'on raised')] },
+      { title: 'Orbits', items: [
+        s('LEO · low', 'orbit-leo', '#4FD8C8', C, 'L'),
+        s('SSO · sun-sync', 'orbit-sso', '#FFB547', C, 'S'),
+        s('GEO · geostationary', 'orbit-geo', '#C29BFF', C, 'G')] },
+      { title: 'Roles (always icon + label)', items: [
+        s('Science', 'role-science', '#7FE28E', C, '◎'),
+        s('Spacecraft', 'role-spacecraft', '#62B4FF', C, '◆'),
+        s('Ground', 'role-ground', '#FF93B8', C, '▲'),
+        s('Launch', 'role-launch', '#FF8552', C, '▮')] },
+      { title: 'Status (always icon + label)', items: [
+        s('Available', 'st-available', '#62B4FF', C, '○'),
+        s('Selected', 'st-selected', '#FFD166', C, '◉'),
+        s('Locked', 'st-locked', '#969FCC', C, '🔒'),
+        s('Warning', 'st-warning', '#FFB547', C, '⚠'),
+        s('Error', 'st-error', '#FF7070', C, '✕'),
+        s('Success', 'st-success', '#66E39A', C, '✓')] },
+    ];
+    const seg = (v, m, col) => Array.from({ length: m }, (_, i) => ({ bg: i < v ? col : R }));
+    const bars = [
+      { label: 'Resolution', value: 4, max: 5, color: '#4FD8C8' },
+      { label: 'Revisit', value: 2, max: 5, color: '#FFB547' },
+      { label: 'Coverage', value: 0, max: 5, color: '#C29BFF' },
+      { label: 'Data rate', value: 5, max: 5, color: '#62B4FF' },
+    ].map(b => ({ ...b, segs: seg(b.value, b.max, b.color), text: b.value + '/' + b.max }));
+    const meter = (label, value, max, unit, warnAt) => {
+      const st = value > max ? ['#FF7070', '✕ Over limit'] : value >= warnAt ? ['#FFB547', '⚠ Close to limit'] : ['#66E39A', '✓ Within limit'];
+      return { label, text: value + ' / ' + max + ' ' + unit, pct: Math.min(100, value / max * 100) + '%', warn: (warnAt / max * 100) + '%', color: st[0], status: st[1] };
+    };
+    const meters = [meter('Mass', 420, 1000, 'kg', 850), meter('Power', 880, 1000, 'W', 850), meter('Budget', 132, 120, '$M', 100)];
+    const circ = 2 * Math.PI * 52;
+    const gauge = (score, ok) => ({ score, dash: (score / 100 * circ).toFixed(1) + ' ' + circ.toFixed(1), color: ok ? '#66E39A' : '#FFB547', label: ok ? '✓ Mission success' : '⚠ Fell short' });
+    const gauges = [gauge(86, true), gauge(47, false)];
+    const chips = [
+      { label: 'NASA S1', link: true }, { label: 'NASA S2', link: true }, { label: 'NASA S3', link: true },
+      { label: 'NASA S6', link: true }, { label: 'NASA S10', link: true }, { label: 'physics', link: false }, { label: 'illustrative', link: false }].map(c => ({ ...c, static: !c.link }));
+    const reasons = [
+      { text: 'Lower orbits see the ground in more detail.', chip: 'NASA S1' },
+      { text: 'Doubling altitude roughly halves image sharpness.', chip: 'physics' },
+      { text: 'Your team picked this for weekly crop maps.', chip: 'illustrative' }];
+    const toggle = k => () => this.setState(st => ({ openCard: st.openCard === k ? null : k }));
+    return {
+      swatchGroups, bars, meters, gauges, chips, reasons,
+      lockedOpen: this.state.openCard === 'locked', selectedOpen: this.state.openCard === 'selected',
+      toggleLocked: toggle('locked'), toggleSelected: toggle('selected'),
+      lockedExpanded: String(this.state.openCard === 'locked'), selectedExpanded: String(this.state.openCard === 'selected'),
+    };
+  }
+}
+</script>
+</body>
+</html>

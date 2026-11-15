@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<header style="box-sizing:border-box;width:100%;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:6px 8px 6px 16px;background:#0B1026;border-bottom:1px solid #34407A;font-family:'Atkinson Hyperlegible',system-ui,sans-serif;">
+<span style="display:flex;align-items:center;gap:8px;min-width:0;">
+<svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M5 20 H19 M8 15 H16 M11 10 H13 M12 3 V20" stroke="#FFD166" stroke-width="2.5" stroke-linecap="round"></path></svg>
+<span style="font:600 16px Fredoka,sans-serif;color:#F2F4FF;white-space:nowrap;">Trajectory Ladder</span>
+</span>
+<button type="button" onClick="{{ onAbout }}" aria-label="About and sources" aria-current="{{ current }}" style="all:unset;box-sizing:border-box;display:flex;align-items:center;gap:6px;min-height:44px;min-width:44px;padding:0 12px;border-radius:999px;border:1px solid {{ border }};background:{{ bg }};color:#F2F4FF;font:700 14px 'Atkinson Hyperlegible';cursor:pointer;" style-hover="border-color:#62B4FF;" style-focus="outline:3px solid #F2F4FF;outline-offset:2px;">
+<span aria-hidden="true" style="width:20px;height:20px;display:flex;align-items:center;justify-content:center;border-radius:999px;border:2px solid #62B4FF;color:#62B4FF;font:700 12px Fredoka;">i</span>About</button>
+</header>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:390,&quot;height&quot;:60},&quot;active&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;},&quot;onAbout&quot;:{&quot;editor&quot;:null,&quot;tsType&quot;:&quot;() =&gt; void&quot;}}">
+class Component extends DCLogic {
+  renderVals() {
+    const on = !!this.props.active;
+    return { onAbout: () => this.props.onAbout?.(), current: on ? 'page' : 'false', bg: on ? '#1F2852' : '#151C3D', border: on ? '#62B4FF' : '#34407A' };
+  }
+}
+</script>
+</body>
+</html>

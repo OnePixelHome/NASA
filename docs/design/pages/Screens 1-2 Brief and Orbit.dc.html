@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="design_doc_mode" content="canvas">
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#070B1C;color:#F2F4FF;font-family:"Atkinson Hyperlegible",system-ui,sans-serif;}
+a{color:#62B4FF;} a:hover{color:#F2F4FF;}
+</style>
+</helmet>
+<section id="mobile" style="background:#070B1C;box-sizing:border-box;width:max-content;min-width:100%;display:flex;flex-direction:column;gap:24px;padding:48px;">
+<header style="display:flex;flex-direction:column;gap:8px;max-width:900px;">
+<span style="font:700 12px/1.2 'Atkinson Hyperlegible';letter-spacing:.12em;text-transform:uppercase;color:#969FCC;">Screens 1 and 2 · 390 px</span>
+<h1 style="margin:0;font:600 40px/1.1 Fredoka,sans-serif;">Pick your mission, choose a trajectory</h1>
+<p style="margin:0;font-size:17px;line-height:1.5;color:#C3CAEE;">Frames are live: hover or focus a mission card, tap an orbit card. React handoff: <a href="handoff/BriefOrbit.tsx">handoff/BriefOrbit.tsx</a>.</p>
+</header>
+<div style="display:flex;flex-wrap:wrap;gap:40px;align-items:flex-start;">
+<div style="display:flex;flex-direction:column;gap:12px;"><span style="align-self:flex-start;padding:4px 10px;border-radius:999px;background:#FFD166;color:#0B1026;font:700 13px 'Atkinson Hyperlegible';">1 · Brief, default</span><div style="border:1px solid #34407A;border-radius:24px;overflow:hidden;"><dc-import name="Brief" layout="mobile" hint-size="390px,1500px"></dc-import></div></div>
+<div style="display:flex;flex-direction:column;gap:12px;"><span style="align-self:flex-start;padding:4px 10px;border-radius:999px;background:#FFD166;color:#0B1026;font:700 13px 'Atkinson Hyperlegible';">2 · Orbit pick, default</span><div style="border:1px solid #34407A;border-radius:24px;overflow:hidden;"><dc-import name="OrbitPick" scenario="crop" layout="mobile" hint-size="390px,1900px"></dc-import></div></div>
+<div style="display:flex;flex-direction:column;gap:12px;"><span style="align-self:flex-start;padding:4px 10px;border-radius:999px;background:#FFD166;color:#0B1026;font:700 13px 'Atkinson Hyperlegible';">2 · SSO selected</span><div style="border:1px solid #34407A;border-radius:24px;overflow:hidden;"><dc-import name="OrbitPick" scenario="crop" selected="SSO" layout="mobile" hint-size="390px,1900px"></dc-import></div></div>
+</div>
+</section>
+<section id="desktop" style="background:#070B1C;box-sizing:border-box;width:max-content;min-width:100%;display:flex;flex-direction:column;gap:16px;padding:48px;">
+<span style="align-self:flex-start;padding:4px 10px;border-radius:999px;background:#FFD166;color:#0B1026;font:700 13px 'Atkinson Hyperlegible';">1 · Brief at 1280 px</span>
+<div style="align-self:flex-start;border:1px solid #34407A;border-radius:24px;overflow:hidden;"><dc-import name="Brief" layout="desktop" hint-size="1280px,760px"></dc-import></div>
+<span style="align-self:flex-start;margin-top:24px;padding:4px 10px;border-radius:999px;background:#FFD166;color:#0B1026;font:700 13px 'Atkinson Hyperlegible';">2 · Orbit pick at 1280 px, SSO selected</span>
+<div style="align-self:flex-start;border:1px solid #34407A;border-radius:24px;overflow:hidden;"><dc-import name="OrbitPick" scenario="crop" selected="SSO" layout="desktop" hint-size="1280px,900px"></dc-import></div>
+</section>
+<section id="assets" style="background:#070B1C;box-sizing:border-box;display:flex;flex-direction:column;gap:16px;padding:48px;">
+<h2 style="margin:0;font:600 28px/1.2 Fredoka,sans-serif;">Mission illustrations</h2>
+<div style="display:flex;flex-wrap:wrap;gap:16px;">
+<div style="width:320px;display:flex;flex-direction:column;gap:8px;"><dc-import name="MissionArt" mission="crop" hint-size="320px,160px"></dc-import><span style="font-size:14px;color:#C3CAEE;">crop · farmland patchwork</span></div>
+<div style="width:320px;display:flex;flex-direction:column;gap:8px;"><dc-import name="MissionArt" mission="storm" hint-size="320px,160px"></dc-import><span style="font-size:14px;color:#C3CAEE;">storm · hurricane swirl</span></div>
+<div style="width:320px;display:flex;flex-direction:column;gap:8px;"><dc-import name="MissionArt" mission="ice" hint-size="320px,160px"></dc-import><span style="font-size:14px;color:#C3CAEE;">ice · ice sheet and floes</span></div>
+</div>
+<h2 style="margin:24px 0 0;font:600 28px/1.2 Fredoka,sans-serif;">OrbitDiagram({ orbitId })</h2>
+<p style="margin:0;font-size:15px;color:#C3CAEE;">Not to scale. Shape tells them apart without color: small circle, polar ellipse, wide dotted ring. Satellite laps: LEO 8 s, SSO 10 s, GEO 40 s.</p>
+<div style="display:flex;flex-wrap:wrap;gap:16px;">
+<div style="padding:16px;background:#151C3D;border:1px solid #34407A;border-radius:18px;"><dc-import name="OrbitDiagram" orbit-id="LEO" size="180" show-code="{{ true }}" hint-size="180px,180px"></dc-import></div>
+<div style="padding:16px;background:#151C3D;border:1px solid #34407A;border-radius:18px;"><dc-import name="OrbitDiagram" orbit-id="SSO" size="180" show-code="{{ true }}" hint-size="180px,180px"></dc-import></div>
+<div style="padding:16px;background:#151C3D;border:1px solid #34407A;border-radius:18px;"><dc-import name="OrbitDiagram" orbit-id="GEO" size="180" show-code="{{ true }}" hint-size="180px,180px"></dc-import></div>
+</div>
+<h2 style="margin:24px 0 0;font:600 28px/1.2 Fredoka,sans-serif;">React structure</h2>
+<pre style="margin:0;padding:16px;background:#151C3D;border:1px solid #34407A;border-radius:18px;overflow:auto;font:13px/1.6 ui-monospace,Menlo,monospace;color:#C3CAEE;">&lt;Brief onPick(id)&gt;
+  &lt;ScreenHeader step=1 /&gt;
+  &lt;GuideBubble role="science"&gt;Pick the goal first…&lt;/GuideBubble&gt;
+  &lt;MissionCard mission onPick /&gt; ×3      button, lift + glow on hover/focus/active
+    &lt;MissionArt id /&gt;  &lt;RequirementStats reqs illustrative? /&gt;  budget
+
+&lt;OrbitPick scenario selected onPick(id)&gt;
+  &lt;ScreenHeader step=2 /&gt;
+  &lt;MissionSummaryChip scenario /&gt;
+  &lt;IllustrativeNote /&gt;                    amber ⚠
+  &lt;OrbitCard orbit selected onPick /&gt; ×3  aria-pressed
+    &lt;OrbitDiagram orbitId /&gt;  &lt;Bar /&gt;×3  facts  &lt;SourceChip /&gt;
+  &lt;WhyThisMatters /&gt;</pre>
+</section>
+</x-dc>
+</body>
+</html>

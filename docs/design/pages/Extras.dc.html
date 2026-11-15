@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="design_doc_mode" content="canvas">
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
+<style>body{margin:0;background:#070B1C;color:#F2F4FF;font-family:"Atkinson Hyperlegible",system-ui,sans-serif;} a{color:#62B4FF;} a:hover{color:#F2F4FF;}</style>
+</helmet>
+<section id="video" style="background:#070B1C;box-sizing:border-box;width:max-content;min-width:100%;display:flex;flex-direction:column;gap:24px;padding:48px;">
+<header style="display:flex;flex-direction:column;gap:8px;"><span style="font:700 12px/1.2 'Atkinson Hyperlegible';letter-spacing:.12em;text-transform:uppercase;color:#969FCC;">Phase 8B · extras</span><h1 style="margin:0;font:600 40px/1.1 Fredoka,sans-serif;">Trajectory Ladder extras</h1><p style="margin:0;font-size:17px;color:#C3CAEE;">React handoff: <a href="handoff/Extras.tsx">handoff/Extras.tsx</a>.</p></header>
+<h2 style="margin:0;font:600 32px/1.2 Fredoka,sans-serif;">1 · Video cards</h2>
+<div style="display:flex;flex-wrap:wrap;gap:32px;align-items:flex-start;">
+<div style="display:flex;flex-direction:column;gap:12px;"><span style="align-self:flex-start;padding:4px 10px;border-radius:999px;background:#FFD166;color:#0B1026;font:700 13px 'Atkinson Hyperlegible';">Title card</span><div style="width:768px;height:432px;overflow:hidden;border:1px solid #34407A;border-radius:12px;"><div style="width:1920px;height:1080px;transform:scale(0.4);transform-origin:0 0;"><dc-import name="VideoCard" kind="title" format="landscape" hint-size="1920px,1080px"></dc-import></div></div><span style="font-size:13px;color:#C3CAEE;">1920×1080 (shown at 40%)</span></div><div style="display:flex;flex-direction:column;gap:12px;"><span style="align-self:flex-start;padding:4px 10px;border-radius:999px;background:#FFD166;color:#0B1026;font:700 13px 'Atkinson Hyperlegible';">End card</span><div style="width:768px;height:432px;overflow:hidden;border:1px solid #34407A;border-radius:12px;"><div style="width:1920px;height:1080px;transform:scale(0.4);transform-origin:0 0;"><dc-import name="VideoCard" kind="end" format="landscape" hint-size="1920px,1080px"></dc-import></div></div><span style="font-size:13px;color:#C3CAEE;">1920×1080 (shown at 40%)</span></div>
+</div>
+<div style="display:flex;flex-wrap:wrap;gap:32px;align-items:flex-start;">
+<div style="display:flex;flex-direction:column;gap:12px;"><span style="align-self:flex-start;padding:4px 10px;border-radius:999px;background:#FFD166;color:#0B1026;font:700 13px 'Atkinson Hyperlegible';">Title card</span><div style="width:324px;height:576px;overflow:hidden;border:1px solid #34407A;border-radius:12px;"><div style="width:1080px;height:1920px;transform:scale(0.3);transform-origin:0 0;"><dc-import name="VideoCard" kind="title" format="portrait" hint-size="1080px,1920px"></dc-import></div></div><span style="font-size:13px;color:#C3CAEE;">1080×1920 (shown at 30%)</span></div><div style="display:flex;flex-direction:column;gap:12px;"><span style="align-self:flex-start;padding:4px 10px;border-radius:999px;background:#FFD166;color:#0B1026;font:700 13px 'Atkinson Hyperlegible';">End card</span><div style="width:324px;height:576px;overflow:hidden;border:1px solid #34407A;border-radius:12px;"><div style="width:1080px;height:1920px;transform:scale(0.3);transform-origin:0 0;"><dc-import name="VideoCard" kind="end" format="portrait" hint-size="1080px,1920px"></dc-import></div></div><span style="font-size:13px;color:#C3CAEE;">1080×1920 (shown at 30%)</span></div>
+</div>
+<p style="margin:0;max-width:900px;padding:10px 14px;background:#151C3D;border:1px solid #34407A;border-radius:12px;font-size:15px;line-height:1.5;color:#C3CAEE;"><strong style="color:#F2F4FF;">Engine changes: none.</strong> Static cards; the 86 is the example score from the scorecard, not live data.</p>
+</section>
+<section id="deadend" style="background:#070B1C;box-sizing:border-box;width:max-content;min-width:100%;display:flex;flex-direction:column;gap:24px;padding:48px;">
+<h2 style="margin:0;font:600 32px/1.2 Fredoka,sans-serif;">2 · Dead-end state on the Mission tree</h2>
+<div style="display:flex;flex-wrap:wrap;gap:40px;align-items:flex-start;">
+<div style="display:flex;flex-direction:column;gap:12px;"><span style="align-self:flex-start;padding:4px 10px;border-radius:999px;background:#FFD166;color:#0B1026;font:700 13px 'Atkinson Hyperlegible';">390 px</span><div style="align-self:flex-start;border:1px solid #34407A;border-radius:24px;overflow:hidden;"><dc-import name="MissionTree" preset="deadend" layout="mobile" hint-size="390px,1400px"></dc-import></div></div>
+<div style="display:flex;flex-direction:column;gap:12px;"><span style="align-self:flex-start;padding:4px 10px;border-radius:999px;background:#FFD166;color:#0B1026;font:700 13px 'Atkinson Hyperlegible';">1280 px</span><div style="align-self:flex-start;border:1px solid #34407A;border-radius:24px;overflow:hidden;"><dc-import name="MissionTree" preset="deadend" layout="desktop" hint-size="1280px,1200px"></dc-import></div></div>
+</div>
+<p style="margin:0;max-width:900px;padding:10px 14px;background:#151C3D;border:1px solid #34407A;border-radius:12px;font-size:15px;line-height:1.5;color:#C3CAEE;"><strong style="color:#F2F4FF;">Engine changes: none.</strong> Shown when a step is enabled, has no choice and every node has <code>ok === false</code>. “Change the step above” opens the previous step’s choice and moves focus to that step. The demo locks come from the mock rules in the design file (budget set to $120M), not from <code>src/engine</code>.</p>
+</section>
+<section id="coach" style="background:#070B1C;box-sizing:border-box;width:max-content;min-width:100%;display:flex;flex-direction:column;gap:24px;padding:48px;">
+<h2 style="margin:0;font:600 32px/1.2 Fredoka,sans-serif;">3 · First-run hint</h2>
+<div style="display:flex;flex-wrap:wrap;gap:40px;align-items:flex-start;">
+<div style="display:flex;flex-direction:column;gap:12px;"><span style="align-self:flex-start;padding:4px 10px;border-radius:999px;background:#FFD166;color:#0B1026;font:700 13px 'Atkinson Hyperlegible';">390 px · live, starts at tip 1</span><div style="align-self:flex-start;border:1px solid #34407A;border-radius:24px;overflow:hidden;"><dc-import name="MissionTree" preset="start" coach="{{ true }}" layout="mobile" hint-size="390px,1300px"></dc-import></div></div>
+<div style="display:flex;flex-direction:column;gap:12px;"><span style="align-self:flex-start;padding:4px 10px;border-radius:999px;background:#FFD166;color:#0B1026;font:700 13px 'Atkinson Hyperlegible';">1280 px · live</span><div style="align-self:flex-start;border:1px solid #34407A;border-radius:24px;overflow:hidden;"><dc-import name="MissionTree" preset="start" coach="{{ true }}" layout="desktop" hint-size="1280px,1100px"></dc-import></div></div>
+</div>
+<p style="margin:0;max-width:900px;padding:10px 14px;background:#151C3D;border:1px solid #34407A;border-radius:12px;font-size:15px;line-height:1.5;color:#C3CAEE;"><strong style="color:#F2F4FF;">Engine changes: none.</strong> Three tips in order: options (step 1), 🔒 card (step 1), ship panel. Each tip is an inline <code>role="dialog" aria-modal="false"</code>, so Tab moves on to the rest of the page and focus is never trapped. Next / Got it / Skip are real buttons; Escape closes. Store a <code>seenCoach</code> flag in memory only (no cookies or storage, per the About promise), so it shows once per session.</p>
+</section>
+<section id="difficulty" style="background:#070B1C;box-sizing:border-box;width:max-content;min-width:100%;display:flex;flex-direction:column;gap:24px;padding:48px;">
+<h2 style="margin:0;font:600 32px/1.2 Fredoka,sans-serif;">4 · Difficulty selector</h2>
+<span style="align-self:flex-start;padding:4px 12px;border-radius:999px;background:#C29BFF;color:#0B1026;font:700 14px 'Atkinson Hyperlegible';">PROPOSAL · needs engine work</span>
+<div style="display:flex;flex-wrap:wrap;gap:40px;align-items:flex-start;">
+<div style="display:flex;flex-direction:column;gap:12px;"><span style="align-self:flex-start;padding:4px 10px;border-radius:999px;background:#FFD166;color:#0B1026;font:700 13px 'Atkinson Hyperlegible';">Brief · 390 px</span><div style="align-self:flex-start;border:1px solid #34407A;border-radius:24px;overflow:hidden;"><dc-import name="Brief" show-difficulty="{{ true }}" layout="mobile" hint-size="390px,1600px"></dc-import></div></div>
+<div style="display:flex;flex-direction:column;gap:12px;width:820px;"><span style="align-self:flex-start;padding:4px 10px;border-radius:999px;background:#FFD166;color:#0B1026;font:700 13px 'Atkinson Hyperlegible';">Mission tree card in each mode</span><div style="padding:20px;background:#0B1026;border:1px solid #34407A;border-radius:24px;"><dc-import name="DifficultyCards" hint-size="100%,240px"></dc-import></div>
+<p style="margin:0;max-width:900px;padding:10px 14px;background:#151C3D;border:1px solid #34407A;border-radius:12px;font-size:15px;line-height:1.5;color:#C3CAEE;"><strong style="color:#F2F4FF;">Engine changes: yes.</strong> Needs a <code>difficulty</code> value in state and passed to the tree; Easy needs a short “why it works” string per node; Hard needs the UI to mask numeric facts (or the engine to return them tagged as numbers). Scoring stays the same unless the team decides otherwise.</p>
+</div>
+</div>
+</section>
+</x-dc>
+</body>
+</html>

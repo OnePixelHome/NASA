@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet><style>[data-thumb] [style*="sticky"]{position:relative!important}</style></helmet>
+<div style="box-sizing:border-box;width:{{ frameW }};padding:{{ pad }};background:#0B1026;color:#F2F4FF;font-family:'Atkinson Hyperlegible',system-ui,sans-serif;display:flex;flex-direction:column;gap:24px;">
+<header style="display:flex;flex-direction:column;gap:6px;">
+<span style="font:700 12px/1.2 'Atkinson Hyperlegible';letter-spacing:.1em;text-transform:uppercase;color:#969FCC;">Flow board</span>
+<h1 style="margin:0;font:600 {{ titleSize }}/1.15 Fredoka,sans-serif;">Trajectory Ladder · player flow</h1>
+<div style="display:flex;flex-wrap:wrap;gap:6px 14px;font-size:13px;color:#C3CAEE;"><span style="display:inline-flex;align-items:center;gap:6px;"><span style="padding:2px 8px;border-radius:999px;background:#FFD166;color:#0B1026;font:700 12px 'Atkinson Hyperlegible';">▶ 1</span>Video key moment</span><span>Arrows show the main path. ← Revise design loops back to the tree.</span></div>
+</header>
+<ol style="margin:0;padding:0;list-style:none;display:flex;flex-direction:{{ dir }};align-items:{{ align }};gap:8px;">
+<li style="display:flex;flex-direction:column;gap:8px;width:{{ thumbW }};">
+<span style="min-height:{{ labelH }};font:600 15px Fredoka;">1 · Brief</span>
+<div style="width:{{ thumbW }};height:{{ thumbH }};overflow:clip;border:1px solid #34407A;border-radius:12px;"><div data-thumb="" style="width:390px;transform:scale({{ scale }});transform-origin:0 0;pointer-events:none;"><dc-import name="Brief" layout="mobile" hint-size="390px,1500px"></dc-import></div></div>
+</li>
+<li aria-hidden="true" style="align-self:center;font:600 24px Fredoka;color:#969FCC;">{{ arrow }}</li>
+<li style="display:flex;flex-direction:column;gap:8px;width:{{ thumbW }};">
+<span style="min-height:{{ labelH }};font:600 15px Fredoka;">2 · Orbit pick</span>
+<div style="width:{{ thumbW }};height:{{ thumbH }};overflow:clip;border:1px solid #34407A;border-radius:12px;"><div data-thumb="" style="width:390px;transform:scale({{ scale }});transform-origin:0 0;pointer-events:none;"><dc-import name="OrbitPick" scenario="crop" selected="SSO" layout="mobile" hint-size="390px,1900px"></dc-import></div></div>
+</li>
+<li aria-hidden="true" style="align-self:center;font:600 24px Fredoka;color:#969FCC;">{{ arrow }}</li>
+<li style="display:flex;flex-direction:column;gap:8px;width:{{ thumbW }};">
+<span style="min-height:{{ labelH }};display:flex;flex-wrap:wrap;align-items:flex-start;align-content:flex-start;gap:6px;font:600 15px Fredoka;">3 · Mission tree <span style="padding:2px 8px;border-radius:999px;background:#FFD166;color:#0B1026;font:700 12px 'Atkinson Hyperlegible';white-space:nowrap;">▶ 1 Lock cascade</span></span>
+<div style="width:{{ thumbW }};height:{{ thumbH }};overflow:clip;border:2px solid #FFD166;border-radius:12px;"><div data-thumb="" style="width:390px;transform:scale({{ scale }});transform-origin:0 0;pointer-events:none;"><dc-import name="MissionTree" preset="mid" layout="mobile" hint-size="390px,1300px"></dc-import></div></div>
+</li>
+<li aria-hidden="true" style="align-self:center;font:600 24px Fredoka;color:#969FCC;">{{ arrow }}</li>
+<li style="display:flex;flex-direction:column;gap:8px;width:{{ thumbW }};">
+<span style="min-height:{{ labelH }};font:600 15px Fredoka;">4 · Go / No-Go</span>
+<div style="width:{{ thumbW }};height:{{ thumbH }};overflow:clip;border:1px solid #34407A;border-radius:12px;"><div data-thumb="" style="width:390px;transform:scale({{ scale }});transform-origin:0 0;pointer-events:none;"><dc-import name="GoNoGo" preset="allgo" layout="mobile" hint-size="390px,1400px"></dc-import></div></div>
+</li>
+<li aria-hidden="true" style="align-self:center;font:600 24px Fredoka;color:#969FCC;">{{ arrow }}</li>
+<li style="display:flex;flex-direction:column;gap:8px;width:{{ thumbW }};">
+<span style="min-height:{{ labelH }};display:flex;flex-wrap:wrap;align-items:flex-start;align-content:flex-start;gap:6px;font:600 15px Fredoka;">5 · Simulation <span style="padding:2px 8px;border-radius:999px;background:#FFD166;color:#0B1026;font:700 12px 'Atkinson Hyperlegible';white-space:nowrap;">▶ 2 Launch</span></span>
+<div style="width:{{ thumbW }};height:{{ thumbH }};overflow:clip;border:2px solid #FFD166;border-radius:12px;"><div data-thumb="" style="width:390px;transform:scale({{ scale }});transform-origin:0 0;pointer-events:none;"><dc-import name="MissionRun" start-step="{{ 1 }}" layout="mobile" hint-size="390px,1000px"></dc-import></div></div>
+</li>
+<li aria-hidden="true" style="align-self:center;font:600 24px Fredoka;color:#969FCC;">{{ arrow }}</li>
+<li style="display:flex;flex-direction:column;gap:8px;width:{{ thumbW }};">
+<span style="min-height:{{ labelH }};display:flex;flex-wrap:wrap;align-items:flex-start;align-content:flex-start;gap:6px;font:600 15px Fredoka;">6 · Scorecard <span style="padding:2px 8px;border-radius:999px;background:#FFD166;color:#0B1026;font:700 12px 'Atkinson Hyperlegible';white-space:nowrap;">▶ 3 Score</span></span>
+<div style="width:{{ thumbW }};height:{{ thumbH }};overflow:clip;border:2px solid #FFD166;border-radius:12px;"><div data-thumb="" style="width:390px;transform:scale({{ scale }});transform-origin:0 0;pointer-events:none;"><dc-import name="Score" variant="success" layout="mobile" hint-size="390px,2000px"></dc-import></div></div>
+</li>
+<li aria-hidden="true" style="align-self:stretch;width:{{ sepW }};height:{{ sepH }};margin:{{ sepM }};background:#34407A;"></li>
+<li style="display:flex;flex-direction:column;gap:8px;width:{{ thumbW }};">
+<span style="min-height:{{ labelH }};font:600 15px Fredoka;color:#C3CAEE;">ⓘ About · any screen</span>
+<div style="width:{{ thumbW }};height:{{ thumbH }};overflow:clip;border:1px dashed #34407A;border-radius:12px;"><div data-thumb="" style="width:390px;transform:scale({{ scale }});transform-origin:0 0;pointer-events:none;"><dc-import name="About" layout="mobile" hint-size="390px,2600px"></dc-import></div></div>
+</li>
+</ol>
+<section aria-label="Screen purposes" style="display:flex;flex-direction:column;gap:8px;padding:16px;background:#151C3D;border:1px solid #34407A;border-radius:18px;">
+<sc-for list="{{ purposes }}" as="p" hint-placeholder-count="7">
+<div style="display:flex;gap:12px;font-size:14px;line-height:1.4;"><span style="flex-shrink:0;width:130px;font:600 14px Fredoka;color:#F2F4FF;">{{ p.name }}</span><span style="color:#C3CAEE;">{{ p.text }}</span></div>
+</sc-for>
+</section>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1280,&quot;height&quot;:700},&quot;layout&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;desktop&quot;,&quot;mobile&quot;],&quot;default&quot;:&quot;desktop&quot;,&quot;tsType&quot;:&quot;'desktop'|'mobile'&quot;}}">
+class Component extends DCLogic {
+  renderVals() {
+    const desk = (this.props.layout ?? 'desktop') === 'desktop';
+    const scale = desk ? 0.36 : 0.75;
+    return {
+      frameW: desk ? '1280px' : '390px', pad: desk ? '32px 32px' : '20px 16px', titleSize: desk ? '32px' : '26px',
+      dir: desk ? 'row' : 'column', align: desk ? 'flex-start' : 'center', arrow: desk ? '→' : '↓',
+      labelH: desk ? '48px' : '0px', scale, thumbW: Math.round(390 * scale) + 'px', thumbH: Math.round(844 * scale) + 'px',
+      sepW: desk ? '1px' : '100%', sepH: desk ? 'auto' : '1px', sepM: desk ? '0 8px' : '8px 0',
+      purposes: [
+        { name: '1 · Brief', text: 'Pick a science goal that defines success.' },
+        { name: '2 · Orbit pick', text: 'Compare three orbits and choose a trajectory.' },
+        { name: '3 · Mission tree', text: 'Build the ship; each choice can lock others.' },
+        { name: '4 · Go / No-Go', text: 'Every role reviews the design and votes.' },
+        { name: '5 · Simulation', text: 'Watch the mission play out step by step.' },
+        { name: '6 · Scorecard', text: 'See the score, constraint and lesson learned.' },
+        { name: 'About', text: 'Sources, AI use, team and NASA disclaimer.' },
+      ],
+    };
+  }
+}
+</script>
+</body>
+</html>

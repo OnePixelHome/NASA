@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
+<style>
+@keyframes gaugeFill{from{stroke-dasharray:0 327}}
+@keyframes meterFill{from{width:0}}
+@keyframes crewPop{0%{opacity:0;transform:translateY(10px) scale(.6)}70%{opacity:1;transform:translateY(-3px) scale(1.06)}100%{transform:none}}
+@media (prefers-reduced-motion: reduce){*{animation:none!important;transition:none!important}}
+</style>
+</helmet>
+<div style="box-sizing:border-box;width:{{ frameW }};background:#0B1026;color:#F2F4FF;font-family:'Atkinson Hyperlegible',system-ui,sans-serif;display:flex;flex-direction:column;">
+<dc-import name="AppHeader" hint-size="100%,57px"></dc-import>
+<header style="display:flex;flex-direction:column;gap:6px;padding:{{ pad }};padding-bottom:0;">
+<span style="font:700 12px/1.2 'Atkinson Hyperlegible';letter-spacing:.1em;text-transform:uppercase;color:#969FCC;">Screen 6 of 6</span>
+<h1 style="margin:0;font:600 {{ titleSize }}/1.15 Fredoka,sans-serif;">Mission scorecard</h1>
+</header>
+<div style="display:grid;grid-template-columns:{{ cols }};gap:{{ gap }};padding:{{ pad }};align-items:start;">
+<div style="display:flex;flex-direction:column;gap:16px;position:{{ leftPos }};top:16px;min-width:0;">
+<section aria-label="Result" style="position:relative;overflow:hidden;display:flex;flex-direction:column;align-items:center;gap:12px;padding:20px 16px 16px;background:{{ r.bannerBg }};border:2px solid {{ r.color }};border-radius:24px;">
+<sc-if value="{{ r.ok }}" hint-placeholder-val="{{ true }}">
+<svg viewBox="0 0 358 420" preserveAspectRatio="none" aria-hidden="true" style="position:absolute;inset:0;width:100%;height:100%;pointer-events:none;">
+<path d="M40 30 l4 10 l10 4 l-10 4 l-4 10 l-4 -10 l-10 -4 l10 -4 Z" fill="#FFD166"></path>
+<path d="M300 46 l3 8 l8 3 l-8 3 l-3 8 l-3 -8 l-8 -3 l8 -3 Z" fill="#4FD8C8"></path>
+<path d="M300 230 l3 7 l7 3 l-7 3 l-3 7 l-3 -7 l-7 -3 l7 -3 Z" fill="#FF93B8"></path>
+<path d="M50 220 l3 7 l7 3 l-7 3 l-3 7 l-3 -7 l-7 -3 l7 -3 Z" fill="#C29BFF"></path>
+<circle cx="100" cy="70" r="3" fill="#F2F4FF"></circle><circle cx="262" cy="96" r="3" fill="#FFD166"></circle><circle cx="30" cy="96" r="2.5" fill="#7FE28E"></circle><circle cx="320" cy="330" r="2.5" fill="#F2F4FF"></circle><circle cx="180" cy="22" r="2.5" fill="#FF8552"></circle>
+</svg>
+</sc-if>
+<div style="position:relative;display:flex;flex-direction:column;align-items:center;">
+<dc-import name="Ship" payload="{{ ship.payload }}" power="{{ ship.power }}" antenna="{{ ship.antenna }}" launcher="{{ ship.launcher }}" bad="{{ ship.bad }}" bad-text="{{ ship.badText }}" height="{{ shipH }}" hint-size="150px,200px"></dc-import>
+<sc-if value="{{ r.grounded }}" hint-placeholder-val="{{ false }}">
+<div style="width:220px;height:14px;margin-top:-4px;border-radius:999px;background:#34407A;border:3px solid #0B1026;"></div>
+<span style="margin-top:6px;font:700 12px 'Atkinson Hyperlegible';color:#C3CAEE;">▮ On the launch pad · not launched</span>
+</sc-if>
+</div>
+<sc-if value="{{ r.bubble }}" hint-placeholder-val="{{ false }}">
+<p role="note" style="position:relative;margin:0;max-width:300px;padding:8px 12px;background:#F2F4FF;color:#0B1026;border-radius:12px;font:700 14px/1.35 'Atkinson Hyperlegible';text-align:center;animation:crewPop 520ms cubic-bezier(.3,1.3,.5,1) 800ms both;"><span style="display:block;font-size:12px;color:#34407A;">{{ r.speaker }}</span>{{ r.bubble }}<span style="position:absolute;left:{{ r.tailX }};bottom:-5px;width:10px;height:10px;background:#F2F4FF;transform:rotate(45deg);"></span></p>
+</sc-if>
+<div style="position:relative;display:flex;gap:6px;justify-content:center;align-items:flex-end;margin-top:-4px;">
+<sc-for list="{{ crew }}" as="c" hint-placeholder-count="4">
+<div style="animation:crewPop 520ms cubic-bezier(.3,1.3,.5,1) {{ c.delay }} both;"><div style="transform:{{ c.t }};"><dc-import name="Character" role="{{ c.role }}" mood="{{ r.mood }}" size="{{ crewSize }}" bg="{{ r.bannerBg }}" hint-size="52px,52px"></dc-import></div></div>
+</sc-for>
+</div>
+<div style="position:relative;display:flex;flex-direction:column;align-items:center;gap:4px;text-align:center;">
+<h2 style="margin:0;display:flex;align-items:center;gap:10px;font:600 28px/1.15 Fredoka,sans-serif;color:{{ r.color }};"><span aria-hidden="true" style="width:34px;height:34px;flex-shrink:0;display:flex;align-items:center;justify-content:center;border-radius:999px;background:{{ r.color }};color:#0B1026;font:700 20px Fredoka;">{{ r.icon }}</span>{{ r.title }}</h2>
+<sc-if value="{{ r.failed }}" hint-placeholder-val="{{ false }}">
+<p style="margin:0;font:500 16px Fredoka;color:#F2F4FF;">Every real mission learns from this.</p>
+<span style="display:inline-flex;align-items:center;gap:6px;margin:4px 0;padding:4px 10px;border-radius:999px;border:2px dashed #FFB547;font:700 13px 'Atkinson Hyperlegible';color:#FFB547;"><svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><rect x="2" y="2" width="12" height="12" rx="3" fill="none" stroke="#FFB547" stroke-width="2"></rect><path d="M9 2 L6 7 L10 9 L7 14" fill="none" stroke="#FFB547" stroke-width="2" stroke-linejoin="round"></path></svg>{{ r.brokenPart }}</span>
+</sc-if>
+<p style="margin:0;font:600 17px Fredoka;color:#F2F4FF;font-variant-numeric:tabular-nums;">{{ r.scoreText }}</p>
+<p style="margin:0;max-width:40ch;font-size:15px;line-height:1.5;color:#C3CAEE;text-wrap:pretty;">{{ r.message }}</p>
+
+</div>
+</section>
+<section aria-label="Score" style="display:flex;flex-direction:column;align-items:center;gap:8px;padding:20px 16px;background:#151C3D;border:1px solid #34407A;border-radius:18px;">
+<div style="position:relative;width:168px;height:168px;">
+<svg viewBox="0 0 120 120" width="168" height="168" aria-hidden="true" style="transform:rotate(-90deg);"><circle cx="60" cy="60" r="52" fill="none" stroke="#1F2852" stroke-width="12"></circle><circle cx="60" cy="60" r="52" fill="none" stroke="{{ r.gaugeColor }}" stroke-width="12" stroke-linecap="round" stroke-dasharray="{{ gaugeDash }}" style="animation:gaugeFill 1200ms cubic-bezier(.3,1.3,.5,1) 200ms both;"></circle></svg>
+<div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;"><span style="font:600 56px/1 Fredoka;font-variant-numeric:tabular-nums;">{{ data.score }}</span><span style="font-size:13px;color:#C3CAEE;">of 100</span></div>
+</div>
+<span style="font:700 14px 'Atkinson Hyperlegible';color:{{ r.gaugeColor }};">{{ r.gaugeLabel }}</span>
+<span style="font-size:13px;color:#C3CAEE;">Illustrative score</span>
+</section>
+</div>
+<div id="right" style="display:flex;flex-direction:column;gap:16px;min-width:0;">
+<section aria-label="Score breakdown" style="display:flex;flex-direction:column;gap:10px;padding:16px;background:#151C3D;border:1px solid #34407A;border-radius:18px;">
+<div role="meter" aria-label="{{ budget.aria }}" style="display:flex;flex-direction:column;gap:6px;padding:12px;background:#1F2852;border-radius:12px;">
+<div style="display:flex;justify-content:space-between;gap:8px;font-size:14px;"><span style="color:#C3CAEE;">Budget</span><span style="font:600 15px Fredoka;font-variant-numeric:tabular-nums;">{{ budget.text }}</span></div>
+<div style="position:relative;height:12px;border-radius:999px;background:#0B1026;"><div style="height:100%;width:{{ budget.pct }};border-radius:999px;background:{{ budget.color }};animation:meterFill 600ms cubic-bezier(.3,1.3,.5,1) 200ms both;"></div><span style="position:absolute;top:-4px;right:{{ budget.markR }};width:2px;height:20px;background:#F2F4FF;"></span></div>
+<span style="font:700 12px 'Atkinson Hyperlegible';color:{{ budget.color }};">{{ budget.status }}</span>
+</div>
+<h2 style="margin:4px 0 0;font:600 20px/1.25 Fredoka,sans-serif;">Breakdown</h2>
+<sc-for list="{{ meters }}" as="m" hint-placeholder-count="4">
+<div role="meter" aria-label="{{ m.aria }}" aria-valuenow="{{ m.points }}" aria-valuemin="0" aria-valuemax="{{ m.max }}" style="display:flex;flex-direction:column;gap:6px;">
+<div style="display:flex;justify-content:space-between;gap:8px;font-size:14px;"><span style="color:#C3CAEE;">{{ m.label }}</span><span style="font:600 15px Fredoka;font-variant-numeric:tabular-nums;">{{ m.text }}</span></div>
+<div style="height:12px;border-radius:999px;background:#0B1026;"><div style="height:100%;width:{{ m.pct }};border-radius:999px;background:{{ m.color }};animation:meterFill 600ms cubic-bezier(.3,1.3,.5,1) {{ m.delay }} both;"></div></div>
+</div>
+</sc-for>
+</section>
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,240px),1fr));gap:12px;">
+<sc-for list="{{ insights }}" as="i" hint-placeholder-count="2">
+<section style="display:flex;gap:12px;align-items:flex-start;padding:14px;background:#151C3D;border:1px solid #34407A;border-radius:18px;">
+<dc-import name="Character" role="{{ i.role }}" size="44" hint-size="44px,44px"></dc-import>
+<div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:4px;">
+<h3 style="margin:0;display:flex;gap:6px;align-items:center;font:600 16px Fredoka;color:#F2F4FF;"><span aria-hidden="true" style="color:#FFD166;">{{ i.icon }}</span>{{ i.title }}</h3>
+<p style="margin:0;font-size:15px;line-height:1.5;color:#C3CAEE;text-wrap:pretty;">{{ i.text }}</p>
+</div>
+</section>
+</sc-for>
+</div>
+<section aria-label="Lesson learned" style="display:flex;gap:14px;align-items:flex-start;padding:18px;background:#1F2852;border:2px solid #FFD166;border-radius:24px;box-shadow:0 0 0 2px #FFD16633, 0 0 28px #FFD16633;">
+<dc-import name="Character" role="science" size="64" mood="{{ r.mood }}" bg="#1F2852" hint-size="64px,64px"></dc-import>
+<div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:6px;">
+<h3 style="margin:0;display:flex;gap:8px;align-items:center;font:600 20px Fredoka;color:#FFD166;"><span aria-hidden="true">★</span>Lesson learned</h3>
+<p style="margin:0;font:500 19px/1.4 Fredoka,sans-serif;color:#F2F4FF;text-wrap:pretty;">{{ lesson }}</p>
+<sc-if value="{{ r.failed }}" hint-placeholder-val="{{ false }}">
+<button type="button" onClick="{{ onRevise }}" style="all:unset;box-sizing:border-box;align-self:flex-start;margin-top:6px;min-height:48px;padding:0 20px;display:flex;align-items:center;border-radius:999px;background:#FFD166;color:#0B1026;font:600 16px Fredoka,sans-serif;cursor:pointer;white-space:nowrap;" style-focus="outline:3px solid #F2F4FF;outline-offset:3px;">Try another design</button>
+</sc-if>
+</div>
+</section>
+<section aria-label="Your design" style="display:flex;flex-direction:column;gap:10px;padding:16px;background:#151C3D;border:1px solid #34407A;border-radius:18px;">
+<div style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px;">
+<h2 style="margin:0;font:600 20px/1.25 Fredoka,sans-serif;">Your design</h2>
+<span style="display:inline-flex;align-items:center;gap:8px;height:32px;padding:0 12px;border-radius:999px;border:2px solid {{ orbit.color }};font:600 14px Fredoka;color:{{ orbit.color }};"><span style="width:10px;height:10px;border-radius:999px;background:{{ orbit.color }};border:2px solid #0B1026;"></span>{{ orbit.code }} · {{ orbit.name }}</span>
+</div>
+<ul style="margin:0;padding:0;list-style:none;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,150px),1fr));gap:8px;">
+<sc-for list="{{ parts }}" as="p" hint-placeholder-count="4">
+<li style="display:flex;flex-direction:column;gap:2px;padding:10px 12px;background:#1F2852;border-radius:12px;">
+<span style="font-size:12px;color:#C3CAEE;">{{ p.step }}</span>
+<span style="font:600 15px/1.25 Fredoka;color:#F2F4FF;">{{ p.name }}</span>
+<span style="font:700 12px 'Atkinson Hyperlegible';color:{{ p.color }};">{{ p.icon }} {{ p.role }}</span>
+<sc-if value="{{ p.bad }}" hint-placeholder-val="{{ false }}"><span style="font:700 12px 'Atkinson Hyperlegible';color:#FF7070;">{{ p.warn }}</span></sc-if>
+</li>
+</sc-for>
+</ul>
+</section>
+<section aria-label="Sources and assumptions" style="display:flex;flex-direction:column;background:#151C3D;border:1px solid #34407A;border-radius:18px;">
+<button type="button" onClick="{{ toggle }}" aria-expanded="{{ openStr }}" aria-controls="sources-list" style="all:unset;box-sizing:border-box;display:flex;align-items:center;justify-content:space-between;gap:8px;min-height:52px;padding:0 16px;cursor:pointer;border-radius:18px;" style-focus="outline:3px solid #F2F4FF;outline-offset:2px;">
+<span style="font:600 18px Fredoka;color:#F2F4FF;">Sources &amp; assumptions</span>
+<span style="font:700 13px 'Atkinson Hyperlegible';color:#62B4FF;">{{ toggleLabel }}</span>
+</button>
+<sc-if value="{{ open }}" hint-placeholder-val="{{ false }}">
+<ul id="sources-list" style="margin:0;padding:0 16px 16px;list-style:none;display:flex;flex-direction:column;gap:2px;">
+<sc-for list="{{ sources }}" as="s" hint-placeholder-count="7">
+<li style="display:flex;align-items:center;gap:10px;min-height:44px;">
+<sc-if value="{{ s.link }}" hint-placeholder-val="{{ true }}"><a href="{{ s.href }}" target="_blank" rel="noreferrer" style="flex-shrink:0;display:inline-flex;align-items:center;min-height:44px;text-decoration:none;" style-focus="outline:3px solid #F2F4FF;outline-offset:2px;border-radius:999px;"><span style="display:inline-flex;align-items:center;gap:4px;height:26px;padding:0 10px;border-radius:999px;border:1px solid #34407A;background:#1F2852;font:700 12px 'Atkinson Hyperlegible';color:#C3CAEE;">{{ s.chip }} ↗</span></a></sc-if>
+<sc-if value="{{ s.plain }}" hint-placeholder-val="{{ false }}"><span style="flex-shrink:0;display:inline-flex;align-items:center;height:26px;padding:0 10px;border-radius:999px;border:1px dashed #34407A;font:700 12px 'Atkinson Hyperlegible';color:#C3CAEE;">{{ s.chip }}</span></sc-if>
+<span style="font-size:14px;line-height:1.4;color:#F2F4FF;">{{ s.title }}</span>
+</li>
+</sc-for>
+</ul>
+</sc-if>
+</section>
+</div>
+</div>
+<footer style="position:sticky;bottom:0;display:flex;flex-wrap:wrap;justify-content:flex-end;gap:10px;padding:{{ pad }};background:#0B1026;border-top:1px solid #34407A;">
+<sc-if value="{{ r.ok }}" hint-placeholder-val="{{ true }}">
+<button type="button" onClick="{{ onRevise }}" style="all:unset;box-sizing:border-box;flex:1 1 0;max-width:280px;min-height:52px;padding:0 12px;white-space:nowrap;display:flex;align-items:center;justify-content:center;border-radius:999px;border:2px solid #34407A;background:#151C3D;color:#F2F4FF;font:600 16px Fredoka,sans-serif;cursor:pointer;" style-hover="border-color:#62B4FF;" style-focus="outline:3px solid #F2F4FF;outline-offset:3px;">← Try another design</button>
+<button type="button" onClick="{{ onReplay }}" style="all:unset;box-sizing:border-box;flex:1 1 0;max-width:280px;min-height:52px;padding:0 12px;white-space:nowrap;display:flex;align-items:center;justify-content:center;border-radius:999px;border:2px solid #FFD166;background:#FFD166;color:#0B1026;font:600 16px Fredoka,sans-serif;cursor:pointer;" style-focus="outline:3px solid #F2F4FF;outline-offset:3px;">Replay mission</button>
+</sc-if>
+<sc-if value="{{ r.failed }}" hint-placeholder-val="{{ false }}">
+<button type="button" onClick="{{ onReplay }}" style="all:unset;box-sizing:border-box;flex:1 1 0;max-width:280px;min-height:52px;padding:0 12px;white-space:nowrap;display:flex;align-items:center;justify-content:center;border-radius:999px;border:2px solid #34407A;background:#151C3D;color:#F2F4FF;font:600 16px Fredoka,sans-serif;cursor:pointer;" style-hover="border-color:#62B4FF;" style-focus="outline:3px solid #F2F4FF;outline-offset:3px;">Replay mission</button>
+<button type="button" onClick="{{ onRevise }}" style="all:unset;box-sizing:border-box;flex:1 1 0;max-width:280px;min-height:52px;padding:0 12px;white-space:nowrap;display:flex;align-items:center;justify-content:center;border-radius:999px;border:2px solid #FFD166;background:#FFD166;color:#0B1026;font:600 16px Fredoka,sans-serif;cursor:pointer;" style-focus="outline:3px solid #F2F4FF;outline-offset:3px;">← Try another design</button>
+</sc-if>
+</footer>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:390,&quot;height&quot;:2000},&quot;variant&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;success&quot;,&quot;failScore&quot;,&quot;failBudget&quot;],&quot;default&quot;:&quot;success&quot;,&quot;tsType&quot;:&quot;'success'|'failScore'|'failBudget'&quot;},&quot;layout&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;mobile&quot;,&quot;desktop&quot;],&quot;default&quot;:&quot;mobile&quot;,&quot;tsType&quot;:&quot;'mobile'|'desktop'&quot;},&quot;sourcesOpen&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;}}">
+class Component extends DCLogic {
+  // Placeholder outputs shaped like evaluateMission(); real values come from src/engine.
+  // Outcome rule (engine): success = !overBudget && score >= 50.
+  static DATA = {
+    success: { score: 86, cost: 172, budget: 200,
+      breakdown: [{ label: 'Science return', points: 44, max: 50 }, { label: 'Data delivered', points: 18, max: 20 }, { label: 'Budget & reserve', points: 11, max: 15 }, { label: 'Team Go/No-Go', points: 13, max: 15 }],
+      primaryConstraint: 'Budget: the radar and big panels left $28M in reserve, enough but not much.',
+      biggestImpact: 'Choosing SSO gave the radar the same lighting on every pass over farmland.',
+      lesson: 'The orbit decides almost everything else. Pick it from the mission goal first, then fit the parts to it.' },
+    failScore: { score: 38, cost: 164, budget: 200,
+      breakdown: [{ label: 'Science return', points: 14, max: 50 }, { label: 'Data delivered', points: 8, max: 20 }, { label: 'Budget & reserve', points: 10, max: 15 }, { label: 'Team Go/No-Go', points: 6, max: 15 }],
+      primaryConstraint: 'Distance: from GEO, 35,786 km up, the camera could not see single fields.',
+      biggestImpact: 'Picking GEO for a farmland mission made every image too blurry to use.',
+      lesson: 'Match the orbit to what you need to see. Small details need a low orbit; a fixed view needs a high one.' },
+    failBudget: { score: 61, cost: 238, budget: 200,
+      breakdown: [{ label: 'Science return', points: 36, max: 50 }, { label: 'Data delivered', points: 16, max: 20 }, { label: 'Budget & reserve', points: 0, max: 15 }, { label: 'Team Go/No-Go', points: 9, max: 15 }],
+      primaryConstraint: 'Budget: the Heavy rocket alone cost more than the reserve could cover.',
+      biggestImpact: 'Choosing the Heavy launcher pushed the total $38M over budget.',
+      lesson: 'A good design that costs too much never flies. Check the budget after every step, not only at the end.' },
+  };
+  static CHOICE = {
+    success: { orbit: 'SSO', parts: ['Imaging Radar', 'Extended', 'Polar Station Network', 'Medium'], ship: { payload: 'radar', power: 'big', antenna: 'polar', launcher: 'medium', bad: null }, badIdx: -1 },
+    failScore: { orbit: 'GEO', parts: ['High-Res Camera', 'Standard', 'Continuous Link', 'Heavy'], ship: { payload: 'camera', power: 'small', antenna: 'relay', launcher: 'heavy', bad: 'payload', badText: 'Too far away to see fields clearly.' }, badIdx: 0,
+      speaker: 'Science lead', bubble: 'Our camera was too far away to see the fields. We can fix that!', reason: 'The ship reached orbit, but it sent back too little useful science for the mission goal.', brokenPart: 'Instrument · High-Res Camera' },
+    failBudget: { orbit: 'SSO', parts: ['Imaging Radar', 'Extended', 'Continuous Link', 'Heavy'], ship: { payload: 'radar', power: 'big', antenna: 'relay', launcher: 'heavy', bad: 'launcher', badText: 'Over budget by $38M.' }, badIdx: 3,
+      speaker: 'Launch chief', bubble: 'The Heavy rocket put us $38M over. A smaller one can lift this ship.', reason: 'The design cost more than the budget, so the mission was cancelled before launch.', brokenPart: 'Launcher · Heavy', grounded: true },
+  };
+  static SOURCES = [
+    { chip: 'NASA S1', title: 'NASA Earth Fact Sheet', href: 'https://nssdc.gsfc.nasa.gov/planetary/factsheet/earthfact.html' },
+    { chip: 'NASA S2', title: 'NASA CubeSat 101', href: 'https://www.nasa.gov/wp-content/uploads/2017/03/nasa_csli_cubesat_101_508.pdf' },
+    { chip: 'NASA S3', title: 'NASA Design and Develop Science Missions', href: 'https://www.nasa.gov/wp-content/uploads/2025/04/250323-design-and-develop-science-mission.pdf' },
+    { chip: 'NASA S6', title: 'NASA Landsat 9', href: 'https://science.nasa.gov/mission/landsat-9' },
+    { chip: 'NASA S9', title: 'NASA Small Spacecraft Technology State-of-the-Art, Communications', href: 'https://www.nasa.gov/smallsat-institute/sst-soa/communications' },
+    { chip: 'NASA S10', title: 'NASA International Space Station FAQ', href: 'https://www.nasa.gov/?p=532244' },
+    { chip: 'physics', title: 'Standard orbital mechanics (Kepler, Hohmann, rocket equation).', href: '' },
+    { chip: 'illustrative', title: 'Simplified game value for educational purposes.', href: '' },
+  ];
+  constructor(p) { super(p); this.state = { open: !!p.sourcesOpen }; }
+  renderVals() {
+    const v = ['success', 'failScore', 'failBudget'].includes(this.props.variant) ? this.props.variant : 'success';
+    const desk = (this.props.layout ?? 'mobile') === 'desktop';
+    const data = Component.DATA[v], ch = Component.CHOICE[v];
+    const overBudget = data.cost > data.budget;
+    const ok = !overBudget && data.score >= 50;
+    const failureReason = ok ? null : overBudget ? 'budget' : 'score';
+    const circ = 2 * Math.PI * 52;
+    const R = ok ? {
+      ok, failed: false, color: '#66E39A', bannerBg: '#151C3D', mood: 'cheer', icon: '✓', title: 'Mission success',
+      message: 'Your ship reached orbit and sent back the data your mission needed.', gaugeColor: '#66E39A', gaugeLabel: '✓ Mission success',
+      bubble: '', speaker: '', brokenPart: '', grounded: false, tailX: '50%',
+    } : {
+      ok, failed: true, color: '#FF7070', bannerBg: '#151C3D', mood: 'worried', icon: '✕', title: 'Mission failed',
+      message: ch.reason, gaugeColor: '#FF7070', gaugeLabel: failureReason === 'budget' ? '✕ Mission failed · over budget' : '✕ Mission failed · low score',
+      bubble: ch.bubble, speaker: ch.speaker, brokenPart: ch.brokenPart, grounded: !!ch.grounded,
+      tailX: ['calc(50% - 90px)', 'calc(50% - 35px)', 'calc(50% + 25px)', 'calc(50% + 80px)'][ch.badIdx],
+    };
+    R.scoreText = 'Score ' + data.score + ' of 100' + (failureReason === 'budget' ? ' · over budget' : '');
+    const roles = [['science', '◎', 'Science', '#7FE28E', 'Instrument'], ['spacecraft', '◆', 'Spacecraft', '#62B4FF', 'Power'], ['ground', '▲', 'Ground', '#FF93B8', 'Downlink'], ['launch', '▮', 'Launch', '#FF8552', 'Launcher']];
+    const meterColor = (p, m) => (p / m >= 0.7 ? '#66E39A' : p / m >= 0.5 ? '#FFB547' : '#FF7070');
+    const O = { LEO: ['Low Earth orbit', '#4FD8C8'], SSO: ['Sun-synchronous', '#FFB547'], GEO: ['Geostationary', '#C29BFF'] }[ch.orbit];
+    const over = data.cost - data.budget;
+    return {
+      frameW: desk ? '1280px' : '390px', pad: desk ? '32px 40px' : '20px 16px', titleSize: desk ? '40px' : '28px',
+      cols: desk ? '420px minmax(0,1fr)' : 'minmax(0,1fr)', gap: desk ? '32px' : '16px', leftPos: desk ? 'sticky' : 'static',
+      shipH: desk ? 260 : 200, crewSize: desk ? 60 : 52,
+      data, r: R, ship: ch.ship, failureReason,
+      gaugeDash: (data.score / 100 * circ).toFixed(1) + ' ' + circ.toFixed(1),
+      crew: roles.map((x, i) => ({ role: x[0], delay: (400 + i * 90) + 'ms', t: !ok && i === ch.badIdx ? 'translateY(-8px) scale(1.18)' : 'none' })),
+      budget: overBudget
+        ? { text: '$' + data.cost + 'M / $' + data.budget + 'M', pct: '100%', markR: (100 - data.budget / data.cost * 100).toFixed(1) + '%', color: '#FF7070', status: '✕ Over budget by $' + over + 'M', aria: 'Budget: $' + data.cost + 'M of $' + data.budget + 'M, over budget' }
+        : { text: '$' + data.cost + 'M / $' + data.budget + 'M', pct: (data.cost / data.budget * 100) + '%', markR: '0%', color: '#66E39A', status: '✓ Within budget', aria: 'Budget: $' + data.cost + 'M of $' + data.budget + 'M, within budget' },
+      meters: data.breakdown.map((b, i) => ({ ...b, text: b.points + ' / ' + b.max, aria: b.label + ': ' + b.points + ' of ' + b.max,
+        pct: (b.points / b.max * 100) + '%', color: meterColor(b.points, b.max), delay: (300 + i * 180) + 'ms' })),
+      insights: [
+        { icon: '⚖', title: 'Primary constraint', text: data.primaryConstraint, role: 'ground' },
+        { icon: '↯', title: 'Biggest impact', text: data.biggestImpact, role: 'spacecraft' },
+      ],
+      lesson: data.lesson,
+      orbit: { code: ch.orbit, name: O[0], color: O[1] },
+      parts: roles.map((x, i) => ({ step: x[4], name: ch.parts[i], icon: x[1], role: x[2], color: x[3],
+        bad: i === ch.badIdx, warn: i === ch.badIdx ? (failureReason === 'budget' ? '✕ Too expensive' : '✕ Caused the low score') : '' })),
+      sources: Component.SOURCES.map(s => ({ ...s, link: !!s.href, plain: !s.href })),
+      open: this.state.open, openStr: String(this.state.open), toggleLabel: this.state.open ? 'Hide' : 'Show',
+      toggle: () => this.setState(s => ({ open: !s.open })),
+      onReplay: () => this.props.onReplay?.(), onRevise: () => this.props.onRevise?.(),
+    };
+  }
+}
+</script>
+</body>
+</html>
