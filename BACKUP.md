@@ -1,5 +1,24 @@
 # BACKUP - NASA
 
+## 2026-11-15 (PC temporal de Edgar) — S9 deja de ser "lectura de fondo": ahora se cita en el downlink
+
+- S9 (NASA Small Spacecraft Technology State-of-the-Art, Communications) figuraba como fuente usada en About, README y varias listas, pero ningún número ni motivo del juego la citaba, y `docs/PROJECT_PAGE.md` la dejaba fuera con un TODO. Edgar decidió usarla con una cita.
+- Se leyó el capítulo (edición 2025). Cita textual, sección 9.2.4 "Design Considerations": "a mission with high data rate needs would select a high frequency such as X-band for downlink and a directional high-gain antenna". Segunda cita, sección 9.2.1: "NASA spacecraft, which use the government bands of S-band, X-band, and Ka-band, may use the NASA Near Space Network (NSN)." Ambas en `SOURCES.S9` (`quote` y `more`).
+- Todo downlink que sí alcanza para los datos muestra ahora esa frase con la etiqueta NASA S9 (`downlinkNode` en `src/engine/game.ts`); los bloqueados siguen citando CubeSat 101 [S2]. La línea de capacidad en Gbit/día conserva sus etiquetas: las tasas de 300 y 150 Mbps siguen siendo ilustrativas.
+- Por qué no se usó S9 para las tasas: el capítulo solo reporta radios de CubeSat (por ejemplo 320 Mbps en banda Ka) con datos de los fabricantes y advierte que el desempeño "has not been independently verified by NASA subject matter experts".
+- Documentación: `README.md`, `docs/PROJECT_PAGE.md` (S9 entra a la tabla y se cierra el TODO), `docs/COPY.md` §6 y §8, `docs/REQUIREMENTS.md`.
+- Verificado: 73 tests tras integrar main, build y lint; el motivo nuevo revisado en el navegador a 375 px en el árbol de la misión.
+- Pendiente: revisión de Belle de la frase nueva (`docs/COPY.md` §8). Si se quiere una fuente para las tasas mismas, haría falta una misión real (por ejemplo el enlace en banda X de Landsat 9); no se verificó.
+
+## 2026-11-15 (PC de José) — Número de jugadores antes de empezar y Go/No-Go por jugador
+
+- Pedido de José: con un jugador el lanzamiento debe necesitar un solo Go (y así con 2, 3 y 4), y el número de jugadores se elige antes de empezar.
+- Motor (`src/engine/game.ts`): `MAX_PLAYERS`, `clampPlayers()`, `playerRoles(players)` (1: los cuatro roles; 2: Ciencia + Nave / Tierra + Lanzamiento; 3: Ciencia + Nave / Tierra / Lanzamiento; 4: uno cada uno) y `teamPoints(goVotes, players)` y `evaluateMission(c, goVotes, players)`, con 4 por defecto (los tests anteriores no cambian). Un Go unánime siempre da 15 puntos; con No-Go se conserva la parte de jugadores que dijo Go. Tests nuevos: escala por equipo y cada tamaño cubre los cuatro roles una vez.
+- Página de inicio: selector "How many players? 1 2 3 4" (por defecto 1) antes de "Start mission". Pantalla 4: una tarjeta por jugador con sus roles ("You" si es uno solo); Launch se habilita cuando votaron todos los jugadores. Los votos se guardan con actualización funcional: en la prueba con clics seguidos solo quedaba el último voto.
+- Leaderboard: columna `players` (1–4, por defecto 4) añadida a `scores`; la función recibe `players`, rechaza más Go que jugadores y recalcula con el tamaño de equipo (desplegada como deployment 3). La tabla muestra "solo" o "N players".
+- Verificado en Chrome: 1 jugador, un Go → Launch, equipo 15/15, puntaje 86; 3 jugadores, 2 Go y 1 No-Go → "Launch anyway (2 of 3 Go)", equipo 10/15, puntaje 81. Captura de la pantalla 4 con 3 jugadores. 73 tests, build y lint; la función publicada rechaza votos > jugadores y jugadores = 7.
+- Textos nuevos en `docs/COPY.md`; actualizados `CLAUDE.md`, `docs/PROJECT_PAGE.md` y `docs/REQUIREMENTS.md`.
+
 ## 2026-11-15 (Mac de Belle) — Pitch: cierre sin "for free" y capturas para el video
 
 - Belle pidió quitar "for free". El cierre del video queda así: "Learn to manage a real mission — on any phone." Se cambió en el guion, en los subtítulos y en la frase del pitch de `docs/PITCH.md`. El guion baja a unas 70 palabras.

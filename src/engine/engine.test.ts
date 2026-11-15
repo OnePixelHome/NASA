@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import * as P from './physics'
 import * as C from './catalog'
-import { budget, choose, evaluateMission, missionRequirements, orbitStats, resources, TEAM_POINTS_MAX, teamPoints, tierOptions, type Choice } from './game'
+import { budget, choose, evaluateMission, missionRequirements, orbitStats, playerRoles, resources, TEAM_POINTS_MAX, teamPoints, tierOptions, type Choice } from './game'
 import { AI_DISCLOSURE, DISCLAIMER, HOW_TO_PLAY, reasonSources, SOURCES, TEAM, type Reason } from './sources'
 
 const orbit = (id: string) => C.byId(C.ORBITS, id)!
@@ -93,7 +93,7 @@ describe('sources (every number shown carries one)', () => {
     const card = evaluateMission(full, 4)
     // Landsat 9 orbit and lifetime [S6], constants [S1], roles [S3], reserve rule [S2] — but not the ISS source: this path never uses LEO.
     // S12: the Earth image in the mission film. S15: battery depth of discharge in a low orbit. S19: Earth's spin, lost by a polar launch.
-    expect(card.sources).toEqual(['S1', 'S2', 'S3', 'S6', 'S12', 'S15', 'S19', 'PHYS', 'GAME'])
+    expect(card.sources).toEqual(['S1', 'S2', 'S3', 'S6', 'S9', 'S12', 'S15', 'S19', 'PHYS', 'GAME']) // S9: the chosen downlink can carry the data
     const leo = evaluateMission({ scenarioId: 'crops', orbitId: 'leo', instrumentId: 'multispectral', powerId: 'standard', downlinkId: 'daily', launchId: 'small' }, 4)
     expect(leo.sources).toContain('S10')
   })
@@ -150,6 +150,23 @@ describe('Go/No-Go poll (team collaboration)', () => {
   it('vote counts outside 0–4 are clamped', () => {
     expect(teamPoints(9)).toBe(TEAM_POINTS_MAX)
     expect(teamPoints(-1)).toBe(0)
+  })
+  it('scales to the number of players: a unanimous Go is always the full team score', () => {
+    for (const n of [1, 2, 3, 4]) expect(teamPoints(n, n)).toBe(TEAM_POINTS_MAX)
+    expect(teamPoints(0, 1)).toBe(0) // a solo player who votes No-Go and launches anyway
+    expect(teamPoints(1, 2)).toBe(8) // half the team
+    expect(teamPoints(2, 3)).toBe(10)
+    expect(team(4)).toBe(evaluateMission(full, 1, 1).breakdown.find((b) => b.label === 'Team Go/No-Go')!.points)
+    expect(evaluateMission(full, 1, 1).score).toBe(evaluateMission(full, 4, 4).score)
+  })
+  it('every team size covers all four roles exactly once', () => {
+    for (const n of [1, 2, 3, 4]) {
+      const roles = playerRoles(n)
+      expect(roles).toHaveLength(n)
+      expect(roles.flat().sort()).toEqual(['ground', 'launch', 'science', 'space'])
+    }
+    expect(playerRoles(0)).toHaveLength(1) // clamped
+    expect(playerRoles(9)).toHaveLength(4)
   })
 })
 
@@ -336,10 +353,17 @@ describe('CubeSat 101 lessons in lock reasons [S2]', () => {
     expect(more[1].cite).toContain('p. iv')
   })
 
-  it('every locked downlink cites the ground-station warning; open ones do not', () => {
+  it('every locked downlink cites the ground-station warning; every open one cites the high-data-rate guidance instead', () => {
     const dl = nodes('downlink', (c) => C.POWER.map((p) => ({ ...c, powerId: p.id })))
     expect(dl.some((n) => !n.ok)).toBe(true)
-    for (const n of dl) expect(citesS2(n)).toBe(!n.ok)
+    for (const n of dl) {
+      expect(citesS2(n)).toBe(!n.ok)
+      expect(n.reasons.some((r) => reasonSources(r).includes('S9'))).toBe(n.ok)
+      // The quote is word for word, and the capacity line keeps its own tags: the rate is not attributed to S9.
+      for (const r of n.reasons.filter((r) => r.source === 'S9')) expect(r.text).toContain(SOURCES.S9.quote!)
+      for (const r of n.reasons.filter((r) => r.text.includes('Gbit'))) expect(reasonSources(r)).not.toContain('S9')
+    }
+    expect(dl.some((n) => n.ok)).toBe(true)
   })
 
   it('fixed body panels that cannot power the spacecraft cite deployable panels; deployable ones never do', () => {

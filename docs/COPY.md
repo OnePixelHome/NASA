@@ -96,7 +96,7 @@ Source descriptions, field `use` in `SOURCES` (also reusable for the "NASA Data"
 | S2 | NASA CSLI — CubeSat 101 (budget reserve, ground stations, deployable solar panels) | The budget rule: keep at least 10% in reserve. The budget meter turns amber and the budget score drops when a design eats into it. It also backs two lock reasons: a downlink too small for the data, and fixed body panels that cannot power the spacecraft. |
 | S3 | NASA — Design and Develop Science Missions (Launch, Space, Ground, User segments) | The four mission segments, used as the four team roles: Science, Spacecraft, Ground and Launch. |
 | S6 | NASA — Landsat 9 mission (705 km, 98.2°, 185 km swath, 16-day revisit, 10 years of consumables) | The Sun-synchronous orbit card and the Multispectral Imager (30 m pixels, 185 km swath). The model reproduces its ~99-minute orbit and ~16-day revisit. Its 10 years of consumables set the 10-year mission in this orbit. |
-| S9 | NASA Small Spacecraft Technology State-of-the-Art — Communications | Background reading on spacecraft radio links. No game value is taken from it yet. |
+| S9 | NASA Small Spacecraft Technology State-of-the-Art — Communications (high data rates call for X-band and a high-gain antenna) | Why the Data downlink tier offers fast radio links to ground stations: a mission with a lot of data picks a high-frequency link. Shown when a downlink can carry the data. The data rates themselves stay illustrative values. |
 | S10 | NASA — International Space Station FAQ (51.6° inclination) | The 51.6° inclination of the Low Earth Orbit card, which is why it never flies over the poles. |
 | S13 | NASA JPL — GRACE-FO Launch Press Kit (490 km orbit, five-year prime mission) | The 5-year mission in Low Earth Orbit: a real NASA mission at almost the same altitude (490 km) was planned for five years. |
 | S14 (tag "NOAA S14") | NOAA and NASA — GOES-R Series spacecraft (15 years of on-orbit life in geostationary orbit) | The 15-year mission in Geostationary Orbit, the on-orbit life required of the GOES-R weather satellites. |
@@ -120,7 +120,8 @@ These strings sit in the screen code. Edit only the words; leave tags, braces an
 | Landing (`Home`) | NASA Space Apps Challenge 2026 · Space Mission Design Game |
 | Landing (`Home`) | Status: GO (pitch below it is `PITCH`; the steps are `HOW_TO_PLAY`) |
 | Landing (`Home`) | Start mission → / About & sources |
-| Landing (`Home`) | 1 to 4 players on one screen · no sign-up |
+| Landing (`Home`) | How many players? / You hold all four roles and cast the launch vote. / The four roles are shared by N players; each player casts one vote. |
+| Landing (`Home`) | Everyone plays on one screen · no sign-up |
 | Landing (`Home`) | How to play |
 | Landing (`Home`) | Made by team One Pixel Home. Not affiliated with or endorsed by NASA. |
 | Landing (`Home`) | Earth image: NASA Earth Observatory, Blue Marble: Next Generation. |
@@ -149,7 +150,8 @@ These strings sit in the screen code. Edit only the words; leave tags, braces an
 | 3 (`Tree`) | Why it works / Why it is locked |
 | 3 (`Tree`) | Go to Go / No-Go → |
 | 4 (`GoNoGo`) | 4 · Go / No-Go poll |
-| 4 (`GoNoGo`) | Like a real launch, every role is polled. Playing as a team? Each player votes for their role. A unanimous Go earns the full team score. |
+| 4 (`GoNoGo`) | Solo: Like a real launch, the mission needs a Go. You hold all four roles, so your vote decides. / Team: Like a real launch, the team is polled. Each of the N players votes once for the roles they hold. A unanimous Go earns the full team score. |
+| 4 (`GoNoGo`) | Your call / Team poll / You / Player N / A No-Go means you see a problem. / A No-Go means someone sees a problem. |
 | 4 (`GoNoGo`) | … waiting… / ✓ GO / ✕ NO-GO / ✓ Go / ✕ No-Go |
 | 4 (`GoNoGo`) | Over budget by $…M. An over-budget mission cannot succeed. |
 | 4 (`GoNoGo`) | Budget reserve is …%. NASA’s CubeSat 101 guide advises project reserves of at least 10% of the budget. |
@@ -181,7 +183,7 @@ About screen text added with the design, in `src/engine/sources.ts` (**Belle: pl
 | `HOW_TO_PLAY` 1 | Pick a mission — Choose a science goal. Its requirements set what success means. |
 | `HOW_TO_PLAY` 2 | Choose a trajectory — Compare the three orbits and pick the one that fits the mission. |
 | `HOW_TO_PLAY` 3 | Build the ladder — Pick instrument, power, downlink and launcher. Each choice can lock the next. |
-| `HOW_TO_PLAY` 4 | Vote Go / No-Go and watch the simulation — Every role votes. Then follow the mission and read your scorecard. |
+| `HOW_TO_PLAY` 4 | Vote Go / No-Go and watch the simulation — Every player votes. Then follow the mission and read your scorecard. |
 | `ROLES_NOTE` | Four roles, one for each of NASA’s four mission segments: Science, Spacecraft, Ground, Launch. |
 | `AI_IMAGES_NOTE` | Images marked “AI-generated” were drafted with AI and then checked and adapted by the team. |
 | `DISCLAIMER` | Status: GO is an independent project made by team One Pixel Home for the NASA Space Apps Challenge 2026. It is not affiliated with or endorsed by NASA. NASA does not endorse any non-U.S. Government entity. |
@@ -206,4 +208,5 @@ Two fixed sentences quote CubeSat 101 [S2] (added 2026-11-15; the quoted part mu
 
 - Locked downlink: NASA's CubeSat 101 warns: "Launching with an inadequate ground station is a mission killer."
 - Imaging Radar out of range (added 2026-11-15, cites NISAR [S17] and Sentinel-1 [ESA S18]; for Belle's review): Real imaging radars fly much lower: NISAR at 747 km and Sentinel-1 at 693 km.
+- Downlink that can carry the data (added 2026-11-15, quotes the Communications chapter [S9]; the quoted part must stay word for word): NASA's small spacecraft guide: "a mission with high data rate needs would select a high frequency such as X-band for downlink and a directional high-gain antenna".
 - Standard Power locked for lack of power: These panels are fixed to the body. NASA's CubeSat 101 describes deployable solar panels that "will nearly double the power input to the spacecraft".

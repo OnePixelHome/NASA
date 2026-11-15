@@ -204,8 +204,11 @@ function downlinkNode(o: C.Orbit, ins: C.Instrument, dl: C.Downlink): NodeState 
   const reasons: Reason[] = [cap.note]
   if (cap.gbitPerDay > 0 && !ok)
     reasons.push(reason(`Only ${fmt((100 * cap.gbitPerDay) / ins.dataGbitPerDay)}% of the ${fmt(ins.dataGbitPerDay)} Gbit collected per day reaches Earth.`, 'GAME', 'PHYS'))
-  if (ok) reasons.push(reason(`${fmt(cap.gbitPerDay)} Gbit/day capacity ≥ ${fmt(ins.dataGbitPerDay)} Gbit/day collected.`, 'GAME', 'PHYS'))
-  else reasons.push(reason(`NASA's CubeSat 101 warns: "Launching with an inadequate ground station is a mission killer."`, 'S2'))
+  if (ok) {
+    reasons.push(reason(`${fmt(cap.gbitPerDay)} Gbit/day capacity ≥ ${fmt(ins.dataGbitPerDay)} Gbit/day collected.`, 'GAME', 'PHYS'))
+    // Why the link is a fast one; the rate itself is a game value and is not attributed to this source.
+    reasons.push(reason(`NASA's small spacecraft guide: "a mission with high data rate needs would select a high frequency such as X-band for downlink and a directional high-gain antenna".`, 'S9'))
+  } else reasons.push(reason(`NASA's CubeSat 101 warns: "Launching with an inadequate ground station is a mission killer."`, 'S2'))
   return { id: dl.id, name: dl.name, tip: dl.tip, ok, reasons, facts: [`${fmt(cap.gbitPerDay)} Gbit/day`, `$${downlinkCostPerYear(o, dl)}M/yr`], factsSource: 'GAME' }
 }
 
@@ -344,11 +347,32 @@ export function resources(c: Choice): ResourceMeter[] {
 // ---------------- Go/No-Go poll ----------------
 export const TEAM_ROLES = 4
 export const TEAM_POINTS_MAX = 15
+/** One to four people share the screen; each player holds one or more of the four roles and casts one vote. */
+export const MAX_PLAYERS = TEAM_ROLES
+export const clampPlayers = (players: number) => Math.max(1, Math.min(MAX_PLAYERS, Math.round(players) || 1))
+
+/** Which roles each player holds, by team size. Every role belongs to exactly one player [GAME]. */
+export function playerRoles(players: number): C.Role[][] {
+  switch (clampPlayers(players)) {
+    case 1:
+      return [['science', 'space', 'ground', 'launch']]
+    case 2:
+      return [['science', 'space'], ['ground', 'launch']]
+    case 3:
+      return [['science', 'space'], ['ground'], ['launch']]
+    default:
+      return [['science'], ['space'], ['ground'], ['launch']]
+  }
+}
+
 /**
- * Collaboration points: a unanimous Go earns them all. A mission launched over No-Go votes
- * keeps only the share of roles that agreed, so overriding a teammate has a visible cost [GAME].
+ * Collaboration points: a unanimous Go earns them all, whatever the team size. A mission launched over No-Go votes
+ * keeps only the share of players that agreed, so overriding a teammate has a visible cost [GAME].
  */
-export const teamPoints = (goVotes: number) => Math.round((TEAM_POINTS_MAX * Math.max(0, Math.min(TEAM_ROLES, goVotes))) / TEAM_ROLES)
+export function teamPoints(goVotes: number, players: number = TEAM_ROLES) {
+  const n = clampPlayers(players)
+  return Math.round((TEAM_POINTS_MAX * Math.max(0, Math.min(n, goVotes))) / n)
+}
 
 // ---------------- Mission run + scorecard ----------------
 /** A mission succeeds when it stays within budget and scores at least this many points [GAME]. */
@@ -372,7 +396,7 @@ export interface Scorecard {
   sources: SourceId[]
 }
 
-export function evaluateMission(c: Choice, goVotes: number): Scorecard {
+export function evaluateMission(c: Choice, goVotes: number, players: number = TEAM_ROLES): Scorecard {
   const s = C.byId(C.SCENARIOS, c.scenarioId)!
   const o = orbitOf(c)!
   const ins = C.byId(C.INSTRUMENTS, c.instrumentId)!
@@ -395,7 +419,7 @@ export function evaluateMission(c: Choice, goVotes: number): Scorecard {
 
   const sciencePts = Math.round(50 * fit.fit * Math.min(1, coverage) * (0.5 + 0.5 * revisitFactor))
   const dataPts = Math.round(20 * dataFactor)
-  const teamPts = teamPoints(goVotes)
+  const teamPts = teamPoints(goVotes, players)
   const score = Math.min(100, sciencePts + dataPts + budgetPts + teamPts)
 
   const factors = [
