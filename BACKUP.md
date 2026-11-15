@@ -1,5 +1,12 @@
 # BACKUP - NASA
 
+## 2026-11-15 (PC de José) — Botón Home en el scorecard; README y CLAUDE.md al día
+
+- Pedido de José: al terminar una misión, un botón para volver a la página principal. El scorecard tiene ahora "⌂ Home" (a la izquierda; ancho completo en celular) junto a "← Try another design" y "Replay mission"; reinicia el diseño y los votos y vuelve a la página de inicio con el selector de jugadores. Verificado en Chrome.
+- `README.md`: nuevas secciones "How to play" (los 7 pasos, con el número de jugadores y el leaderboard), comandos completos (`lint`, `build:single`), leaderboard en línea, estructura del proyecto, créditos y equipo; "Use of AI" igual a `AI_DISCLOSURE`. Se mantienen la lista de fuentes y los recursos del reto.
+- `CLAUDE.md`: flujo actual (inicio con 1–4 jugadores, voto por jugador, película, leaderboard, Home), URL y repo nuevos, el backend del leaderboard (ya no dice "No backend"), estructura de archivos completa y reglas del leaderboard (el servidor recalcula, redesplegar al cambiar puntaje o catálogo, interruptor `LEADERBOARD_URL`).
+- Verificado: 73 tests, build y lint.
+
 ## 2026-11-15 (PC temporal de Edgar) — S9 deja de ser "lectura de fondo": ahora se cita en el downlink
 
 - S9 (NASA Small Spacecraft Technology State-of-the-Art, Communications) figuraba como fuente usada en About, README y varias listas, pero ningún número ni motivo del juego la citaba, y `docs/PROJECT_PAGE.md` la dejaba fuera con un TODO. Edgar decidió usarla con una cita.
