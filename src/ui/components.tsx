@@ -191,15 +191,10 @@ export function ResourcePanel({ meters, open = true }: { meters: ResourceMeter[]
           const ui = METER_UI[state]
           const status = state === 'waiting' ? (m.hint ?? ui.text) : ui.text
           const pct = m.limit ? Math.min(100, (100 * m.used) / m.limit) : 0
-          // While a meter waits for its limit the hint needs the whole status line, so the chip moves up beside the label.
-          const oneSource = state === 'waiting'
           return (
             <div key={m.id} role="group" aria-label={`${m.label}: ${m.text}, ${status}`} className="min-w-0 text-caption">
               <div className="flex items-baseline justify-between gap-1">
-                <span className="whitespace-nowrap font-bold text-ink-2">
-                  {m.label}
-                  {oneSource && <SourceChips ids={m.sources} link={false} />}
-                </span>
+                <span className="font-bold text-ink-2">{m.label}</span>
                 <span className="truncate text-right font-display tabular-nums text-ink">{m.text}</span>
               </div>
               <div className="mt-1 h-2 rounded-pill bg-space-raised">
@@ -210,11 +205,10 @@ export function ResourcePanel({ meters, open = true }: { meters: ResourceMeter[]
                   <span aria-hidden>{ui.icon} </span>
                   {status}
                 </span>
-                {!oneSource && (
-                  <span className="shrink-0">
-                    <SourceChips ids={m.sources} link={false} />
-                  </span>
-                )}
+                {/* A long hint pushes the chips to a second line instead of cutting the numbers. */}
+                <span className="shrink-0">
+                  <SourceChips ids={m.sources} link={false} />
+                </span>
               </div>
             </div>
           )

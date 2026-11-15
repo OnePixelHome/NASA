@@ -2,7 +2,9 @@ import { useEffect, useMemo, useState, type ReactNode } from 'react'
 import * as C from './engine/catalog'
 import { budget, BUDGET_SOURCE, choose, evaluateMission, isComplete, orbitSources, orbitStats, resources, SUCCESS_SCORE_MIN, TEAM_POINTS_MAX, TEAM_ROLES, teamPoints, TIER_ORDER, tierOptions, type Choice, type NodeState } from './engine/game'
 import { AI_DISCLOSURE, DISCLAIMER, PITCH, SOURCE_ORDER, SOURCES, type Reason } from './engine/sources'
-import { ROLE_UI } from './ui/theme'
+import { RoleCharacter } from './ui/Crew'
+import { ShipSvg } from './ui/Ship'
+import { ROLE_UI, shipParts } from './ui/theme'
 import { Bar, BTN_PRIMARY, BTN_SECONDARY, BTN_WARNING, Gauge, Meter, ReasonList, ResourcePanel, RoleTag, SourceChip, SourceChips, Sourced } from './ui/components'
 
 type Screen = 'brief' | 'orbit' | 'tree' | 'go' | 'run' | 'score'
@@ -37,7 +39,7 @@ export default function App() {
   return (
     <div className="min-h-dvh bg-space-page font-body text-ink">
       <header className="sticky top-0 z-10 border-b border-space-border bg-space-page/95 px-4 py-2 backdrop-blur">
-        <div className="mx-auto max-w-3xl">
+        <div className="mx-auto max-w-5xl">
           <div className="flex items-center justify-between gap-3">
             <button type="button" onClick={restart} className="min-h-[44px] text-left" aria-label="Trajectory Ladder: start over">
               <div className="font-display text-[18px] leading-tight">Trajectory Ladder</div>
@@ -82,11 +84,11 @@ export default function App() {
 
       {/* About overlays the game without unmounting its state, so "Back" returns to the same step. */}
       {about && (
-        <main className="mx-auto max-w-3xl px-4 pb-24 pt-5">
+        <main className="mx-auto max-w-5xl px-4 pb-24 pt-5">
           <About onBack={() => setAbout(false)} />
         </main>
       )}
-      <main className="mx-auto max-w-3xl px-4 pb-24 pt-5" hidden={about}>
+      <main className="mx-auto max-w-5xl px-4 pb-24 pt-5" hidden={about}>
         {screen === 'brief' && (
           <Brief
             onPick={(id) => {
@@ -243,6 +245,8 @@ const NODE_UI = {
   locked: { cls: 'border-dashed border-space-border bg-space-page', status: '🔒 Locked — tap for why', color: 'var(--color-ink-2)' },
 }
 
+const TIER_KEY: Record<C.Tier, keyof Choice> = { instrument: 'instrumentId', power: 'powerId', downlink: 'downlinkId', launch: 'launchId' }
+
 function Tree(props: {
   choice: Choice
   orbit: C.Orbit
@@ -253,101 +257,144 @@ function Tree(props: {
   onDone: () => void
 }) {
   const { choice, orbit, focus, onFocus, onPick } = props
-  const key: Record<C.Tier, keyof Choice> = { instrument: 'instrumentId', power: 'powerId', downlink: 'downlinkId', launch: 'launchId' }
   const col = ORBIT_COLOR[orbit.id]
-  const chosen = TIER_ORDER.filter((t) => choice[key[t]]).length
+  const chosen = TIER_ORDER.filter((t) => choice[TIER_KEY[t]]).length
+  // Each pick re-keys the steps below it, so they flash once: the "ripple" of the title.
+  const [cascade, setCascade] = useState({ gen: 0, from: -1 })
   return (
     <section>
       <ScreenTitle screen="tree" title="3 · Build the mission tree">
         Each choice can lock the ones below it. Tap a locked option to see why.
       </ScreenTitle>
 
-      <div className="mt-4 flex flex-wrap items-center gap-x-2 gap-y-1">
-        <button
-          type="button"
-          onClick={props.onChangeOrbit}
-          aria-label={`Orbit: ${orbit.short}, ${orbit.name}. Tap to change.`}
-          className="flex min-h-[44px] items-center gap-2.5 rounded-pill border-2 bg-space-card py-1.5 pl-1.5 pr-3.5"
-          style={{ borderColor: col }}
-        >
-          <OrbitIcon color={col} />
-          <span className="flex flex-col text-left leading-tight">
-            <span className="font-display tabular-nums" style={{ color: col }}>
-              {orbit.short} · {orbit.altKm.toLocaleString()} km
-            </span>
-            <span className="text-caption text-ink-2">Orbit · tap to change</span>
-          </span>
-        </button>
-        <span>
-          <SourceChips ids={orbitSources(orbit)} />
-        </span>
-      </div>
+      <div className="mt-4 grid gap-4 lg:grid-cols-[300px_minmax(0,1fr)] lg:gap-6">
+        <aside aria-label="Your spacecraft" className={`${CARD} flex items-center gap-4 p-3 shadow-raised lg:sticky lg:top-36 lg:flex-col lg:self-start lg:p-4`}>
+          <ShipSvg {...shipParts(choice)} className="h-[150px] w-auto shrink-0 lg:h-[340px]" />
+          <div className="flex w-full min-w-0 flex-1 flex-col gap-1.5">
+            <span className="font-display tabular-nums">{chosen} of 4 parts</span>
+            {TIER_ORDER.map((t) => {
+              const role = C.TIER_ROLE[t]
+              const n = tierOptions(t, choice).find((x) => x.id === choice[TIER_KEY[t]])
+              return (
+                <div key={t} className={`flex gap-1.5 text-[13px] ${n ? 'text-ink' : 'text-ink-2'}`}>
+                  <span style={{ color: ROLE_UI[role].color }} aria-hidden>
+                    {ROLE_UI[role].icon}
+                  </span>
+                  {n ? n.name : `${C.ROLE_LABEL[role]} · empty slot`}
+                </div>
+              )
+            })}
+          </div>
+        </aside>
 
-      <ol className="mt-3 flex flex-col gap-3">
-        {TIER_ORDER.map((tier, ti) => {
-          const nodes = tierOptions(tier, choice)
-          const role = C.TIER_ROLE[tier]
-          const selectedId = choice[key[tier]]
-          const open = focus?.tier === tier ? focus.node : null
-          return (
-            <li key={tier} aria-label={`Step ${ti + 1}: ${C.TIER_LABEL[tier]}`} className={`${CARD} flex flex-col gap-3 p-3.5`}>
-              <div className="flex flex-wrap items-baseline justify-between gap-x-2">
-                <h2 className="text-card">
-                  <span className="tabular-nums text-ink-2">{ti + 1} ·</span> {C.TIER_LABEL[tier]}
-                </h2>
-                <RoleTag role={role} label={C.ROLE_LABEL[role]} />
-              </div>
-              {!nodes.length ? (
-                <div aria-disabled className="flex min-h-[44px] items-center rounded-md border-2 border-dashed border-space-border px-3 text-small text-ink-2">
-                  Choose the step above first
-                </div>
-              ) : (
-                <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
-                  {nodes.map((n) => {
-                    const sel = selectedId === n.id
-                    const ui = NODE_UI[!n.ok ? 'locked' : sel ? 'selected' : 'available']
-                    return (
-                      <button
-                        type="button"
-                        key={n.id}
-                        aria-pressed={sel}
-                        aria-expanded={open?.id === n.id}
-                        aria-label={`${n.name}: ${!n.ok ? 'locked' : sel ? 'selected' : 'available'}`}
-                        title={n.tip}
-                        onClick={() => {
-                          onFocus({ tier, node: n })
-                          // Re-tapping the current pick only shows its reasons; it must not wipe the tiers below.
-                          if (n.ok && !sel) onPick(tier, n.id)
-                        }}
-                        className={`flex min-h-24 flex-col gap-1 rounded-md border-2 p-3 pb-2.5 text-left transition duration-[var(--duration-fast)] ${ui.cls}`}
-                      >
-                        <span className={`font-display text-[15px] leading-tight ${n.ok ? 'text-ink' : 'text-ink-2'}`}>{n.name}</span>
-                        {n.ok && (
-                          <span className="text-[13px] tabular-nums text-ink-2">
-                            {n.facts.join(' · ')}
-                            <SourceChip id={n.factsSource} link={false} />
-                          </span>
-                        )}
-                        <span className="mt-auto text-caption font-bold" style={{ color: ui.color }}>
-                          {ui.status}
-                        </span>
-                      </button>
-                    )
-                  })}
-                </div>
-              )}
-              {open && (
-                <div role="region" aria-label="Explanation" className="flex flex-col gap-2 rounded-md border border-space-border bg-space-raised p-3.5">
-                  <h3 className="text-card">{open.name}</h3>
-                  <p className="text-[15px] text-ink">{open.tip}</p>
-                  <span className={`font-display ${open.ok ? 'text-st-success' : 'text-st-warning'}`}>{open.ok ? '✓ Why it works' : '⚠ Why it is locked'}</span>
-                  <ReasonList reasons={open.reasons} />
-                </div>
-              )}
-            </li>
-          )
-        })}
-      </ol>
+        <div className="flex min-w-0 flex-col gap-3">
+          <div className="flex flex-wrap items-center gap-x-2 gap-y-1">
+            <button
+              type="button"
+              onClick={props.onChangeOrbit}
+              aria-label={`Orbit: ${orbit.short}, ${orbit.name}. Tap to change.`}
+              className="flex min-h-[44px] items-center gap-2.5 rounded-pill border-2 bg-space-card py-1.5 pl-1.5 pr-3.5"
+              style={{ borderColor: col }}
+            >
+              <OrbitIcon color={col} />
+              <span className="flex flex-col text-left leading-tight">
+                <span className="font-display tabular-nums" style={{ color: col }}>
+                  {orbit.short} · {orbit.altKm.toLocaleString()} km
+                </span>
+                <span className="text-caption text-ink-2">Orbit · tap to change</span>
+              </span>
+            </button>
+            <span>
+              <SourceChips ids={orbitSources(orbit)} />
+            </span>
+          </div>
+
+          <ol className="flex flex-col gap-3">
+            {TIER_ORDER.map((tier, ti) => {
+              const nodes = tierOptions(tier, choice)
+              const role = C.TIER_ROLE[tier]
+              const selectedId = choice[TIER_KEY[tier]]
+              const open = focus?.tier === tier ? focus.node : null
+              const locked = nodes.filter((n) => !n.ok).length
+              // The crew member for this step says what to do next, in words (never by color or pose alone).
+              const bubble = !nodes.length ? `I’m waiting for step ${ti}.` : selectedId ? null : locked === nodes.length ? 'Nothing fits here. Change a step above.' : locked ? `${locked} locked. Tap 🔒 to see why.` : 'Your pick, team!'
+              const mood = selectedId ? 'cheer' : nodes.length && locked === nodes.length ? 'worried' : 'neutral'
+              const flash = cascade.gen > 0 && ti > cascade.from
+              return (
+                <li
+                  key={`${tier}-${flash ? cascade.gen : 0}`}
+                  aria-label={`Step ${ti + 1}: ${C.TIER_LABEL[tier]}`}
+                  className={`${CARD} flex flex-col gap-3 p-3.5 ${flash ? 'motion-safe:animate-flash' : ''}`}
+                  style={flash ? { animationDelay: `${(ti - cascade.from - 1) * 80}ms` } : undefined}
+                >
+                  <div className="flex items-start gap-2.5">
+                    <RoleCharacter role={role} mood={mood} decorative className="size-11 shrink-0 lg:size-14" />
+                    <div className="flex min-w-0 flex-1 flex-col gap-1">
+                      <div className="flex flex-wrap items-baseline justify-between gap-x-2">
+                        <h2 className="text-card">
+                          <span className="tabular-nums text-ink-2">{ti + 1} ·</span> {C.TIER_LABEL[tier]}
+                        </h2>
+                        <RoleTag role={role} label={C.ROLE_LABEL[role]} />
+                      </div>
+                      {bubble && <span className="self-start rounded-md bg-ink px-2.5 py-1.5 text-[13px] font-bold text-space-page motion-safe:animate-bubble-in">{bubble}</span>}
+                    </div>
+                  </div>
+                  {!nodes.length ? (
+                    <div aria-disabled className="flex min-h-[44px] items-center rounded-md border-2 border-dashed border-space-border px-3 text-small text-ink-2">
+                      Choose the step above first
+                    </div>
+                  ) : (
+                    <div className="grid grid-cols-2 gap-2 lg:grid-cols-[repeat(auto-fill,minmax(180px,1fr))]">
+                      {nodes.map((n) => {
+                        const sel = selectedId === n.id
+                        const ui = NODE_UI[!n.ok ? 'locked' : sel ? 'selected' : 'available']
+                        return (
+                          <button
+                            type="button"
+                            key={n.id}
+                            aria-pressed={sel}
+                            aria-expanded={open?.id === n.id}
+                            aria-label={`${n.name}: ${!n.ok ? 'locked' : sel ? 'selected' : 'available'}`}
+                            title={n.tip}
+                            onClick={() => {
+                              onFocus({ tier, node: n })
+                              // Re-tapping the current pick only shows its reasons; it must not wipe the tiers below.
+                              if (n.ok && !sel) {
+                                setCascade((c) => ({ gen: c.gen + 1, from: ti }))
+                                onPick(tier, n.id)
+                              }
+                            }}
+                            className={`flex min-h-24 flex-col gap-1 rounded-md border-2 p-3 pb-2.5 text-left transition duration-[var(--duration-fast)] ${ui.cls}`}
+                          >
+                            <span className={`font-display text-[15px] leading-tight ${n.ok ? 'text-ink' : 'text-ink-2'}`}>{n.name}</span>
+                            {n.ok && (
+                              <span className="text-[13px] tabular-nums text-ink-2">
+                                {n.facts.join(' · ')}
+                                <SourceChip id={n.factsSource} link={false} />
+                              </span>
+                            )}
+                            <span className="mt-auto text-caption font-bold" style={{ color: ui.color }}>
+                              {ui.status}
+                            </span>
+                          </button>
+                        )
+                      })}
+                    </div>
+                  )}
+                  {open && (
+                    <div role="region" aria-label="Explanation" className="flex flex-col gap-2 rounded-md border border-space-border bg-space-raised p-3.5">
+                      <h3 className="text-card">{open.name}</h3>
+                      <p className="text-[15px] text-ink">{open.tip}</p>
+                      <span className={`font-display ${open.ok ? 'text-st-success' : 'text-st-warning'}`}>{open.ok ? '✓ Why it works' : '⚠ Why it is locked'}</span>
+                      <ReasonList reasons={open.reasons} />
+                    </div>
+                  )}
+                </li>
+              )
+            })}
+          </ol>
+        </div>
+      </div>
 
       <div className="mt-5 flex flex-wrap items-center justify-end gap-3">
         <p role="status" className="flex-1 text-small font-bold text-ink-2">
@@ -391,11 +438,12 @@ function GoNoGo(props: { votes: Votes; setVotes: (v: Votes) => void; choice: Cho
               aria-label={`${C.ROLE_LABEL[r]}: ${v === true ? 'GO' : v === false ? 'NO-GO' : 'waiting'}`}
               className={`flex min-w-0 flex-col items-center gap-2 rounded-lg border-2 px-2.5 pb-2.5 pt-3.5 ${v === true ? 'border-st-success bg-space-raised' : v === false ? 'border-st-error bg-space-raised' : 'border-space-border bg-space-card'}`}
             >
-              <span aria-hidden className="grid size-12 place-items-center rounded-pill border-2 border-space-page font-display text-[22px] text-space-page" style={{ background: ROLE_UI[r].color }}>
-                {ROLE_UI[r].icon}
+              {/* Re-keyed on each vote so the character pops once. */}
+              <span key={String(v)} className={v === null ? '' : 'motion-safe:animate-pop'}>
+                <RoleCharacter role={r} mood={v === false ? 'worried' : v === true ? 'cheer' : 'neutral'} decorative bg={v === null ? undefined : 'var(--color-space-raised)'} className="size-14" />
               </span>
               <RoleTag role={r} label={C.ROLE_LABEL[r]} />
-              <span key={String(v)} className={`font-display text-[18px] tracking-wide ${v === null ? 'text-ink-2' : 'motion-safe:animate-pop'} ${v === true ? 'text-st-success' : v === false ? 'text-st-error' : ''}`}>
+              <span className={`font-display text-[18px] tracking-wide ${v === true ? 'text-st-success' : v === false ? 'text-st-error' : 'text-ink-2'}`}>
                 {status}
               </span>
               <div className="flex w-full gap-1.5">
