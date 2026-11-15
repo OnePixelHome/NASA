@@ -59,8 +59,8 @@ Whoever closes an item changes its status here and adds the evidence (link or da
 ## Game content
 
 - [ ] All user-facing text is in English and reviewed by Belle (`docs/COPY.md`).
-- [ ] Mentor answers applied to the catalog and the balance test re-run (HANDOFF §6-B6), or the values stay tagged
-      "illustrative".
+- [x] Mentor values answered from published sources (S13–S19, HANDOFF §7); no catalog value changed and the balance
+      test passes. The radar range limit and the station longitudes stay tagged "illustrative".
 - [x] `public/favicon.svg` is the team's own (planet, tilted orbit and satellite in the game palette, no NASA marks);
       the unused Vite icon sprite `public/icons.svg` was deleted (2026-11-15).
 - [ ] Full team playtest done (planned Sunday 12:00): each mission played to the scorecard at least once.

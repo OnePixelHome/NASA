@@ -86,6 +86,8 @@ export interface Orbit {
   altKm: number
   inclDeg: number
   lifetimeYears: number
+  /** The real mission the lifetime comes from: GRACE-FO [S13], Landsat 9 [S6], GOES-R [S14]. */
+  lifetimeSource: SourceId
   blurb: string
   sources: SourceId[]
 }
@@ -98,6 +100,7 @@ export const ORBITS: Orbit[] = [
     altKm: 500,
     inclDeg: 51.6,
     lifetimeYears: 5,
+    lifetimeSource: 'S13',
     blurb: 'Close to Earth and cheap to reach. Same 51.6° tilt as the Space Station, so it never flies over the poles.',
     sources: ['S10', 'GAME'],
   },
@@ -108,6 +111,7 @@ export const ORBITS: Orbit[] = [
     altKm: 705,
     inclDeg: 98.2,
     lifetimeYears: 10,
+    lifetimeSource: 'S6',
     blurb: 'Near-polar orbit that passes every place at the same local time. Landsat 9 flies here.',
     sources: ['S6', 'GAME'],
   },
@@ -118,6 +122,7 @@ export const ORBITS: Orbit[] = [
     altKm: Math.round(GEO_ALTITUDE_KM),
     inclDeg: 0,
     lifetimeYears: 15,
+    lifetimeSource: 'S14',
     blurb: 'One orbit per day, so it hovers over the same spot — but it is ~36,000 km away.',
     sources: ['PHYS', 'GAME'],
   },
@@ -172,8 +177,13 @@ export const POWER: PowerSystem[] = [
 export const BUS_POWER_W = 50
 export const BUS_MASS_KG = 150
 export const BUS_COST_M = 30
-/** Max battery depth of discharge: LEO batteries cycle ~15×/day, GEO only in eclipse seasons [GAME, verify with mentor]. */
+/**
+ * Max battery depth of discharge. LEO batteries cycle ~15×/day: NASA tested 20–40% for LEO, with 40% as the outer
+ * envelope [S15]. GEO batteries cycle once a day in two eclipse seasons a year: GOES-R was life-tested with its
+ * longest eclipses at 75% [S16]. The game keeps a margin below both limits.
+ */
 export const maxDepthOfDischarge = (altKm: number) => (altKm > 20000 ? 0.7 : 0.3)
+export const depthOfDischargeSource = (altKm: number): SourceId => (altKm > 20000 ? 'S16' : 'S15')
 
 // ---------- Tier 4: downlink (Ground role) ----------
 export interface Downlink {
@@ -215,8 +225,16 @@ export const LAUNCHERS: LaunchVehicle[] = [
 export const PARKING_ALT_KM = 200
 export const UPPER_STAGE_ISP_S = 320 // typical storable-propellant upper stage [GAME]
 export const LAUNCH_SITE_LAT_DEG = 28.5 // a GEO launch must remove this inclination [PHYS]
-/** Retrograde (SSO) launches lose Earth's eastward rotation boost (~0.4 km/s) [PHYS, simplified]. */
+/** Earth's surface speed at the equator: 1,675 km/h [S19]. */
+export const EQUATOR_SPEED_KMS = 1675 / 3600
+/**
+ * Retrograde (SSO) launches lose Earth's eastward rotation boost: the equator speed [S19] times the cosine of the
+ * launch site latitude is 0.41 km/s, rounded to 0.4 [PHYS, simplified].
+ */
 export const SSO_ROTATION_PENALTY_KMS = 0.4
+export const SSO_ROTATION_SOURCE: SourceId = 'S19'
+/** Real imaging radars fly close to the radar's 700 km reference altitude: NISAR at 747 km [S17], Sentinel-1 at 693 km [S18]. */
+export const RADAR_ORBIT_SOURCES: SourceId[] = ['S17', 'S18']
 export const RESERVE_FRACTION = 0.1 // "project reserves of at least 10%" [S2, CubeSat 101 p. 13 — verified, see sources.ts]
 
 export const byId = <T extends { id: string }>(list: T[], id?: string) => list.find((x) => x.id === id)

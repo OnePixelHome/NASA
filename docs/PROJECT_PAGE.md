@@ -63,7 +63,7 @@ decided by those results, not by a lookup table. For example, a camera with 30 m
 99 minutes and a revisit of about 15 days against the mission's 16, the 92.6-minute period at 400 km, and the
 35,786 km geostationary altitude. A balance test checks that every mission has several workable designs.
 
-**Honest numbers.** Every number on screen carries a tag: a NASA source, "physics" for standard formulas, or
+**Honest numbers.** Every number on screen carries a tag: a NASA or partner agency source, "physics" for standard formulas, or
 "illustrative" for simplified game values such as costs and masses. An About screen lists every source and how it is used.
 
 **Who it is for.** Students with no background in space engineering. Text is plain English, locked options are marked
@@ -85,6 +85,12 @@ and no player data is collected.
 | [NASA CSLI, CubeSat 101](https://www.nasa.gov/wp-content/uploads/2017/03/nasa_csli_cubesat_101_508.pdf) | The budget rule. Page 13: "When possible, project reserves of at least 10% should be part of the budget to address any unexpected events." The game warns and removes points when a design eats into that reserve. Two lock reasons also quote it: page 22, "Launching with an inadequate ground station is a mission killer" (shown when the downlink cannot carry the day's data), and page iv, deployable solar panels "will nearly double the power input to the spacecraft" (shown when fixed body panels cannot power the design). |
 | [NASA, Design and Develop Science Missions](https://www.nasa.gov/wp-content/uploads/2025/04/250323-design-and-develop-science-mission.pdf) | The four mission segments (Launch, Space, Ground, User), used as the four team roles. |
 | [NASA Earth Observatory, Blue Marble: Next Generation](https://science.nasa.gov/earth/earth-observatory/blue-marble-next-generation/) | The image of the Earth in the mission film (August 2004, with topography and bathymetry), and the spacecraft's first picture. Credit: NASA Earth Observatory. |
+| [NASA Landsat 9 mission page](https://science.nasa.gov/mission/landsat-9) (again) | The 10-year mission in Sun-synchronous orbit: "Consumables: 10 years". |
+| [NASA JPL, GRACE-FO Launch Press Kit](https://www.jpl.nasa.gov/news/press_kits/grace-fo/download/grace-fo_launch_press_kit.pdf) | The 5-year mission in Low Earth Orbit. Page 9: "Prime mission: Five years", at an orbit altitude of "Approximately 305 miles (490 kilometers)". |
+| [NASA Glenn and JPL, Performance and Comparison of Lithium-Ion Batteries Under Low-Earth-Orbit Mission Profiles (NASA/TM-2007-214826)](https://ntrs.nasa.gov/citations/20080008855) | How deeply a battery may be drained on each lap in a low orbit. NASA tested 40% as "the outer envelope of possible DODs for Li-ion batteries for LEO applications"; the game allows 30%. |
+| [NASA Aerospace Battery Workshop 2018, GOES-R Lithium-Ion Battery Life Test](https://www.nasa.gov/wp-content/uploads/2024/01/goes-r-lithium-ion-battery-life-test-workhorse-battery-performance.pdf) (Lockheed Martin, NASA Goddard, Saft) | The same limit in geostationary orbit. The life test ran its "Maximum eclipses at 75% DOD"; the game allows 70%. |
+| [NASA and ISRO, NISAR quick facts](https://science.nasa.gov/mission/nisar/mission-overview/) | Where real imaging radars fly: 747 km. Shown when the Imaging Radar is out of range. |
+| [NASA Space Place, Launch a rocket from a spinning planet](https://spaceplace.nasa.gov/launch-windows/en/) | The extra 0.4 km/s of a Sun-synchronous launch. "At the equator, Earth's surface is rotating at 1675 kilometers per hour"; at the 28.5° launch site that is 0.41 km/s that a launch towards the pole cannot use. |
 
 Resources from the challenge page that shaped the design but supply no game value: JPL Concept Maturity Levels and the
 GSFC Mission Design Lab (the brief → trade → point design → review flow), and the Webb "Build It Yourself" game
@@ -96,7 +102,13 @@ leave it out of this table.
 
 ## Space agency partner and other data
 
-None. No data from other space agencies or third parties is used.
+| Source | How we used it |
+| --- | --- |
+| [NOAA and NASA, GOES-R Series spacecraft](https://www.goes-r.gov/spacesegment/spacecraft.html) | The 15-year mission in Geostationary Orbit: "Spacecraft on-orbit life of 15 years". GOES-R is a joint NOAA and NASA programme. |
+| [ESA, Sentinel-1 facts and figures](https://www.esa.int/Applications/Observing_the_Earth/Copernicus/Sentinel-1/Facts_and_figures) | A second imaging radar, from the European Space Agency: "Orbit: Polar, Sun-synchronous at an altitude of 693 km". |
+| ISRO | Partner of NASA in NISAR, listed above. |
+
+No third-party or commercial data is used.
 
 ## Other tools, libraries and licenses
 

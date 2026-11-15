@@ -51,8 +51,11 @@ export function orbitStats(o: C.Orbit): OrbitStats {
   }
 }
 
-/** Sources behind an orbit card: its catalog sources plus the physics used for period, coverage and Δv. */
-export const orbitSources = (o: C.Orbit): SourceId[] => sortSources([...o.sources, 'PHYS'])
+/** A Sun-synchronous launch flies towards the pole, so it cannot use Earth's eastward spin [S19]. */
+const rotationSources = (o: C.Orbit): SourceId[] => (o.inclDeg > 90 ? [C.SSO_ROTATION_SOURCE] : [])
+
+/** Sources behind an orbit card: its catalog sources, the mission its lifetime comes from, and the physics used for period, coverage and Δv. */
+export const orbitSources = (o: C.Orbit): SourceId[] => sortSources([...o.sources, o.lifetimeSource, ...rotationSources(o), 'PHYS'])
 
 /** The NASA resource(s) an orbit's altitude and inclination come from (empty for a purely physical orbit like GEO). */
 const orbitNasaSources = (o: C.Orbit) => o.sources.filter((s) => s !== 'GAME' && s !== 'PHYS')
@@ -118,8 +121,9 @@ function instrumentNode(o: C.Orbit, ins: C.Instrument): NodeState {
   if (ins.maxRangeKm && o.altKm > ins.maxRangeKm) {
     ok = false
     const weaker = (o.altKm / ins.maxRangeKm) ** 4
-    // The distance⁴ law is physics; the practical range limit is a game value.
+    // The distance⁴ law is physics; the practical range limit is a game value; where real radars fly is sourced.
     reasons.push(reason(`Radar echoes fade with distance⁴: at ${fmt(o.altKm)} km the signal is ~${fmt(weaker)}× weaker than at ${fmt(ins.maxRangeKm)} km.`, 'PHYS', 'GAME'))
+    reasons.push(reason('Real imaging radars fly much lower: NISAR at 747 km and Sentinel-1 at 693 km.', C.RADAR_ORBIT_SOURCES[0], ...C.RADAR_ORBIT_SOURCES.slice(1)))
   }
   if (ins.needsContinuousView && !isGeo(o)) {
     ok = false
@@ -153,7 +157,8 @@ function powerNode(o: C.Orbit, ins: C.Instrument, pw: C.PowerSystem): NodeState 
   const b = powerBudget(o, ins, pw)
   const reasons: Reason[] = []
   let ok = true
-  // Eclipse time is physics; panel output, loads and battery depth of discharge are game values.
+  // Eclipse time is physics; panel output and loads are game values; the depth of discharge follows NASA battery tests.
+  const dod = C.depthOfDischargeSource(o.altKm)
   if (b.genW < b.avgLoadW) {
     ok = false
     reasons.push(reason(`Panels make ~${fmt(b.genW)} W on average, but the spacecraft needs ${fmt(b.avgLoadW)} W.`, 'PHYS', 'GAME'))
@@ -162,9 +167,9 @@ function powerNode(o: C.Orbit, ins: C.Instrument, pw: C.PowerSystem): NodeState 
   }
   if (pw.batteryWh < b.batteryNeedWh) {
     ok = false
-    reasons.push(reason(`Each ${fmt(b.eclipseMin)}-min eclipse needs a ${fmt(b.batteryNeedWh)} Wh battery; this one has ${fmt(pw.batteryWh)} Wh.`, 'PHYS', 'GAME'))
+    reasons.push(reason(`Each ${fmt(b.eclipseMin)}-min eclipse needs a ${fmt(b.batteryNeedWh)} Wh battery; this one has ${fmt(pw.batteryWh)} Wh.`, 'PHYS', dod, 'GAME'))
   }
-  if (ok) reasons.push(reason(`${fmt(b.genW)} W generated vs ${fmt(b.avgLoadW)} W used; battery covers the ${fmt(b.eclipseMin)}-min eclipse.`, 'PHYS', 'GAME'))
+  if (ok) reasons.push(reason(`${fmt(b.genW)} W generated vs ${fmt(b.avgLoadW)} W used; battery covers the ${fmt(b.eclipseMin)}-min eclipse.`, 'PHYS', dod, 'GAME'))
   return { id: pw.id, name: pw.name, tip: pw.tip, ok, reasons, facts: [`${pw.peakW} W peak`, `${pw.batteryWh} Wh`, `${pw.massKg} kg`, `$${pw.costM}M`], factsSource: 'GAME' }
 }
 
@@ -220,7 +225,7 @@ function launchNode(o: C.Orbit, c: Choice, lv: C.LaunchVehicle): NodeState {
   const ok = cap >= mass
   // The rocket equation is physics; rocket capacity, engine efficiency and component masses are game values.
   const reasons: Reason[] = [
-    reason(`Rocket equation: reaching ${o.short} costs ${fmt(orbitStats(o).extraDvKmS, 2)} km/s beyond a 200 km orbit, so ${fmt(lv.leoCapacityKg)} kg shrinks to ${fmt(cap)} kg.`, 'PHYS', 'GAME'),
+    reason(`Rocket equation: reaching ${o.short} costs ${fmt(orbitStats(o).extraDvKmS, 2)} km/s beyond a 200 km orbit, so ${fmt(lv.leoCapacityKg)} kg shrinks to ${fmt(cap)} kg.`, 'PHYS', ...rotationSources(o), 'GAME'),
     ok ? reason(`Your ${fmt(mass)} kg spacecraft fits.`, 'GAME') : reason(`Your spacecraft is ${fmt(mass)} kg — too heavy for this rocket.`, 'GAME'),
   ]
   return { id: lv.id, name: lv.name, tip: lv.tip, ok, reasons, facts: [`${fmt(cap)} kg to ${o.short}`, `$${lv.costM}M`], factsSource: 'GAME' }
@@ -416,7 +421,7 @@ export function evaluateMission(c: Choice, goVotes: number): Scorecard {
     { label: 'First light', ...reason(`${ins.name} sees ${fmtM(P.scaleWithAltitude(ins.gsdRefM, ins.refAltKm, o.altKm))} per pixel.`, ins.source, 'PHYS') },
     { label: 'Daily operations', ...reason(`${fmt(delivered)} of ${fmt(ins.dataGbitPerDay)} Gbit/day reach Earth.`, 'GAME', 'PHYS') },
     { label: 'Coverage', ...reason(revisit < 0.1 ? 'Same hemisphere in view all the time.' : `Revisits each spot about every ${fmt(revisit, 1)} days.`, 'PHYS', ins.source) },
-    { label: 'End of mission', ...reason(`~${o.lifetimeYears} years of operations. Budget used: $${fmt(b.spentM)}M of $${b.totalM}M.`, 'GAME') },
+    { label: 'End of mission', ...reason(`~${o.lifetimeYears} years of operations. Budget used: $${fmt(b.spentM)}M of $${b.totalM}M.`, o.lifetimeSource, 'GAME') },
   ]
 
   // Collect every source the player saw on the way here, so the scorecard list is never out of date.
