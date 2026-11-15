@@ -9,7 +9,7 @@ import { evaluateMission, isComplete, MAX_PLAYERS, type Choice } from '../src/en
 import { checkName } from '../src/leaderboard/name'
 
 const SITE = 'https://victorious-pebble-0fcf34b10.6.azurestaticapps.net' // the game, on Azure Static Web Apps
-const ORIGINS = new Set([SITE, 'http://localhost:5173', 'http://localhost:4173'])
+const ORIGINS = new Set([SITE, 'https://statusgo.earth', 'https://www.statusgo.earth', 'http://localhost:5173', 'http://localhost:4173'])
 const TOP = 20
 const POSTS_PER_MINUTE = 6
 const recent = new Map<string, number[]>()

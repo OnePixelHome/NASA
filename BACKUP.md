@@ -1,5 +1,11 @@
 # BACKUP - NASA
 
+## 2026-11-15 (Mac de Belle) — Dominio `statusgo.earth` para la Static Web App (`ci/statusgo-earth`)
+
+- Belle pidió configurar `statusgo.earth` en Azure. El dominio está registrado en Porkbun (NS `*.ns.porkbun.com`) y todavía tiene los registros de estacionamiento de Porkbun (A del dominio raíz a 207.207.210.107/.229 y `www` CNAME a `pixie.porkbun.com`). Desde aquí no hay acceso a Porkbun ni a Azure: Belle configura el dominio en los dos paneles.
+- `server/handler.ts`: el CORS acepta también `https://statusgo.earth` y `https://www.statusgo.earth`, para que la función de Neon (que el juego todavía usa) responda desde el dominio nuevo. Hace falta redesplegarla (`bash server/deploy.sh`, con sesión de Neon). Cuando el leaderboard pase a `/api/leaderboard` en la misma Static Web App, el CORS deja de importar. `server/README.md` actualizado.
+- Pendiente: (1) en Azure, Dominios personalizados → agregar `statusgo.earth` con validación TXT y `www.statusgo.earth` con CNAME; (2) en Porkbun, borrar los registros de estacionamiento y crear el TXT que da Azure, un ALIAS del dominio raíz a `victorious-pebble-0fcf34b10.6.azurestaticapps.net` y un CNAME de `www` a ese mismo host; (3) cuando el dominio funcione, cambiar las URL de `README.md`, `CLAUDE.md`, `AGENTS.md` y la página del proyecto, y elegir el dominio predeterminado en Azure.
+
 ## 2026-11-15 (PC temporal de Edgar) — Uso de IA por persona en la página del proyecto
 
 - Edgar confirmó quién usó qué: José y Edgar usaron Claude; Belle y Thais usaron HeyGen y ChatGPT.
