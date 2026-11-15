@@ -1,5 +1,11 @@
 # BACKUP - NASA
 
+## 2026-11-15 (PC de José) — Favicon propio
+
+- `public/favicon.svg` reemplaza el rayo de la plantilla de Vite: planeta azul con tierras verdes, órbita inclinada en el ámbar de SSO y un satélite sobre la órbita, sobre el fondo `space-page`. Dibujo original, sin marcas de NASA; revisado en Edge a 200, 32 y 16 px.
+- Se borró `public/icons.svg` (sprite de la plantilla, no se usaba). Se marcó el ítem en `docs/SUBMISSION.md` y se corrigió `docs/REQUIREMENTS.md`.
+- El workflow de Azure Static Web Apps lo agregó Belle hoy y falla en cada push; no se tocó. Pendiente: que Belle decida si lo borra o lo arregla, ya que el juego se publica en GitHub Pages.
+
 ## 2026-11-15 (PC de José) — Dos citas más de CubeSat 101 (S2) en los motivos de bloqueo
 
 - Pedido de José: revisar si CubeSat 101 y Meteomatics aportan datos. CubeSat 101 ya era S2 (regla del 10% de reserva). Se leyó el PDF completo: es una guía de procesos con pocos números de ingeniería; se tomaron dos frases verificadas palabra por palabra.

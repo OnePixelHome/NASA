@@ -61,8 +61,8 @@ Whoever closes an item changes its status here and adds the evidence (link or da
 - [ ] All user-facing text is in English and reviewed by Belle (`docs/COPY.md`).
 - [ ] Mentor answers applied to the catalog and the balance test re-run (HANDOFF §6-B6), or the values stay tagged
       "illustrative".
-- [ ] `public/favicon.svg` and `public/icons.svg` are still the Vite template files. Replace the favicon with the team's
-      own and delete the unused icon sprite.
+- [x] `public/favicon.svg` is the team's own (planet, tilted orbit and satellite in the game palette, no NASA marks);
+      the unused Vite icon sprite `public/icons.svg` was deleted (2026-11-15).
 - [ ] Full team playtest done (planned Sunday 12:00): each mission played to the scorecard at least once.
 
 ## Final hour
