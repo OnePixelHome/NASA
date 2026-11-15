@@ -7,7 +7,7 @@
 - Leaderboard: la función publicada aún aceptaba solo `onepixelhome.github.io` (el cambio de Belle en el código no se había desplegado), así que desde Azure el leaderboard no funcionaba. Ahora el origen permitido es solo el sitio de Azure (más local); desplegado como deployment 4 y verificado (CORS devuelve el origen de Azure).
 - Enlaces cambiados a la URL de Azure en `README.md`, `CLAUDE.md`, `AGENTS.md`, `server/README.md`, `docs/PITCH.md`, `docs/PROJECT_PAGE.md` (con Azure en la tabla de herramientas) y `docs/SUBMISSION.md`; comentario de `vite.config.ts` y del workflow de Azure. `docs/HANDOFF.md` y `docs/SUBMISSION-PLAN.md` quedan como historia.
 - José ahora es admin del repo: se cambió el "website" del repo a la URL de Azure y la descripción a inglés.
-- El sitio viejo de GitHub Pages (https://onepixelhome.github.io/NASA/) sigue publicado con la última versión, pero su leaderboard ya no funciona. Pendiente: decidir si se despublica.
+- Con el visto bueno de José se despublicó GitHub Pages (`DELETE /repos/OnePixelHome/NASA/pages`): https://onepixelhome.github.io/NASA/ da 404. Se puede volver a activar en Settings → Pages si hiciera falta.
 - Verificado: 73 tests, build y lint.
 
 ## 2026-11-15 (Mac de Belle) — Órbita translúcida detrás del planeta en las tarjetas de órbita
