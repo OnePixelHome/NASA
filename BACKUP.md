@@ -1,5 +1,16 @@
 # BACKUP - NASA
 
+## 2026-11-14 (PC de Edgar) — Paso 1 del diseño: nave y tripulación (`feat/ship-and-crew`)
+
+- Se revisó y se hizo merge del PR #10 de Thais (solo documentación: exportación de diseño, guía y `docs/DESIGN-RULES.md`) y del PR #11 (paso 0). Se borró la rama `docs/design-handoff` ya integrada.
+- Nuevo `src/ui/Ship.tsx`: nave SVG en capas que se arma al elegir cada nivel; lo no elegido se ve como contorno punteado. `shipParts(choice)` en `src/ui/theme.ts` convierte los ids del catálogo según la tabla de la guía, y un test comprueba que toda opción del catálogo tenga dibujo. No se implementó el estado "conflicto" (no ocurre en el juego).
+- Nuevo `src/ui/Crew.tsx`: los cuatro tripulantes con su accesorio (gafas, llave, auricular, casco) y tres ánimos, tomados de `pages/Character.dc.html`.
+- Pantalla 3: panel "Your spacecraft" con la nave y la lista de piezas (columna fija a la izquierda desde 1024 px), cada nivel con su tripulante y un globo que dice qué hacer, y un destello en los niveles de abajo al elegir. Las tarjetas mantienen el comportamiento actual (tocar elige y abre la explicación).
+- Pantalla 4: los tripulantes votan con ánimo (preocupado en No-Go, celebrando en Go).
+- El ancho máximo pasó de 768 a 1024 px para dar sitio a las dos columnas.
+- Verificado: 38 tests (4 nuevos), build, lint y recorrido a 390 y 1280 px sin desbordes ni errores.
+- Pendiente: escenas de la simulación, banner del scorecard, ilustraciones de misión, "How to play" y equipo en About.
+
 ## 2026-11-14 (PC de Edgar) — Paso 0 del diseño y las dos piezas que faltaban (`feat/design-base`)
 
 - Este branch incluye el commit de Thais de `docs/design-handoff` (exportación de Claude Design y guía de entrega), que no tenía PR.
