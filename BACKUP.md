@@ -1,5 +1,13 @@
 # BACKUP - NASA
 
+## 2026-11-15 (Mac de Belle) — Pitch: cierre sin "for free" y capturas para el video
+
+- Belle pidió quitar "for free". El cierre del video queda así: "Learn to manage a real mission — on any phone." Se cambió en el guion, en los subtítulos y en la frase del pitch de `docs/PITCH.md`. El guion baja a unas 70 palabras.
+- Capturas de respaldo para el video: 29 PNG en tamaño iPhone (1170×2532), tomadas del simulador público con Chrome headless controlado por DevTools Protocol. Incluyen recortes de la película y una guía que dice qué captura va con cada línea del guion. Están en `~/Desktop/Status GO - pitch screens/` (fuera del repo), junto con el script `capture.mjs`, que permite volver a tomarlas.
+- Se volvieron a tomar las capturas cerca de las 14:15, después de que José activó el leaderboard en línea y Edgar agregó las fuentes de agencias (NISAR, ESA Sentinel-1, GOES-R). Cambiaron la página de inicio (nuevo botón Leaderboard), el candado del radar (ahora cita NISAR y Sentinel-1) y los chips de fuente. Los números del pitch siguen iguales: 511 m, 390 kg, $210M y 86/100. Las capturas viejas quedaron en `_old (13h02, before leaderboard)/`.
+- Para editar el video se creó `~/Desktop/Status GO - video/`, con tres carpetas: `1-pitch (HeyGen)`, `2-screen recording (phone)` y `3-export`. Esta Mac no tiene `ffmpeg`.
+- Pendiente: la página de inicio todavía dice "the game calculates…" (`PITCH` en `src/engine/sources.ts`). Si se cambia a "simulator", hay que volver a tomar las capturas `01` y `03`.
+
 ## 2026-11-15 (PC temporal de Edgar) — Los valores de los mentores salen de fuentes publicadas (S13–S19)
 
 - Respuesta del mentor: es un prototipo, no hace falta tanta precisión y ellos tampoco tienen esos datos. Hay que tomarlos de NASA o de otras agencias nacionales o internacionales, e indicar esas fuentes en la entrega; deben ser oficiales y verificables.

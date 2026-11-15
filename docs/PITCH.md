@@ -25,7 +25,7 @@ Every piece of the pitch answers three questions, in this order:
 
 **Pitch line**
 
-> **STATUS: GO — Mission Simulator.** *Learn to manage a mission's budget, mass, power and data — on any phone, for free.*
+> **STATUS: GO — Mission Simulator.** *Learn to manage a mission's budget, mass, power and data — on any phone.*
 
 ## 2. 30-second video script
 
@@ -38,7 +38,7 @@ Read it aloud with a stopwatch before recording. The challenge name is shown on 
 | 0:03–0:08 | "Every mission has a fixed budget, mass, power and data. Overspend one, it fails." | The four resource meters filling up; one turns red | — |
 | 0:08–0:12 | "Status: GO is a mission simulator for high-school and university students." | Landing page `● STATUS: GO` → Start mission | — |
 | 0:12–0:22 | "Pick an orbit, instrument and rocket, and watch budget, mass, power and data run out." | Screen recording: Polar Ice → GEO locks the radar → SSO → hybrid power → medium rocket; the four meters move live | Film art: AI-generated (already labelled in the simulator) |
-| 0:22–0:30 | "Built on NASA data — Landsat 9, CubeSat 101, the Earth Fact Sheet. Learn to manage a real mission — on any phone, for free." | Scorecard **86/100** → the Earth from the film (credit: NASA Earth Observatory) → play URL | — |
+| 0:22–0:30 | "Built on NASA data — Landsat 9, CubeSat 101, the Earth Fact Sheet. Learn to manage a real mission — on any phone." | Scorecard **86/100** → the Earth from the film (credit: NASA Earth Observatory) → play URL | — |
 
 **Recording notes**
 - Record the simulator from the **public URL** (https://onepixelhome.github.io/NASA/), not a local build.
@@ -91,7 +91,7 @@ Learn to manage a real mission —
 
 9
 00:00:27,500 --> 00:00:29,500
-on any phone, for free.
+on any phone.
 ```
 
 ## 3. Slide deck (7 slides, including title)
