@@ -6,7 +6,9 @@
 - Hallazgos principales: `main` ya tiene panel de recursos (`ResourcePanel`), tooltips (`tip`), chips de fuente con `link`, About con contenido del motor y un Go/No-Go que permite "Launch anyway" con puntaje de equipo real; el diseño no tiene panel de recursos ni "Launch anyway", y dice "Mission fell short" donde el diseño dice "Mission failed". El motor manda.
 - Se añadió la fase 9 (panel de recursos y "Launch anyway") a `docs/design-prompts.md`.
 - La fase 9 no se ejecutó: Claude Design se quedó sin tokens. Decisión: Edgar resuelve el panel de recursos y "Launch anyway" en código, reutilizando los tokens y los componentes del diseño.
-- Pendiente: ampliar `AI_DISCLOSURE` (y la página del proyecto) para mencionar el diseño hecho con Claude Design; commit del branch y PR hacia `main`.
+- Se commiteó `docs/DESIGN-RULES.md` (reglas de diseño y arte del Space Apps 2026): quedó sin seguimiento desde la sesión del 14/11 aunque ya se citaba en este archivo.
+- Se abrió el PR de `docs/design-handoff` hacia `main` con revisión solicitada a José (@josel120) y Edgar (@edgarcardona872).
+- Pendiente: ampliar `AI_DISCLOSURE` (y la página del proyecto) para mencionar el diseño hecho con Claude Design; revisión y merge del PR.
 
 ## 2026-11-14 (Mac de Thais) — Exportación de Claude Design ordenada en `docs/design/` (`docs/design-handoff`)
 
