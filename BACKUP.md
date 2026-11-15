@@ -12,6 +12,21 @@
 - Los 4 puntajes de Neon ("Team Space", "Team Solo", "Nice Guy", "Belle") **no se copiaron**: la lectura pública no trae el diseño completo y no hay acceso a Neon desde aquí. Siguen en Neon; José puede copiarlos si se quieren conservar.
 - Verificado antes del merge: 73 tests, build, lint y el paquete de la API (incluye la tabla). 
 - Pendiente: después del hackatón, decidir si se queda en Azure PostgreSQL (revisar el costo al terminar la prueba gratis) o se vuelve a Neon; borrar el proyecto de Neon si ya no se usa.
+## 2026-11-15 (Mac de Belle) — Marca de agua "SI content" en lugar de "AI-generated"
+
+- Pedido de Belle: las guías de Space Apps llaman "Super Intelligence (SI)" a la IA y solo piden una marca de agua visible. La etiqueta de las ilustraciones (`AiGeneratedLabel` en `src/ui/components.tsx`) dice ahora **"SI content"** y es más discreta: texto de 10 px, sin borde ni estrella, fondo semitransparente. Aplica a todas las pantallas que la usan: arte de misión, panel de la nave, escenas, película y About.
+- En About, el título "Use of AI" pasó a "Use of SI (Super Intelligence)" y `AI_IMAGES_NOTE` habla de "SI content". `AI_DISCLOSURE` no cambió. También se actualizaron `docs/COPY.md`, `docs/PROJECT_PAGE.md` y `README.md`.
+- Verificado: 73 tests, lint, build y captura a tamaño celular.
+
+## 2026-11-15 (Mac de Belle) — Video del pitch fuera del repo
+
+- El commit `5b51c2e` (PR #24) incluyó por error `video/pitch-video.mp4` (34 MB), porque se hizo `git add -A` con ese archivo recién puesto en la carpeta. Se quitó del repo con `git rm --cached` y se agregó `video/` a `.gitignore`. El archivo sigue en el disco de Belle y en `~/Desktop/Status GO - video/1-pitch (HeyGen)/`; también sigue en el historial de git.
+- Edición del video: el pitch de HeyGen dura 28,0 s y es horizontal (1920×1080), con subtítulos ya incluidos. La grabación de pantalla del celular dura 3:39. La lista de cortes está en `~/Desktop/Status GO - video/EDIT-PLAN.md`. Falta agregar la etiqueta "AI-generated" y tapar el parche redondo del traje del avatar. Se instaló `ffmpeg` con Homebrew para editar.
+## 2026-11-15 (Mac de Belle) — Dominio `statusgo.earth` para la Static Web App (`ci/statusgo-earth`)
+
+- Belle pidió configurar `statusgo.earth` en Azure. El dominio está registrado en Porkbun (NS `*.ns.porkbun.com`) y todavía tiene los registros de estacionamiento de Porkbun (A del dominio raíz a 207.207.210.107/.229 y `www` CNAME a `pixie.porkbun.com`). Desde aquí no hay acceso a Porkbun ni a Azure: Belle configura el dominio en los dos paneles.
+- `server/handler.ts`: el CORS acepta también `https://statusgo.earth` y `https://www.statusgo.earth`, para que la función de Neon (que el juego todavía usa) responda desde el dominio nuevo. Hace falta redesplegarla (`bash server/deploy.sh`, con sesión de Neon). Cuando el leaderboard pase a `/api/leaderboard` en la misma Static Web App, el CORS deja de importar. `server/README.md` actualizado.
+- Pendiente: (1) en Azure, Dominios personalizados → agregar `statusgo.earth` con validación TXT y `www.statusgo.earth` con CNAME; (2) en Porkbun, borrar los registros de estacionamiento y crear el TXT que da Azure, un ALIAS del dominio raíz a `victorious-pebble-0fcf34b10.6.azurestaticapps.net` y un CNAME de `www` a ese mismo host; (3) cuando el dominio funcione, cambiar las URL de `README.md`, `CLAUDE.md`, `AGENTS.md` y la página del proyecto, y elegir el dominio predeterminado en Azure.
 
 ## 2026-11-15 (PC temporal de Edgar) — Uso de IA por persona en la página del proyecto
 

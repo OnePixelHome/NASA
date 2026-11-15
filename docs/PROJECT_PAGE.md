@@ -144,7 +144,7 @@ Code scaffolding, the physics engine and documentation were drafted with Claude 
 illustrations were drafted with Claude Design (Anthropic). All of it was reviewed, tested and adapted by the team.
 Physics formulas are covered by automated tests; illustrative values are labelled in the game.
 
-Every illustration in the game (mission art, the spacecraft, the simulation scenes) carries a visible "AI-generated"
+Every illustration in the game (mission art, the spacecraft, the simulation scenes) carries a visible "SI content"
 label, and none contains NASA logos, insignia, flags or mission patches.
 
 Who used which tool:
@@ -156,7 +156,7 @@ Who used which tool:
 | ChatGPT (OpenAI) | Belle Vásquez Machado, Thais Rodríguez | Drafts of written material |
 | HeyGen | Belle Vásquez Machado, Thais Rodríguez | The AI presenter and its synthetic voice in the demo video |
 
-The presenter and the voice in the demo video are AI-generated with HeyGen and are labelled "AI-generated" on screen.
+The presenter and the voice in the demo video are SI-generated with HeyGen and are marked "SI content" on screen.
 Everything produced with these tools was reviewed, tested and adapted by the team.
 
 **Keep in sync:** the first paragraph must stay identical to the game's About screen (`AI_DISCLOSURE` in

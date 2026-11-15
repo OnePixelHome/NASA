@@ -1,5 +1,5 @@
 // Landing-page hero: NASA's Blue Marble map wrapped on a spinning disc, with the favicon's tilted orbit and a
-// satellite riding it. Our own drawing plus a NASA image, so no "AI-generated" label is needed (credit is on the page).
+// satellite riding it. Our own drawing plus a NASA image, so no "SI content" watermark is needed (credit is on the page).
 // Under prefers-reduced-motion the globe and the satellite stand still.
 import { useMemo } from 'react'
 import earthUrl from '../assets/earth-bmng-200408-1024.jpg'

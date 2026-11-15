@@ -8,11 +8,9 @@ the game, so no CORS is involved) next to an Azure Database for PostgreSQL.
   the client never sends a score.
 - Name rules: `src/leaderboard/name.ts` (shared with the game, tested in `name.test.ts`): 2–24 characters, letters in any
   language, digits, spaces and `. ' _ -`, plus a short English/Spanish blocklist.
-- Abuse limits: 6 saves per minute per IP.
-- Database: Azure Database for PostgreSQL Flexible Server `statusgo-db` (resource group `Nasa`, centralus, Burstable
-  B1ms), database `leaderboard`, table `scores` (`server/schema.ts`, created by the API on its first request). Firewall: Azure services only.
-  `DATABASE_URL` is an app setting of the Static Web App; the admin password lives only in `~/lab_secrets/nasa/`.
-  There are no secrets in this repo.
+- Abuse limits: 6 saves per minute per IP, CORS limited to the game on Azure (`https://victorious-pebble-0fcf34b10.6.azurestaticapps.net`), its custom domain (`https://statusgo.earth`, `https://www.statusgo.earth`) and local dev.
+- Database: Neon project `status-go-leaderboard-use1` (`crimson-shadow-12546769`, aws-us-east-1), table `scores`.
+  `DATABASE_URL` is injected by Neon; there are no secrets in this repo.
 
 ## Deploy
 

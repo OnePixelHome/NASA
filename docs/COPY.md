@@ -185,7 +185,7 @@ About screen text added with the design, in `src/engine/sources.ts` (**Belle: pl
 | `HOW_TO_PLAY` 3 | Build the ladder — Pick instrument, power, downlink and launcher. Each choice can lock the next. |
 | `HOW_TO_PLAY` 4 | Vote Go / No-Go and watch the simulation — Every player votes. Then follow the mission and read your scorecard. |
 | `ROLES_NOTE` | Four roles, one for each of NASA’s four mission segments: Science, Spacecraft, Ground, Launch. |
-| `AI_IMAGES_NOTE` | Images marked “AI-generated” were drafted with AI and then checked and adapted by the team. |
+| `AI_IMAGES_NOTE` | Images marked “SI content” were drafted with Super Intelligence (SI) tools and then checked and adapted by the team. |
 | `DISCLAIMER` | Status: GO is an independent project made by team One Pixel Home for the NASA Space Apps Challenge 2026. It is not affiliated with or endorsed by NASA. NASA does not endorse any non-U.S. Government entity. |
 | `TEAM` | Edgar Cardona, Software architect · José Gómez, Full-stack developer · Thais Rodríguez, Product designer · Belle Vásquez Machado, MarTech specialist |
 | `FOOTER_NOTES` | MIT License · No accounts, no cookies, no analytics. · Saving a score sends only the name you type and your mission design to our leaderboard (an Azure database). |

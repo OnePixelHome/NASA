@@ -1015,7 +1015,7 @@ function About({ onBack }: { onBack: () => void }) {
               <span aria-hidden className="grid size-8 place-items-center rounded-[10px] bg-st-available text-space-page">
                 ✦
               </span>
-              Use of AI
+              Use of SI (Super Intelligence)
             </h2>
             <p className="text-[15px]">{AI_DISCLOSURE}</p>
             <p className="flex flex-wrap items-center gap-2 text-[15px]">
