@@ -63,7 +63,7 @@ The page is what judges mainly score: "the majority of judges' evaluation will b
 | Claude Design | Thais: graphic design (cards, illustrations, visuals) | A visible **"AI-generated"** watermark on every SI-generated image used in the game, deck, video or project page |
 | ChatGPT (OpenAI) | Belle: documentation | Text acknowledgement |
 | HeyGen | Belle: SI avatar and synthetic voice in the pitch video | **Video**: a visible watermark while the avatar is on screen. **Audio**: say it's SI-generated in the video description and the file metadata. The avatar is Belle's own (adult) likeness, so it's OK under R9 |
-| Gemini Flow (Google) | Belle: clips for the demo and pitch video | A visible watermark on each clip; no NASA logos, rockets with real mission markings, flags or patches in the prompts or the output |
+| Gemini Flow (Google) — **not used in the end** (Sun 15 Nov), do not list it | Belle: clips for the demo and pitch video (planned) | A visible watermark on each clip; no NASA logos, rockets with real mission markings, flags or patches in the prompts or the output |
 
 - [ ] **Code**: README "Use of AI" → rename to "Use of SI" and list the tools above.
 - [ ] **Images and video**: every SI-generated frame, illustration or clip gets a visible **"AI-generated"** watermark. The game's own screen recording isn't SI-generated.

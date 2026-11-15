@@ -43,7 +43,7 @@ Read it aloud with a stopwatch before recording. The challenge name is shown on 
 **Recording notes**
 - Record the simulator from the **public URL** (https://victorious-pebble-0fcf34b10.6.azurestaticapps.net/), not a local build.
 - Zoom in on the **resource meters**: they are the hero of this version.
-- Gemini Flow clips: no NASA logos, no real mission markings, no flags. Watermark every clip.
+- Gemini Flow was planned for clips but was not used in the end, so there are no such clips to watermark.
 - HeyGen voice and avatar are SI-generated → say so in the YouTube description and the file metadata.
 - Music: none, or royalty-free with its licence listed in References.
 - Check the **exported file's** duration is ≤ 30.0 s.
@@ -162,7 +162,7 @@ Big type, few words, one visual per slide. Speaker notes are for a live pitch; t
 ### Slide 7 — What's next
 - More orbits (Molniya), Moon and Mars missions, a teacher mode with lesson plans, real-time multiplayer on separate phones
 - **Fly it:** https://victorious-pebble-0fcf34b10.6.azurestaticapps.net/ · **Code:** github.com/OnePixelHome/NASA (MIT)
-- *Built with help from SI tools (Claude, Claude Design, ChatGPT, HeyGen, Gemini Flow); reviewed and tested by the team. Not affiliated with or endorsed by NASA.*
+- *Built with help from SI tools (Claude, Claude Design, ChatGPT, HeyGen); reviewed and tested by the team. Not affiliated with or endorsed by NASA.*
 - Visual: QR code to the simulator
 
 > Notes: "Next: more orbits, the Moon and Mars, and a teacher mode. Scan the code, manage your own mission, and see if it's a GO."
