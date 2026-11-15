@@ -125,6 +125,9 @@ No third-party or commercial data is used.
 | Fredoka (via @fontsource/fredoka) | Font for titles and numbers, bundled with the game | SIL Open Font License 1.1 |
 | Atkinson Hyperlegible (via @fontsource/atkinson-hyperlegible) | Font for body text, bundled with the game | SIL Open Font License 1.1 |
 | Claude Design (Anthropic) | Visual system, screen designs and illustrations | Hosted service |
+| Claude (Anthropic) | Drafts of the code, the physics engine and the documentation | Hosted service |
+| ChatGPT (OpenAI) | Drafts of written material | Hosted service |
+| HeyGen | AI presenter and synthetic voice in the demo video | Hosted service |
 | GitHub | Source code hosting; GitHub Actions builds and tests every push | Hosted service |
 | Azure Static Web Apps (Microsoft) | Hosting of the public demo | Hosted service |
 | Neon (Postgres + Neon Functions) | Online leaderboard: stores the player or crew name and the design; the server recalculates every score with the game engine | Hosted service |
@@ -144,8 +147,21 @@ Physics formulas are covered by automated tests; illustrative values are labelle
 Every illustration in the game (mission art, the spacecraft, the simulation scenes) carries a visible "AI-generated"
 label, and none contains NASA logos, insignia, flags or mission patches.
 
-**TODO:** keep the first paragraph identical to the game's About screen (`AI_DISCLOSURE` in `src/engine/sources.ts`).
-If the video or slides use any AI-generated image, voice or clip, name the tool here and watermark it the same way.
+Who used which tool:
+
+| Tool | Used by | Used for |
+| --- | --- | --- |
+| Claude (Anthropic) | Edgar Cardona, José Gómez | Drafts of the game code, the physics engine, the tests and the documentation |
+| Claude Design (Anthropic) | The team | Visual design and the illustrations in the game |
+| ChatGPT (OpenAI) | Belle Vásquez Machado, Thais Rodríguez | Drafts of written material |
+| HeyGen | Belle Vásquez Machado, Thais Rodríguez | The AI presenter and its synthetic voice in the demo video |
+
+The presenter and the voice in the demo video are AI-generated with HeyGen and are labelled "AI-generated" on screen.
+Everything produced with these tools was reviewed, tested and adapted by the team.
+
+**Keep in sync:** the first paragraph must stay identical to the game's About screen (`AI_DISCLOSURE` in
+`src/engine/sources.ts`). **TODO (Belle, Thais):** confirm the two "Used for" lines for ChatGPT and HeyGen, and add any
+other AI tool used for the video or slides (the plan in `docs/SUBMISSION-PLAN.md` §4 also names Gemini Flow).
 
 ## Notice
 

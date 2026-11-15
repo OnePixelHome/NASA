@@ -1,5 +1,13 @@
 # BACKUP - NASA
 
+## 2026-11-15 (PC temporal de Edgar) — Uso de IA por persona en la página del proyecto
+
+- Edgar confirmó quién usó qué: José y Edgar usaron Claude; Belle y Thais usaron HeyGen y ChatGPT.
+- `docs/PROJECT_PAGE.md`, sección "Use of artificial intelligence": nueva tabla herramienta / quién / para qué (Claude, Claude Design, ChatGPT, HeyGen) y la frase de que el presentador y la voz del video son generados con HeyGen y llevan la etiqueta "AI-generated". Claude, ChatGPT y HeyGen entran también a la tabla de herramientas.
+- El primer párrafo no cambió: sigue idéntico a `AI_DISCLOSURE` de About, que describe solo el juego.
+- Para qué se usó cada una sale de `docs/SUBMISSION-PLAN.md` §4 (ChatGPT: textos; HeyGen: avatar y voz del video), no de una confirmación directa de Belle y Thais.
+- Pendiente (Belle, Thais): confirmar esas dos líneas; decir si se usó Gemini Flow (el plan y `docs/PITCH.md` lo nombran, Edgar no lo mencionó) y agregarlo si corresponde; sigue abierto el TODO de herramientas de diseño y video, y de música con su licencia.
+
 ## 2026-11-15 (PC de José) — Migración del leaderboard a Azure: código listo, falta crear la base de datos
 
 - Pedido de José: crear una base de datos en Azure y migrar. Se eligió mover base de datos y API: Azure Database for PostgreSQL (Flexible Server, Burstable B1ms, unos US$13–15 al mes) y la API como función administrada de la Static Web App, en la misma dirección del juego (`/api/leaderboard`, sin CORS).
