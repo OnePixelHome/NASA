@@ -1,4 +1,4 @@
-# Trajectory Ladder
+# Status: GO
 
 *One Pixel Home · NASA Space Apps Challenge 2026 · Space Mission Design Game*
 

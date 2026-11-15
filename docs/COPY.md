@@ -1,4 +1,4 @@
-# Copy review — Trajectory Ladder
+# Copy review — Status: GO
 
 Every player-facing string, for Belle to review. All of it is **draft** until reviewed.
 
@@ -82,7 +82,7 @@ One sentence shown as "Lesson learned" on the scorecard, for the instrument the 
 | --- | --- |
 | `PITCH` | Design a space mission and watch every choice ripple down — the game calculates the orbit and resources your mission needs to succeed. |
 | `AI_DISCLOSURE` | Code scaffolding, the physics engine and documentation were drafted with Claude (Anthropic). The visual design and illustrations were drafted with Claude Design (Anthropic). All of it was reviewed, tested and adapted by the team. Physics formulas are covered by automated tests; illustrative values are labelled in the game. |
-| `DISCLAIMER` | Trajectory Ladder is a hackathon project by team One Pixel Home for the NASA Space Apps Challenge 2026. It is not affiliated with or endorsed by NASA. |
+| `DISCLAIMER` | Status: GO is a hackathon project by team One Pixel Home for the NASA Space Apps Challenge 2026. It is not affiliated with or endorsed by NASA. |
 
 `AI_DISCLOSURE` must match the project page. The tests check that it names Claude (Anthropic) and says the team reviewed the work.
 
@@ -107,9 +107,16 @@ These strings sit in the screen code. Edit only the words; leave tags, braces an
 
 | Screen (function) | String |
 | --- | --- |
-| Header (`App`) | Trajectory Ladder |
+| Header (`App`) | Status: GO |
 | Header (`App`) | Design a space mission. Watch every choice ripple down. |
 | Header (`App`) | About / ← Back / Resources |
+| Landing (`Home`) | NASA Space Apps Challenge 2026 · Space Mission Design Game |
+| Landing (`Home`) | Status: GO (pitch below it is `PITCH`; the steps are `HOW_TO_PLAY`) |
+| Landing (`Home`) | Start mission → / About & sources |
+| Landing (`Home`) | 1 to 4 players on one screen · no sign-up |
+| Landing (`Home`) | How to play |
+| Landing (`Home`) | Made by team One Pixel Home. Not affiliated with or endorsed by NASA. |
+| Landing (`Home`) | Earth image: NASA Earth Observatory, Blue Marble: Next Generation. |
 | 1 (`Brief`) | 1 · Pick your mission |
 | 1 (`Brief`) | Every mission starts with a science goal. It decides what “success” means. |
 | 2 (`OrbitPick`) | 2 · Choose a trajectory |
@@ -162,11 +169,11 @@ About screen text added with the design, in `src/engine/sources.ts` (**Belle: pl
 | `HOW_TO_PLAY` 4 | Vote Go / No-Go and watch the simulation — Every role votes. Then follow the mission and read your scorecard. |
 | `ROLES_NOTE` | Four roles, one for each of NASA’s four mission segments: Science, Spacecraft, Ground, Launch. |
 | `AI_IMAGES_NOTE` | Images marked “AI-generated” were drafted with AI and then checked and adapted by the team. |
-| `DISCLAIMER` | Trajectory Ladder is an independent project made by team One Pixel Home for the NASA Space Apps Challenge 2026. It is not affiliated with or endorsed by NASA. NASA does not endorse any non-U.S. Government entity. |
+| `DISCLAIMER` | Status: GO is an independent project made by team One Pixel Home for the NASA Space Apps Challenge 2026. It is not affiliated with or endorsed by NASA. NASA does not endorse any non-U.S. Government entity. |
 | `TEAM` | Edgar Cardona, Software architect · José Gómez, Full-stack developer · Thais Rodríguez, Product designer · Belle Vásquez Machado, MarTech specialist |
 | `FOOTER_NOTES` | MIT License · No accounts, no cookies, no analytics. |
 
-About headings, in `src/App.tsx`: What is Trajectory Ladder? / How to play / Where the numbers come from / NASA data and resources / Use of AI / Not affiliated with NASA / Team · One Pixel Home.
+About headings, in `src/App.tsx`: What is Status: GO? / How to play / Where the numbers come from / NASA data and resources / Use of AI / Not affiliated with NASA / Team · One Pixel Home.
 
 Mission film on screen 5, in `src/ui/MissionFilm.tsx` and `src/ui/film/scenes.ts`: 3 / 2 / 1 / Liftoff / Mission complete / Sunlight / Earth’s shadow / Sending data / No contact / Always connected / Earth image: NASA Earth Observatory, Blue Marble / Orbit height drawn to scale / Rocket and spacecraft drawings / Pause / Play / Replay the film.
 

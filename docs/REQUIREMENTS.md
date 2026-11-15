@@ -1,4 +1,4 @@
-# Requirements mapping — Trajectory Ladder v0.1
+# Requirements mapping — Status: GO v0.1
 
 Maps every item of the official challenge statement (HANDOFF §2) to the screen or engine function that covers it.
 Audited against prototype v0.1 on Sat 2026-11-14; updated that night after PRs #1 to #14. Status: ✅ covered · 🟡 partial · ❌ missing.

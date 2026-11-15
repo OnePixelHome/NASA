@@ -5,6 +5,20 @@
 - El commit `638eec1` agregó un workflow de Azure Static Web Apps que falló en cada push a `main`: buscaba la carpeta `build`, pero Vite compila en `dist`. El equipo publica solo en GitHub Pages, así que Belle pidió desconectar Azure.
 - Se desactivó el workflow "Azure Static Web Apps CI/CD" en GitHub, se canceló la ejecución que estaba corriendo, se borró el secreto `AZURE_STATIC_WEB_APPS_API_TOKEN_VICTORIOUS_PEBBLE_0FCF34B10` y, en esta rama, se borró `.github/workflows/azure-static-web-apps-victorious-pebble-0fcf34b10.yml`. "Deploy to GitHub Pages" no se tocó.
 - Pendiente (Belle): borrar en el portal de Azure el recurso Static Web App `victorious-pebble-0fcf34b10`. Desde aquí no hay acceso a Azure.
+## 2026-11-15 (PC de José) — Página de inicio
+
+- Pedido de José: una página principal con el nombre del juego y un botón para empezar. Nueva pantalla `home` (sin número de paso) antes del Brief, en `src/App.tsx` (`Home`): etiqueta del reto, "Status: GO" grande con "GO" en amarillo, `PITCH`, botón "Start mission →", botón "About & sources", "1 to 4 players on one screen · no sign-up", los cuatro pasos de `HOW_TO_PLAY` y un pie con el equipo, el aviso de no afiliación y el crédito de la imagen de NASA.
+- Nuevo `src/ui/HomeHero.tsx`: la Tierra (Blue Marble, S12) girando dentro de un disco, con la órbita inclinada del favicon y un satélite que la recorre. Dibujo propio más imagen de NASA, así que no lleva la etiqueta "AI-generated". Con `prefers-reduced-motion` todo queda quieto (la animación se quita, no se acelera). Animación `home-spin` en `src/index.css`.
+- El nombre del encabezado vuelve a la página de inicio; en la página de inicio el encabezado no lo repite. "Replay mission" en el scorecard sigue yendo directo al Brief.
+- Verificado: 67 tests, build y lint en local (se instaló con `--registry=https://registry.yarnpkg.com/` porque esta red no llega a registry.npmjs.org); capturas en Edge a 390 px (en un iframe: Edge headless no baja de 518 px de ancho) y 1280 px, sin desbordes; en celular el botón "Start mission" queda en la primera pantalla.
+- Textos nuevos añadidos a `docs/COPY.md` §7 para la revisión de Belle.
+
+## 2026-11-15 (PC de José) — El juego se llama "Status: GO" (antes "Trajectory Ladder")
+
+- José aclaró que "Status: GO" es el nombre completo del juego, no de la pantalla 5. Se revirtió el cambio de título de la pantalla 5 (vuelve a "5 · Mission simulation") y se renombró el juego en todo lo que ve el jugador o el jurado: encabezado y su `aria-label`, título de la pestaña (`index.html`), "What is Status: GO?" en About, `DISCLAIMER` (`src/engine/sources.ts`), título del favicon y README.
+- También en la documentación vigente: `CLAUDE.md`, `AGENTS.md`, `docs/COPY.md`, `docs/PROJECT_PAGE.md`, `docs/REQUIREMENTS.md`, `docs/SUBMISSION.md`, `docs/DESIGN-RULES.md` y `docs/HANDOFF.md` (decisión 9 y línea del pitch). `package.json` pasa a `status-go`.
+- No se tocaron los registros históricos: `docs/design-prompts.md`, el PRD de Miro citado en HANDOFF y las entradas anteriores de este archivo.
+- Pendiente: Belle debe usar el nombre nuevo en el video, la página del proyecto en Space Apps y la descripción del repo; las tarjetas del video de Claude Design todavía dicen "Trajectory Ladder".
 
 ## 2026-11-15 (PC de José) — Favicon propio
 

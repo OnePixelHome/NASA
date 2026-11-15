@@ -1,7 +1,7 @@
 @BACKUP.md
 @AGENTS.md
 
-# Trajectory Ladder — One Pixel Home (NASA Space Apps 2026 · Space Mission Design Game)
+# Status: GO — One Pixel Home (NASA Space Apps 2026 · Space Mission Design Game)
 
 Browser game: pick a mission brief → choose a trajectory (LEO / SSO / GEO) → build a live dependency tree
 (instrument → power → downlink → launch vehicle) where options turn green or lock with a sourced reason →

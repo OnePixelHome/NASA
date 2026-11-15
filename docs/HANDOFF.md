@@ -1,4 +1,4 @@
-# HANDOFF — One Pixel Home · Trajectory Ladder (full context for Claude Code)
+# HANDOFF — One Pixel Home · Status: GO (full context for Claude Code)
 
 Read this whole file before doing anything. It is the single source of truth for decisions made by the team and
 with Claude (chat) up to Sat 2026-11-14 14:50 Lima time. If code and this file disagree, this file wins — then fix the code.
@@ -64,7 +64,7 @@ Levels, GSFC Mission Design Lab, CubeSat 101, Webb "Build it yourself" game, GMA
   6. Edgar's role: engine + sources + project page + QA (from phone).
   7. Accessibility: lock icon + text, not color only; keyboard-focusable nodes.
   8. Collaboration: each tree tier labelled with a role (Science, Spacecraft, Ground, Launch — NASA's 4 segments) + **Go/No-Go poll**.
-  9. UI in English, product name "Trajectory Ladder".
+  9. UI in English, product name "Status: GO" (renamed from "Trajectory Ladder" on 2026-11-15).
   10. No Google Analytics/Mixpanel.
 - **DROPPED / post-hackathon:** Mars & interplanetary level, 3D (React Three Fiber), the earlier CubeSat-only spec
   (`engine-spec.md` from Friday is superseded), real-time multiplayer, accounts, backend.
@@ -143,14 +143,14 @@ re-balance the catalog instead; conventional commits; one concern per PR; run `p
 | Sun 20:00 | **SUBMIT** (keep 4 h buffer before 23:59) | | | |
 
 ## 9. Ready-to-use text
-**Pitch line:** "Trajectory Ladder: design a space mission and watch every choice ripple down — the game calculates the
+**Pitch line:** "Status: GO — design a space mission and watch every choice ripple down — the game calculates the
 orbit and resources your mission needs to succeed."
 
 **30-s video script (draft, EN):**
 - 0–5 s: "Real missions fail when one choice breaks another. Students rarely get to see that."
 - 5–22 s (screen recording): pick Polar Ice → tap GEO: cameras and radar lock ("36 m per pixel — too blurry")
   → switch to SSO → radar + hybrid power turn green → Go/No-Go → score 86.
-- 22–30 s: "Built on NASA orbital data and Landsat 9 parameters. Trajectory Ladder — every choice has a consequence."
+- 22–30 s: "Built on NASA orbital data and Landsat 9 parameters. Status: GO — every choice has a consequence."
 
 **AI disclosure (project page and About screen; updated Sat night to cover the visual design):** "Code scaffolding, the physics engine and documentation were drafted with Claude (Anthropic). The visual design and illustrations were drafted with Claude Design (Anthropic). All of it was reviewed, tested and adapted by the team. Physics formulas are covered by automated tests; illustrative values are labelled in the game."
 

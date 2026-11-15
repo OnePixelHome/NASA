@@ -1,4 +1,4 @@
-/* Trajectory Ladder — design tokens (Tailwind v4). Source: docs/design/handoff/theme.css (Claude Design export).
+/* Status: GO — design tokens (Tailwind v4). Source: docs/design/handoff/theme.css (Claude Design export).
    Fonts are bundled from @fontsource (both OFL-1.1) instead of Google's CDN, so the game also works offline
    and in the single-file build. */
 @import '@fontsource/fredoka/latin-500.css';
@@ -152,6 +152,8 @@
 @keyframes ms-swept { from { transform: scaleX(0); } to { transform: scaleX(1); } }
 @keyframes ms-wave { 0%, 100% { transform: rotate(0); } 25% { transform: rotate(-10deg); } 75% { transform: rotate(10deg); } }
 @keyframes ms-in { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+/* Landing globe: the map is twice as wide as the disc, so -200% moves it by exactly one turn (west to east). */
+@keyframes home-spin { from { background-position: 0 0; } to { background-position: -200% 0; } }
 
 @layer base {
   body {

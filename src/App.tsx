@@ -5,6 +5,7 @@ import { missionDay } from './engine/missionDay'
 import { AI_DISCLOSURE, AI_IMAGES_NOTE, DISCLAIMER, FOOTER_NOTES, HOW_TO_PLAY, PITCH, ROLES_NOTE, SOURCE_ORDER, SOURCES, TEAM, type Reason } from './engine/sources'
 import { RoleCharacter } from './ui/Crew'
 import { DayView } from './ui/DayView'
+import { HomeHero } from './ui/HomeHero'
 import { MissionArt, OrbitDiagram } from './ui/MissionArt'
 import { MissionFilm, type FilmProgress } from './ui/MissionFilm'
 import { MissionScene } from './ui/MissionScene'
@@ -12,8 +13,10 @@ import { ShipSvg } from './ui/Ship'
 import { ROLE_UI, shipParts } from './ui/theme'
 import { AiGeneratedLabel, Bar, BTN_PRIMARY, BTN_SECONDARY, BTN_WARNING, Gauge, Meter, ReasonList, ResourcePanel, RoleTag, SourceChip, SourceChips, Sourced } from './ui/components'
 
-type Screen = 'brief' | 'orbit' | 'tree' | 'go' | 'run' | 'score'
-const SCREEN_NUMBER: Record<Screen, number> = { brief: 1, orbit: 2, tree: 3, go: 4, run: 5, score: 6 }
+type Screen = 'home' | 'brief' | 'orbit' | 'tree' | 'go' | 'run' | 'score'
+/** The landing page is not a step, so it has no number. */
+type Step = Exclude<Screen, 'home'>
+const SCREEN_NUMBER: Record<Step, number> = { brief: 1, orbit: 2, tree: 3, go: 4, run: 5, score: 6 }
 const ORBIT_COLOR: Record<string, string> = { leo: 'var(--color-orbit-leo)', sso: 'var(--color-orbit-sso)', geo: 'var(--color-orbit-geo)' }
 
 type Votes = Record<C.Role, boolean | null>
@@ -23,7 +26,7 @@ const CARD = 'rounded-lg border border-space-border bg-space-card'
 const PICK_CARD = `${CARD} border-2 p-4 text-left shadow-raised transition duration-[var(--duration-fast)] hover:border-st-available`
 
 export default function App() {
-  const [screen, setScreen] = useState<Screen>('brief')
+  const [screen, setScreen] = useState<Screen>('home')
   const [choice, setChoice] = useState<Choice>({})
   const [focus, setFocus] = useState<{ tier: C.Tier; node: NodeState } | null>(null)
   const [votes, setVotes] = useState<Votes>(NO_VOTES)
@@ -38,12 +41,12 @@ export default function App() {
     window.scrollTo(0, 0)
   }, [screen, about])
 
-  const restart = () => {
+  const startOver = (to: Screen) => {
     setAbout(false)
     setChoice({})
     setFocus(null)
     setVotes(NO_VOTES)
-    setScreen('brief')
+    setScreen(to)
   }
 
   return (
@@ -51,11 +54,16 @@ export default function App() {
       <header className="sticky top-0 z-10 border-b border-space-border bg-space-page/95 px-4 py-2 backdrop-blur">
         <div className="mx-auto max-w-5xl">
           <div className="flex items-center justify-between gap-3">
-            <button type="button" onClick={restart} className="min-h-[44px] text-left" aria-label="Trajectory Ladder: start over">
-              <div className="font-display text-[18px] leading-tight">Trajectory Ladder</div>
-              {/* The tagline gives way to the resource panel once a mission is picked, to save phone space. */}
-              {!scenario && <div className="text-caption text-ink-muted">Design a space mission. Watch every choice ripple down.</div>}
-            </button>
+            {/* The landing page shows the name in large type, so the header leaves it out there. */}
+            {screen === 'home' && !about ? (
+              <span />
+            ) : (
+              <button type="button" onClick={() => startOver('home')} className="min-h-[44px] text-left" aria-label="Status: GO — back to the start page">
+                <div className="font-display text-[18px] leading-tight">Status: GO</div>
+                {/* The tagline gives way to the resource panel once a mission is picked, to save phone space. */}
+                {!scenario && <div className="text-caption text-ink-muted">Design a space mission. Watch every choice ripple down.</div>}
+              </button>
+            )}
             <div className="flex shrink-0 items-center gap-2">
               {scenario && !about && (
                 <button
@@ -99,6 +107,7 @@ export default function App() {
         </main>
       )}
       <main className="mx-auto max-w-5xl px-4 pb-24 pt-5" hidden={about}>
+        {screen === 'home' && <Home onStart={() => setScreen('brief')} onAbout={() => setAbout(true)} />}
         {screen === 'brief' && (
           <Brief
             onPick={(id) => {
@@ -135,14 +144,14 @@ export default function App() {
         )}
         {screen === 'go' && <GoNoGo votes={votes} setVotes={setVotes} choice={choice} onBack={() => setScreen('tree')} onLaunch={() => setScreen('run')} />}
         {screen === 'run' && <MissionRun choice={choice} goVotes={goVotes} onDone={() => setScreen('score')} />}
-        {screen === 'score' && <Score choice={choice} goVotes={goVotes} onReplay={restart} onRevise={() => setScreen('tree')} />}
+        {screen === 'score' && <Score choice={choice} goVotes={goVotes} onReplay={() => startOver('brief')} onRevise={() => setScreen('tree')} />}
       </main>
     </div>
   )
 }
 
 /** Screen heading: step counter, title and one line of guidance. */
-function ScreenTitle({ screen, title, children }: { screen: Screen; title: string; children?: ReactNode }) {
+function ScreenTitle({ screen, title, children }: { screen: Step; title: string; children?: ReactNode }) {
   return (
     <div className="flex flex-col gap-1.5">
       <p className="text-caption font-bold uppercase tracking-widest text-ink-muted">Screen {SCREEN_NUMBER[screen]} of 6</p>
@@ -162,6 +171,59 @@ function Notice({ kind, children }: { kind: 'warning' | 'error'; children: React
       </span>
       <span>{children}</span>
     </p>
+  )
+}
+
+/** Landing page: the game's name, what it is, and one button to start. */
+function Home({ onStart, onAbout }: { onStart: () => void; onAbout: () => void }) {
+  return (
+    <section className="flex flex-col gap-10">
+      <div className="grid items-center gap-6 lg:grid-cols-[minmax(0,1fr)_320px] lg:gap-10">
+        <div className="flex flex-col items-center gap-5 text-center lg:items-start lg:text-left">
+          <p className="text-caption font-bold uppercase tracking-widest text-ink-muted">NASA Space Apps Challenge 2026 · Space Mission Design Game</p>
+          <h1 className="font-display text-[3.25rem] leading-none sm:text-[4.5rem]">
+            Status: <span className="text-st-selected">GO</span>
+          </h1>
+          <p className="max-w-[46ch] text-[1.125rem] leading-relaxed text-ink-2">{PITCH}</p>
+          <div className="flex w-full flex-col gap-3 sm:w-auto sm:flex-row">
+            <button type="button" onClick={onStart} className={`${BTN_PRIMARY} min-h-[56px] px-8 text-[1.125rem]`}>
+              Start mission →
+            </button>
+            <button type="button" onClick={onAbout} className={BTN_SECONDARY}>
+              About & sources
+            </button>
+          </div>
+          <p className="text-small text-ink-muted">1 to 4 players on one screen · no sign-up</p>
+        </div>
+        <HomeHero className="order-first mx-auto max-w-[210px] sm:max-w-[300px] lg:order-none lg:max-w-[320px]" />
+      </div>
+
+      <section aria-labelledby="h-home-how">
+        <h2 id="h-home-how" className="text-section">
+          How to play
+        </h2>
+        <ol className="mt-3 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+          {HOW_TO_PLAY.map((s, i) => (
+            <li key={s.title} className={`${CARD} flex gap-3 p-4`}>
+              <span aria-hidden className="grid size-10 shrink-0 place-items-center rounded-md border border-space-border bg-space-raised font-display text-[18px]" style={{ color: HOW_ICONS[i % HOW_ICONS.length].color }}>
+                {HOW_ICONS[i % HOW_ICONS.length].icon}
+              </span>
+              <div className="min-w-0">
+                <h3 className="font-display">
+                  <span className="tabular-nums text-ink-2">{i + 1} ·</span> {s.title}
+                </h3>
+                <p className="text-small text-ink-2">{s.text}</p>
+              </div>
+            </li>
+          ))}
+        </ol>
+      </section>
+
+      <footer className="flex flex-col gap-1 border-t border-space-border pt-4 text-caption text-ink-muted">
+        <p>Made by team One Pixel Home. Not affiliated with or endorsed by NASA.</p>
+        <p>Earth image: NASA Earth Observatory, Blue Marble: Next Generation.</p>
+      </footer>
+    </section>
   )
 }
 
@@ -802,7 +864,7 @@ function About({ onBack }: { onBack: () => void }) {
         <div className="flex min-w-0 flex-col gap-4">
           <section aria-labelledby="h-what" className={box}>
             <h2 id="h-what" className="text-section">
-              What is Trajectory Ladder?
+              What is Status: GO?
             </h2>
             <p className="text-body text-ink-2">{PITCH}</p>
             <div className="relative flex flex-wrap items-end justify-center gap-1 pb-7 pt-2">

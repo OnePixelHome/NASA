@@ -1,6 +1,6 @@
 # Space Apps 2026 — Design & art rules
 
-For Thais · One Pixel Home · Trajectory Ladder
+For Thais · One Pixel Home · Status: GO
 Source: official NASA Space Apps *Project Submission Guide* and *Judging & Awards Guide* (2026). Quotes are verbatim.
 
 | Topic | Rule | What it means for us |

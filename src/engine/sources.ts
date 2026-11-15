@@ -94,7 +94,7 @@ export const AI_DISCLOSURE =
 export const AI_IMAGES_NOTE = 'Images marked “AI-generated” were drafted with AI and then checked and adapted by the team.'
 
 export const DISCLAIMER =
-  'Trajectory Ladder is an independent project made by team One Pixel Home for the NASA Space Apps Challenge 2026. ' +
+  'Status: GO is an independent project made by team One Pixel Home for the NASA Space Apps Challenge 2026. ' +
   'It is not affiliated with or endorsed by NASA. NASA does not endorse any non-U.S. Government entity.'
 
 /** "How to play" on the About screen. Copy owner: Belle (see docs/COPY.md). */
