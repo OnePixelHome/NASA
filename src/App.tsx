@@ -154,7 +154,7 @@ export default function App() {
         )}
         {screen === 'go' && <GoNoGo votes={votes} setVotes={setVotes} players={players} choice={choice} onBack={() => setScreen('tree')} onLaunch={() => setScreen('run')} />}
         {screen === 'run' && <MissionRun choice={choice} goVotes={goVotes} players={players} onDone={() => setScreen('score')} />}
-        {screen === 'score' && <Score choice={choice} goVotes={goVotes} players={players} onReplay={() => startOver('brief')} onRevise={() => setScreen('tree')} />}
+        {screen === 'score' && <Score choice={choice} goVotes={goVotes} players={players} onReplay={() => startOver('brief')} onRevise={() => setScreen('tree')} onHome={() => startOver('home')} />}
       </main>
     </div>
   )
@@ -817,7 +817,7 @@ function MissionRun({ choice, goVotes, players, onDone }: { choice: Choice; goVo
   )
 }
 
-function Score({ choice, goVotes, players, onReplay, onRevise }: { choice: Choice; goVotes: number; players: number; onReplay: () => void; onRevise: () => void }) {
+function Score({ choice, goVotes, players, onReplay, onRevise, onHome }: { choice: Choice; goVotes: number; players: number; onReplay: () => void; onRevise: () => void; onHome: () => void }) {
   const card = evaluateMission(choice, goVotes, players)
   const b = budget(choice)
   // The engine only says success or not; the screen explains which of the two rules failed.
@@ -884,6 +884,9 @@ function Score({ choice, goVotes, players, onReplay, onRevise }: { choice: Choic
       </details>
       {/* After a failure the recommended action is to fix the design, not to start over. */}
       <div className="mt-5 flex flex-wrap justify-end gap-2.5">
+        <button type="button" onClick={onHome} className={`w-full sm:mr-auto sm:w-auto ${BTN_SECONDARY}`}>
+          <span aria-hidden>⌂</span> Home
+        </button>
         <button type="button" onClick={onRevise} className={`flex-1 sm:flex-none ${card.success ? BTN_SECONDARY : BTN_PRIMARY}`}>
           ← Try another design
         </button>

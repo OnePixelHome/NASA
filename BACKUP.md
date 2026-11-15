@@ -5,6 +5,19 @@
 - Pedido de Belle: el "GO" de "Status: GO" en el título de la página de inicio pasó de peso 400 a 600 (`font-semibold`, en `src/App.tsx`). Fredoka 600 ya venía incluida, así que no se carga ninguna fuente nueva. El resto del título no cambia.
 - Verificado: 73 tests, lint y build. La comparación antes/después se capturó a tamaño celular.
 - Si cambia la página de inicio, hay que volver a tomar las capturas `01` y `03` para el video.
+## 2026-11-15 (Mac de Belle) — Se reconecta Azure Static Web Apps (`ci/reconnect-azure`)
+
+- Belle pidió volver a conectar Azure. El recurso `victorious-pebble-0fcf34b10` sigue vivo (https://victorious-pebble-0fcf34b10.6.azurestaticapps.net/ responde 200, con la página de espera de Azure), así que no se creó uno nuevo.
+- Nuevo `.github/workflows/azure-static-web-apps.yml` (corrige el que generó Azure en `638eec1`): en cada push a `main` instala con pnpm, corre `pnpm test` y `pnpm build` sin `BASE_PATH` (Azure sirve desde la raíz) y sube `dist/` con `Azure/static-web-apps-deploy@v1` y `skip_app_build`. Antes fallaba porque buscaba `build/`. Sin vistas previas por PR. Si falta el secreto, el job avisa y termina en verde en vez de fallar. GitHub Pages sigue igual.
+- `server/leaderboard.ts`: CORS acepta también el origen de Azure. **Falta redesplegar la función** (`bash server/deploy.sh`, con sesión de Neon; José), si no el leaderboard no carga desde Azure.
+- `AGENTS.md` (Verificar) menciona el segundo despliegue.
+- Pendiente (Belle): copiar el token del portal de Azure (Static Web App → Manage deployment token) y guardarlo con `gh secret set AZURE_STATIC_WEB_APPS_API_TOKEN -R OnePixelHome/NASA`; luego merge del PR y comprobar que el sitio de Azure carga el simulador. El secreto viejo se borró en la desconexión; el token del recurso no cambió, pero desde aquí no hay acceso a Azure para leerlo.
+## 2026-11-15 (PC de José) — Botón Home en el scorecard; README y CLAUDE.md al día
+
+- Pedido de José: al terminar una misión, un botón para volver a la página principal. El scorecard tiene ahora "⌂ Home" (a la izquierda; ancho completo en celular) junto a "← Try another design" y "Replay mission"; reinicia el diseño y los votos y vuelve a la página de inicio con el selector de jugadores. Verificado en Chrome.
+- `README.md`: nuevas secciones "How to play" (los 7 pasos, con el número de jugadores y el leaderboard), comandos completos (`lint`, `build:single`), leaderboard en línea, estructura del proyecto, créditos y equipo; "Use of AI" igual a `AI_DISCLOSURE`. Se mantienen la lista de fuentes y los recursos del reto.
+- `CLAUDE.md`: flujo actual (inicio con 1–4 jugadores, voto por jugador, película, leaderboard, Home), URL y repo nuevos, el backend del leaderboard (ya no dice "No backend"), estructura de archivos completa y reglas del leaderboard (el servidor recalcula, redesplegar al cambiar puntaje o catálogo, interruptor `LEADERBOARD_URL`).
+- Verificado: 73 tests, build y lint.
 
 ## 2026-11-15 (PC temporal de Edgar) — S9 deja de ser "lectura de fondo": ahora se cita en el downlink
 
