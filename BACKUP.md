@@ -11,6 +11,11 @@
 - Página de inicio, a pedido de Belle. En `src/ui/HomeHero.tsx`, la mitad lejana de la órbita y el satélite se ven al 20 % de opacidad cuando pasan detrás del planeta, para que se entienda que la órbita lo rodea. Se dibuja la órbita dos veces con máscaras SVG: una de frente y otra detrás del disco, con las animaciones sincronizadas. El botón "Start mission" pasó a verde `#7FE28E` con la nueva constante `BTN_GO` en `src/ui/components.tsx`, que usa el token `role-science`. La geometría de la máscara se revisó en Chrome con una réplica estática. **No se corrieron** `pnpm test` ni `pnpm build`, porque no hay `node_modules`.
 - Pendiente: `docs/SUBMISSION-PLAN.md` se solapa con `docs/SUBMISSION.md` y `docs/PROJECT_PAGE.md` de `main`, que todavía hablan de Vercel. Conviene fusionarlos en uno solo. `pnpm test` no se corrió en esta Mac porque el entorno de Claude no llega al registry de npm.
 
+## 2026-11-15 (Mac de Belle) — Se desconecta Azure Static Web Apps (`chore/remove-azure`)
+
+- El commit `638eec1` agregó un workflow de Azure Static Web Apps que falló en cada push a `main`: buscaba la carpeta `build`, pero Vite compila en `dist`. El equipo publica solo en GitHub Pages, así que Belle pidió desconectar Azure.
+- Se desactivó el workflow "Azure Static Web Apps CI/CD" en GitHub, se canceló la ejecución que estaba corriendo, se borró el secreto `AZURE_STATIC_WEB_APPS_API_TOKEN_VICTORIOUS_PEBBLE_0FCF34B10` y, en esta rama, se borró `.github/workflows/azure-static-web-apps-victorious-pebble-0fcf34b10.yml`. "Deploy to GitHub Pages" no se tocó.
+- Pendiente (Belle): borrar en el portal de Azure el recurso Static Web App `victorious-pebble-0fcf34b10`. Desde aquí no hay acceso a Azure.
 ## 2026-11-15 (PC de José) — Página de inicio
 
 - Pedido de José: una página principal con el nombre del juego y un botón para empezar. Nueva pantalla `home` (sin número de paso) antes del Brief, en `src/App.tsx` (`Home`): etiqueta del reto, "Status: GO" grande con "GO" en amarillo, `PITCH`, botón "Start mission →", botón "About & sources", "1 to 4 players on one screen · no sign-up", los cuatro pasos de `HOW_TO_PLAY` y un pie con el equipo, el aviso de no afiliación y el crédito de la imagen de NASA.
