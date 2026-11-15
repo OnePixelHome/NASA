@@ -1,5 +1,13 @@
 # BACKUP - NASA
 
+## 2026-11-15 (Mac de Belle) — `statusgo.earth` funcionando: DNS en Cloudflare y dominios validados en Azure
+
+- Se resolvió el pendiente bloqueante de la entrada anterior. El DNS de `statusgo.earth` pasó de Porkbun a **Cloudflare** (plan Free, cuenta de Belle; NS `candy` y `wells.ns.cloudflare.com`). El dominio sigue registrado en Porkbun; solo cambiaron los nameservers.
+- Registros en Cloudflare, todos **sin proxy** (si Cloudflare hace de proxy, Azure no puede validar ni emitir el certificado): `statusgo.earth` CNAME (aplanado por Cloudflare) y `www` CNAME a `victorious-pebble-0fcf34b10.6.azurestaticapps.net`, y TXT `_dnsauth` con el token de validación de Azure. No borrar ese TXT.
+- En la Static Web App `Nasa`: `statusgo.earth` (validado por TXT) y `www.statusgo.earth` (validado por CNAME) quedaron en **Ready**, con certificado de Azure.
+- Verificado: `https://statusgo.earth/` y `https://www.statusgo.earth/` responden 200 con HTTPS válido y el título "Status: GO — One Pixel Home". El sitio publicado llama a `/api/leaderboard` y `GET https://statusgo.earth/api/leaderboard` devuelve `{"entries":[],"total":0}`: la API se conecta a `statusgo-db` y la tabla `scores` ya existe. No se probó un guardado para no dejar una fila de prueba en el leaderboard del jurado.
+- Pendiente: probar un guardado real desde el juego; opcional, marcar `statusgo.earth` como dominio predeterminado en el portal.
+
 ## 2026-11-15 (Mac de Belle) — URL pública `statusgo.earth` en la documentación
 
 - Belle indicó que el demo público queda en **https://statusgo.earth/**. Se reemplazó la URL de Azure (y dos de GitHub Pages que quedaban) en `README.md`, `CLAUDE.md`, `AGENTS.md`, `docs/PITCH.md`, `docs/PROJECT_PAGE.md`, `docs/SUBMISSION.md`, `docs/HANDOFF.md` y `docs/SUBMISSION-PLAN.md`. El host de Azure queda mencionado en `AGENTS.md`, `CLAUDE.md` y `docs/SUBMISSION.md` como respaldo. `server/handler.ts` ya aceptaba el dominio en su CORS y no se tocó.
