@@ -1,5 +1,15 @@
 # BACKUP - NASA
 
+## 2026-11-15 (PC de José) — Migración del leaderboard a Azure: código listo, falta crear la base de datos
+
+- Pedido de José: crear una base de datos en Azure y migrar. Se eligió mover base de datos y API: Azure Database for PostgreSQL (Flexible Server, Burstable B1ms, unos US$13–15 al mes) y la API como función administrada de la Static Web App, en la misma dirección del juego (`/api/leaderboard`, sin CORS).
+- La lógica del leaderboard pasó a `server/handler.ts` (`createLeaderboard(pool)`), compartida por la función de Neon (`server/leaderboard.ts`, ahora un envoltorio corto) y la de Azure (`server/azure/index.ts`, modelo v4 de Azure Functions). Sigue recalculando el puntaje en el servidor.
+- `server/azure/build.mjs` empaqueta la API con el motor del juego en `api-build/` (ignorado por git); sus dependencias están en `server/azure/package.json`, aparte del juego, porque pnpm en esta red no llega a registry.npmjs.org. El workflow de Azure instala esas dependencias, arma la API y la despliega (`api_location: api-build`). `public/staticwebapp.config.json` fija Node 20 para la API.
+- El juego sigue usando la función de Neon hasta que la base de Azure exista; la API de Azure se despliega pero no se usa todavía.
+- Azure CLI 2.92.0 instalado en la PC de José (winget). Al reparar un `pnpm add` fallido, `node_modules` quedó a medias; se reinstaló limpio desde el lockfile.
+- Verificado: 73 tests, build y lint; el paquete de la API carga hasta el registro de la función.
+- Pendiente: José inicia sesión con `az login`; luego crear el servidor PostgreSQL en el grupo de recursos de la Static Web App (contraseña generada y guardada solo en `~/lab_secrets/nasa`), poner `DATABASE_URL` en la configuración de la Static Web App, crear `scores` y copiar las filas de Neon, cambiar `LEADERBOARD_URL` a `/api/leaderboard` y probar en el sitio publicado.
+
 ## 2026-11-15 (PC de José) — Solo Azure: se deja de publicar en GitHub Pages
 
 - Pedido de José: el equipo trabaja solo con Azure. El juego queda en https://victorious-pebble-0fcf34b10.6.azurestaticapps.net/ (Static Web App `victorious-pebble-0fcf34b10`, conectada por Belle en el PR #23).

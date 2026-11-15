@@ -1,0 +1,10 @@
+{
+  "name": "status-go-azure-api-build",
+  "private": true,
+  "description": "Build-time dependencies for the Azure Static Web Apps API (bundled by build.mjs; not part of the game).",
+  "dependencies": {
+    "@azure/functions": "^4.7.0",
+    "esbuild": "^0.25.0",
+    "pg": "^8.13.0"
+  }
+}
