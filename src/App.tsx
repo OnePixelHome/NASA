@@ -1,8 +1,9 @@
 import { useEffect, useMemo, useState, type ReactNode } from 'react'
 import * as C from './engine/catalog'
-import { budget, BUDGET_SOURCE, choose, evaluateMission, isComplete, orbitSources, orbitStats, resources, SUCCESS_SCORE_MIN, TEAM_POINTS_MAX, TEAM_ROLES, teamPoints, TIER_ORDER, tierOptions, type Choice, type NodeState } from './engine/game'
+import { budget, BUDGET_SOURCE, choose, evaluateMission, isComplete, missionRequirements, orbitSources, orbitStats, resources, SUCCESS_SCORE_MIN, TEAM_POINTS_MAX, TEAM_ROLES, teamPoints, TIER_ORDER, tierOptions, type Choice, type NodeState } from './engine/game'
 import { AI_DISCLOSURE, DISCLAIMER, PITCH, SOURCE_ORDER, SOURCES, type Reason } from './engine/sources'
 import { RoleCharacter } from './ui/Crew'
+import { MissionArt, OrbitDiagram } from './ui/MissionArt'
 import { MissionScene } from './ui/MissionScene'
 import { ShipSvg } from './ui/Ship'
 import { ROLE_UI, shipParts } from './ui/theme'
@@ -28,6 +29,11 @@ export default function App() {
   const goVotes = Object.values(votes).filter((v) => v === true).length
   const [about, setAbout] = useState(false)
   const [panelOpen, setPanelOpen] = useState(true) // phones can fold the resource panel into one line
+
+  // A new screen starts at its top; without this the page keeps the previous screen's scroll position.
+  useEffect(() => {
+    window.scrollTo(0, 0)
+  }, [screen, about])
 
   const restart = () => {
     setAbout(false)
@@ -162,68 +168,125 @@ function Brief({ onPick }: { onPick: (id: string) => void }) {
       <ScreenTitle screen="brief" title="1 · Pick your mission">
         Every mission starts with a science goal. It decides what “success” means.
       </ScreenTitle>
-      <div className="mt-5 grid gap-3 sm:grid-cols-3">
-        {C.SCENARIOS.map((s) => (
-          <button type="button" key={s.id} onClick={() => onPick(s.id)} className={PICK_CARD}>
-            <h2 className="text-card">{s.title}</h2>
-            <p className="mt-1 text-small text-ink-2">{s.story}</p>
-            <div className="mt-3 text-small text-ink-2">
-              Budget <span className="font-display tabular-nums text-ink">${s.budgetM}M</span>
-              <SourceChip id={BUDGET_SOURCE} link={false} />
-            </div>
-          </button>
-        ))}
+      <div className="mt-4 flex items-start gap-2.5">
+        <RoleCharacter role="science" decorative bg="var(--color-space-page)" className="size-12 shrink-0" />
+        <p className="mt-1.5 rounded-md bg-ink px-3 py-2 text-small font-bold text-space-page">Pick the goal first. Its numbers are what your design will be scored against.</p>
+      </div>
+      <div className="mt-4 grid gap-4 lg:grid-cols-3">
+        {C.SCENARIOS.map((s) => {
+          const req = missionRequirements(s)
+          return (
+            <button type="button" key={s.id} onClick={() => onPick(s.id)} aria-label={`${s.title}: ${req.summary}`} className={`${PICK_CARD} flex flex-col gap-3 p-3 pb-4`}>
+              <MissionArt id={s.id} />
+              <div className="flex flex-col gap-1 px-1">
+                <h2 className="text-[20px] text-ink">{s.title}</h2>
+                <p className="text-[15px] text-ink-2">{s.story}</p>
+              </div>
+              <div className="mx-1 flex flex-col gap-2 rounded-md bg-space-raised p-3">
+                <p className="flex items-center justify-between gap-2 text-caption font-bold text-ink-2">
+                  <span className="uppercase tracking-wide">Mission requirements</span>
+                  <SourceChip id={req.source} link={false} />
+                </p>
+                <dl className="flex flex-wrap justify-between gap-x-3 gap-y-2">
+                  {req.items.map((r) => (
+                    <div key={r.id} className="flex min-w-0 flex-col-reverse">
+                      <dt className="text-caption text-ink-2">{r.label}</dt>
+                      <dd className="whitespace-nowrap font-display text-[19px] tabular-nums">{r.value}</dd>
+                    </div>
+                  ))}
+                </dl>
+              </div>
+              <p className="mt-auto flex items-baseline justify-between px-1">
+                <span className="text-small text-ink-2">
+                  Budget
+                  <SourceChip id={BUDGET_SOURCE} link={false} />
+                </span>
+                <span className="font-display text-[22px] tabular-nums text-st-selected">${s.budgetM}M</span>
+              </p>
+            </button>
+          )
+        })}
       </div>
     </section>
   )
 }
 
 function OrbitPick({ scenario, selected, onPick }: { scenario: C.Scenario; selected?: string; onPick: (id: string) => void }) {
+  const req = missionRequirements(scenario)
   return (
     <section>
-      <ScreenTitle screen="orbit" title="2 · Choose a trajectory">
-        Mission: <span className="text-ink">{scenario.story}</span>
-      </ScreenTitle>
-      <p className="mt-3 text-small text-ink-2">
+      <ScreenTitle screen="orbit" title="2 · Choose a trajectory" />
+      {/* Mission summary: the numbers each orbit card has to be checked against. */}
+      <p aria-label={`Mission: ${scenario.title}, ${req.summary}`} className="mt-3 inline-flex max-w-full flex-wrap items-center gap-x-3 gap-y-1 rounded-lg border border-space-border bg-space-card px-3.5 py-2">
+        <span className="font-display text-[15px]">{scenario.title}</span>
+        <span className="text-[13px] tabular-nums text-ink-2">
+          {req.items.map((r) => r.value).join(' · ')} · ${scenario.budgetM}M
+          <SourceChip id={req.source} />
+        </span>
+      </p>
+      <p className="mt-3 flex gap-2 text-[13px] text-ink-2">
         <span aria-hidden className="text-st-warning">
-          ⚠{' '}
+          ⚠
         </span>
         Bars are illustrative values for educational purposes, derived from the physics below.
       </p>
-      <div className="mt-4 grid gap-3 sm:grid-cols-3">
+      <div className="mt-4 grid gap-4 lg:grid-cols-3">
         {C.ORBITS.map((o) => {
           const st = orbitStats(o)
           const col = ORBIT_COLOR[o.id]
           const sel = selected === o.id
+          const reach = st.continuousView ? 'Fixed view of one hemisphere' : `Reaches ±${st.maxLatDeg.toFixed(1)}° latitude`
           return (
-            <button type="button" key={o.id} onClick={() => onPick(o.id)} aria-pressed={sel} className={`${PICK_CARD} ${sel ? 'border-st-selected bg-space-raised shadow-selected' : ''}`}>
-              <div className="flex items-center justify-between gap-2">
-                <h2 className="text-section" style={{ color: col }}>
-                  {o.short}
-                </h2>
-                <OrbitIcon color={col} />
+            <button
+              type="button"
+              key={o.id}
+              onClick={() => onPick(o.id)}
+              aria-pressed={sel}
+              aria-label={`${o.short}, ${o.name}: altitude ${o.altKm.toLocaleString()} km. Fuel cost ${st.bars.fuel} of 5, coverage ${st.bars.coverage} of 5, lifetime ${st.bars.lifetime} of 5. ${reach}.`}
+              className={`${PICK_CARD} flex flex-col gap-3 ${sel ? 'bg-space-raised' : ''}`}
+              style={sel ? { borderColor: col, boxShadow: `0 0 0 1px ${col}, 0 0 28px color-mix(in oklab, ${col} 27%, transparent)` } : undefined}
+            >
+              <div className="flex items-center gap-3.5">
+                <OrbitDiagram id={o.id} short={o.short} color={col} className="size-[96px] shrink-0" />
+                <div className="flex min-w-0 flex-col gap-1">
+                  <span className="flex items-center gap-2 font-display text-[15px] font-bold tracking-wide" style={{ color: col }}>
+                    <span className="size-3 rounded-pill border-2 border-space-page" style={{ background: col }} />
+                    {o.short}
+                  </span>
+                  <h2 className="text-[19px] leading-tight">{o.name}</h2>
+                  <span className="text-[13px] font-bold" style={{ color: sel ? col : 'var(--color-ink-2)' }}>
+                    {sel ? '✓ Selected' : 'Tap to choose'}
+                  </span>
+                </div>
               </div>
-              <div className="text-small text-ink-2">{o.name}</div>
-              <div className="mt-3 flex flex-col gap-1.5">
+              <div className="flex flex-col gap-2">
                 <Bar label="Fuel cost" value={st.bars.fuel} color={col} />
                 <Bar label="Coverage" value={st.bars.coverage} color={col} />
                 <Bar label="Lifetime" value={st.bars.lifetime} color={col} />
               </div>
-              <p className="mt-3 text-small text-ink">{o.blurb}</p>
-              <ul className="mt-2 flex flex-col gap-0.5 text-small tabular-nums text-ink-2">
-                <li>
-                  Altitude {o.altKm.toLocaleString()} km · {st.periodMin.toFixed(0)} min/orbit
-                </li>
-                <li>{st.continuousView ? 'Fixed view of one hemisphere' : `Reaches ±${st.maxLatDeg.toFixed(1)}° latitude`}</li>
-                <li>+{st.extraDvKmS.toFixed(2)} km/s beyond a 200 km orbit</li>
+              <p className="text-[15px] text-ink-2">{o.blurb}</p>
+              <ul className="flex flex-col gap-1.5 rounded-md bg-space-raised p-3 text-small tabular-nums">
+                {[`Altitude ${o.altKm.toLocaleString()} km · ${st.periodMin.toFixed(0)} min/orbit`, reach, `+${st.extraDvKmS.toFixed(2)} km/s beyond a 200 km orbit`].map((f) => (
+                  <li key={f} className="flex gap-2">
+                    <span aria-hidden style={{ color: col }}>
+                      •
+                    </span>
+                    {f}
+                  </li>
+                ))}
               </ul>
-              <div className="mt-2 -ml-1">
+              <span className="mt-auto flex flex-wrap items-center gap-x-1 gap-y-1 text-caption text-ink-2">
+                Sources
                 <SourceChips ids={orbitSources(o)} link={false} />
-              </div>
+              </span>
             </button>
           )
         })}
       </div>
+      <p className={`${CARD} mt-4 px-3.5 py-3 text-small text-ink-2`}>
+        <span className="font-display text-ink">Why this matters · </span>
+        Higher orbits see more of Earth at once and last longer, but cost more fuel to reach. Check each card’s latitude reach against your mission’s numbers.
+      </p>
     </section>
   )
 }

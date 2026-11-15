@@ -1,5 +1,16 @@
 # BACKUP - NASA
 
+## 2026-11-14 (PC de Edgar) — Paso 4 del diseño: Brief y Órbita (`feat/brief-and-orbit`)
+
+- Se hizo merge del PR #13 (escenas de la simulación).
+- Pantalla 1: cada misión tiene su ilustración (`src/ui/MissionArt.tsx`, de `pages/MissionArt.dc.html`) y sus requisitos como números: alcance en latitud, cobertura y revisita. Salen del escenario con `missionRequirements()` en `src/engine/game.ts` (0.25 días se escribe "6 h"); Polar Ice es ±80°, global, 3 d, como en el motor y no como en el diseño.
+- Pantalla 2: chip de resumen de la misión, diagrama de cada órbita con forma distinta (círculo, elipse polar, anillo punteado), estado "✓ Selected / Tap to choose" y la nota "Why this matters". Los números siguen saliendo de `orbitStats()`.
+- Verificado el chip del Orbit pick a 390 px (pendiente de Thais): cabe en una línea, sin desbordes.
+- Cada pantalla nueva empieza arriba: antes conservaba el desplazamiento de la anterior.
+- `docs/REQUIREMENTS.md`: el requisito 1 del reto (definir objetivo y requisitos) pasa a cubierto.
+- Verificado: 41 tests (3 nuevos), build, lint y recorrido a 390 y 1280 px.
+- Pendiente: About ("How to play", equipo), banner del scorecard y resumen del diseño en Go/No-Go.
+
 ## 2026-11-14 (PC de Edgar) — Paso 3 del diseño: escenas de la simulación (`feat/mission-scenes`)
 
 - Se hizo merge del PR #12 (nave y tripulación).

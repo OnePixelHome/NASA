@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import * as P from './physics'
 import * as C from './catalog'
-import { budget, choose, evaluateMission, orbitStats, resources, TEAM_POINTS_MAX, teamPoints, tierOptions, type Choice } from './game'
+import { budget, choose, evaluateMission, missionRequirements, orbitStats, resources, TEAM_POINTS_MAX, teamPoints, tierOptions, type Choice } from './game'
 import { AI_DISCLOSURE, reasonSources, SOURCES } from './sources'
 
 const orbit = (id: string) => C.byId(C.ORBITS, id)!
@@ -190,6 +190,23 @@ describe('10% budget reserve rule [S2]', () => {
     expect(b.reserveFraction).toBeGreaterThanOrEqual(0)
     expect(b.reserveFraction).toBeLessThan(C.RESERVE_FRACTION)
     expect(pts(tight)).toBe(9)
+  })
+})
+
+describe('mission requirements (challenge item 1: define the objective and requirements)', () => {
+  const req = (id: string) => missionRequirements(C.byId(C.SCENARIOS, id)!)
+  const values = (id: string) => req(id).items.map((r) => r.value)
+
+  it('shows each mission as the numbers it will be scored against', () => {
+    expect(values('crops')).toEqual(['±60°', 'Global', '16 d'])
+    expect(values('ice')).toEqual(['±80°', 'Global', '3 d'])
+  })
+  it('writes a revisit shorter than a day in hours', () => {
+    expect(values('storms')).toEqual(['±40°', 'Regional', '6 h'])
+    expect(req('storms').summary).toBe('observe up to 40° latitude, regional coverage, revisit every 6 hours, budget $300M')
+  })
+  it('tags the targets as illustrative game values', () => {
+    for (const s of C.SCENARIOS) expect(missionRequirements(s).source).toBe('GAME')
   })
 })
 
