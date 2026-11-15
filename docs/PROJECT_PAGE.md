@@ -104,6 +104,9 @@ None. No data from other space agencies or third parties is used.
 | Vitest | Automated tests | MIT |
 | oxlint | Linting | MIT |
 | pnpm | Package manager | MIT |
+| Fredoka (via @fontsource/fredoka) | Font for titles and numbers, bundled with the game | SIL Open Font License 1.1 |
+| Atkinson Hyperlegible (via @fontsource/atkinson-hyperlegible) | Font for body text, bundled with the game | SIL Open Font License 1.1 |
+| Claude Design (Anthropic) | Visual system, screen designs and illustrations | Hosted service |
 | Vercel | Hosting of the public demo | Hosted service |
 | GitHub | Source code hosting | Hosted service |
 
@@ -114,8 +117,9 @@ licenses), and any music or sound with its license.
 
 ## Use of artificial intelligence
 
-Code scaffolding, the physics engine and documentation were drafted with Claude (Anthropic) and reviewed, tested and
-adapted by the team. Physics formulas are covered by automated tests; illustrative values are labelled in the game.
+Code scaffolding, the physics engine and documentation were drafted with Claude (Anthropic). The visual design and
+illustrations were drafted with Claude Design (Anthropic). All of it was reviewed, tested and adapted by the team.
+Physics formulas are covered by automated tests; illustrative values are labelled in the game.
 
 **TODO:** keep this identical to the text on the game's About screen (`AI_DISCLOSURE` in `src/engine/sources.ts`). If any
 AI-generated image, illustration, voice or video is used, name the tool here, and make sure every AI-generated image

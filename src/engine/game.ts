@@ -311,6 +311,9 @@ export const TEAM_POINTS_MAX = 15
 export const teamPoints = (goVotes: number) => Math.round((TEAM_POINTS_MAX * Math.max(0, Math.min(TEAM_ROLES, goVotes))) / TEAM_ROLES)
 
 // ---------------- Mission run + scorecard ----------------
+/** A mission succeeds when it stays within budget and scores at least this many points [GAME]. */
+export const SUCCESS_SCORE_MIN = 50
+
 export interface TimelineStep extends Reason {
   label: string
 }
@@ -394,7 +397,7 @@ export function evaluateMission(c: Choice, goVotes: number): Scorecard {
 
   return {
     score,
-    success: !overBudget && score >= 50,
+    success: !overBudget && score >= SUCCESS_SCORE_MIN,
     scoreSource: 'GAME',
     breakdown: [
       { label: 'Science return', points: sciencePts, max: 50 },

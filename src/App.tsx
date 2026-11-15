@@ -1,15 +1,19 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useState, type ReactNode } from 'react'
 import * as C from './engine/catalog'
-import { budget, BUDGET_SOURCE, choose, evaluateMission, isComplete, orbitSources, orbitStats, resources, TEAM_POINTS_MAX, TEAM_ROLES, teamPoints, TIER_ORDER, tierOptions, type Choice, type NodeState } from './engine/game'
+import { budget, BUDGET_SOURCE, choose, evaluateMission, isComplete, orbitSources, orbitStats, resources, SUCCESS_SCORE_MIN, TEAM_POINTS_MAX, TEAM_ROLES, teamPoints, TIER_ORDER, tierOptions, type Choice, type NodeState } from './engine/game'
 import { AI_DISCLOSURE, DISCLAIMER, PITCH, SOURCE_ORDER, SOURCES, type Reason } from './engine/sources'
-import { Bar, Gauge, Meter, ReasonList, ResourcePanel, SourceChip, SourceChips, Sourced } from './ui/components'
+import { ROLE_UI } from './ui/theme'
+import { Bar, BTN_PRIMARY, BTN_SECONDARY, BTN_WARNING, Gauge, Meter, ReasonList, ResourcePanel, RoleTag, SourceChip, SourceChips, Sourced } from './ui/components'
 
 type Screen = 'brief' | 'orbit' | 'tree' | 'go' | 'run' | 'score'
-const ORBIT_COLOR: Record<string, string> = { leo: 'bg-sky-400', sso: 'bg-violet-400', geo: 'bg-amber-400' }
-const ROLE_COLOR: Record<C.Role, string> = { science: 'bg-pink-600', space: 'bg-indigo-600', ground: 'bg-teal-600', launch: 'bg-orange-600' }
+const SCREEN_NUMBER: Record<Screen, number> = { brief: 1, orbit: 2, tree: 3, go: 4, run: 5, score: 6 }
+const ORBIT_COLOR: Record<string, string> = { leo: 'var(--color-orbit-leo)', sso: 'var(--color-orbit-sso)', geo: 'var(--color-orbit-geo)' }
 
 type Votes = Record<C.Role, boolean | null>
 const NO_VOTES: Votes = { science: null, space: null, ground: null, launch: null }
+
+const CARD = 'rounded-lg border border-space-border bg-space-card'
+const PICK_CARD = `${CARD} border-2 p-4 text-left shadow-raised transition duration-[var(--duration-fast)] hover:border-st-available`
 
 export default function App() {
   const [screen, setScreen] = useState<Screen>('brief')
@@ -20,6 +24,7 @@ export default function App() {
   const orbit = C.byId(C.ORBITS, choice.orbitId)
   const goVotes = Object.values(votes).filter((v) => v === true).length
   const [about, setAbout] = useState(false)
+  const [panelOpen, setPanelOpen] = useState(true) // phones can fold the resource panel into one line
 
   const restart = () => {
     setAbout(false)
@@ -30,26 +35,46 @@ export default function App() {
   }
 
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100">
-      <header className="sticky top-0 z-10 border-b border-slate-800 bg-slate-950/95 px-4 py-3 backdrop-blur">
+    <div className="min-h-dvh bg-space-page font-body text-ink">
+      <header className="sticky top-0 z-10 border-b border-space-border bg-space-page/95 px-4 py-2 backdrop-blur">
         <div className="mx-auto max-w-3xl">
-          <div className="flex items-start justify-between gap-3">
-            <button onClick={restart} className="text-left">
-              <div className="text-lg font-bold tracking-tight">Trajectory Ladder</div>
+          <div className="flex items-center justify-between gap-3">
+            <button type="button" onClick={restart} className="min-h-[44px] text-left" aria-label="Trajectory Ladder: start over">
+              <div className="font-display text-[18px] leading-tight">Trajectory Ladder</div>
               {/* The tagline gives way to the resource panel once a mission is picked, to save phone space. */}
-              {!scenario && <div className="text-xs text-slate-400">Design a space mission. Watch every choice ripple down.</div>}
+              {!scenario && <div className="text-caption text-ink-muted">Design a space mission. Watch every choice ripple down.</div>}
             </button>
-            <button
-              onClick={() => setAbout((a) => !a)}
-              aria-pressed={about}
-              className="shrink-0 rounded-lg border border-slate-700 px-3 py-1.5 text-sm text-slate-200 hover:border-sky-400"
-            >
-              {about ? '← Back to mission' : 'About & sources'}
-            </button>
+            <div className="flex shrink-0 items-center gap-2">
+              {scenario && !about && (
+                <button
+                  type="button"
+                  onClick={() => setPanelOpen((o) => !o)}
+                  aria-expanded={panelOpen}
+                  aria-label={panelOpen ? 'Hide mission resources' : 'Show mission resources'}
+                  className="min-h-[44px] rounded-pill border border-space-border bg-space-card px-3 text-small font-bold text-ink-2 hover:border-st-available sm:hidden"
+                >
+                  Resources <span aria-hidden>{panelOpen ? '▴' : '▾'}</span>
+                </button>
+              )}
+              <button
+                type="button"
+                onClick={() => setAbout((a) => !a)}
+                aria-pressed={about}
+                aria-label={about ? 'Back to mission' : 'About and sources'}
+                className={`flex min-h-[44px] items-center gap-1.5 rounded-pill border px-3 text-small font-bold hover:border-st-available ${about ? 'border-st-available bg-space-raised' : 'border-space-border bg-space-card'}`}
+              >
+                {!about && (
+                  <span aria-hidden className="grid size-5 place-items-center rounded-pill border-2 border-st-available font-display text-[12px] text-st-available">
+                    i
+                  </span>
+                )}
+                {about ? '← Back' : <span className="hidden sm:inline">About</span>}
+              </button>
+            </div>
           </div>
           {scenario && !about && (
-            <div className="mt-2">
-              <ResourcePanel meters={resources(choice)} />
+            <div className="mt-1">
+              <ResourcePanel meters={resources(choice)} open={panelOpen} />
             </div>
           )}
         </div>
@@ -57,11 +82,11 @@ export default function App() {
 
       {/* About overlays the game without unmounting its state, so "Back" returns to the same step. */}
       {about && (
-        <main className="mx-auto max-w-3xl px-4 pb-24 pt-6">
+        <main className="mx-auto max-w-3xl px-4 pb-24 pt-5">
           <About onBack={() => setAbout(false)} />
         </main>
       )}
-      <main className="mx-auto max-w-3xl px-4 pb-24 pt-6" hidden={about}>
+      <main className="mx-auto max-w-3xl px-4 pb-24 pt-5" hidden={about}>
         {screen === 'brief' && (
           <Brief
             onPick={(id) => {
@@ -96,9 +121,7 @@ export default function App() {
             onDone={() => setScreen('go')}
           />
         )}
-        {screen === 'go' && (
-          <GoNoGo votes={votes} setVotes={setVotes} choice={choice} onBack={() => setScreen('tree')} onLaunch={() => setScreen('run')} />
-        )}
+        {screen === 'go' && <GoNoGo votes={votes} setVotes={setVotes} choice={choice} onBack={() => setScreen('tree')} onLaunch={() => setScreen('run')} />}
         {screen === 'run' && <MissionRun choice={choice} goVotes={goVotes} onDone={() => setScreen('score')} />}
         {screen === 'score' && <Score choice={choice} goVotes={goVotes} onReplay={restart} onRevise={() => setScreen('tree')} />}
       </main>
@@ -106,18 +129,43 @@ export default function App() {
   )
 }
 
+/** Screen heading: step counter, title and one line of guidance. */
+function ScreenTitle({ screen, title, children }: { screen: Screen; title: string; children?: ReactNode }) {
+  return (
+    <div className="flex flex-col gap-1.5">
+      <p className="text-caption font-bold uppercase tracking-widest text-ink-muted">Screen {SCREEN_NUMBER[screen]} of 6</p>
+      <h1 className="text-screen">{title}</h1>
+      {children && <p className="max-w-[62ch] text-body text-ink-2">{children}</p>}
+    </div>
+  )
+}
+
+/** Notice box. The icon and the words carry the meaning; the border color only reinforces it. */
+function Notice({ kind, children }: { kind: 'warning' | 'error'; children: ReactNode }) {
+  const error = kind === 'error'
+  return (
+    <p role={error ? 'alert' : 'note'} className={`flex gap-2 rounded-md border-2 bg-space-raised px-3.5 py-3 text-[15px] ${error ? 'border-st-error' : 'border-st-warning'}`}>
+      <span aria-hidden className={`font-bold ${error ? 'text-st-error' : 'text-st-warning'}`}>
+        {error ? '✕' : '⚠'}
+      </span>
+      <span>{children}</span>
+    </p>
+  )
+}
+
 function Brief({ onPick }: { onPick: (id: string) => void }) {
   return (
     <section>
-      <h1 className="text-2xl font-bold">1 · Pick your mission</h1>
-      <p className="mt-1 text-slate-400">Every mission starts with a science goal. It decides what “success” means.</p>
+      <ScreenTitle screen="brief" title="1 · Pick your mission">
+        Every mission starts with a science goal. It decides what “success” means.
+      </ScreenTitle>
       <div className="mt-5 grid gap-3 sm:grid-cols-3">
         {C.SCENARIOS.map((s) => (
-          <button key={s.id} onClick={() => onPick(s.id)} className="rounded-xl border border-slate-700 bg-slate-900 p-4 text-left transition hover:border-sky-400 focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-400">
-            <div className="text-lg font-semibold">{s.title}</div>
-            <p className="mt-1 text-sm text-slate-300">{s.story}</p>
-            <div className="mt-3 text-xs text-slate-400">
-              Budget ${s.budgetM}M
+          <button type="button" key={s.id} onClick={() => onPick(s.id)} className={PICK_CARD}>
+            <h2 className="text-card">{s.title}</h2>
+            <p className="mt-1 text-small text-ink-2">{s.story}</p>
+            <div className="mt-3 text-small text-ink-2">
+              Budget <span className="font-display tabular-nums text-ink">${s.budgetM}M</span>
               <SourceChip id={BUDGET_SOURCE} link={false} />
             </div>
           </button>
@@ -130,34 +178,39 @@ function Brief({ onPick }: { onPick: (id: string) => void }) {
 function OrbitPick({ scenario, selected, onPick }: { scenario: C.Scenario; selected?: string; onPick: (id: string) => void }) {
   return (
     <section>
-      <h1 className="text-2xl font-bold">2 · Choose a trajectory</h1>
-      <p className="mt-1 text-slate-400">
-        Mission: <span className="text-slate-200">{scenario.story}</span>
+      <ScreenTitle screen="orbit" title="2 · Choose a trajectory">
+        Mission: <span className="text-ink">{scenario.story}</span>
+      </ScreenTitle>
+      <p className="mt-3 text-small text-ink-2">
+        <span aria-hidden className="text-st-warning">
+          ⚠{' '}
+        </span>
+        Bars are illustrative values for educational purposes, derived from the physics below.
       </p>
-      <p className="mt-2 inline-block rounded bg-slate-800 px-2 py-1 text-xs text-amber-300">Bars are illustrative values for educational purposes, derived from the physics below.</p>
       <div className="mt-4 grid gap-3 sm:grid-cols-3">
         {C.ORBITS.map((o) => {
           const st = orbitStats(o)
           const col = ORBIT_COLOR[o.id]
+          const sel = selected === o.id
           return (
-            <button
-              key={o.id}
-              onClick={() => onPick(o.id)}
-              className={`rounded-xl border bg-slate-900 p-4 text-left transition hover:border-sky-400 focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-400 ${selected === o.id ? 'border-sky-400' : 'border-slate-700'}`}
-            >
-              <div className="flex items-baseline justify-between">
-                <span className="text-lg font-semibold">{o.short}</span>
-                <span className={`h-3 w-3 rounded-full ${col}`} />
+            <button type="button" key={o.id} onClick={() => onPick(o.id)} aria-pressed={sel} className={`${PICK_CARD} ${sel ? 'border-st-selected bg-space-raised shadow-selected' : ''}`}>
+              <div className="flex items-center justify-between gap-2">
+                <h2 className="text-section" style={{ color: col }}>
+                  {o.short}
+                </h2>
+                <OrbitIcon color={col} />
               </div>
-              <div className="text-sm text-slate-400">{o.name}</div>
-              <div className="mt-3 space-y-1.5">
+              <div className="text-small text-ink-2">{o.name}</div>
+              <div className="mt-3 flex flex-col gap-1.5">
                 <Bar label="Fuel cost" value={st.bars.fuel} color={col} />
                 <Bar label="Coverage" value={st.bars.coverage} color={col} />
                 <Bar label="Lifetime" value={st.bars.lifetime} color={col} />
               </div>
-              <p className="mt-3 text-xs text-slate-300">{o.blurb}</p>
-              <ul className="mt-2 space-y-0.5 text-xs text-slate-400">
-                <li>Altitude {o.altKm.toLocaleString()} km · {st.periodMin.toFixed(0)} min/orbit</li>
+              <p className="mt-3 text-small text-ink">{o.blurb}</p>
+              <ul className="mt-2 flex flex-col gap-0.5 text-small tabular-nums text-ink-2">
+                <li>
+                  Altitude {o.altKm.toLocaleString()} km · {st.periodMin.toFixed(0)} min/orbit
+                </li>
                 <li>{st.continuousView ? 'Fixed view of one hemisphere' : `Reaches ±${st.maxLatDeg.toFixed(1)}° latitude`}</li>
                 <li>+{st.extraDvKmS.toFixed(2)} km/s beyond a 200 km orbit</li>
               </ul>
@@ -172,6 +225,24 @@ function OrbitPick({ scenario, selected, onPick }: { scenario: C.Scenario; selec
   )
 }
 
+/** Small planet-and-orbit mark, tinted with the orbit's color. */
+function OrbitIcon({ color }: { color: string }) {
+  return (
+    <svg viewBox="0 0 32 32" className="size-8 shrink-0" aria-hidden>
+      <ellipse cx="16" cy="16" rx="15" ry="6" fill="none" stroke={color} strokeWidth="2.5" transform="rotate(-20 16 16)" />
+      <circle cx="16" cy="16" r="8" fill="var(--color-st-available)" stroke="var(--color-space-page)" strokeWidth="2.5" />
+      <circle cx="29" cy="11" r="3" fill={color} stroke="var(--color-space-page)" strokeWidth="2" />
+    </svg>
+  )
+}
+
+/** Node card states. Each one has its own border style and a written status, so it reads without color. */
+const NODE_UI = {
+  available: { cls: 'border-space-border bg-space-card shadow-raised hover:border-st-available', status: '○ Available', color: 'var(--color-st-available)' },
+  selected: { cls: 'border-st-selected bg-space-raised shadow-selected', status: '◉ Selected', color: 'var(--color-st-selected)' },
+  locked: { cls: 'border-dashed border-space-border bg-space-page', status: '🔒 Locked — tap for why', color: 'var(--color-ink-2)' },
+}
+
 function Tree(props: {
   choice: Choice
   orbit: C.Orbit
@@ -183,88 +254,106 @@ function Tree(props: {
 }) {
   const { choice, orbit, focus, onFocus, onPick } = props
   const key: Record<C.Tier, keyof Choice> = { instrument: 'instrumentId', power: 'powerId', downlink: 'downlinkId', launch: 'launchId' }
+  const col = ORBIT_COLOR[orbit.id]
+  const chosen = TIER_ORDER.filter((t) => choice[key[t]]).length
   return (
     <section>
-      <h1 className="text-2xl font-bold">3 · Build the mission tree</h1>
-      <p className="mt-1 text-slate-400">Green options work with everything above them. Tap a locked one to see why.</p>
+      <ScreenTitle screen="tree" title="3 · Build the mission tree">
+        Each choice can lock the ones below it. Tap a locked option to see why.
+      </ScreenTitle>
 
-      <div className="mt-5 flex flex-col items-center">
-        <button onClick={props.onChangeOrbit} className={`rounded-full px-5 py-2 font-semibold text-slate-950 ${ORBIT_COLOR[orbit.id]}`} title="Change trajectory">
-          {orbit.short} · {orbit.altKm.toLocaleString()} km ↺
+      <div className="mt-4 flex flex-wrap items-center gap-x-2 gap-y-1">
+        <button
+          type="button"
+          onClick={props.onChangeOrbit}
+          aria-label={`Orbit: ${orbit.short}, ${orbit.name}. Tap to change.`}
+          className="flex min-h-[44px] items-center gap-2.5 rounded-pill border-2 bg-space-card py-1.5 pl-1.5 pr-3.5"
+          style={{ borderColor: col }}
+        >
+          <OrbitIcon color={col} />
+          <span className="flex flex-col text-left leading-tight">
+            <span className="font-display tabular-nums" style={{ color: col }}>
+              {orbit.short} · {orbit.altKm.toLocaleString()} km
+            </span>
+            <span className="text-caption text-ink-2">Orbit · tap to change</span>
+          </span>
         </button>
-        <div className="mt-1">
+        <span>
           <SourceChips ids={orbitSources(orbit)} />
-        </div>
+        </span>
+      </div>
 
-        {TIER_ORDER.map((tier) => {
+      <ol className="mt-3 flex flex-col gap-3">
+        {TIER_ORDER.map((tier, ti) => {
           const nodes = tierOptions(tier, choice)
           const role = C.TIER_ROLE[tier]
           const selectedId = choice[key[tier]]
+          const open = focus?.tier === tier ? focus.node : null
           return (
-            <div key={tier} className="flex w-full flex-col items-center">
-              <div className="h-6 w-px bg-slate-600" />
-              <div className={`w-full rounded-xl border p-3 ${nodes.length ? 'border-slate-700 bg-slate-900' : 'border-dashed border-slate-800 bg-slate-950'}`}>
-                <div className="mb-2 flex items-center gap-2 text-sm">
-                  <span className={`rounded px-2 py-0.5 text-xs font-semibold ${ROLE_COLOR[role]}`}>{C.ROLE_LABEL[role]}</span>
-                  <span className="font-medium">{C.TIER_LABEL[tier]}</span>
-                  {!nodes.length && <span className="text-slate-500">— choose the step above first</span>}
+            <li key={tier} aria-label={`Step ${ti + 1}: ${C.TIER_LABEL[tier]}`} className={`${CARD} flex flex-col gap-3 p-3.5`}>
+              <div className="flex flex-wrap items-baseline justify-between gap-x-2">
+                <h2 className="text-card">
+                  <span className="tabular-nums text-ink-2">{ti + 1} ·</span> {C.TIER_LABEL[tier]}
+                </h2>
+                <RoleTag role={role} label={C.ROLE_LABEL[role]} />
+              </div>
+              {!nodes.length ? (
+                <div aria-disabled className="flex min-h-[44px] items-center rounded-md border-2 border-dashed border-space-border px-3 text-small text-ink-2">
+                  Choose the step above first
                 </div>
+              ) : (
                 <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
                   {nodes.map((n) => {
                     const sel = selectedId === n.id
+                    const ui = NODE_UI[!n.ok ? 'locked' : sel ? 'selected' : 'available']
                     return (
                       <button
+                        type="button"
                         key={n.id}
                         aria-pressed={sel}
-                        aria-label={`${n.name}: ${n.ok ? 'available' : 'locked'}`}
+                        aria-expanded={open?.id === n.id}
+                        aria-label={`${n.name}: ${!n.ok ? 'locked' : sel ? 'selected' : 'available'}`}
                         title={n.tip}
                         onClick={() => {
                           onFocus({ tier, node: n })
                           // Re-tapping the current pick only shows its reasons; it must not wipe the tiers below.
                           if (n.ok && !sel) onPick(tier, n.id)
                         }}
-                        className={`rounded-lg border p-2 text-left text-sm transition focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-400 ${
-                          n.ok
-                            ? sel
-                              ? 'border-emerald-300 bg-emerald-600 text-white'
-                              : 'border-emerald-700 bg-emerald-950 hover:bg-emerald-900'
-                            : 'border-slate-700 bg-slate-800 text-slate-500'
-                        }`}
+                        className={`flex min-h-24 flex-col gap-1 rounded-md border-2 p-3 pb-2.5 text-left transition duration-[var(--duration-fast)] ${ui.cls}`}
                       >
-                        <div className="font-medium">
-                          {n.ok ? (sel ? '✓ ' : '') : '🔒 '}
-                          {n.name}
-                        </div>
-                        <div className="mt-1 text-[11px] opacity-80">
-                          {n.ok ? (
-                            <>
-                              {n.facts.join(' · ')}
-                              <SourceChip id={n.factsSource} link={false} />
-                            </>
-                          ) : (
-                            'Locked — tap for why'
-                          )}
-                        </div>
+                        <span className={`font-display text-[15px] leading-tight ${n.ok ? 'text-ink' : 'text-ink-2'}`}>{n.name}</span>
+                        {n.ok && (
+                          <span className="text-[13px] tabular-nums text-ink-2">
+                            {n.facts.join(' · ')}
+                            <SourceChip id={n.factsSource} link={false} />
+                          </span>
+                        )}
+                        <span className="mt-auto text-caption font-bold" style={{ color: ui.color }}>
+                          {ui.status}
+                        </span>
                       </button>
                     )
                   })}
                 </div>
-                {focus?.tier === tier && (
-                  <div className={`mt-3 rounded-lg p-3 ${focus.node.ok ? 'bg-emerald-950/60' : 'bg-slate-800'}`}>
-                    <div className="text-sm font-semibold">{focus.node.name}</div>
-                    <p className="mt-1 text-sm text-slate-300">{focus.node.tip}</p>
-                    <div className="mb-1 mt-2 text-xs font-semibold uppercase tracking-wide text-slate-400">{focus.node.ok ? 'Why it works' : 'Why it is locked'}</div>
-                    <ReasonList reasons={focus.node.reasons} />
-                  </div>
-                )}
-              </div>
-            </div>
+              )}
+              {open && (
+                <div role="region" aria-label="Explanation" className="flex flex-col gap-2 rounded-md border border-space-border bg-space-raised p-3.5">
+                  <h3 className="text-card">{open.name}</h3>
+                  <p className="text-[15px] text-ink">{open.tip}</p>
+                  <span className={`font-display ${open.ok ? 'text-st-success' : 'text-st-warning'}`}>{open.ok ? '✓ Why it works' : '⚠ Why it is locked'}</span>
+                  <ReasonList reasons={open.reasons} />
+                </div>
+              )}
+            </li>
           )
         })}
-      </div>
+      </ol>
 
-      <div className="mt-6 flex justify-end">
-        <button disabled={!isComplete(choice)} onClick={props.onDone} className="rounded-lg bg-sky-500 px-5 py-2.5 font-semibold text-slate-950 disabled:cursor-not-allowed disabled:opacity-40">
+      <div className="mt-5 flex flex-wrap items-center justify-end gap-3">
+        <p role="status" className="flex-1 text-small font-bold text-ink-2">
+          {isComplete(choice) ? '✓ All 4 steps chosen.' : `${chosen} of 4 steps chosen.`}
+        </p>
+        <button type="button" disabled={!isComplete(choice)} onClick={props.onDone} className={BTN_PRIMARY}>
           Go to Go / No-Go →
         </button>
       </div>
@@ -272,71 +361,110 @@ function Tree(props: {
   )
 }
 
-function GoNoGo(props: {
-  votes: Votes
-  setVotes: (v: Votes) => void
-  choice: Choice
-  onBack: () => void
-  onLaunch: () => void
-}) {
+function GoNoGo(props: { votes: Votes; setVotes: (v: Votes) => void; choice: Choice; onBack: () => void; onLaunch: () => void }) {
   const { votes, setVotes, choice } = props
   const b = budget(choice)
   const cast = Object.values(votes)
   const allVoted = cast.every((v) => v !== null)
   const goCount = cast.filter((v) => v === true).length
-  const anyNo = cast.some((v) => v === false)
+  const noCount = cast.filter((v) => v === false).length
+  const anyNo = noCount > 0
   return (
     <section>
-      <h1 className="text-2xl font-bold">4 · Go / No-Go poll</h1>
-      <p className="mt-1 text-slate-400">Like a real launch, every role is polled. Playing as a team? Each player votes for their role. A unanimous Go earns the full team score.</p>
-      <div className="mt-4 grid gap-3 sm:grid-cols-2">
-        {(Object.keys(votes) as C.Role[]).map((r) => (
-          <div key={r} className="rounded-xl border border-slate-700 bg-slate-900 p-4">
-            <div className="flex items-center justify-between">
-              <span className={`rounded px-2 py-0.5 text-xs font-semibold ${ROLE_COLOR[r]}`}>{C.ROLE_LABEL[r]}</span>
-              <span className="text-sm">{votes[r] === null ? 'waiting…' : votes[r] ? 'GO' : 'NO-GO'}</span>
-            </div>
-            <div className="mt-3 flex gap-2">
-              <button onClick={() => setVotes({ ...votes, [r]: true })} className={`flex-1 rounded-lg py-2 font-semibold ${votes[r] === true ? 'bg-emerald-500 text-slate-950' : 'bg-slate-800'}`}>
-                Go
-              </button>
-              <button onClick={() => setVotes({ ...votes, [r]: false })} className={`flex-1 rounded-lg py-2 font-semibold ${votes[r] === false ? 'bg-red-500 text-slate-950' : 'bg-slate-800'}`}>
-                No-Go
-              </button>
-            </div>
-          </div>
-        ))}
+      <ScreenTitle screen="go" title="4 · Go / No-Go poll">
+        Like a real launch, every role is polled. Playing as a team? Each player votes for their role. A unanimous Go earns the full team score.
+      </ScreenTitle>
+
+      <div className="mt-5 flex items-baseline justify-between gap-2">
+        <h2 className="text-section">Team poll</h2>
+        <span role="status" className="font-display tabular-nums text-ink-2">
+          {goCount} Go · {noCount} No-Go · {TEAM_ROLES - goCount - noCount} waiting
+        </span>
       </div>
-      {b.spentM > b.totalM ? (
-        <p className="mt-4 rounded-lg bg-red-950 p-3 text-sm text-red-200">
-          Over budget by ${Math.round(b.spentM - b.totalM)}M. An over-budget mission cannot succeed.
-          <SourceChip id={BUDGET_SOURCE} />
-        </p>
-      ) : (
-        b.reserveFraction < C.RESERVE_FRACTION && (
-          <p className="mt-4 rounded-lg bg-amber-950 p-3 text-sm text-amber-200">
-            Budget reserve is {Math.round(b.reserveFraction * 100)}%. NASA’s CubeSat 101 guide advises project reserves of at least {Math.round(C.RESERVE_FRACTION * 100)}% of the budget.
-            <SourceChip id="S2" />
-          </p>
-        )
-      )}
-      {anyNo && (
-        <p className="mt-4 rounded-lg bg-red-950 p-3 text-sm text-red-200">
-          A No-Go means someone sees a problem. Go back, discuss and change the design — or launch anyway and keep only {teamPoints(goCount)} of {TEAM_POINTS_MAX} team points.
-          <SourceChip id="GAME" />
-        </p>
-      )}
-      <div className="mt-6 flex justify-between gap-2">
-        <button onClick={props.onBack} className="rounded-lg bg-slate-800 px-4 py-2.5">
+      <div className="mt-2 grid grid-cols-2 gap-2.5 sm:grid-cols-4">
+        {(Object.keys(votes) as C.Role[]).map((r) => {
+          const v = votes[r]
+          const status = v === true ? '✓ GO' : v === false ? '✕ NO-GO' : '… waiting…'
+          return (
+            <section
+              key={r}
+              aria-label={`${C.ROLE_LABEL[r]}: ${v === true ? 'GO' : v === false ? 'NO-GO' : 'waiting'}`}
+              className={`flex min-w-0 flex-col items-center gap-2 rounded-lg border-2 px-2.5 pb-2.5 pt-3.5 ${v === true ? 'border-st-success bg-space-raised' : v === false ? 'border-st-error bg-space-raised' : 'border-space-border bg-space-card'}`}
+            >
+              <span aria-hidden className="grid size-12 place-items-center rounded-pill border-2 border-space-page font-display text-[22px] text-space-page" style={{ background: ROLE_UI[r].color }}>
+                {ROLE_UI[r].icon}
+              </span>
+              <RoleTag role={r} label={C.ROLE_LABEL[r]} />
+              <span key={String(v)} className={`font-display text-[18px] tracking-wide ${v === null ? 'text-ink-2' : 'motion-safe:animate-pop'} ${v === true ? 'text-st-success' : v === false ? 'text-st-error' : ''}`}>
+                {status}
+              </span>
+              <div className="flex w-full gap-1.5">
+                <button
+                  type="button"
+                  aria-pressed={v === true}
+                  aria-label={`${C.ROLE_LABEL[r]} votes Go`}
+                  onClick={() => setVotes({ ...votes, [r]: true })}
+                  className={`min-h-12 flex-1 rounded-md border-2 font-display transition active:scale-[.92] ${v === true ? 'border-st-success bg-st-success text-space-page' : 'border-space-border bg-space-card hover:border-st-available'}`}
+                >
+                  ✓ Go
+                </button>
+                <button
+                  type="button"
+                  aria-pressed={v === false}
+                  aria-label={`${C.ROLE_LABEL[r]} votes No-Go`}
+                  onClick={() => setVotes({ ...votes, [r]: false })}
+                  className={`min-h-12 flex-1 whitespace-nowrap rounded-md border-2 font-display transition active:scale-[.92] ${v === false ? 'border-st-error bg-st-error text-space-page' : 'border-space-border bg-space-card hover:border-st-available'}`}
+                >
+                  ✕ No-Go
+                </button>
+              </div>
+            </section>
+          )
+        })}
+      </div>
+
+      <div className="mt-4 flex flex-col gap-3">
+        {b.spentM > b.totalM ? (
+          <Notice kind="error">
+            Over budget by ${Math.round(b.spentM - b.totalM)}M. An over-budget mission cannot succeed.
+            <SourceChip id={BUDGET_SOURCE} />
+          </Notice>
+        ) : (
+          b.reserveFraction < C.RESERVE_FRACTION && (
+            <Notice kind="warning">
+              Budget reserve is {Math.round(b.reserveFraction * 100)}%. NASA’s CubeSat 101 guide advises project reserves of at least {Math.round(C.RESERVE_FRACTION * 100)}% of the budget.
+              <SourceChip id="S2" />
+            </Notice>
+          )
+        )}
+        {anyNo && (
+          <Notice kind="error">
+            A No-Go means someone sees a problem. Go back, discuss and change the design — or launch anyway and keep only {teamPoints(goCount)} of {TEAM_POINTS_MAX} team points.
+            <SourceChip id="GAME" />
+          </Notice>
+        )}
+      </div>
+
+      {/* With a No-Go on the table, revising becomes the recommended action and launching the outlined, costly one. */}
+      <div className="mt-5 flex flex-wrap justify-end gap-2.5">
+        <button type="button" onClick={props.onBack} className={`flex-1 sm:flex-none ${anyNo ? BTN_PRIMARY : BTN_SECONDARY}`}>
           ← Revise design
         </button>
-        <button
-          disabled={!allVoted}
-          onClick={props.onLaunch}
-          className={`rounded-lg px-5 py-2.5 font-semibold text-slate-950 disabled:opacity-40 ${anyNo ? 'bg-orange-400' : 'bg-sky-500'}`}
-        >
-          {anyNo ? `Launch anyway (${goCount} of ${TEAM_ROLES} Go)` : '🚀 Launch'}
-        </button>
+        {anyNo ? (
+          <button type="button" disabled={!allVoted} onClick={props.onLaunch} className={`flex-1 whitespace-nowrap sm:flex-none ${BTN_WARNING}`}>
+            <span aria-hidden>⚠</span> Launch anyway ({goCount} of {TEAM_ROLES} Go)
+          </button>
+        ) : (
+          <button
+            type="button"
+            disabled={!allVoted}
+            onClick={props.onLaunch}
+            aria-label={allVoted ? 'Launch' : 'Launch, disabled until all four roles have voted'}
+            className={`flex-1 sm:flex-none ${BTN_PRIMARY} ${allVoted ? 'motion-safe:animate-launch-pulse' : ''}`}
+          >
+            🚀 Launch
+          </button>
+        )}
       </div>
     </section>
   )
@@ -344,36 +472,67 @@ function GoNoGo(props: {
 
 function MissionRun({ choice, goVotes, onDone }: { choice: Choice; goVotes: number; onDone: () => void }) {
   const card = useMemo(() => evaluateMission(choice, goVotes), [choice, goVotes])
+  const total = card.timeline.length
   const [step, setStep] = useState(0)
   useEffect(() => {
-    if (step >= card.timeline.length) return
+    if (step >= total) return
     const t = setTimeout(() => setStep((s) => s + 1), 1300)
     return () => clearTimeout(t)
-  }, [step, card.timeline.length])
-  const done = step >= card.timeline.length
+  }, [step, total])
+  const done = step >= total
   return (
     <section>
-      <h1 className="text-2xl font-bold">5 · Mission simulation</h1>
-      <div className="mt-4 h-2 rounded bg-slate-800">
-        <div className="h-2 rounded bg-sky-400 transition-all duration-700" style={{ width: `${(100 * step) / card.timeline.length}%` }} />
+      <ScreenTitle screen="run" title="5 · Mission simulation" />
+      <div className="mt-3 flex justify-between text-small">
+        <span className="text-ink-2">Mission progress</span>
+        <span className="font-display tabular-nums">
+          Step {step} of {total}
+        </span>
       </div>
-      <ol className="mt-5 space-y-3">
-        {card.timeline.slice(0, step).map((e, i) => (
-          <li key={i} className="rounded-lg border border-slate-700 bg-slate-900 p-3">
-            <div className="text-sm font-semibold text-sky-300">{e.label}</div>
-            <div className="text-sm text-slate-200">
-              <Sourced reason={e} />
-            </div>
-          </li>
-        ))}
+      <div
+        role="progressbar"
+        aria-label={`Mission progress: step ${step} of ${total}`}
+        aria-valuenow={step}
+        aria-valuemin={0}
+        aria-valuemax={total}
+        className="mt-1 h-3 overflow-hidden rounded-pill border border-space-border bg-space-card"
+      >
+        <div className="h-full rounded-pill bg-st-warning transition-[width] duration-700 ease-linear" style={{ width: `${(100 * step) / total}%` }} />
+      </div>
+      <ol aria-live="polite" aria-label="Mission timeline" className="mt-4 flex flex-col gap-2.5">
+        {card.timeline.map((e, i) =>
+          i < step ? (
+            <li key={i} className={`flex gap-3 rounded-md border-2 px-3.5 py-3 motion-safe:animate-card-in ${i === step - 1 && !done ? 'border-st-warning bg-space-raised' : 'border-space-border bg-space-card'}`}>
+              <span aria-hidden className={`grid size-8 shrink-0 place-items-center rounded-pill font-display text-space-page ${i === step - 1 && !done ? 'bg-st-warning' : 'bg-st-success'}`}>
+                {i === step - 1 && !done ? i + 1 : '✓'}
+              </span>
+              <div className="min-w-0">
+                <h3 className="font-display">
+                  <span className="sr-only">
+                    Step {i + 1} of {total}:{' '}
+                  </span>
+                  {e.label}
+                </h3>
+                <p className="text-[15px] tabular-nums text-ink-2">
+                  <Sourced reason={e} />
+                </p>
+              </div>
+            </li>
+          ) : (
+            <li key={i} aria-hidden className="flex items-center gap-3 rounded-md border-2 border-dashed border-space-border px-3.5 py-2.5 font-display text-ink-2">
+              <span className="grid size-8 place-items-center rounded-pill border-2 border-space-border">{i + 1}</span>
+              {e.label}
+            </li>
+          ),
+        )}
       </ol>
-      <div className="mt-6 flex justify-end gap-2">
+      <div className="mt-5 flex flex-wrap justify-end gap-2.5">
         {!done && (
-          <button onClick={() => setStep(card.timeline.length)} className="rounded-lg bg-slate-800 px-4 py-2.5">
+          <button type="button" onClick={() => setStep(total)} className={BTN_SECONDARY}>
             Skip
           </button>
         )}
-        <button disabled={!done} onClick={onDone} className="rounded-lg bg-sky-500 px-5 py-2.5 font-semibold text-slate-950 disabled:opacity-40">
+        <button type="button" disabled={!done} onClick={onDone} className={BTN_PRIMARY}>
           See scorecard →
         </button>
       </div>
@@ -383,44 +542,74 @@ function MissionRun({ choice, goVotes, onDone }: { choice: Choice; goVotes: numb
 
 function Score({ choice, goVotes, onReplay, onRevise }: { choice: Choice; goVotes: number; onReplay: () => void; onRevise: () => void }) {
   const card = evaluateMission(choice, goVotes)
+  const b = budget(choice)
+  // The engine only says success or not; the screen explains which of the two rules failed.
+  const failure = card.success ? null : b.spentM > b.totalM ? 'budget' : 'score'
   return (
     <section>
-      <h1 className="text-2xl font-bold">6 · Mission scorecard</h1>
-      <div className="mt-4 flex flex-col items-center gap-4 sm:flex-row sm:items-start">
-        <div className="flex flex-col items-center">
+      <ScreenTitle screen="score" title="6 · Mission scorecard" />
+      <div className={`${CARD} mt-4 flex flex-col items-center gap-4 p-4 sm:flex-row sm:items-start`}>
+        <div className="flex flex-col items-center gap-1">
           <Gauge score={card.score} success={card.success} />
-          <div className={`mt-1 font-semibold ${card.success ? 'text-emerald-400' : 'text-orange-400'}`}>{card.success ? 'Mission success' : 'Mission fell short'}</div>
-          <div className="text-[11px] text-slate-400">
+          <div className={`font-display text-card ${card.success ? 'text-st-success' : 'text-st-error'}`}>{card.success ? '✓ Mission success' : '✕ Mission failed'}</div>
+          <div className="text-caption text-ink-muted">
             Score and breakdown
             <SourceChip id={card.scoreSource} />
           </div>
         </div>
-        <div className="w-full flex-1 space-y-2">
-          {card.breakdown.map((b) => (
-            <Meter key={b.label} label={b.label} value={b.points} max={b.max} unit="" />
+        <div className="flex w-full flex-1 flex-col gap-3">
+          {card.breakdown.map((x) => (
+            <Meter key={x.label} label={x.label} value={x.points} max={x.max} unit="" />
           ))}
         </div>
       </div>
-      <div className="mt-6 space-y-3">
+      {failure && (
+        <div className="mt-3">
+          <Notice kind="error">
+            {failure === 'budget' ? (
+              <>
+                The design costs ${Math.round(b.spentM)}M against a ${Math.round(b.totalM)}M budget. An over-budget mission cannot succeed.
+                <SourceChip id={BUDGET_SOURCE} />
+              </>
+            ) : (
+              <>
+                A mission needs at least {SUCCESS_SCORE_MIN} points to succeed. This one scored {card.score}.
+                <SourceChip id={card.scoreSource} />
+              </>
+            )}
+          </Notice>
+        </div>
+      )}
+      <div className="mt-4 flex flex-col gap-3">
         <Insight title="Primary constraint" reason={card.primaryConstraint} />
         <Insight title="Biggest impact" reason={card.biggestImpact} />
         <Insight title="Lesson learned" reason={card.lesson} />
       </div>
-      <details className="mt-6 rounded-lg bg-slate-900 p-3 text-sm">
-        <summary className="cursor-pointer font-semibold">Sources & assumptions</summary>
-        <ul className="mt-2 space-y-1 text-slate-300">
+      <details className={`${CARD} mt-4 p-3.5 text-small`}>
+        <summary className="min-h-[44px] cursor-pointer content-center font-display text-card">Sources & assumptions</summary>
+        <ul className="mt-2 flex flex-col gap-2 text-ink-2">
           {card.sources.map((id) => (
             <li key={id}>
-              <SourceChip id={id} /> {SOURCES[id].url ? <a className="underline" href={SOURCES[id].url} target="_blank" rel="noreferrer">{SOURCES[id].title}</a> : SOURCES[id].title}
+              <span className="-ml-1">
+                <SourceChip id={id} link={false} />
+              </span>{' '}
+              {SOURCES[id].url ? (
+                <a className="inline-flex min-h-[44px] items-center gap-1 underline underline-offset-2 hover:text-ink" href={SOURCES[id].url} target="_blank" rel="noreferrer">
+                  {SOURCES[id].title} <span aria-hidden>↗</span>
+                </a>
+              ) : (
+                SOURCES[id].title
+              )}
             </li>
           ))}
         </ul>
       </details>
-      <div className="mt-6 flex justify-between">
-        <button onClick={onRevise} className="rounded-lg bg-slate-800 px-4 py-2.5">
+      {/* After a failure the recommended action is to fix the design, not to start over. */}
+      <div className="mt-5 flex flex-wrap justify-end gap-2.5">
+        <button type="button" onClick={onRevise} className={`flex-1 sm:flex-none ${card.success ? BTN_SECONDARY : BTN_PRIMARY}`}>
           ← Try another design
         </button>
-        <button onClick={onReplay} className="rounded-lg bg-sky-500 px-5 py-2.5 font-semibold text-slate-950">
+        <button type="button" onClick={onReplay} className={`flex-1 sm:flex-none ${card.success ? BTN_PRIMARY : BTN_SECONDARY}`}>
           Replay mission
         </button>
       </div>
@@ -433,50 +622,50 @@ function About({ onBack }: { onBack: () => void }) {
   const other = SOURCE_ORDER.filter((id) => !SOURCES[id].url)
   return (
     <section>
-      <h1 className="text-2xl font-bold">About & sources</h1>
-      <p className="mt-2 text-slate-300">{PITCH}</p>
+      <h1 className="text-screen">About & sources</h1>
+      <p className="mt-2 text-body text-ink-2">{PITCH}</p>
 
-      <h2 className="mt-6 text-lg font-semibold">How to read the source tags</h2>
-      <p className="mt-1 text-sm text-slate-400">Every number in the game carries a tag saying where it comes from.</p>
-      <ul className="mt-3 space-y-3">
+      <h2 className="mt-6 text-section">How to read the source tags</h2>
+      <p className="mt-1 text-small text-ink-2">Every number in the game carries a tag saying where it comes from.</p>
+      <ul className="mt-3 flex flex-col gap-3">
         {other.map((id) => (
-          <li key={id} className="rounded-lg border border-slate-700 bg-slate-900 p-3 text-sm">
-            <div className="font-medium">
+          <li key={id} className={`${CARD} p-3.5 text-small`}>
+            <div className="font-bold text-ink">
               <span className="-ml-1">
                 <SourceChip id={id} />
               </span>{' '}
               {SOURCES[id].title}
             </div>
-            <p className="mt-1 text-slate-300">{SOURCES[id].use}</p>
+            <p className="mt-1 text-ink-2">{SOURCES[id].use}</p>
           </li>
         ))}
       </ul>
 
-      <h2 className="mt-6 text-lg font-semibold">NASA data and resources</h2>
-      <ul className="mt-3 space-y-3">
+      <h2 className="mt-6 text-section">NASA data and resources</h2>
+      <ul className="mt-3 flex flex-col gap-3">
         {nasa.map((id) => (
-          <li key={id} className="rounded-lg border border-slate-700 bg-slate-900 p-3 text-sm">
-            <a className="font-medium underline" href={SOURCES[id].url} target="_blank" rel="noreferrer">
-              {SOURCES[id].title}
+          <li key={id} className={`${CARD} p-3.5 text-small`}>
+            <a className="inline-flex min-h-[44px] items-center gap-1 font-bold text-ink underline underline-offset-2" href={SOURCES[id].url} target="_blank" rel="noreferrer">
+              {SOURCES[id].title} <span aria-hidden>↗</span>
             </a>
             <SourceChip id={id} link={false} />
-            <p className="mt-1 text-slate-300">{SOURCES[id].use}</p>
+            <p className="mt-1 text-ink-2">{SOURCES[id].use}</p>
             {SOURCES[id].quote && (
-              <blockquote className="mt-2 border-l-2 border-slate-600 pl-3 text-slate-400">
-                “{SOURCES[id].quote}” <span className="whitespace-nowrap">— {SOURCES[id].cite}</span>
+              <blockquote className="mt-2 border-l-2 border-space-border pl-3 text-ink-2">
+                “{SOURCES[id].quote}” <span className="whitespace-nowrap text-ink-muted">— {SOURCES[id].cite}</span>
               </blockquote>
             )}
           </li>
         ))}
       </ul>
 
-      <h2 className="mt-6 text-lg font-semibold">Use of AI</h2>
-      <p className="mt-1 text-sm text-slate-300">{AI_DISCLOSURE}</p>
+      <h2 className="mt-6 text-section">Use of AI</h2>
+      <p className={`${CARD} mt-2 p-3.5 text-small text-ink-2`}>{AI_DISCLOSURE}</p>
 
-      <p className="mt-6 text-xs text-slate-400">{DISCLAIMER}</p>
+      <p className="mt-6 text-caption text-ink-muted">{DISCLAIMER}</p>
 
       <div className="mt-6">
-        <button onClick={onBack} className="rounded-lg bg-sky-500 px-5 py-2.5 font-semibold text-slate-950">
+        <button type="button" onClick={onBack} className={BTN_PRIMARY}>
           ← Back to mission
         </button>
       </div>
@@ -486,9 +675,9 @@ function About({ onBack }: { onBack: () => void }) {
 
 function Insight({ title, reason }: { title: string; reason: Reason }) {
   return (
-    <div className="rounded-lg border border-slate-700 bg-slate-900 p-3">
-      <div className="text-xs font-semibold uppercase tracking-wide text-slate-400">{title}</div>
-      <div className="mt-1 text-sm">
+    <div className={`${CARD} p-3.5`}>
+      <h3 className="text-caption font-bold uppercase tracking-widest text-ink-muted">{title}</h3>
+      <div className="mt-1 text-[15px] text-ink">
         <Sourced reason={reason} />
       </div>
     </div>

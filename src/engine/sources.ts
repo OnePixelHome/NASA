@@ -72,7 +72,9 @@ export const PITCH =
 
 /** AI-use disclosure required by the Space Apps rules (HANDOFF §9). Keep in sync with the project page. */
 export const AI_DISCLOSURE =
-  'Code scaffolding, the physics engine and documentation were drafted with Claude (Anthropic) and reviewed, tested and adapted by the team. ' +
+  'Code scaffolding, the physics engine and documentation were drafted with Claude (Anthropic). ' +
+  'The visual design and illustrations were drafted with Claude Design (Anthropic). ' +
+  'All of it was reviewed, tested and adapted by the team. ' +
   'Physics formulas are covered by automated tests; illustrative values are labelled in the game.'
 
 export const DISCLAIMER =

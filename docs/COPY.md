@@ -81,7 +81,7 @@ One sentence shown as "Lesson learned" on the scorecard, for the instrument the 
 | Constant | Text |
 | --- | --- |
 | `PITCH` | Design a space mission and watch every choice ripple down — the game calculates the orbit and resources your mission needs to succeed. |
-| `AI_DISCLOSURE` | Code scaffolding, the physics engine and documentation were drafted with Claude (Anthropic) and reviewed, tested and adapted by the team. Physics formulas are covered by automated tests; illustrative values are labelled in the game. |
+| `AI_DISCLOSURE` | Code scaffolding, the physics engine and documentation were drafted with Claude (Anthropic). The visual design and illustrations were drafted with Claude Design (Anthropic). All of it was reviewed, tested and adapted by the team. Physics formulas are covered by automated tests; illustrative values are labelled in the game. |
 | `DISCLAIMER` | Trajectory Ladder is a hackathon project by team One Pixel Home for the NASA Space Apps Challenge 2026. It is not affiliated with or endorsed by NASA. |
 
 `AI_DISCLOSURE` must match the project page. The tests check that it names Claude (Anthropic) and says the team reviewed the work.
@@ -109,7 +109,7 @@ These strings sit in the screen code. Edit only the words; leave tags, braces an
 | --- | --- |
 | Header (`App`) | Trajectory Ladder |
 | Header (`App`) | Design a space mission. Watch every choice ripple down. |
-| Header (`App`) | About & sources / ← Back to mission |
+| Header (`App`) | About / ← Back / Resources |
 | 1 (`Brief`) | 1 · Pick your mission |
 | 1 (`Brief`) | Every mission starts with a science goal. It decides what “success” means. |
 | 2 (`OrbitPick`) | 2 · Choose a trajectory |
@@ -117,22 +117,26 @@ These strings sit in the screen code. Edit only the words; leave tags, braces an
 | 2 (`OrbitPick`) | Bar labels: Fuel cost / Coverage / Lifetime |
 | 2 (`OrbitPick`) | Fixed view of one hemisphere |
 | 3 (`Tree`) | 3 · Build the mission tree |
-| 3 (`Tree`) | Green options work with everything above them. Tap a locked one to see why. |
-| 3 (`Tree`) | — choose the step above first |
+| 3 (`Tree`) | Each choice can lock the ones below it. Tap a locked option to see why. |
+| 3 (`Tree`) | ○ Available / ◉ Selected / Orbit · tap to change / … of 4 steps chosen. |
+| 3 (`Tree`) | Choose the step above first |
 | 3 (`Tree`) | Locked — tap for why |
 | 3 (`Tree`) | Why it works / Why it is locked |
 | 3 (`Tree`) | Go to Go / No-Go → |
 | 4 (`GoNoGo`) | 4 · Go / No-Go poll |
 | 4 (`GoNoGo`) | Like a real launch, every role is polled. Playing as a team? Each player votes for their role. A unanimous Go earns the full team score. |
-| 4 (`GoNoGo`) | waiting… / GO / NO-GO |
+| 4 (`GoNoGo`) | … waiting… / ✓ GO / ✕ NO-GO / ✓ Go / ✕ No-Go |
 | 4 (`GoNoGo`) | Over budget by $…M. An over-budget mission cannot succeed. |
 | 4 (`GoNoGo`) | Budget reserve is …%. NASA’s CubeSat 101 guide advises project reserves of at least 10% of the budget. |
 | 4 (`GoNoGo`) | A No-Go means someone sees a problem. Go back, discuss and change the design — or launch anyway and keep only … of 15 team points. |
-| 4 (`GoNoGo`) | ← Revise design / 🚀 Launch / Launch anyway (… of 4 Go) |
+| 4 (`GoNoGo`) | Team poll / … Go · … No-Go · … waiting |
+| 4 (`GoNoGo`) | ← Revise design / 🚀 Launch / ⚠ Launch anyway (… of 4 Go) |
 | 5 (`MissionRun`) | 5 · Mission simulation |
 | 5 (`MissionRun`) | Skip / See scorecard → |
 | 6 (`Score`) | 6 · Mission scorecard |
-| 6 (`Score`) | Mission success / Mission fell short |
+| 6 (`Score`) | ✓ Mission success / ✕ Mission failed |
+| 6 (`Score`) | The design costs $…M against a $…M budget. An over-budget mission cannot succeed. |
+| 6 (`Score`) | A mission needs at least 50 points to succeed. This one scored …. |
 | 6 (`Score`) | Score and breakdown |
 | 6 (`Score`) | Primary constraint / Biggest impact / Lesson learned |
 | 6 (`Score`) | Sources & assumptions |
@@ -141,6 +145,8 @@ These strings sit in the screen code. Edit only the words; leave tags, braces an
 | About (`About`) | How to read the source tags |
 | About (`About`) | Every number in the game carries a tag saying where it comes from. |
 | About (`About`) | NASA data and resources / Use of AI |
+
+Resource panel words, in `src/ui/components.tsx`: ok / low reserve / over limit / waiting.
 
 ## 8. Generated sentences — `src/engine/game.ts` (ask Edgar before changing)
 

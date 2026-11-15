@@ -1,5 +1,17 @@
 # BACKUP - NASA
 
+## 2026-11-14 (PC de Edgar) — Paso 0 del diseño y las dos piezas que faltaban (`feat/design-base`)
+
+- Este branch incluye el commit de Thais de `docs/design-handoff` (exportación de Claude Design y guía de entrega), que no tenía PR.
+- Paso 0 de la guía: los tokens de `handoff/theme.css` están en `src/index.css` (`@theme` de Tailwind v4) y todas las pantallas usan ya la paleta, la tipografía, los botones y los estados del diseño. Las firmas de `src/ui/components.tsx` no cambian; `ROLE_UI` vive en `src/ui/theme.ts`.
+- Fuentes Fredoka y Atkinson Hyperlegible instaladas como paquetes (`@fontsource`, licencia OFL-1.1) en vez de cargarlas de Google: funcionan sin red y en `pnpm build:single`.
+- Diseño que faltaba, resuelto en código: (1) panel de recursos con cuatro estados escritos con icono y texto (ok, low reserve, over limit, y "pick a…" mientras falta el límite), rejilla 2×2 en celular que se pliega a una línea con el botón "Resources", fila de cuatro desde 640 px; (2) estado "Launch anyway": con algún No-Go, "← Revise design" pasa a ser el botón principal y "⚠ Launch anyway (n of 4 Go)" queda con borde ámbar, sin relleno.
+- "Mission fell short" pasó a "✕ Mission failed", con un aviso que dice cuál regla falló (presupuesto o puntaje). El umbral de 50 puntos se exporta del motor como `SUCCESS_SCORE_MIN`; la lógica no cambia.
+- `AI_DISCLOSURE` menciona ahora el diseño hecho con Claude Design; se actualizaron la página del proyecto, `docs/COPY.md` y `docs/HANDOFF.md` §9 para que coincidan. Fuentes y Claude Design añadidos a la tabla de herramientas de `docs/PROJECT_PAGE.md`.
+- `oxlint` ignora `docs/design/` (es código de referencia).
+- Verificado: 34 tests, build, lint y recorrido completo en Edge a 390 y 1280 px sin desbordes ni errores, objetivos táctiles de 44 px.
+- Pendiente (pasos 1 a 6 de la guía): nave y personajes en la escalera, ilustraciones de misión, escenas de la simulación, banner del scorecard, "How to play" y equipo en About, diseño de dos columnas en escritorio.
+
 ## 2026-11-14 (Mac de Thais) — Guía de entrega del diseño (`docs/design-handoff`)
 
 - Se añadió `docs/design/IMPLEMENTATION-GUIDE.md` para José y Edgar, a partir de revisar `main` (PR #1 a #9): orden de implementación por impacto en el video, tabla de diferencias entre el diseño y el código, mapeo de la nave a los ids del catálogo, qué no implementar y huecos del código base.
