@@ -7,6 +7,7 @@
 - GitHub Pages sigue desplegando con Actions, pero la URL nueva es **https://onepixelhome.github.io/NASA/**. Responde 200; la vieja `belleavm.github.io/NASA` da 404.
 - Se cambiaron todos los enlaces viejos: workflow, `AGENTS.md`, `README.md`, `docs/PITCH.md`, `docs/PROJECT_PAGE.md`, `docs/SUBMISSION.md` (repo público ✅), `docs/SUBMISSION-PLAN.md`, `docs/HANDOFF.md` y **`server/leaderboard.ts` y `server/README.md`**. El CORS del leaderboard solo aceptaba `belleavm.github.io` y habría rechazado el simulador en su URL nueva; si la API ya está desplegada, hay que volver a desplegarla.
 - El remote de esta Mac apunta ahora a `https://github.com/OnePixelHome/NASA.git`. Los demás tienen que correr `git remote set-url origin https://github.com/OnePixelHome/NASA.git`.
+- Pitch: se agregó al final del video el cierre "— on any phone, for free.", que pidió Belle. Para no pasar de 30 s se quitaron 5 palabras en otras partes ("team", "space", "and", "an", "a"), así que el guion sigue en unas 72 palabras (~28 s). También se ajustaron los subtítulos (9 bloques) y la frase del pitch.
 - Verificado: 70 tests (con `--testTimeout=60000`, porque en esta Mac dos pruebas exhaustivas tardan más de los 5 s por defecto), lint y build.
 
 ## 2026-11-15 (PC de José) — Leaderboard en línea (código listo, falta desplegar la función)

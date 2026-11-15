@@ -25,7 +25,7 @@ Every piece of the pitch answers three questions, in this order:
 
 **Pitch line**
 
-> **STATUS: GO — Mission Simulator.** *Learn to manage a mission's budget, mass, power and data — every choice decides the launch.*
+> **STATUS: GO — Mission Simulator.** *Learn to manage a mission's budget, mass, power and data — on any phone, for free.*
 
 ## 2. 30-second video script
 
@@ -34,11 +34,11 @@ Read it aloud with a stopwatch before recording. The challenge name is shown on 
 
 | Time | Voice (HeyGen avatar) | On screen | Label |
 |---|---|---|---|
-| 0:00–0:03 | "Hi, I'm Belle, from team One Pixel Home in Lima, Peru." | Avatar + team name + 4 names + card "Challenge: Space Mission Design Game" | AI-generated (avatar) |
-| 0:03–0:08 | "Every space mission has a fixed budget, mass, power and data. Overspend one, and it fails." | The four resource meters filling up; one turns red | — |
+| 0:00–0:03 | "Hi, I'm Belle, from One Pixel Home in Lima, Peru." | Avatar + team name + 4 names + card "Challenge: Space Mission Design Game" | AI-generated (avatar) |
+| 0:03–0:08 | "Every mission has a fixed budget, mass, power and data. Overspend one, it fails." | The four resource meters filling up; one turns red | — |
 | 0:08–0:12 | "Status: GO is a mission simulator for high-school and university students." | Landing page `● STATUS: GO` → Start mission | — |
-| 0:12–0:22 | "Pick an orbit, an instrument and a rocket, and watch budget, mass, power and data run out." | Screen recording: Polar Ice → GEO locks the radar → SSO → hybrid power → medium rocket; the four meters move live | Film art: AI-generated (already labelled in the simulator) |
-| 0:22–0:30 | "Built on NASA data — Landsat 9, CubeSat 101, the Earth Fact Sheet. Learn to manage a real mission." | Scorecard **86/100** → the Earth from the film (credit: NASA Earth Observatory) → play URL | — |
+| 0:12–0:22 | "Pick an orbit, instrument and rocket, and watch budget, mass, power and data run out." | Screen recording: Polar Ice → GEO locks the radar → SSO → hybrid power → medium rocket; the four meters move live | Film art: AI-generated (already labelled in the simulator) |
+| 0:22–0:30 | "Built on NASA data — Landsat 9, CubeSat 101, the Earth Fact Sheet. Learn to manage a real mission — on any phone, for free." | Scorecard **86/100** → the Earth from the film (credit: NASA Earth Observatory) → play URL | — |
 
 **Recording notes**
 - Record the simulator from the **public URL** (https://onepixelhome.github.io/NASA/), not a local build.
@@ -53,17 +53,17 @@ Read it aloud with a stopwatch before recording. The challenge name is shown on 
 ```srt
 1
 00:00:00,000 --> 00:00:03,000
-Hi, I'm Belle, from team
+Hi, I'm Belle, from
 One Pixel Home in Lima, Peru.
 
 2
 00:00:03,000 --> 00:00:05,500
-Every space mission has a fixed
+Every mission has a fixed
 budget, mass, power and data.
 
 3
 00:00:05,500 --> 00:00:08,000
-Overspend one, and it fails.
+Overspend one, it fails.
 
 4
 00:00:08,000 --> 00:00:12,000
@@ -71,23 +71,27 @@ Status: GO is a mission simulator
 for high-school and university students.
 
 5
-00:00:12,000 --> 00:00:17,000
-Pick an orbit, an instrument
-and a rocket,
+00:00:12,000 --> 00:00:16,500
+Pick an orbit,
+instrument and rocket,
 
 6
-00:00:17,000 --> 00:00:22,000
+00:00:16,500 --> 00:00:21,500
 and watch budget, mass,
 power and data run out.
 
 7
-00:00:22,000 --> 00:00:26,500
+00:00:21,500 --> 00:00:25,000
 Built on NASA data — Landsat 9,
 CubeSat 101, the Earth Fact Sheet.
 
 8
-00:00:26,500 --> 00:00:29,500
-Learn to manage a real mission.
+00:00:25,000 --> 00:00:27,500
+Learn to manage a real mission —
+
+9
+00:00:27,500 --> 00:00:29,500
+on any phone, for free.
 ```
 
 ## 3. Slide deck (7 slides, including title)
