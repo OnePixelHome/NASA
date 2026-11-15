@@ -1,5 +1,11 @@
 # BACKUP - NASA
 
+## 2026-11-15 (Mac de Belle) — "GO" más grueso en la página de inicio
+
+- Pedido de Belle: el "GO" de "Status: GO" en el título de la página de inicio pasó de peso 400 a 600 (`font-semibold`, en `src/App.tsx`). Fredoka 600 ya venía incluida, así que no se carga ninguna fuente nueva. El resto del título no cambia.
+- Verificado: 73 tests, lint y build. La comparación antes/después se capturó a tamaño celular.
+- Si cambia la página de inicio, hay que volver a tomar las capturas `01` y `03` para el video.
+
 ## 2026-11-15 (PC temporal de Edgar) — S9 deja de ser "lectura de fondo": ahora se cita en el downlink
 
 - S9 (NASA Small Spacecraft Technology State-of-the-Art, Communications) figuraba como fuente usada en About, README y varias listas, pero ningún número ni motivo del juego la citaba, y `docs/PROJECT_PAGE.md` la dejaba fuera con un TODO. Edgar decidió usarla con una cita.
