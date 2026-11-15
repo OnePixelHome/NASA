@@ -185,7 +185,7 @@ export const TEAM: { name: string; title: string; role: 'science' | 'space' | 'g
   { name: 'Thais Rodríguez', title: 'Product designer', role: 'ground' },
   { name: 'Belle Vásquez Machado', title: 'MarTech specialist', role: 'launch' },
 ]
-export const FOOTER_NOTES = ['MIT License', 'No accounts, no cookies, no analytics.', 'Saving a score sends only the name you type and your mission design to our leaderboard (a Neon database).']
+export const FOOTER_NOTES = ['MIT License', 'No accounts, no cookies, no analytics.', 'Saving a score sends only the name you type and your mission design to our leaderboard (an Azure database).']
 
 export interface Reason {
   text: string

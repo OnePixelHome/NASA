@@ -1,9 +1,10 @@
-// Client for the online leaderboard (server/leaderboard.ts). The game never depends on it: every call has a timeout
+// Client for the online leaderboard (server/handler.ts). The game never depends on it: every call has a timeout
 // and returns null on any failure, and the UI simply says the leaderboard is unavailable.
 import type { Choice } from '../engine/game'
 
 /** Kill switch: an empty URL hides every leaderboard button and form. */
-export const LEADERBOARD_URL = 'https://br-nameless-bread-bc9remdp-leaderboard.compute.c-16.us-east-1.aws.neon.tech/'
+// The API is a managed function of the same Azure Static Web App (server/azure), so it lives on the game's own address.
+export const LEADERBOARD_URL = '/api/leaderboard'
 export const leaderboardEnabled = Boolean(LEADERBOARD_URL)
 
 const TIMEOUT_MS = 6000
