@@ -6,7 +6,8 @@
 - `docs/PROJECT_PAGE.md`, sección "Use of artificial intelligence": nueva tabla herramienta / quién / para qué (Claude, Claude Design, ChatGPT, HeyGen) y la frase de que el presentador y la voz del video son generados con HeyGen y llevan la etiqueta "AI-generated". Claude, ChatGPT y HeyGen entran también a la tabla de herramientas.
 - El primer párrafo no cambió: sigue idéntico a `AI_DISCLOSURE` de About, que describe solo el juego.
 - Para qué se usó cada una sale de `docs/SUBMISSION-PLAN.md` §4 (ChatGPT: textos; HeyGen: avatar y voz del video), no de una confirmación directa de Belle y Thais.
-- Pendiente (Belle, Thais): confirmar esas dos líneas; decir si se usó Gemini Flow (el plan y `docs/PITCH.md` lo nombran, Edgar no lo mencionó) y agregarlo si corresponde; sigue abierto el TODO de herramientas de diseño y video, y de música con su licencia.
+- Gemini Flow no se usó (lo confirmó Edgar): se quitó del crédito de la diapositiva en `docs/PITCH.md` y se marcó como no usado en `docs/SUBMISSION-PLAN.md` §4 y en `docs/PROJECT_PAGE.md`.
+- Pendiente (Belle, Thais): confirmar esas dos líneas; sigue abierto el TODO de herramientas de diseño y video, y de música con su licencia.
 
 ## 2026-11-15 (PC de José) — Migración del leaderboard a Azure: código listo, falta crear la base de datos
 

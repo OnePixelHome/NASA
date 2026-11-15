@@ -160,8 +160,8 @@ The presenter and the voice in the demo video are AI-generated with HeyGen and a
 Everything produced with these tools was reviewed, tested and adapted by the team.
 
 **Keep in sync:** the first paragraph must stay identical to the game's About screen (`AI_DISCLOSURE` in
-`src/engine/sources.ts`). **TODO (Belle, Thais):** confirm the two "Used for" lines for ChatGPT and HeyGen, and add any
-other AI tool used for the video or slides (the plan in `docs/SUBMISSION-PLAN.md` §4 also names Gemini Flow).
+`src/engine/sources.ts`). **TODO (Belle, Thais):** confirm the two "Used for" lines for ChatGPT and HeyGen.
+Gemini Flow, named in the early plan, was not used (confirmed by Edgar, Sun 15 Nov).
 
 ## Notice
 
