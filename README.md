@@ -44,8 +44,8 @@ pnpm build:single  # one self-contained HTML file for quick previews
   designs per mission.
 
 ## Online leaderboard
-Saving a score sends only the name the player types and the mission design. The server (a Neon Function next to a
-Neon Postgres database, `server/leaderboard.ts`) **recalculates every score with the game engine**, so a forged
+Saving a score sends only the name the player types and the mission design. The server (an Azure Static Web Apps function next to
+an Azure Database for PostgreSQL, `server/handler.ts`) **recalculates every score with the game engine**, so a forged
 request cannot post a fake result. Names are checked (2–24 characters, short English/Spanish blocklist) and saves are
 rate-limited. If the leaderboard is unreachable, the game keeps working. Deploy and kill switch: `server/README.md`.
 

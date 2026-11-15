@@ -1,5 +1,17 @@
 # BACKUP - NASA
 
+## 2026-11-15 (Mac de Belle) — Leaderboard en Azure: base PostgreSQL creada y juego apuntando a `/api/leaderboard` (`feat/azure-leaderboard-db`)
+
+- Belle pidió terminar la migración como la planeó José. Se evaluaron opciones más baratas (seguir con Neon, que es gratis; Azure SQL gratis; Cosmos DB gratis) y se decidió hacerlo así para el hackatón y revisarlo después.
+- La suscripción "Azure subscription 1" (`belle@vasquezmachado.com`) es **Free Trial**: la oferta de cuenta gratis incluye 12 meses de PostgreSQL Flexible B1ms con 32 GB, así que la base no debería costar nada mientras dure. Al terminar la prueba hay que pasar a pago por uso para conservarla; después de los 12 meses cuesta unos US$13–15 al mes.
+- Azure CLI 2.92.0 instalada en esta Mac (Homebrew); sesión iniciada por Belle con código de dispositivo.
+- Creado `statusgo-db` (Azure Database for PostgreSQL Flexible Server, grupo `Nasa`, centralus, Burstable B1ms, 32 GB, PostgreSQL 16, sin alta disponibilidad, respaldos 7 días, etiqueta `project=status-go`) con la base `leaderboard`. Firewall: solo la regla de servicios de Azure (0.0.0.0). Usuario `sgadmin`; la contraseña se generó en esta Mac y está solo en `~/lab_secrets/nasa/azure-postgres.env`.
+- `DATABASE_URL` (con `sslmode=require`) configurado en la Static Web App `Nasa` como app setting.
+- Esta red bloquea el puerto 5432 hacia afuera, así que la tabla no se pudo crear desde la Mac. En su lugar, `server/schema.ts` tiene el `CREATE TABLE IF NOT EXISTS scores` (columnas sacadas de `server/handler.ts`, con los CHECK que describe la entrada del leaderboard) y `server/azure/index.ts` lo ejecuta en la primera llamada; si falla, responde 503 y lo reintenta en la siguiente.
+- Juego: `LEADERBOARD_URL = '/api/leaderboard'` (misma dirección, sin CORS; también funciona con `statusgo.earth`). Aviso de privacidad: "(an Azure database)" en `FOOTER_NOTES` y `docs/COPY.md`. Actualizados `server/README.md`, `CLAUDE.md`, `README.md` y la tabla de herramientas de `docs/PROJECT_PAGE.md`. La función de Neon queda como respaldo: volver a poner su URL en `LEADERBOARD_URL` deshace el cambio.
+- Los 4 puntajes de Neon ("Team Space", "Team Solo", "Nice Guy", "Belle") **no se copiaron**: la lectura pública no trae el diseño completo y no hay acceso a Neon desde aquí. Siguen en Neon; José puede copiarlos si se quieren conservar.
+- Verificado antes del merge: 73 tests, build, lint y el paquete de la API (incluye la tabla). 
+- Pendiente: después del hackatón, decidir si se queda en Azure PostgreSQL (revisar el costo al terminar la prueba gratis) o se vuelve a Neon; borrar el proyecto de Neon si ya no se usa.
 ## 2026-11-15 (Mac de Belle) — Marca de agua "SI content" en lugar de "AI-generated"
 
 - Pedido de Belle: las guías de Space Apps llaman "Super Intelligence (SI)" a la IA y solo piden una marca de agua visible. La etiqueta de las ilustraciones (`AiGeneratedLabel` en `src/ui/components.tsx`) dice ahora **"SI content"** y es más discreta: texto de 10 px, sin borde ni estrella, fondo semitransparente. Aplica a todas las pantallas que la usan: arte de misión, panel de la nave, escenas, película y About.

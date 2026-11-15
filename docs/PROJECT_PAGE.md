@@ -130,7 +130,7 @@ No third-party or commercial data is used.
 | HeyGen | AI presenter and synthetic voice in the demo video | Hosted service |
 | GitHub | Source code hosting; GitHub Actions builds and tests every push | Hosted service |
 | Azure Static Web Apps (Microsoft) | Hosting of the public demo | Hosted service |
-| Neon (Postgres + Neon Functions) | Online leaderboard: stores the player or crew name and the design; the server recalculates every score with the game engine | Hosted service |
+| Azure Database for PostgreSQL + Azure Functions (Microsoft) | Online leaderboard: stores the player or crew name and the design; the server recalculates every score with the game engine | Hosted service |
 | pg (node-postgres) | Database driver bundled into the leaderboard function | MIT |
 
 Our own code is released under the MIT License.

@@ -188,7 +188,7 @@ About screen text added with the design, in `src/engine/sources.ts` (**Belle: pl
 | `AI_IMAGES_NOTE` | Images marked “SI content” were drafted with Super Intelligence (SI) tools and then checked and adapted by the team. |
 | `DISCLAIMER` | Status: GO is an independent project made by team One Pixel Home for the NASA Space Apps Challenge 2026. It is not affiliated with or endorsed by NASA. NASA does not endorse any non-U.S. Government entity. |
 | `TEAM` | Edgar Cardona, Software architect · José Gómez, Full-stack developer · Thais Rodríguez, Product designer · Belle Vásquez Machado, MarTech specialist |
-| `FOOTER_NOTES` | MIT License · No accounts, no cookies, no analytics. · Saving a score sends only the name you type and your mission design to our leaderboard (a Neon database). |
+| `FOOTER_NOTES` | MIT License · No accounts, no cookies, no analytics. · Saving a score sends only the name you type and your mission design to our leaderboard (an Azure database). |
 
 About headings, in `src/App.tsx`: What is Status: GO? / How to play / Where the numbers come from / NASA and partner agency data and resources / Use of AI / Not affiliated with NASA / Team · One Pixel Home.
 
