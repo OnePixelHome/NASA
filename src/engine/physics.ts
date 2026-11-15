@@ -73,3 +73,6 @@ export function stationHalfAngleDeg(altKm: number, minElevDeg = 10): number {
 /** Average usable pass length (s): max pass × 0.7 [GAME factor for non-overhead passes]. */
 export const avgPassSec = (altKm: number, minElevDeg = 10) =>
   ((periodSec(altKm) * stationHalfAngleDeg(altKm, minElevDeg)) / 180) * 0.7
+
+/** Half-angle, at the Earth's centre, of the cap of ground the satellite can see down to its horizon. */
+export const horizonHalfAngleDeg = (altKm: number) => deg(Math.acos(RE_KM / semiMajorKm(altKm)))

@@ -255,7 +255,7 @@ describe('resource panel (budget, mass, power, data)', () => {
     expect(m.mass.text).toBe('390 / 1,207 kg')
     expect(m.power.used).toBe(170)
     expect(m.power.limit).toBeGreaterThan(300)
-    expect(m.data.text).toBe('200 / 485 Gbit/day')
+    expect(m.data.text).toBe('200 / 498 Gbit/day') // 4 passes, 27.7 min over the station on the reference day
     expect(Object.values(m).some((x) => x.over)).toBe(false)
   })
   it('never contradicts the locks: every viable path keeps mass, power and data within limits', () => {

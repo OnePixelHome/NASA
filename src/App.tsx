@@ -1,8 +1,10 @@
 import { useEffect, useMemo, useState, type ReactNode } from 'react'
 import * as C from './engine/catalog'
 import { budget, BUDGET_SOURCE, choose, evaluateMission, isComplete, missionRequirements, orbitSources, orbitStats, resources, SUCCESS_SCORE_MIN, TEAM_POINTS_MAX, TEAM_ROLES, teamPoints, TIER_ORDER, tierOptions, type Choice, type NodeState } from './engine/game'
+import { missionDay } from './engine/missionDay'
 import { AI_DISCLOSURE, AI_IMAGES_NOTE, DISCLAIMER, FOOTER_NOTES, HOW_TO_PLAY, PITCH, ROLES_NOTE, SOURCE_ORDER, SOURCES, TEAM, type Reason } from './engine/sources'
 import { RoleCharacter } from './ui/Crew'
+import { DayView } from './ui/DayView'
 import { MissionArt, OrbitDiagram } from './ui/MissionArt'
 import { MissionScene } from './ui/MissionScene'
 import { ShipSvg } from './ui/Ship'
@@ -590,6 +592,7 @@ function GoNoGo(props: { votes: Votes; setVotes: (v: Votes) => void; choice: Cho
 
 function MissionRun({ choice, goVotes, onDone }: { choice: Choice; goVotes: number; onDone: () => void }) {
   const card = useMemo(() => evaluateMission(choice, goVotes), [choice, goVotes])
+  const day = useMemo(() => missionDay(choice), [choice])
   const orbit = C.byId(C.ORBITS, choice.orbitId)!
   const total = card.timeline.length
   const [step, setStep] = useState(0)
@@ -650,6 +653,12 @@ function MissionRun({ choice, goVotes, onDone }: { choice: Choice; goVotes: numb
         )}
       </ol>
       </div>
+      {/* The time-lapse starts once the spacecraft has reached its orbit (step 2). */}
+      {day && (
+        <div className="mt-4">
+          <DayView day={day} color={ORBIT_COLOR[orbit.id]} active={step >= 2} />
+        </div>
+      )}
       <div className="mt-5 flex flex-wrap justify-end gap-2.5">
         {!done && (
           <button type="button" onClick={() => setStep(total)} className={BTN_SECONDARY}>
