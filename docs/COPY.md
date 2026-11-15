@@ -96,7 +96,7 @@ Source descriptions, field `use` in `SOURCES` (also reusable for the "NASA Data"
 | S2 | NASA CSLI — CubeSat 101 (budget reserve, ground stations, deployable solar panels) | The budget rule: keep at least 10% in reserve. The budget meter turns amber and the budget score drops when a design eats into it. It also backs two lock reasons: a downlink too small for the data, and fixed body panels that cannot power the spacecraft. |
 | S3 | NASA — Design and Develop Science Missions (Launch, Space, Ground, User segments) | The four mission segments, used as the four team roles: Science, Spacecraft, Ground and Launch. |
 | S6 | NASA — Landsat 9 mission (705 km, 98.2°, 185 km swath, 16-day revisit, 10 years of consumables) | The Sun-synchronous orbit card and the Multispectral Imager (30 m pixels, 185 km swath). The model reproduces its ~99-minute orbit and ~16-day revisit. Its 10 years of consumables set the 10-year mission in this orbit. |
-| S9 | NASA Small Spacecraft Technology State-of-the-Art — Communications | Background reading on spacecraft radio links. No game value is taken from it yet. |
+| S9 | NASA Small Spacecraft Technology State-of-the-Art — Communications (high data rates call for X-band and a high-gain antenna) | Why the Data downlink tier offers fast radio links to ground stations: a mission with a lot of data picks a high-frequency link. Shown when a downlink can carry the data. The data rates themselves stay illustrative values. |
 | S10 | NASA — International Space Station FAQ (51.6° inclination) | The 51.6° inclination of the Low Earth Orbit card, which is why it never flies over the poles. |
 | S13 | NASA JPL — GRACE-FO Launch Press Kit (490 km orbit, five-year prime mission) | The 5-year mission in Low Earth Orbit: a real NASA mission at almost the same altitude (490 km) was planned for five years. |
 | S14 (tag "NOAA S14") | NOAA and NASA — GOES-R Series spacecraft (15 years of on-orbit life in geostationary orbit) | The 15-year mission in Geostationary Orbit, the on-orbit life required of the GOES-R weather satellites. |
@@ -208,4 +208,5 @@ Two fixed sentences quote CubeSat 101 [S2] (added 2026-11-15; the quoted part mu
 
 - Locked downlink: NASA's CubeSat 101 warns: "Launching with an inadequate ground station is a mission killer."
 - Imaging Radar out of range (added 2026-11-15, cites NISAR [S17] and Sentinel-1 [ESA S18]; for Belle's review): Real imaging radars fly much lower: NISAR at 747 km and Sentinel-1 at 693 km.
+- Downlink that can carry the data (added 2026-11-15, quotes the Communications chapter [S9]; the quoted part must stay word for word): NASA's small spacecraft guide: "a mission with high data rate needs would select a high frequency such as X-band for downlink and a directional high-gain antenna".
 - Standard Power locked for lack of power: These panels are fixed to the body. NASA's CubeSat 101 describes deployable solar panels that "will nearly double the power input to the spacecraft".

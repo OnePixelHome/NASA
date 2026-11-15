@@ -28,7 +28,7 @@ pnpm build
 - S2 NASA CubeSat 101 (p. 13: project reserves of at least 10%; p. 22: ground stations; p. iv: deployable solar panels) — https://www.nasa.gov/wp-content/uploads/2017/03/nasa_csli_cubesat_101_508.pdf
 - S3 NASA Design and Develop Science Missions — https://www.nasa.gov/wp-content/uploads/2025/04/250323-design-and-develop-science-mission.pdf
 - S6 NASA Landsat 9 (orbit, imager and "Consumables: 10 years" for the 10-year SSO mission) — https://science.nasa.gov/mission/landsat-9
-- S9 NASA SST State-of-the-Art: Communications — https://www.nasa.gov/smallsat-institute/sst-soa/communications
+- S9 NASA SST State-of-the-Art: Communications (section 9.2.4: a mission with high data rate needs picks X-band and a high-gain antenna; shown when a downlink can carry the data) — https://www.nasa.gov/smallsat-institute/sst-soa/communications
 - S10 NASA ISS FAQ — https://www.nasa.gov/?p=532244
 - S12 NASA Earth Observatory, Blue Marble: Next Generation (the Earth image in the mission film; credit NASA Earth Observatory) — https://science.nasa.gov/earth/earth-observatory/blue-marble-next-generation/
 - S13 NASA JPL GRACE-FO Launch Press Kit (490 km, "Prime mission: Five years": the 5-year LEO mission) — https://www.jpl.nasa.gov/news/press_kits/grace-fo/download/grace-fo_launch_press_kit.pdf

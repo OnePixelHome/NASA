@@ -1,5 +1,15 @@
 # BACKUP - NASA
 
+## 2026-11-15 (PC temporal de Edgar) — S9 deja de ser "lectura de fondo": ahora se cita en el downlink
+
+- S9 (NASA Small Spacecraft Technology State-of-the-Art, Communications) figuraba como fuente usada en About, README y varias listas, pero ningún número ni motivo del juego la citaba, y `docs/PROJECT_PAGE.md` la dejaba fuera con un TODO. Edgar decidió usarla con una cita.
+- Se leyó el capítulo (edición 2025). Cita textual, sección 9.2.4 "Design Considerations": "a mission with high data rate needs would select a high frequency such as X-band for downlink and a directional high-gain antenna". Segunda cita, sección 9.2.1: "NASA spacecraft, which use the government bands of S-band, X-band, and Ka-band, may use the NASA Near Space Network (NSN)." Ambas en `SOURCES.S9` (`quote` y `more`).
+- Todo downlink que sí alcanza para los datos muestra ahora esa frase con la etiqueta NASA S9 (`downlinkNode` en `src/engine/game.ts`); los bloqueados siguen citando CubeSat 101 [S2]. La línea de capacidad en Gbit/día conserva sus etiquetas: las tasas de 300 y 150 Mbps siguen siendo ilustrativas.
+- Por qué no se usó S9 para las tasas: el capítulo solo reporta radios de CubeSat (por ejemplo 320 Mbps en banda Ka) con datos de los fabricantes y advierte que el desempeño "has not been independently verified by NASA subject matter experts".
+- Documentación: `README.md`, `docs/PROJECT_PAGE.md` (S9 entra a la tabla y se cierra el TODO), `docs/COPY.md` §6 y §8, `docs/REQUIREMENTS.md`.
+- Verificado: 73 tests tras integrar main, build y lint; el motivo nuevo revisado en el navegador a 375 px en el árbol de la misión.
+- Pendiente: revisión de Belle de la frase nueva (`docs/COPY.md` §8). Si se quiere una fuente para las tasas mismas, haría falta una misión real (por ejemplo el enlace en banda X de Landsat 9); no se verificó.
+
 ## 2026-11-15 (PC de José) — Número de jugadores antes de empezar y Go/No-Go por jugador
 
 - Pedido de José: con un jugador el lanzamiento debe necesitar un solo Go (y así con 2, 3 y 4), y el número de jugadores se elige antes de empezar.

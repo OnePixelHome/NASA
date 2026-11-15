@@ -85,6 +85,7 @@ and no player data is collected.
 | [NASA CSLI, CubeSat 101](https://www.nasa.gov/wp-content/uploads/2017/03/nasa_csli_cubesat_101_508.pdf) | The budget rule. Page 13: "When possible, project reserves of at least 10% should be part of the budget to address any unexpected events." The game warns and removes points when a design eats into that reserve. Two lock reasons also quote it: page 22, "Launching with an inadequate ground station is a mission killer" (shown when the downlink cannot carry the day's data), and page iv, deployable solar panels "will nearly double the power input to the spacecraft" (shown when fixed body panels cannot power the design). |
 | [NASA, Design and Develop Science Missions](https://www.nasa.gov/wp-content/uploads/2025/04/250323-design-and-develop-science-mission.pdf) | The four mission segments (Launch, Space, Ground, User), used as the four team roles. |
 | [NASA Earth Observatory, Blue Marble: Next Generation](https://science.nasa.gov/earth/earth-observatory/blue-marble-next-generation/) | The image of the Earth in the mission film (August 2004, with topography and bathymetry), and the spacecraft's first picture. Credit: NASA Earth Observatory. |
+| [NASA Small Spacecraft Technology State-of-the-Art, Communications](https://www.nasa.gov/smallsat-institute/sst-soa/communications) | Why the Data downlink tier offers fast radio links. Section 9.2.4: "a mission with high data rate needs would select a high frequency such as X-band for downlink and a directional high-gain antenna". Shown when a downlink can carry the day's data. |
 | [NASA Landsat 9 mission page](https://science.nasa.gov/mission/landsat-9) (again) | The 10-year mission in Sun-synchronous orbit: "Consumables: 10 years". |
 | [NASA JPL, GRACE-FO Launch Press Kit](https://www.jpl.nasa.gov/news/press_kits/grace-fo/download/grace-fo_launch_press_kit.pdf) | The 5-year mission in Low Earth Orbit. Page 9: "Prime mission: Five years", at an orbit altitude of "Approximately 305 miles (490 kilometers)". |
 | [NASA Glenn and JPL, Performance and Comparison of Lithium-Ion Batteries Under Low-Earth-Orbit Mission Profiles (NASA/TM-2007-214826)](https://ntrs.nasa.gov/citations/20080008855) | How deeply a battery may be drained on each lap in a low orbit. NASA tested 40% as "the outer envelope of possible DODs for Li-ion batteries for LEO applications"; the game allows 30%. |
@@ -96,9 +97,9 @@ Resources from the challenge page that shaped the design but supply no game valu
 GSFC Mission Design Lab (the brief → trade → point design → review flow), and the Webb "Build It Yourself" game
 (connecting a science goal to an instrument and showing the result).
 
-**TODO (Edgar):** the code also lists NASA's Small Spacecraft Technology State-of-the-Art, Communications chapter, as
-background reading. No game value comes from it today. Either use it for the downlink rates after the mentor review, or
-leave it out of this table.
+NASA's Small Spacecraft Technology State-of-the-Art, Communications chapter, is in the table above for the idea behind the
+downlink tier only. Its data rates are reported by manufacturers and, as the chapter says, not independently verified by
+NASA, so the game's downlink rates stay tagged "illustrative".
 
 ## Space agency partner and other data
 
