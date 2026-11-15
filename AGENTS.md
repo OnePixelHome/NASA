@@ -1,6 +1,6 @@
 # NASA
 
-Repositorio del equipo One Pixel Home (`OnePixelHome/NASA`, antes `belleavm/NASA`), en `C:\Lab\Belle\NASA` (Windows). Ramas por persona/tema con PR a `main`. El proyecto explorará un juego educativo interactivo de diseño y simulación de misiones espaciales basado en el desafío Space Apps 2026. El stack y el alcance concreto todavía no están definidos.
+Repositorio público del equipo One Pixel Home (`OnePixelHome/NASA`, antes `belleavm/NASA`), en `C:\Lab\Belle\NASA` (Windows). Ramas por persona/tema con PR a `main`. El proyecto explorará un juego educativo interactivo de diseño y simulación de misiones espaciales basado en el desafío Space Apps 2026. El stack y el alcance concreto todavía no están definidos.
 
 ## Al empezar
 

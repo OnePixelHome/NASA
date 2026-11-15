@@ -44,10 +44,10 @@ The page is what judges mainly score: "the majority of judges' evaluation will b
 ## 3. Public links (R5) — decided
 
 - **Final Project** = the game published on the **GoDaddy server provided by Space Apps**. José deploys it (this replaces the Vercel plan in HANDOFF).
-- **Repo `belleavm/NASA` goes public** so judges can read the code and the physics tests (this helps Validity).
+- **Repo `OnePixelHome/NASA` is public** (moved from `belleavm/NASA` to the One Pixel Home org on Sun 2026-11-15) so judges can read the code and the physics tests (this helps Validity).
   - [x] History scanned for secrets: none found.
   - [ ] Heads-up: once public, the commit author emails are visible (Belle's and Edgar's). Fine if you're both OK with it; otherwise tell me before flipping.
-  - [ ] Command (Belle, owner): `gh repo edit belleavm/NASA --visibility public --accept-visibility-change-consequences`
+  - [x] Public. Simulator: https://onepixelhome.github.io/NASA/
 - [ ] Open every link (site, repo, video, deck) in a **private/incognito window** and on a phone.
 - [ ] Optional but recommended: request a **FortiGuard Web Filter Classification** for the GoDaddy URL so judges' networks don't block it (category "Education", Company Name "N/A"). Do it as soon as the URL exists.
 

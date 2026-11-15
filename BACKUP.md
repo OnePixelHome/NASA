@@ -16,6 +16,13 @@
 - No se buscó fuente para: la pregunta 3 (pasadas por día, ya resuelta por geometría), las tasas de descarga de datos (S9 sigue como lectura de fondo) ni los costos y masas, que siguen como ilustrativos.
 - Pendiente: revisión de Belle de la frase nueva del radar y de los dos textos de About (`docs/COPY.md` §7 y §8); poner S14 y S18 en el campo "Space agency partner" de la página del proyecto; revisar en un celular las etiquetas nuevas dentro del árbol y del scorecard (en esta sesión solo se revisó About).
 
+## 2026-11-15 (PC de José) — `main` integrado en la rama `belle` para destrabar el PR #20
+
+- El PR #20 de Belle chocaba con `main` en `AGENTS.md`, `BACKUP.md`, `docs/PITCH.md`, `docs/PROJECT_PAGE.md` y `docs/SUBMISSION.md`, porque los dos movimos los enlaces a `onepixelhome.github.io` a la vez. Se hizo merge de `main` en `belle` (sin force-push): en los conflictos se dejó la versión de Belle (repo público, enlaces confirmados, pitch centrado en los recursos, "Fly it") y en este archivo se conservaron todas las entradas.
+- El merge conserva lo de `main` que la rama no tenía: leaderboard activado (`LEADERBOARD_URL`), aviso de privacidad en `FOOTER_NOTES`, skills de Neon y CORS para `https://onepixelhome.github.io`.
+- `docs/SUBMISSION.md`: marcados como hechos el README con enlace al demo, la fuente de Pages en GitHub Actions, el sitio público, la prueba en celular (hecha por José), la prueba en un segundo navegador y la URL en README, About y página del proyecto.
+- Verificado: 70 tests, build y lint.
+
 ## 2026-11-15 (PC de José) — Leaderboard en línea activado
 
 - José inició sesión en Neon y corrió `bash server/deploy.sh`: la función `leaderboard` está publicada en `https://br-nameless-bread-bc9remdp-leaderboard.compute.c-16.us-east-1.aws.neon.tech/` (deployment 2). También borró el proyecto vacío de São Paulo.
@@ -40,6 +47,16 @@
 - Mantenimiento: `neon skills status` al empezar una sesión y `neon skills update -y` si hay versiones nuevas.
 - Pendiente: José inicia sesión con `neon login` (no lo puede hacer el agente) y corre `bash server/deploy.sh` para publicar el leaderboard.
 
+## 2026-11-15 (Mac de Belle) — Repo movido a la organización One Pixel Home
+
+- Belle creó la organización `OnePixelHome` y el repo se transfirió de `belleavm/NASA` a **`OnePixelHome/NASA`** (`gh api repos/belleavm/NASA/transfer`). Es público, y el historial, las ramas y los PR se mantienen.
+- Permisos: `josel120`, `thaisrodriguez` y `edgarcondo87` son Admin. A `edgarcardona872` se le envió una invitación como Admin, que todavía tiene que aceptar. Se pasaron a Admin porque en un repo personal GitHub solo permite Write.
+- GitHub Pages sigue desplegando con Actions, pero la URL nueva es **https://onepixelhome.github.io/NASA/**. Responde 200; la vieja `belleavm.github.io/NASA` da 404.
+- Se cambiaron todos los enlaces viejos: workflow, `AGENTS.md`, `README.md`, `docs/PITCH.md`, `docs/PROJECT_PAGE.md`, `docs/SUBMISSION.md` (repo público ✅), `docs/SUBMISSION-PLAN.md`, `docs/HANDOFF.md` y **`server/leaderboard.ts` y `server/README.md`**. El CORS del leaderboard solo aceptaba `belleavm.github.io` y habría rechazado el simulador en su URL nueva; si la API ya está desplegada, hay que volver a desplegarla.
+- El remote de esta Mac apunta ahora a `https://github.com/OnePixelHome/NASA.git`. Los demás tienen que correr `git remote set-url origin https://github.com/OnePixelHome/NASA.git`.
+- Pitch: se agregó al final del video el cierre "— on any phone, for free.", que pidió Belle. Para no pasar de 30 s se quitaron 5 palabras en otras partes ("team", "space", "and", "an", "a"), así que el guion sigue en unas 72 palabras (~28 s). También se ajustaron los subtítulos (9 bloques) y la frase del pitch.
+- Verificado: 70 tests (con `--testTimeout=60000`, porque en esta Mac dos pruebas exhaustivas tardan más de los 5 s por defecto), lint y build.
+
 ## 2026-11-15 (PC de José) — Leaderboard en línea (código listo, falta desplegar la función)
 
 - Pedido de José: tabla de puntajes compartida entre jugadores, pidiendo el nombre antes de guardar. Se eligió "en línea, compartida" (no solo en el dispositivo).
@@ -58,8 +75,9 @@
 - `AGENTS.md`: la regla "solo `main`" se cambió a ramas + PR.
 - `docs/PITCH.md` (en inglés): frase del pitch, guion del video de 30 s con la estructura oficial (unas 70 palabras, con avatar de HeyGen y su etiqueta), subtítulos `.srt`, contenido de las 7 diapositivas con notas del orador y la tabla de los números usados. Los números del recorrido de demostración (Polar Ice) se leyeron del motor en `eef686d` corriéndolo con Node: radar en GEO a 511 m por píxel, batería de 568 Wh, cohete pequeño con capacidad de 241 kg frente a una nave de 390 kg, y resultado de 86/100 gastando $210M de $250M.
 - **Nombre nuevo: STATUS: GO — Mission Simulator.** Lo decidió Belle después de buscar si el nombre estaba ocupado: GO / NO-GO tiene varias apps y además es un test de psicología, Orbit Logic es una empresa de software satelital y Launch Chain ya existe en TapTap. "Status: GO" no aparece como juego ni como app; solo hay un componente técnico llamado `status-go`, de una app cripto. Además, al producto se le dice **simulador**, no juego. `docs/PITCH.md` ya está actualizado y su sección 5 lista lo que falta renombrar en el código, el diseño, la página del proyecto y la descripción del repo.
-- Página de inicio, a pedido de Belle. En `src/ui/HomeHero.tsx`, la mitad lejana de la órbita y el satélite se ven al 20 % de opacidad cuando pasan detrás del planeta, para que se entienda que la órbita lo rodea. Se dibuja la órbita dos veces con máscaras SVG: una de frente y otra detrás del disco, con las animaciones sincronizadas. El botón "Start mission" pasó a verde `#7FE28E` con la nueva constante `BTN_GO` en `src/ui/components.tsx`, que usa el token `role-science`. La geometría de la máscara se revisó en Chrome con una réplica estática. **No se corrieron** `pnpm test` ni `pnpm build`, porque no hay `node_modules`.
-- Pendiente: `docs/SUBMISSION-PLAN.md` se solapa con `docs/SUBMISSION.md` y `docs/PROJECT_PAGE.md` de `main`, que todavía hablan de Vercel. Conviene fusionarlos en uno solo. `pnpm test` no se corrió en esta Mac porque el entorno de Claude no llega al registry de npm.
+- Página de inicio, a pedido de Belle. En `src/ui/HomeHero.tsx`, la mitad lejana de la órbita y el satélite se ven al 20 % de opacidad cuando pasan detrás del planeta, para que se entienda que la órbita lo rodea. Se dibuja la órbita dos veces con máscaras SVG: una de frente y otra detrás del disco, con las animaciones sincronizadas. El botón "Start mission" pasó a verde `#7FE28E` con la nueva constante `BTN_GO` en `src/ui/components.tsx`, que usa el token `role-science`. Se verificó: se instaló con `pnpm install --registry=https://registry.yarnpkg.com/` (el mismo truco que José, porque registry.npmjs.org no responde), pasan los 67 tests, el build y lint, y en Chrome con `pnpm dev` el arco de atrás aparece atenuado sobre el planeta y el botón se ve verde.
+- **Nuevo pitch** (`docs/PITCH.md`), a pedido de Belle: ahora se centra en el problema (administrar el presupuesto, la masa, la energía y los datos de una misión para que tenga éxito), en el usuario (estudiantes de secundaria y primeros años de universidad, solos o en grupos de hasta 4) y en los recursos de NASA (Landsat 9, Earth Fact Sheet, CubeSat 101, ISS, Design and Develop Science Missions y Blue Marble). Se reescribieron el guion de 72 palabras, los subtítulos y las 7 diapositivas: la 2 es el problema, la 3 el usuario, la 5 la misión Polar Ice vista por recursos y la 6 los recursos de NASA. Los números se revisaron otra vez con el motor en `a005892`.
+- Pendiente: `docs/SUBMISSION-PLAN.md` se solapa con `docs/SUBMISSION.md` y `docs/PROJECT_PAGE.md` de `main`, que todavía hablan de Vercel. Conviene fusionarlos en uno solo. En esta Mac, instalar con `--registry=https://registry.yarnpkg.com/`.
 
 ## 2026-11-15 (Mac de Belle) — Se desconecta Azure Static Web Apps (`chore/remove-azure`)
 
