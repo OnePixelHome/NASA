@@ -117,12 +117,25 @@ Stack: Vite + React 19 + TS, Tailwind v4, Vitest, pnpm. `pnpm build:single` make
 3. **About / Sources screen** with the AI-use disclosure text from §9 and all sources.
 4. **Difficulty** (cheap): "Easy" shows why-reasons for green nodes too; "Hard" hides numbers until the scorecard. Optional.
 5. Stretch only if A+B are done by Sun 12:00: elliptical (Molniya-like) orbit card; localStorage leaderboard (wrap in try/catch).
-6. After mentor answers (§7), update catalog values, change their tag in comments to `MENTOR`, re-run the balance test.
+6. Done (Sun): the mentor values now cite published sources S13–S19 (§7). No catalog value changed; the balance test still passes.
 
 **Rules:** keep `src/engine` free of React; never show a number without a source; don't weaken tests to make them pass —
 re-balance the catalog instead; conventional commits; one concern per PR; run `pnpm test` before every push.
 
-## 7. Values still to confirm with a mentor (Edgar asks Sat afternoon)
+## 7. Values that waited for a mentor — answered from published sources (Sun 15 Nov)
+The mentor's answer: this is a prototype, so the values do not need to be that exact, and the mentors do not have them
+either. Take them from NASA or from other national or international agencies, and list those sources in the submission.
+Each value below now cites an official page or document, quoted word for word in `src/engine/sources.ts` (S13–S19):
+- **1. Lifetime.** LEO 5 yr: GRACE-FO, 490 km, "Prime mission: Five years" [S13]. SSO 10 yr: Landsat 9, "Consumables:
+  10 years" (its design life is 5 years) [S6]. GEO 15 yr: GOES-R, "Spacecraft on-orbit life of 15 years" [S14, NOAA–NASA].
+- **2. Depth of discharge.** LEO 30%: NASA Glenn and JPL tested 40% as "the outer envelope of possible DODs for Li-ion
+  batteries for LEO applications" [S15]. GEO 70%: the GOES-R life test ran its "Maximum eclipses at 75% DOD" [S16].
+- **3. Passes per day.** Computed from geometry (below). The station longitude stays illustrative.
+- **4. Radar and SSO launch.** Real imaging radars fly near the radar's 700 km reference: NISAR 747 km [S17], Sentinel-1
+  693 km [S18, ESA]. The 1,000 km limit stays illustrative. SSO penalty 0.4 km/s: Earth turns at 1,675 km/h at the
+  equator [S19]; times cos 28.5° that is 0.41 km/s.
+
+No catalog value changed, so the balance is the same. The original questions:
 1. Mission lifetime by orbit: LEO 500 km ≈ 5 yr, SSO 705 km ≈ 10 yr, GEO ≈ 15 yr (station-keeping fuel). Reasonable?
 2. Battery max depth of discharge: LEO ~30% vs GEO ~70% (cycle count). Reasonable?
 3. Ground passes per day at 500–700 km, 10° min elevation: mid-latitude station ≈ 4, polar station network ≈ 10 for SSO?
@@ -155,4 +168,6 @@ orbit and resources your mission needs to succeed."
 **AI disclosure (project page and About screen; updated Sat night to cover the visual design):** "Code scaffolding, the physics engine and documentation were drafted with Claude (Anthropic). The visual design and illustrations were drafted with Claude Design (Anthropic). All of it was reviewed, tested and adapted by the team. Physics formulas are covered by automated tests; illustrative values are labelled in the game."
 
 **Sources:** S1 NASA Earth Fact Sheet · S2 NASA CubeSat 101 · S3 NASA Design and Develop Science Missions · S6 NASA Landsat 9 ·
-S9 NASA SST State-of-the-Art Communications · S10 NASA ISS FAQ (URLs in `src/engine/sources.ts` and README).
+S9 NASA SST State-of-the-Art Communications · S10 NASA ISS FAQ · S12 NASA Blue Marble · S13 NASA JPL GRACE-FO press kit ·
+S14 NOAA–NASA GOES-R spacecraft · S15 NASA Glenn/JPL Li-ion LEO battery tests · S16 GOES-R battery life test (NASA Battery Workshop) ·
+S17 NASA–ISRO NISAR · S18 ESA Sentinel-1 · S19 NASA Space Place (URLs in `src/engine/sources.ts` and README).

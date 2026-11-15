@@ -19,7 +19,8 @@ Vite + React 19 + TypeScript, Tailwind v4, Vitest. pnpm. Deploy: GitHub Pages (`
 
 ## Rules
 - UI, code and docs in English.
-- Every number shown carries a source: NASA (S1–S10), PHYS (standard physics) or GAME (illustrative).
+- Every number shown carries a source: NASA or a partner agency (S1–S19; NOAA and ESA set `agency`), PHYS (standard physics) or GAME (illustrative).
+- A new source needs an official agency URL and a quote checked word for word against the page or PDF (`cite` + `quote` in `sources.ts`).
 - Every lock/unlock is a `Reason { text, source }` — never a bare string.
 - No NASA logos/insignia. AI-generated images need a visible "AI-generated" watermark.
 - Keep the engine free of UI code; UI only calls `orbitStats`, `tierOptions`, `choose`, `budget`, `evaluateMission`.

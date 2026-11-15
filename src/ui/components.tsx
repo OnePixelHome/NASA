@@ -59,7 +59,7 @@ export function Bar({ label, value, max = 5, color }: { label: string; value: nu
   )
 }
 
-const chipLabel = (id: SourceId) => (id === 'GAME' ? 'illustrative' : id === 'PHYS' ? 'physics' : `NASA ${id}`)
+const chipLabel = (id: SourceId) => (id === 'GAME' ? 'illustrative' : id === 'PHYS' ? 'physics' : `${SOURCES[id].agency ?? 'NASA'} ${id}`)
 
 /**
  * Source tag for a number. Links to the NASA resource when there is one.

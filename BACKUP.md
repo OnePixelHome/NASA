@@ -1,5 +1,21 @@
 # BACKUP - NASA
 
+## 2026-11-15 (PC temporal de Edgar) — Los valores de los mentores salen de fuentes publicadas (S13–S19)
+
+- Respuesta del mentor: es un prototipo, no hace falta tanta precisión y ellos tampoco tienen esos datos. Hay que tomarlos de NASA o de otras agencias nacionales o internacionales, e indicar esas fuentes en la entrega; deben ser oficiales y verificables.
+- Siete fuentes nuevas en `src/engine/sources.ts`, cada una con su cita textual comprobada hoy contra la página o el PDF publicado:
+  - Vida de la misión: LEO 5 años ← GRACE-FO, 490 km, "Prime mission: Five years" [S13, kit de prensa de JPL, p. 9 del PDF]; SSO 10 años ← Landsat 9, "Consumables: 10 years" [S6; su vida de diseño es 5 años y se muestra también]; GEO 15 años ← GOES-R, "Spacecraft on-orbit life of 15 years" [S14, goes-r.gov, NOAA–NASA].
+  - Profundidad de descarga de la batería: LEO 30% ← NASA Glenn y JPL probaron 40% como "the outer envelope of possible DODs for Li-ion batteries for LEO applications" [S15, NASA/TM-2007-214826, p. 11 del PDF]; GEO 70% ← prueba de vida de la batería de GOES-R, "Maximum eclipses at 75% DOD" [S16, NASA Aerospace Battery Workshop 2018, lámina 16].
+  - Radar: los radares reales vuelan cerca de los 700 km de referencia: NISAR 747 km [S17, NASA–ISRO] y Sentinel-1 693 km [S18, ESA]. El límite de 1,000 km sigue siendo ilustrativo.
+  - Penalidad de lanzamiento a SSO (0.4 km/s): la Tierra gira a 1,675 km/h en el ecuador [S19, NASA Space Place]; por cos 28.5° da 0.41 km/s. Nuevo `EQUATOR_SPEED_KMS` y un test que comprueba la cuenta.
+- Ningún valor del catálogo cambió: los candados, el puntaje y la prueba de balance quedan igual. Cambian las etiquetas de fuente: la tarjeta de órbita y "End of mission" citan la fuente de la vida (`Orbit.lifetimeSource`), los motivos de batería citan S15 o S16, el cohete hacia SSO cita S19, y el radar fuera de alcance agrega la frase "Real imaging radars fly much lower: NISAR at 747 km and Sentinel-1 at 693 km."
+- Fuentes de otras agencias: nuevo campo `Source.agency` ('NOAA' | 'ESA'); la etiqueta dice "NOAA S14" o "ESA S18" en vez de "NASA Sx". En About, el título pasa a "NASA and partner agency data and resources" y la explicación a "An official resource from NASA or a partner space agency (NOAA, ESA)."
+- Documentación: `docs/HANDOFF.md` §7 (respuestas), `README.md`, `docs/PROJECT_PAGE.md` (tabla de NASA y campo "Space agency partner and other data", que ya no dice "None"), `docs/COPY.md` §6–§8, `docs/SUBMISSION.md`, `docs/REQUIREMENTS.md`, `docs/SUBMISSION-PLAN.md`, `docs/BELLE-TASKS.md` y `CLAUDE.md`.
+- Corrección en About: las referencias de las citas ya no llevan `whitespace-nowrap`; a 375 px la de ChargerSat-1 (S2) se salía 34 px de la pantalla, y la nueva de Landsat 9 también.
+- Verificado: 71 tests tras integrar el leaderboard de José (1 nuevo de esta sesión), build y lint; About revisado en el navegador a 375 px, sin desbordes ni errores de consola. Esta red tampoco llega a registry.npmjs.org; se instaló con `--registry=https://registry.yarnpkg.com/`.
+- No se buscó fuente para: la pregunta 3 (pasadas por día, ya resuelta por geometría), las tasas de descarga de datos (S9 sigue como lectura de fondo) ni los costos y masas, que siguen como ilustrativos.
+- Pendiente: revisión de Belle de la frase nueva del radar y de los dos textos de About (`docs/COPY.md` §7 y §8); poner S14 y S18 en el campo "Space agency partner" de la página del proyecto; revisar en un celular las etiquetas nuevas dentro del árbol y del scorecard (en esta sesión solo se revisó About).
+
 ## 2026-11-15 (PC de José) — `main` integrado en la rama `belle` para destrabar el PR #20
 
 - El PR #20 de Belle chocaba con `main` en `AGENTS.md`, `BACKUP.md`, `docs/PITCH.md`, `docs/PROJECT_PAGE.md` y `docs/SUBMISSION.md`, porque los dos movimos los enlaces a `onepixelhome.github.io` a la vez. Se hizo merge de `main` en `belle` (sin force-push): en los conflictos se dejó la versión de Belle (repo público, enlaces confirmados, pitch centrado en los recursos, "Fly it") y en este archivo se conservaron todas las entradas.

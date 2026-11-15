@@ -921,7 +921,7 @@ function About({ onBack }: { onBack: () => void }) {
                 <span className="-ml-1">
                   <SourceChip id="S1" link={false} />
                 </span>{' '}
-                <span className="font-bold text-ink">An official NASA resource.</span> <span className="text-ink-2">Tap a tag with an arrow to open it.</span>
+                <span className="font-bold text-ink">An official resource from NASA or a partner space agency (NOAA, ESA).</span> <span className="text-ink-2">Tap a tag with an arrow to open it.</span>
               </li>
               {other.map((id) => (
                 <li key={id}>
@@ -938,7 +938,7 @@ function About({ onBack }: { onBack: () => void }) {
         <div className="flex min-w-0 flex-col gap-4">
           <section aria-labelledby="h-sources" className={box}>
             <h2 id="h-sources" className="text-section">
-              NASA data and resources
+              NASA and partner agency data and resources
             </h2>
             <ul className="flex flex-col">
               {nasa.map((id) => (
@@ -950,12 +950,12 @@ function About({ onBack }: { onBack: () => void }) {
                   <p className="text-ink-2">{SOURCES[id].use}</p>
                   {SOURCES[id].quote && (
                     <blockquote className="mt-2 border-l-2 border-space-border pl-3 text-ink-2">
-                      “{SOURCES[id].quote}” <span className="whitespace-nowrap text-ink-muted">— {SOURCES[id].cite}</span>
+                      “{SOURCES[id].quote}” <span className="text-ink-muted">— {SOURCES[id].cite}</span>
                     </blockquote>
                   )}
                   {SOURCES[id].more?.map((m) => (
                     <blockquote key={m.cite} className="mt-2 border-l-2 border-space-border pl-3 text-ink-2">
-                      “{m.quote}” <span className="whitespace-nowrap text-ink-muted">— {m.cite}</span>
+                      “{m.quote}” <span className="text-ink-muted">— {m.cite}</span>
                     </blockquote>
                   ))}
                 </li>

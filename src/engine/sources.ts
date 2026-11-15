@@ -1,11 +1,13 @@
 // Every number shown to players carries one of these source ids.
-// NASA-* = official NASA resource · PHYS = standard physics · GAME = simplified game value (shown as "illustrative").
-export type SourceId = 'S1' | 'S2' | 'S3' | 'S6' | 'S9' | 'S10' | 'S12' | 'PHYS' | 'GAME'
+// S* = official resource from NASA or a partner space agency · PHYS = standard physics · GAME = simplified game value (shown as "illustrative").
+export type SourceId = 'S1' | 'S2' | 'S3' | 'S6' | 'S9' | 'S10' | 'S12' | 'S13' | 'S14' | 'S15' | 'S16' | 'S17' | 'S18' | 'S19' | 'PHYS' | 'GAME'
 
 export interface Source {
   id: SourceId
   title: string
   url?: string
+  /** The agency that publishes the resource, shown on its tag. NASA when omitted. */
+  agency?: 'NOAA' | 'ESA'
   /** How the game uses this source, shown on the About screen. */
   use: string
   /** Where in the document the cited statement is, when it has been checked. */
@@ -45,9 +47,13 @@ export const SOURCES: Record<SourceId, Source> = {
   },
   S6: {
     id: 'S6',
-    title: 'NASA — Landsat 9 mission (705 km, 98.2°, 185 km swath, 16-day revisit)',
+    title: 'NASA — Landsat 9 mission (705 km, 98.2°, 185 km swath, 16-day revisit, 10 years of consumables)',
     url: 'https://science.nasa.gov/mission/landsat-9',
-    use: 'The Sun-synchronous orbit card and the Multispectral Imager (30 m pixels, 185 km swath). The model reproduces its ~99-minute orbit and ~16-day revisit.',
+    use: 'The Sun-synchronous orbit card and the Multispectral Imager (30 m pixels, 185 km swath). The model reproduces its ~99-minute orbit and ~16-day revisit. Its 10 years of consumables set the 10-year mission in this orbit.',
+    // Verified against the page text on 2026-11-15 (quick facts list).
+    cite: 'Mission page, quick facts',
+    quote: 'Consumables: 10 years',
+    more: [{ cite: 'Mission page, quick facts (the design life is shorter)', quote: 'Design Life: 5 years' }],
   },
   S9: {
     id: 'S9',
@@ -66,6 +72,68 @@ export const SOURCES: Record<SourceId, Source> = {
     title: 'NASA Earth Observatory — Blue Marble: Next Generation (August 2004, with topography and bathymetry)',
     url: 'https://science.nasa.gov/earth/earth-observatory/blue-marble-next-generation/',
     use: 'The picture of the Earth in the mission film and the first image the spacecraft takes. Credit: NASA Earth Observatory.',
+  },
+  // S13–S19 answer the values that were waiting for a mentor (docs/HANDOFF.md §7). Every quote was checked
+  // word for word against the published page or PDF on 2026-11-15.
+  S13: {
+    id: 'S13',
+    title: 'NASA JPL — GRACE-FO Launch Press Kit (490 km orbit, five-year prime mission)',
+    url: 'https://www.jpl.nasa.gov/news/press_kits/grace-fo/download/grace-fo_launch_press_kit.pdf',
+    use: 'The 5-year mission in Low Earth Orbit: a real NASA mission at almost the same altitude (490 km) was planned for five years.',
+    cite: 'Quick Facts, Mission (page 9 of the PDF)',
+    quote: 'Prime mission: Five years',
+    more: [{ cite: 'Quick Facts, Mission (page 9 of the PDF)', quote: 'Orbit altitude: Approximately 305 miles (490 kilometers)' }],
+  },
+  S14: {
+    id: 'S14',
+    agency: 'NOAA',
+    title: 'NOAA and NASA — GOES-R Series spacecraft (15 years of on-orbit life in geostationary orbit)',
+    url: 'https://www.goes-r.gov/spacesegment/spacecraft.html',
+    use: 'The 15-year mission in Geostationary Orbit, the on-orbit life required of the GOES-R weather satellites.',
+    cite: 'Satellite Driving Requirements',
+    quote: 'Spacecraft on-orbit life of 15 years with orbit east-west and north-south position maintained to within +/-0.1 degree',
+  },
+  S15: {
+    id: 'S15',
+    title: 'NASA Glenn and JPL — Performance and Comparison of Lithium-Ion Batteries Under Low-Earth-Orbit Mission Profiles (NASA/TM-2007-214826)',
+    url: 'https://ntrs.nasa.gov/citations/20080008855',
+    use: 'How deeply the battery may be drained on every lap in low orbits. The game allows 30%, inside the range NASA tested for low Earth orbit, where 40% is the outer limit.',
+    cite: 'Page 11 of the PDF',
+    quote: 'A 40 percent depth-of-discharge (DOD) was chosen for this testing in order to test the outer envelope of possible DODs for Li-ion batteries for LEO applications.',
+  },
+  S16: {
+    id: 'S16',
+    title: 'NASA Aerospace Battery Workshop 2018 — GOES-R Lithium-Ion Battery Life Test (Lockheed Martin, NASA Goddard, Saft)',
+    url: 'https://www.nasa.gov/wp-content/uploads/2024/01/goes-r-lithium-ion-battery-life-test-workhorse-battery-performance.pdf',
+    use: 'How deeply the battery may be drained in geostationary orbit. The game allows 70%, below the 75% of the longest eclipses in the GOES-R life test. Eclipses there come once a day in two seasons a year, so the battery cycles far less than in a low orbit.',
+    cite: 'Conclusions (slide 16)',
+    quote: 'Maximum eclipses at 75% DOD',
+    more: [{ cite: 'Life Test Description (slide 9)', quote: 'Eclipse season is 44 days; Eclipse discharge once per day' }],
+  },
+  S17: {
+    id: 'S17',
+    title: 'NASA and ISRO — NISAR mission quick facts (imaging radar at 747 km)',
+    url: 'https://science.nasa.gov/mission/nisar/mission-overview/',
+    use: 'Where real imaging radars fly. It supports the 700 km reference altitude of the Imaging Radar; the 1,000 km limit itself stays an illustrative value.',
+    cite: 'Quick facts, “Orbit Altitude”',
+    quote: '747 km',
+  },
+  S18: {
+    id: 'S18',
+    agency: 'ESA',
+    title: 'ESA — Sentinel-1 facts and figures (imaging radar at 693 km)',
+    url: 'https://www.esa.int/Applications/Observing_the_Earth/Copernicus/Sentinel-1/Facts_and_figures',
+    use: 'A second imaging radar, from the European Space Agency, flying at almost the same altitude as NISAR.',
+    cite: 'Facts and figures',
+    quote: 'Orbit: Polar, Sun-synchronous at an altitude of 693 km',
+  },
+  S19: {
+    id: 'S19',
+    title: 'NASA Space Place — Launch a rocket from a spinning planet (Earth turns at 1,675 km/h at the equator)',
+    url: 'https://spaceplace.nasa.gov/launch-windows/en/',
+    use: 'The extra 0.4 km/s a Sun-synchronous launch costs. 1,675 km/h is 0.47 km/s; at the 28.5° latitude of the launch site that is 0.41 km/s of eastward push, which a launch towards the pole cannot use.',
+    cite: 'Launch windows article',
+    quote: "At the equator, Earth's surface is rotating at 1675 kilometers per hour (1041 miles per hour)!",
   },
   PHYS: {
     id: 'PHYS',

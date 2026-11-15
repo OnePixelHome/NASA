@@ -95,9 +95,16 @@ Source descriptions, field `use` in `SOURCES` (also reusable for the "NASA Data"
 | S1 | NASA Earth Fact Sheet (radius, GM, solar irradiance) | Earth's radius and gravitational parameter behind every orbit formula: period, eclipse, coverage, transfers. |
 | S2 | NASA CSLI — CubeSat 101 (budget reserve, ground stations, deployable solar panels) | The budget rule: keep at least 10% in reserve. The budget meter turns amber and the budget score drops when a design eats into it. It also backs two lock reasons: a downlink too small for the data, and fixed body panels that cannot power the spacecraft. |
 | S3 | NASA — Design and Develop Science Missions (Launch, Space, Ground, User segments) | The four mission segments, used as the four team roles: Science, Spacecraft, Ground and Launch. |
-| S6 | NASA — Landsat 9 mission (705 km, 98.2°, 185 km swath, 16-day revisit) | The Sun-synchronous orbit card and the Multispectral Imager (30 m pixels, 185 km swath). The model reproduces its ~99-minute orbit and ~16-day revisit. |
+| S6 | NASA — Landsat 9 mission (705 km, 98.2°, 185 km swath, 16-day revisit, 10 years of consumables) | The Sun-synchronous orbit card and the Multispectral Imager (30 m pixels, 185 km swath). The model reproduces its ~99-minute orbit and ~16-day revisit. Its 10 years of consumables set the 10-year mission in this orbit. |
 | S9 | NASA Small Spacecraft Technology State-of-the-Art — Communications | Background reading on spacecraft radio links. No game value is taken from it yet. |
 | S10 | NASA — International Space Station FAQ (51.6° inclination) | The 51.6° inclination of the Low Earth Orbit card, which is why it never flies over the poles. |
+| S13 | NASA JPL — GRACE-FO Launch Press Kit (490 km orbit, five-year prime mission) | The 5-year mission in Low Earth Orbit: a real NASA mission at almost the same altitude (490 km) was planned for five years. |
+| S14 (tag "NOAA S14") | NOAA and NASA — GOES-R Series spacecraft (15 years of on-orbit life in geostationary orbit) | The 15-year mission in Geostationary Orbit, the on-orbit life required of the GOES-R weather satellites. |
+| S15 | NASA Glenn and JPL — Performance and Comparison of Lithium-Ion Batteries Under Low-Earth-Orbit Mission Profiles (NASA/TM-2007-214826) | How deeply the battery may be drained on every lap in low orbits. The game allows 30%, inside the range NASA tested for low Earth orbit, where 40% is the outer limit. |
+| S16 | NASA Aerospace Battery Workshop 2018 — GOES-R Lithium-Ion Battery Life Test (Lockheed Martin, NASA Goddard, Saft) | How deeply the battery may be drained in geostationary orbit. The game allows 70%, below the 75% of the longest eclipses in the GOES-R life test. Eclipses there come once a day in two seasons a year, so the battery cycles far less than in a low orbit. |
+| S17 | NASA and ISRO — NISAR mission quick facts (imaging radar at 747 km) | Where real imaging radars fly. It supports the 700 km reference altitude of the Imaging Radar; the 1,000 km limit itself stays an illustrative value. |
+| S18 (tag "ESA S18") | ESA — Sentinel-1 facts and figures (imaging radar at 693 km) | A second imaging radar, from the European Space Agency, flying at almost the same altitude as NISAR. |
+| S19 | NASA Space Place — Launch a rocket from a spinning planet (Earth turns at 1,675 km/h at the equator) | The extra 0.4 km/s a Sun-synchronous launch costs. 1,675 km/h is 0.47 km/s; at the 28.5° latitude of the launch site that is 0.41 km/s of eastward push, which a launch towards the pole cannot use. |
 | PHYS | Standard orbital mechanics (Kepler, Hohmann, rocket equation, radar equation) | Textbook formulas computed live from your design. They are covered by automated tests. |
 | GAME | Illustrative game value for educational purposes (simplified) | Costs, masses, power levels, data rates and scores. Plausible but simplified, chosen to keep the game balanced. |
 
@@ -162,7 +169,8 @@ These strings sit in the screen code. Edit only the words; leave tags, braces an
 | About (`About`) | About & sources |
 | About (`About`) | How to read the source tags |
 | About (`About`) | Every number in the game carries a tag saying where it comes from. |
-| About (`About`) | NASA data and resources / Use of AI |
+| About (`About`) | NASA and partner agency data and resources / Use of AI |
+| About (`About`) | An official resource from NASA or a partner space agency (NOAA, ESA). (new 2026-11-15, was "An official NASA resource.") |
 
 Resource panel words, in `src/ui/components.tsx`: ok / low reserve / over limit / waiting.
 
@@ -180,7 +188,7 @@ About screen text added with the design, in `src/engine/sources.ts` (**Belle: pl
 | `TEAM` | Edgar Cardona, Software architect · José Gómez, Full-stack developer · Thais Rodríguez, Product designer · Belle Vásquez Machado, MarTech specialist |
 | `FOOTER_NOTES` | MIT License · No accounts, no cookies, no analytics. · Saving a score sends only the name you type and your mission design to our leaderboard (a Neon database). |
 
-About headings, in `src/App.tsx`: What is Status: GO? / How to play / Where the numbers come from / NASA data and resources / Use of AI / Not affiliated with NASA / Team · One Pixel Home.
+About headings, in `src/App.tsx`: What is Status: GO? / How to play / Where the numbers come from / NASA and partner agency data and resources / Use of AI / Not affiliated with NASA / Team · One Pixel Home.
 
 Mission film on screen 5, in `src/ui/MissionFilm.tsx` and `src/ui/film/scenes.ts`: 3 / 2 / 1 / Liftoff / Mission complete / Sunlight / Earth’s shadow / Sending data / No contact / Always connected / Earth image: NASA Earth Observatory, Blue Marble / Orbit height drawn to scale / Rocket and spacecraft drawings / Pause / Play / Replay the film.
 
@@ -197,4 +205,5 @@ Each one carries source tags that must stay correct, so send wording changes for
 Two fixed sentences quote CubeSat 101 [S2] (added 2026-11-15; the quoted part must stay word for word):
 
 - Locked downlink: NASA's CubeSat 101 warns: "Launching with an inadequate ground station is a mission killer."
+- Imaging Radar out of range (added 2026-11-15, cites NISAR [S17] and Sentinel-1 [ESA S18]; for Belle's review): Real imaging radars fly much lower: NISAR at 747 km and Sentinel-1 at 693 km.
 - Standard Power locked for lack of power: These panels are fixed to the body. NASA's CubeSat 101 describes deployable solar panels that "will nearly double the power input to the spacecraft".

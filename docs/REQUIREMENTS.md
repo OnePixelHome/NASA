@@ -54,6 +54,6 @@ Audited against prototype v0.1 on Sat 2026-11-14; updated that night after PRs #
 | Rule | Status | Note |
 |---|---|---|
 | Everything in English | ✅ | All UI strings are English. |
-| NASA data used and cited | ✅ | S1, S2, S3, S6, S10 are cited in the game, on the About screen and in the README. S2 carries its page and quote. S9 is listed as background reading only. |
+| NASA data used and cited | ✅ | S1, S2, S3, S6, S10, S12, S13, S15, S16, S17 and S19 (NASA), S14 (NOAA–NASA) and S18 (ESA) are cited in the game, on the About screen and in the README. S2, S6 and S13–S19 carry their exact quote. S9 is listed as background reading only. |
 | AI disclosure on the project page | ✅ | The About screen shows `AI_DISCLOSURE`; the same text is in `docs/PROJECT_PAGE.md`. |
 | No NASA logos, insignia, flags or patches | ✅ | No NASA marks in `public/` or `src/`. `public/favicon.svg` is the team's own drawing (planet, orbit, satellite). |

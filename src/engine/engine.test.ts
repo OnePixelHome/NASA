@@ -91,18 +91,45 @@ describe('sources (every number shown carries one)', () => {
   })
   it('the scorecard lists exactly the sources cited along the way', () => {
     const card = evaluateMission(full, 4)
-    // Landsat 9 orbit [S6], constants [S1], roles [S3], reserve rule [S2] — but not the ISS source: this path never uses LEO.
-    expect(card.sources).toEqual(['S1', 'S2', 'S3', 'S6', 'S12', 'PHYS', 'GAME']) // S12: the Earth image in the mission film
+    // Landsat 9 orbit and lifetime [S6], constants [S1], roles [S3], reserve rule [S2] — but not the ISS source: this path never uses LEO.
+    // S12: the Earth image in the mission film. S15: battery depth of discharge in a low orbit. S19: Earth's spin, lost by a polar launch.
+    expect(card.sources).toEqual(['S1', 'S2', 'S3', 'S6', 'S12', 'S15', 'S19', 'PHYS', 'GAME'])
     const leo = evaluateMission({ scenarioId: 'crops', orbitId: 'leo', instrumentId: 'multispectral', powerId: 'standard', downlinkId: 'daily', launchId: 'small' }, 4)
     expect(leo.sources).toContain('S10')
   })
   it('game assumptions are not passed off as physics', () => {
-    // Passes per day is an illustrative value awaiting mentor review, so its reason must say so.
+    // Passes per day depends on the station's longitude, an illustrative value, so its reason must say so.
     const daily = tierOptions('downlink', { orbitId: 'sso', instrumentId: 'multispectral', powerId: 'standard' }).find((n) => n.id === 'daily')!
     expect(reasonSources(daily.reasons[0])).toContain('GAME')
     // The radar range limit is illustrative too, even though the distance⁴ law is physics.
     const radar = tierOptions('instrument', { orbitId: 'geo' }).find((n) => n.id === 'radar')!
-    for (const r of radar.reasons) expect(reasonSources(r)).toEqual(['PHYS', 'GAME'])
+    // Too blurry, then out of range: both mix physics with a game threshold. The last line only says where real radars fly.
+    expect(radar.reasons.map(reasonSources)).toEqual([['PHYS', 'GAME'], ['PHYS', 'GAME'], ['S17', 'S18']])
+  })
+  it('the values that waited for a mentor now cite a published mission or test', () => {
+    // Mission lifetime per orbit: GRACE-FO (490 km, five years), Landsat 9 (10 years of consumables), GOES-R (15 years).
+    expect(C.ORBITS.map((o) => [o.lifetimeYears, o.lifetimeSource])).toEqual([[5, 'S13'], [10, 'S6'], [15, 'S14']])
+    expect(SOURCES.S13.quote).toBe('Prime mission: Five years')
+    expect(SOURCES.S6.quote).toBe('Consumables: 10 years')
+    expect(SOURCES.S14.quote).toContain('on-orbit life of 15 years')
+    for (const o of C.ORBITS) {
+      const card = evaluateMission({ scenarioId: 'storms', orbitId: o.id, instrumentId: 'multispectral', powerId: 'hybrid', downlinkId: 'continuous', launchId: 'heavy' }, 4)
+      expect(reasonSources(card.timeline.at(-1)!)).toEqual([o.lifetimeSource, 'GAME'])
+    }
+    // Battery depth of discharge stays inside what NASA tested: at most 40% in LEO [S15], at most 75% in GEO [S16].
+    expect(C.maxDepthOfDischarge(500)).toBeLessThanOrEqual(0.4)
+    expect(C.maxDepthOfDischarge(35786)).toBeLessThanOrEqual(0.75)
+    expect(SOURCES.S15.quote).toContain('40 percent depth-of-discharge')
+    expect(SOURCES.S16.quote).toContain('75% DOD')
+    const power = (orbitId: string) => tierOptions('power', { orbitId, instrumentId: 'multispectral' }).flatMap((n) => n.reasons.flatMap(reasonSources))
+    expect(power('leo')).toContain('S15')
+    expect(power('geo')).toContain('S16')
+    expect(power('geo')).not.toContain('S15')
+    // The Sun-synchronous launch penalty is Earth's spin at the launch site [S19], and only that orbit pays it.
+    expect(C.EQUATOR_SPEED_KMS * Math.cos((C.LAUNCH_SITE_LAT_DEG * Math.PI) / 180)).toBeCloseTo(C.SSO_ROTATION_PENALTY_KMS, 1)
+    const launch = (orbitId: string) => tierOptions('launch', { orbitId, instrumentId: 'multispectral', powerId: 'extended', downlinkId: 'daily' }).flatMap((n) => n.reasons.flatMap(reasonSources))
+    expect(launch('sso')).toContain('S19')
+    expect(launch('leo')).not.toContain('S19')
   })
 })
 
@@ -211,10 +238,14 @@ describe('mission requirements (challenge item 1: define the objective and requi
 })
 
 describe('About screen content', () => {
-  it('every source explains how the game uses it, and NASA sources link out', () => {
+  it('every source explains how the game uses it, and agency sources link to an official site', () => {
+    // nasa.gov, plus the NOAA–NASA GOES-R programme site and the European Space Agency.
+    const official = { NASA: /^https:\/\/([a-z0-9-]+\.)*nasa\.gov\//, NOAA: /^https:\/\/www\.goes-r\.gov\//, ESA: /^https:\/\/www\.esa\.int\// }
     for (const s of Object.values(SOURCES)) {
       expect(s.use.length).toBeGreaterThan(20)
-      if (s.id.startsWith('S')) expect(s.url).toMatch(/^https:\/\/.*nasa\.gov\//)
+      if (s.id.startsWith('S')) expect(s.url).toMatch(official[s.agency ?? 'NASA'])
+      // A quote always says where in the document it is.
+      if (s.quote) expect(s.cite).toBeTruthy()
     }
   })
   it('names the four team members and gives each a different crew character', () => {

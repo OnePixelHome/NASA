@@ -5,7 +5,7 @@ Branch: `belle` → PR into `main`. Every commit must include `BACKUP.md` (the p
 
 **Rules that apply to everything below**
 - English only (UI, video, project page).
-- Never write a number without a source: NASA (S1–S10), PHYS (standard physics) or GAME (illustrative). When in doubt, leave the number out.
+- Never write a number without a source: NASA or a partner agency (S1–S19), PHYS (standard physics) or GAME (illustrative). When in doubt, leave the number out.
 - The video is **30 s maximum**, with English subtitles (or ≤ 7 slides). Anything longer is not eligible.
 - No NASA logos, insignia, flags or mission patches. AI-generated images need a visible "AI-generated" watermark.
 - Copy lives in `src/engine/catalog.ts`, never in JSX.
@@ -56,7 +56,7 @@ Branch: `belle` → PR into `main`. Every commit must include `BACKUP.md` (the p
 - [ ] Project page fields: title, one-line pitch, summary (what it is, how it works, benefits, intended impact), NASA data used, AI use.
 - [ ] Use the pitch line from HANDOFF §9 as the hook.
 - [ ] Map the summary to the judging criteria: **Impact, Creativity, Validity, Relevance, Presentation** (one sentence for each).
-- [ ] List every NASA source used (S1, S2, S3, S6, S9, S10) with its URL, from `src/engine/sources.ts`.
+- [ ] List every NASA source used (S1, S2, S3, S6, S9, S10, S12, S13, S15, S16, S17, S19) with its URL, from `src/engine/sources.ts`. List S14 (NOAA–NASA GOES-R) and S18 (ESA Sentinel-1) in the "Space agency partner and other data" field; the text is ready in `docs/PROJECT_PAGE.md`.
 - [ ] Paste the AI disclosure from HANDOFF §9 word for word.
 - [ ] Hand the text to Edgar, who owns the final project page (Sun 14:00–17:00).
 
