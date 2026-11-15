@@ -1,5 +1,13 @@
 # BACKUP - NASA
 
+## 2026-11-15 (Mac de Belle) — Se reconecta Azure Static Web Apps (`ci/reconnect-azure`)
+
+- Belle pidió volver a conectar Azure. El recurso `victorious-pebble-0fcf34b10` sigue vivo (https://victorious-pebble-0fcf34b10.6.azurestaticapps.net/ responde 200, con la página de espera de Azure), así que no se creó uno nuevo.
+- Nuevo `.github/workflows/azure-static-web-apps.yml` (corrige el que generó Azure en `638eec1`): en cada push a `main` instala con pnpm, corre `pnpm test` y `pnpm build` sin `BASE_PATH` (Azure sirve desde la raíz) y sube `dist/` con `Azure/static-web-apps-deploy@v1` y `skip_app_build`. Antes fallaba porque buscaba `build/`. Sin vistas previas por PR. Si falta el secreto, el job avisa y termina en verde en vez de fallar. GitHub Pages sigue igual.
+- `server/leaderboard.ts`: CORS acepta también el origen de Azure. **Falta redesplegar la función** (`bash server/deploy.sh`, con sesión de Neon; José), si no el leaderboard no carga desde Azure.
+- `AGENTS.md` (Verificar) menciona el segundo despliegue.
+- Pendiente (Belle): copiar el token del portal de Azure (Static Web App → Manage deployment token) y guardarlo con `gh secret set AZURE_STATIC_WEB_APPS_API_TOKEN -R OnePixelHome/NASA`; luego merge del PR y comprobar que el sitio de Azure carga el simulador. El secreto viejo se borró en la desconexión; el token del recurso no cambió, pero desde aquí no hay acceso a Azure para leerlo.
+
 ## 2026-11-15 (Mac de Belle) — Pitch: cierre sin "for free" y capturas para el video
 
 - Belle pidió quitar "for free". El cierre del video queda así: "Learn to manage a real mission — on any phone." Se cambió en el guion, en los subtítulos y en la frase del pitch de `docs/PITCH.md`. El guion baja a unas 70 palabras.
