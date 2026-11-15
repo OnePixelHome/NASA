@@ -94,7 +94,7 @@ describe('a day in orbit (the simulation the player watches)', () => {
     expect(d.orbitsPerDay).toBeCloseTo(14.56, 1)
     expect(d.periodMin).toBeCloseTo(98.9, 1)
     expect(d.eclipseMin).toBeCloseTo(35, 0)
-    expect(d.passes).toBe(4)
+    expect(d.passes).toBe(3) // over the 35°N station on the reference day
     expect(d.maxLatDeg).toBeCloseTo(81.8, 1)
     expect(d.needLatDeg).toBe(80)
     // One shadow crossing per lap: count the sunlit → shadow transitions.

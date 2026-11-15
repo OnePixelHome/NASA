@@ -1,6 +1,6 @@
 // Every number shown to players carries one of these source ids.
 // NASA-* = official NASA resource · PHYS = standard physics · GAME = simplified game value (shown as "illustrative").
-export type SourceId = 'S1' | 'S2' | 'S3' | 'S6' | 'S9' | 'S10' | 'PHYS' | 'GAME'
+export type SourceId = 'S1' | 'S2' | 'S3' | 'S6' | 'S9' | 'S10' | 'S12' | 'PHYS' | 'GAME'
 
 export interface Source {
   id: SourceId
@@ -53,6 +53,12 @@ export const SOURCES: Record<SourceId, Source> = {
     title: 'NASA — International Space Station FAQ (51.6° inclination)',
     url: 'https://www.nasa.gov/?p=532244',
     use: 'The 51.6° inclination of the Low Earth Orbit card, which is why it never flies over the poles.',
+  },
+  S12: {
+    id: 'S12',
+    title: 'NASA Earth Observatory — Blue Marble: Next Generation (August 2004, with topography and bathymetry)',
+    url: 'https://science.nasa.gov/earth/earth-observatory/blue-marble-next-generation/',
+    use: 'The picture of the Earth in the mission film and the first image the spacecraft takes. Credit: NASA Earth Observatory.',
   },
   PHYS: {
     id: 'PHYS',

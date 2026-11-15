@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState, type ReactNode } from 'react'
+import { useCallback, useEffect, useMemo, useState, type ReactNode } from 'react'
 import * as C from './engine/catalog'
 import { budget, BUDGET_SOURCE, choose, evaluateMission, isComplete, missionRequirements, orbitSources, orbitStats, resources, SUCCESS_SCORE_MIN, TEAM_POINTS_MAX, TEAM_ROLES, teamPoints, TIER_ORDER, tierOptions, type Choice, type NodeState } from './engine/game'
 import { missionDay } from './engine/missionDay'
@@ -6,6 +6,7 @@ import { AI_DISCLOSURE, AI_IMAGES_NOTE, DISCLAIMER, FOOTER_NOTES, HOW_TO_PLAY, P
 import { RoleCharacter } from './ui/Crew'
 import { DayView } from './ui/DayView'
 import { MissionArt, OrbitDiagram } from './ui/MissionArt'
+import { MissionFilm, type FilmProgress } from './ui/MissionFilm'
 import { MissionScene } from './ui/MissionScene'
 import { ShipSvg } from './ui/Ship'
 import { ROLE_UI, shipParts } from './ui/theme'
@@ -593,15 +594,33 @@ function GoNoGo(props: { votes: Votes; setVotes: (v: Votes) => void; choice: Cho
 function MissionRun({ choice, goVotes, onDone }: { choice: Choice; goVotes: number; onDone: () => void }) {
   const card = useMemo(() => evaluateMission(choice, goVotes), [choice, goVotes])
   const day = useMemo(() => missionDay(choice), [choice])
+  // Stable references: the film's animation loop must not restart every time this screen re-renders.
+  const parts = useMemo(() => shipParts(choice), [choice])
+  const stepLabels = useMemo(() => card.timeline.map((e) => e.label), [card])
   const orbit = C.byId(C.ORBITS, choice.orbitId)!
   const total = card.timeline.length
-  const [step, setStep] = useState(0)
+  // With motion allowed, the film sets the pace and the timeline follows it. With reduced motion there is no
+  // film: the steps appear on a timer beside a still picture of each one.
+  const reduced = useMemo(() => window.matchMedia('(prefers-reduced-motion: reduce)').matches, [])
+  const film = !reduced && day !== null
+  const [step, setStep] = useState(film ? 1 : 0)
+  const [dayIndex, setDayIndex] = useState<number | null>(null)
+  const [filmDone, setFilmDone] = useState(false)
+  const [finish, setFinish] = useState(0)
   useEffect(() => {
-    if (step >= total) return
+    if (film || step >= total) return
     const t = setTimeout(() => setStep((s) => s + 1), 1300)
     return () => clearTimeout(t)
-  }, [step, total])
-  const done = step >= total
+  }, [film, step, total])
+  // Once the mission has been watched to the end the scorecard stays available, even while replaying the film.
+  const [watched, setWatched] = useState(false)
+  const onProgress = useCallback((p: FilmProgress) => {
+    setStep(p.step)
+    setDayIndex(p.dayIndex)
+    setFilmDone(p.done)
+    if (p.done) setWatched(true)
+  }, [])
+  const done = film ? filmDone : step >= total
   return (
     <section>
       <ScreenTitle screen="run" title="5 · Mission simulation" />
@@ -623,7 +642,11 @@ function MissionRun({ choice, goVotes, onDone }: { choice: Choice; goVotes: numb
       </div>
       <div className="mt-4 grid gap-4 lg:grid-cols-[minmax(0,1.15fr)_minmax(0,1fr)] lg:gap-6">
         <div className="min-w-0 lg:sticky lg:top-36 lg:self-start">
-          <MissionScene step={Math.max(1, step)} name={card.timeline[Math.max(1, step) - 1].label} orbit={orbit.short} color={ORBIT_COLOR[orbit.id]} />
+          {film && day ? (
+            <MissionFilm day={day} parts={parts} color={ORBIT_COLOR[orbit.id]} scenarioId={choice.scenarioId ?? ''} stepLabels={stepLabels} finish={finish} onProgress={onProgress} />
+          ) : (
+            <MissionScene step={Math.max(1, step)} name={card.timeline[Math.max(1, step) - 1].label} orbit={orbit.short} color={ORBIT_COLOR[orbit.id]} />
+          )}
         </div>
       <ol aria-live="polite" aria-label="Mission timeline" className="flex min-w-0 flex-col gap-2.5">
         {card.timeline.map((e, i) =>
@@ -653,19 +676,26 @@ function MissionRun({ choice, goVotes, onDone }: { choice: Choice; goVotes: numb
         )}
       </ol>
       </div>
-      {/* The time-lapse starts once the spacecraft has reached its orbit (step 2). */}
+      {/* Telemetry for the same day the film shows: it follows the film's clock, or runs by itself without the film. */}
       {day && (
         <div className="mt-4">
-          <DayView day={day} color={ORBIT_COLOR[orbit.id]} active={step >= 2} />
+          <DayView day={day} color={ORBIT_COLOR[orbit.id]} active={step >= 2} syncIndex={film ? dayIndex : undefined} />
         </div>
       )}
       <div className="mt-5 flex flex-wrap justify-end gap-2.5">
-        {!done && (
-          <button type="button" onClick={() => setStep(total)} className={BTN_SECONDARY}>
+        {!done && !watched && (
+          <button
+            type="button"
+            onClick={() => {
+              if (film) setFinish((n) => n + 1)
+              else setStep(total)
+            }}
+            className={BTN_SECONDARY}
+          >
             Skip
           </button>
         )}
-        <button type="button" disabled={!done} onClick={onDone} className={BTN_PRIMARY}>
+        <button type="button" disabled={!done && !watched} onClick={onDone} className={BTN_PRIMARY}>
           See scorecard →
         </button>
       </div>

@@ -92,7 +92,7 @@ describe('sources (every number shown carries one)', () => {
   it('the scorecard lists exactly the sources cited along the way', () => {
     const card = evaluateMission(full, 4)
     // Landsat 9 orbit [S6], constants [S1], roles [S3], reserve rule [S2] — but not the ISS source: this path never uses LEO.
-    expect(card.sources).toEqual(['S1', 'S2', 'S3', 'S6', 'PHYS', 'GAME'])
+    expect(card.sources).toEqual(['S1', 'S2', 'S3', 'S6', 'S12', 'PHYS', 'GAME']) // S12: the Earth image in the mission film
     const leo = evaluateMission({ scenarioId: 'crops', orbitId: 'leo', instrumentId: 'multispectral', powerId: 'standard', downlinkId: 'daily', launchId: 'small' }, 4)
     expect(leo.sources).toContain('S10')
   })
@@ -255,7 +255,7 @@ describe('resource panel (budget, mass, power, data)', () => {
     expect(m.mass.text).toBe('390 / 1,207 kg')
     expect(m.power.used).toBe(170)
     expect(m.power.limit).toBeGreaterThan(300)
-    expect(m.data.text).toBe('200 / 498 Gbit/day') // 4 passes, 27.7 min over the station on the reference day
+    expect(m.data.text).toBe('200 / 396 Gbit/day') // 3 passes, 22 min over the station on the reference day
     expect(Object.values(m).some((x) => x.over)).toBe(false)
   })
   it('never contradicts the locks: every viable path keeps mass, power and data within limits', () => {

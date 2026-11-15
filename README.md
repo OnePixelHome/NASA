@@ -28,6 +28,7 @@ pnpm build
 - S6 NASA Landsat 9 — https://science.nasa.gov/mission/landsat-9
 - S9 NASA SST State-of-the-Art: Communications — https://www.nasa.gov/smallsat-institute/sst-soa/communications
 - S10 NASA ISS FAQ — https://www.nasa.gov/?p=532244
+- S12 NASA Earth Observatory, Blue Marble: Next Generation (the Earth image in the mission film; credit NASA Earth Observatory) — https://science.nasa.gov/earth/earth-observatory/blue-marble-next-generation/
 
 ## Use of AI
 Code scaffolding, the physics engine and documentation were drafted with Claude (Anthropic) and reviewed by the team.

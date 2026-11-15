@@ -422,6 +422,7 @@ export function evaluateMission(c: Choice, goVotes: number): Scorecard {
     'S1', // physical constants behind every formula
     'S3', // the four mission segments used as team roles
     'S2', // 10% budget reserve rule
+    'S12', // the Earth image in the mission film
     ...orbitSources(o),
     ...chosen.flatMap((n) => [n.factsSource, ...n.reasons.flatMap(reasonSources)]),
     ...[primaryConstraint, biggestImpact, lesson, ...timeline].flatMap(reasonSources),
