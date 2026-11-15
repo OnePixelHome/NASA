@@ -117,6 +117,13 @@ These strings sit in the screen code. Edit only the words; leave tags, braces an
 | Landing (`Home`) | How to play |
 | Landing (`Home`) | Made by team One Pixel Home. Not affiliated with or endorsed by NASA. |
 | Landing (`Home`) | Earth image: NASA Earth Observatory, Blue Marble: Next Generation. |
+| Landing (`Home`) | Leaderboard (button) |
+| Leaderboard (`src/ui/Leaderboard.tsx`) | Leaderboard / Who flew this mission? Type your name, or your crew’s (for example “Ana & Luis”). / Player or crew name / Save my score / Saving… |
+| Leaderboard | Only this name and your design are sent. Everyone can see the leaderboard. |
+| Leaderboard | Saved! You are #N of M. / All missions / Top N of M saved scores. / No scores yet. Be the first crew on the board. |
+| Leaderboard | Loading the leaderboard… / The leaderboard is unavailable right now. Your game is not affected. |
+| Leaderboard screen | Every score is recalculated by the game engine before it is saved, so the board only shows real missions. |
+| Name errors (`src/leaderboard/name.ts`) | Type a crew name. / Use at least 2 characters. / Use at most 24 characters. / Use letters, numbers, spaces and . ' _ - only. / Please choose a different name. |
 | 1 (`Brief`) | 1 · Pick your mission |
 | 1 (`Brief`) | Every mission starts with a science goal. It decides what “success” means. |
 | 2 (`OrbitPick`) | 2 · Choose a trajectory |
@@ -171,7 +178,7 @@ About screen text added with the design, in `src/engine/sources.ts` (**Belle: pl
 | `AI_IMAGES_NOTE` | Images marked “AI-generated” were drafted with AI and then checked and adapted by the team. |
 | `DISCLAIMER` | Status: GO is an independent project made by team One Pixel Home for the NASA Space Apps Challenge 2026. It is not affiliated with or endorsed by NASA. NASA does not endorse any non-U.S. Government entity. |
 | `TEAM` | Edgar Cardona, Software architect · José Gómez, Full-stack developer · Thais Rodríguez, Product designer · Belle Vásquez Machado, MarTech specialist |
-| `FOOTER_NOTES` | MIT License · No accounts, no cookies, no analytics. |
+| `FOOTER_NOTES` | MIT License · No accounts, no cookies, no analytics. · Saving a score sends only the name you type and your mission design to our leaderboard (a Neon database). |
 
 About headings, in `src/App.tsx`: What is Status: GO? / How to play / Where the numbers come from / NASA data and resources / Use of AI / Not affiliated with NASA / Team · One Pixel Home.
 

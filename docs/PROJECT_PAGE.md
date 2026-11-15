@@ -113,6 +113,8 @@ None. No data from other space agencies or third parties is used.
 | Atkinson Hyperlegible (via @fontsource/atkinson-hyperlegible) | Font for body text, bundled with the game | SIL Open Font License 1.1 |
 | Claude Design (Anthropic) | Visual system, screen designs and illustrations | Hosted service |
 | GitHub | Source code hosting; GitHub Pages and GitHub Actions host and build the public demo | Hosted service |
+| Neon (Postgres + Neon Functions) | Online leaderboard: stores the player or crew name and the design; the server recalculates every score with the game engine | Hosted service |
+| pg (node-postgres) | Database driver bundled into the leaderboard function | MIT |
 
 Our own code is released under the MIT License.
 
