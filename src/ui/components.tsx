@@ -24,8 +24,23 @@ export function RoleTag({ role, label }: { role: Role; label: string }) {
   )
 }
 
-// ---------- Bars and chips ----------
-/** Segmented 1–5 bar. `color` is any CSS color, usually an orbit token. */
+// ---------- AI label ----------
+/**
+ * Visible "AI-generated" mark. The Space Apps rules require it on every AI-generated image,
+ * and the game's illustrations were drafted with Claude Design (docs/DESIGN-RULES.md).
+ */
+export function AiGeneratedLabel({ className = '' }: { className?: string }) {
+  return (
+    <span role="note" aria-label="AI-generated image" className={`inline-flex h-6 items-center gap-1.5 whitespace-nowrap rounded-pill border-[1.5px] border-ink bg-space-page pl-2 pr-2.5 text-caption font-bold tracking-wide text-ink ${className}`}>
+      <svg viewBox="0 0 12 12" className="size-[11px]" aria-hidden>
+        <path d="M6 0 L7.4 4.6 L12 6 L7.4 7.4 L6 12 L4.6 7.4 L0 6 L4.6 4.6 Z" fill="currentColor" />
+      </svg>
+      AI-generated
+    </span>
+  )
+}
+
+// ---------- Bars and chips ----------/** Segmented 1–5 bar. `color` is any CSS color, usually an orbit token. */
 export function Bar({ label, value, max = 5, color }: { label: string; value: number; max?: number; color: string }) {
   return (
     <div className="flex items-center gap-2 text-small" role="meter" aria-valuenow={value} aria-valuemin={0} aria-valuemax={max} aria-label={`${label}: ${value} of ${max}`}>

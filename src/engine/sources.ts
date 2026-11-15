@@ -77,8 +77,30 @@ export const AI_DISCLOSURE =
   'All of it was reviewed, tested and adapted by the team. ' +
   'Physics formulas are covered by automated tests; illustrative values are labelled in the game.'
 
+/** Second line of the AI notice: every illustration in the game carries the visible "AI-generated" label it refers to. */
+export const AI_IMAGES_NOTE = 'Images marked “AI-generated” were drafted with AI and then checked and adapted by the team.'
+
 export const DISCLAIMER =
-  'Trajectory Ladder is a hackathon project by team One Pixel Home for the NASA Space Apps Challenge 2026. It is not affiliated with or endorsed by NASA.'
+  'Trajectory Ladder is an independent project made by team One Pixel Home for the NASA Space Apps Challenge 2026. ' +
+  'It is not affiliated with or endorsed by NASA. NASA does not endorse any non-U.S. Government entity.'
+
+/** "How to play" on the About screen. Copy owner: Belle (see docs/COPY.md). */
+export const HOW_TO_PLAY: { title: string; text: string }[] = [
+  { title: 'Pick a mission', text: 'Choose a science goal. Its requirements set what success means.' },
+  { title: 'Choose a trajectory', text: 'Compare the three orbits and pick the one that fits the mission.' },
+  { title: 'Build the ladder', text: 'Pick instrument, power, downlink and launcher. Each choice can lock the next.' },
+  { title: 'Vote Go / No-Go and watch the simulation', text: 'Every role votes. Then follow the mission and read your scorecard.' },
+]
+export const ROLES_NOTE = 'Four roles, one for each of NASA’s four mission segments: Science, Spacecraft, Ground, Launch.'
+
+/** Team One Pixel Home. `role` only picks which crew character stands next to the name. */
+export const TEAM: { name: string; title: string; role: 'science' | 'space' | 'ground' | 'launch' }[] = [
+  { name: 'Edgar Cardona', title: 'Software architect', role: 'science' },
+  { name: 'José Gómez', title: 'Full-stack developer', role: 'space' },
+  { name: 'Thais Rodríguez', title: 'Product designer', role: 'ground' },
+  { name: 'Belle Vásquez Machado', title: 'MarTech specialist', role: 'launch' },
+]
+export const FOOTER_NOTES = ['MIT License', 'No accounts, no cookies, no analytics.']
 
 export interface Reason {
   text: string

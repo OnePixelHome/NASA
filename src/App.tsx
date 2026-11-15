@@ -1,13 +1,13 @@
 import { useEffect, useMemo, useState, type ReactNode } from 'react'
 import * as C from './engine/catalog'
 import { budget, BUDGET_SOURCE, choose, evaluateMission, isComplete, missionRequirements, orbitSources, orbitStats, resources, SUCCESS_SCORE_MIN, TEAM_POINTS_MAX, TEAM_ROLES, teamPoints, TIER_ORDER, tierOptions, type Choice, type NodeState } from './engine/game'
-import { AI_DISCLOSURE, DISCLAIMER, PITCH, SOURCE_ORDER, SOURCES, type Reason } from './engine/sources'
+import { AI_DISCLOSURE, AI_IMAGES_NOTE, DISCLAIMER, FOOTER_NOTES, HOW_TO_PLAY, PITCH, ROLES_NOTE, SOURCE_ORDER, SOURCES, TEAM, type Reason } from './engine/sources'
 import { RoleCharacter } from './ui/Crew'
 import { MissionArt, OrbitDiagram } from './ui/MissionArt'
 import { MissionScene } from './ui/MissionScene'
 import { ShipSvg } from './ui/Ship'
 import { ROLE_UI, shipParts } from './ui/theme'
-import { Bar, BTN_PRIMARY, BTN_SECONDARY, BTN_WARNING, Gauge, Meter, ReasonList, ResourcePanel, RoleTag, SourceChip, SourceChips, Sourced } from './ui/components'
+import { AiGeneratedLabel, Bar, BTN_PRIMARY, BTN_SECONDARY, BTN_WARNING, Gauge, Meter, ReasonList, ResourcePanel, RoleTag, SourceChip, SourceChips, Sourced } from './ui/components'
 
 type Screen = 'brief' | 'orbit' | 'tree' | 'go' | 'run' | 'score'
 const SCREEN_NUMBER: Record<Screen, number> = { brief: 1, orbit: 2, tree: 3, go: 4, run: 5, score: 6 }
@@ -177,7 +177,10 @@ function Brief({ onPick }: { onPick: (id: string) => void }) {
           const req = missionRequirements(s)
           return (
             <button type="button" key={s.id} onClick={() => onPick(s.id)} aria-label={`${s.title}: ${req.summary}`} className={`${PICK_CARD} flex flex-col gap-3 p-3 pb-4`}>
-              <MissionArt id={s.id} />
+              <span className="relative block">
+                <MissionArt id={s.id} />
+                <AiGeneratedLabel className="absolute bottom-2 right-2" />
+              </span>
               <div className="flex flex-col gap-1 px-1">
                 <h2 className="text-[20px] text-ink">{s.title}</h2>
                 <p className="text-[15px] text-ink-2">{s.story}</p>
@@ -333,7 +336,10 @@ function Tree(props: {
 
       <div className="mt-4 grid gap-4 lg:grid-cols-[300px_minmax(0,1fr)] lg:gap-6">
         <aside aria-label="Your spacecraft" className={`${CARD} flex items-center gap-4 p-3 shadow-raised lg:sticky lg:top-36 lg:flex-col lg:self-start lg:p-4`}>
-          <ShipSvg {...shipParts(choice)} className="h-[150px] w-auto shrink-0 lg:h-[340px]" />
+          <div className="flex shrink-0 flex-col items-center gap-2">
+            <ShipSvg {...shipParts(choice)} className="h-[150px] w-auto lg:h-[340px]" />
+            <AiGeneratedLabel />
+          </div>
           <div className="flex w-full min-w-0 flex-1 flex-col gap-1.5">
             <span className="font-display tabular-nums">{chosen} of 4 parts</span>
             {TIER_ORDER.map((t) => {
@@ -735,54 +741,158 @@ function Score({ choice, goVotes, onReplay, onRevise }: { choice: Choice; goVote
   )
 }
 
+const HOW_ICONS = [
+  { icon: '◉', color: 'var(--color-role-science)' },
+  { icon: '◯', color: 'var(--color-orbit-sso)' },
+  { icon: '☰', color: 'var(--color-role-spacecraft)' },
+  { icon: '▲', color: 'var(--color-role-launch)' },
+]
+
 function About({ onBack }: { onBack: () => void }) {
   const nasa = SOURCE_ORDER.filter((id) => SOURCES[id].url)
   const other = SOURCE_ORDER.filter((id) => !SOURCES[id].url)
+  const box = `${CARD} flex flex-col gap-3 p-4`
   return (
     <section>
-      <h1 className="text-screen">About & sources</h1>
-      <p className="mt-2 text-body text-ink-2">{PITCH}</p>
+      <button type="button" onClick={onBack} className={BTN_SECONDARY}>
+        ← Back to mission
+      </button>
+      <h1 className="mt-4 text-screen">About & sources</h1>
 
-      <h2 className="mt-6 text-section">How to read the source tags</h2>
-      <p className="mt-1 text-small text-ink-2">Every number in the game carries a tag saying where it comes from.</p>
-      <ul className="mt-3 flex flex-col gap-3">
-        {other.map((id) => (
-          <li key={id} className={`${CARD} p-3.5 text-small`}>
-            <div className="font-bold text-ink">
-              <span className="-ml-1">
-                <SourceChip id={id} />
-              </span>{' '}
-              {SOURCES[id].title}
+      <div className="mt-4 grid items-start gap-4 lg:grid-cols-2 lg:gap-6">
+        <div className="flex min-w-0 flex-col gap-4">
+          <section aria-labelledby="h-what" className={box}>
+            <h2 id="h-what" className="text-section">
+              What is Trajectory Ladder?
+            </h2>
+            <p className="text-body text-ink-2">{PITCH}</p>
+            <div className="relative flex flex-wrap items-end justify-center gap-1 pb-7 pt-2">
+              <RoleCharacter role="science" mood="cheer" decorative className="size-12" />
+              <RoleCharacter role="space" decorative className="size-12" />
+              <ShipSvg payload="prism" power="small" antenna="polar" launcher="medium" className="h-[120px] w-auto" />
+              <RoleCharacter role="ground" decorative className="size-12" />
+              <RoleCharacter role="launch" mood="cheer" decorative className="size-12" />
+              <AiGeneratedLabel className="absolute bottom-0 right-0" />
             </div>
-            <p className="mt-1 text-ink-2">{SOURCES[id].use}</p>
-          </li>
+          </section>
+
+          <section aria-labelledby="h-how" className={box}>
+            <h2 id="h-how" className="text-section">
+              How to play
+            </h2>
+            <ol className="flex flex-col gap-2.5">
+              {HOW_TO_PLAY.map((s, i) => (
+                <li key={s.title} className="flex gap-3">
+                  <span aria-hidden className="grid size-10 shrink-0 place-items-center rounded-md border border-space-border bg-space-raised font-display text-[18px]" style={{ color: HOW_ICONS[i % HOW_ICONS.length].color }}>
+                    {HOW_ICONS[i % HOW_ICONS.length].icon}
+                  </span>
+                  <div className="min-w-0">
+                    <h3 className="font-display">
+                      <span className="tabular-nums text-ink-2">{i + 1} ·</span> {s.title}
+                    </h3>
+                    <p className="text-small text-ink-2">{s.text}</p>
+                  </div>
+                </li>
+              ))}
+            </ol>
+            <p className="rounded-md bg-space-raised p-3 text-small">
+              {ROLES_NOTE}
+              <SourceChip id="S3" />
+            </p>
+          </section>
+
+          <section aria-labelledby="h-numbers" className={box}>
+            <h2 id="h-numbers" className="text-section">
+              Where the numbers come from
+            </h2>
+            <p className="text-small text-ink-2">Every number in the game carries a tag saying where it comes from.</p>
+            <ul className="flex flex-col gap-3 text-small">
+              <li>
+                <span className="-ml-1">
+                  <SourceChip id="S1" link={false} />
+                </span>{' '}
+                <span className="font-bold text-ink">An official NASA resource.</span> <span className="text-ink-2">Tap a tag with an arrow to open it.</span>
+              </li>
+              {other.map((id) => (
+                <li key={id}>
+                  <span className="-ml-1">
+                    <SourceChip id={id} />
+                  </span>{' '}
+                  <span className="font-bold text-ink">{SOURCES[id].title}.</span> <span className="text-ink-2">{SOURCES[id].use}</span>
+                </li>
+              ))}
+            </ul>
+          </section>
+        </div>
+
+        <div className="flex min-w-0 flex-col gap-4">
+          <section aria-labelledby="h-sources" className={box}>
+            <h2 id="h-sources" className="text-section">
+              NASA data and resources
+            </h2>
+            <ul className="flex flex-col">
+              {nasa.map((id) => (
+                <li key={id} className="border-t border-space-border py-2.5 text-small first:border-t-0 first:pt-0">
+                  <a className="inline-flex min-h-[44px] items-center gap-1 font-bold text-ink underline underline-offset-2" href={SOURCES[id].url} target="_blank" rel="noreferrer" aria-label={`${SOURCES[id].title}, opens in a new tab`}>
+                    {SOURCES[id].title} <span aria-hidden>↗</span>
+                  </a>
+                  <SourceChip id={id} link={false} />
+                  <p className="text-ink-2">{SOURCES[id].use}</p>
+                  {SOURCES[id].quote && (
+                    <blockquote className="mt-2 border-l-2 border-space-border pl-3 text-ink-2">
+                      “{SOURCES[id].quote}” <span className="whitespace-nowrap text-ink-muted">— {SOURCES[id].cite}</span>
+                    </blockquote>
+                  )}
+                </li>
+              ))}
+            </ul>
+          </section>
+
+          <section aria-labelledby="h-ai" className="flex flex-col gap-3 rounded-lg border-2 border-st-available bg-space-raised p-4">
+            <h2 id="h-ai" className="flex items-center gap-2.5 text-section">
+              <span aria-hidden className="grid size-8 place-items-center rounded-[10px] bg-st-available text-space-page">
+                ✦
+              </span>
+              Use of AI
+            </h2>
+            <p className="text-[15px]">{AI_DISCLOSURE}</p>
+            <p className="flex flex-wrap items-center gap-2 text-[15px]">
+              {AI_IMAGES_NOTE}
+              <AiGeneratedLabel />
+            </p>
+          </section>
+
+          <section aria-labelledby="h-nasa" className={box}>
+            <h2 id="h-nasa" className="text-section">
+              Not affiliated with NASA
+            </h2>
+            <p className="text-[15px] text-ink-2">{DISCLAIMER}</p>
+          </section>
+
+          <section aria-labelledby="h-team" className={box}>
+            <h2 id="h-team" className="text-section">
+              Team · One Pixel Home
+            </h2>
+            <ul className="grid grid-cols-2 gap-2.5">
+              {TEAM.map((t) => (
+                <li key={t.name} className="flex flex-col items-center gap-1.5 rounded-md bg-space-raised px-2 py-3 text-center">
+                  <RoleCharacter role={t.role} decorative bg="var(--color-space-raised)" className="size-12" />
+                  <span className="font-display leading-tight">{t.name}</span>
+                  <span className="text-[13px] text-ink-2">{t.title}</span>
+                </li>
+              ))}
+            </ul>
+          </section>
+        </div>
+      </div>
+
+      <footer className="mt-5 flex flex-wrap justify-between gap-x-4 gap-y-1.5 border-t border-space-border pt-4 text-[13px] text-ink-2">
+        {FOOTER_NOTES.map((n) => (
+          <span key={n}>{n}</span>
         ))}
-      </ul>
+      </footer>
 
-      <h2 className="mt-6 text-section">NASA data and resources</h2>
-      <ul className="mt-3 flex flex-col gap-3">
-        {nasa.map((id) => (
-          <li key={id} className={`${CARD} p-3.5 text-small`}>
-            <a className="inline-flex min-h-[44px] items-center gap-1 font-bold text-ink underline underline-offset-2" href={SOURCES[id].url} target="_blank" rel="noreferrer">
-              {SOURCES[id].title} <span aria-hidden>↗</span>
-            </a>
-            <SourceChip id={id} link={false} />
-            <p className="mt-1 text-ink-2">{SOURCES[id].use}</p>
-            {SOURCES[id].quote && (
-              <blockquote className="mt-2 border-l-2 border-space-border pl-3 text-ink-2">
-                “{SOURCES[id].quote}” <span className="whitespace-nowrap text-ink-muted">— {SOURCES[id].cite}</span>
-              </blockquote>
-            )}
-          </li>
-        ))}
-      </ul>
-
-      <h2 className="mt-6 text-section">Use of AI</h2>
-      <p className={`${CARD} mt-2 p-3.5 text-small text-ink-2`}>{AI_DISCLOSURE}</p>
-
-      <p className="mt-6 text-caption text-ink-muted">{DISCLAIMER}</p>
-
-      <div className="mt-6">
+      <div className="mt-5">
         <button type="button" onClick={onBack} className={BTN_PRIMARY}>
           ← Back to mission
         </button>

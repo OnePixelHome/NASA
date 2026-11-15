@@ -3,6 +3,7 @@
 // under prefers-reduced-motion each scene shows its final still frame.
 import type { CSSProperties } from 'react'
 import type { Role } from '../engine/catalog'
+import { AiGeneratedLabel } from './components'
 import { RoleCharacter } from './Crew'
 
 const O = '#0B1026'
@@ -158,6 +159,7 @@ export function MissionScene({ step, name, orbit, color }: { step: number; name:
       <span className="absolute left-2.5 top-2.5 rounded-pill border border-space-border bg-space-page px-2.5 py-0.5 text-caption font-bold tabular-nums text-ink" aria-hidden>
         {n} · {name}
       </span>
+      <AiGeneratedLabel className="absolute bottom-2.5 right-2.5" />
     </div>
   )
 }
