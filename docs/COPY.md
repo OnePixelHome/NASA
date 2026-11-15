@@ -33,7 +33,7 @@ Shown when a player taps an option in the mission tree, above the "Why it works 
 | id | Title (`title`) | Brief (`story`) |
 | --- | --- | --- |
 | `crops` | Crop Watch | Track the health of farmland worldwide (up to 60° latitude) every couple of weeks. |
-| `storms` | Storm Watch | Follow hurricanes over the Americas with a new image every few minutes. |
+| `storms` | Storm Watch | Follow hurricanes over the Americas with a new image at least every 6 hours. |
 | `ice` | Polar Ice | Measure Arctic sea ice up to 80° latitude — including during the months-long polar night. |
 
 ## 3. Lessons — `src/engine/catalog.ts`, `SCENARIOS[].instrumentFit[].why`
