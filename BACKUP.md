@@ -1,5 +1,36 @@
 # BACKUP - NASA
 
+## 2026-11-15 (PC de José) — `main` integrado en la rama `belle` para destrabar el PR #20
+
+- El PR #20 de Belle chocaba con `main` en `AGENTS.md`, `BACKUP.md`, `docs/PITCH.md`, `docs/PROJECT_PAGE.md` y `docs/SUBMISSION.md`, porque los dos movimos los enlaces a `onepixelhome.github.io` a la vez. Se hizo merge de `main` en `belle` (sin force-push): en los conflictos se dejó la versión de Belle (repo público, enlaces confirmados, pitch centrado en los recursos, "Fly it") y en este archivo se conservaron todas las entradas.
+- El merge conserva lo de `main` que la rama no tenía: leaderboard activado (`LEADERBOARD_URL`), aviso de privacidad en `FOOTER_NOTES`, skills de Neon y CORS para `https://onepixelhome.github.io`.
+- `docs/SUBMISSION.md`: marcados como hechos el README con enlace al demo, la fuente de Pages en GitHub Actions, el sitio público, la prueba en celular (hecha por José), la prueba en un segundo navegador y la URL en README, About y página del proyecto.
+- Verificado: 70 tests, build y lint.
+
+## 2026-11-15 (PC de José) — Leaderboard en línea activado
+
+- José inició sesión en Neon y corrió `bash server/deploy.sh`: la función `leaderboard` está publicada en `https://br-nameless-bread-bc9remdp-leaderboard.compute.c-16.us-east-1.aws.neon.tech/` (deployment 2). También borró el proyecto vacío de São Paulo.
+- `LEADERBOARD_URL` apunta ahora a esa URL, así que el botón "Leaderboard" de la página de inicio y el formulario del scorecard ya se ven. Los ids de Postgres llegan como texto y se convierten a número en `src/leaderboard/api.ts` para marcar la fila propia ("you").
+- Aviso de privacidad: `FOOTER_NOTES` añade "Saving a score sends only the name you type and your mission design to our leaderboard (a Neon database)." Neon y `pg` añadidos a la tabla de herramientas de `docs/PROJECT_PAGE.md`; textos nuevos en `docs/COPY.md` §7.
+- Verificado contra la función real: CORS para `https://onepixelhome.github.io`, lectura, rechazo de nombres prohibidos y de diseños falsos, y un guardado con `"score": 100` falso que el servidor ignoró (guardó 86, el puntaje real). En Chrome, partida completa (Storm Watch, GEO) hasta el scorecard: el nombre prohibido muestra el error y "QA test crew" se guardó como "#1 of 2" con la fila marcada. Build, lint y 70 tests.
+- Con el visto bueno de José se borraron las dos filas de prueba ("Mission Control test" y "QA test crew"); el leaderboard queda vacío para el jurado.
+- Pendiente: revisión de textos por Belle.
+
+## 2026-11-15 (PC de José) — El repo pasó a `OnePixelHome/NASA`: URL nueva del juego
+
+- El repo se movió a la organización `OnePixelHome`. El juego ahora está en https://onepixelhome.github.io/NASA/ y la URL vieja (`belleavm.github.io/NASA`) da 404. GitHub redirige los push al repo nuevo.
+- Se actualizó la URL en `README.md`, `AGENTS.md`, `docs/PROJECT_PAGE.md`, `docs/SUBMISSION.md`, `docs/PITCH.md`, `server/README.md` y el comentario de `.github/workflows/deploy-pages.yml`. `docs/HANDOFF.md` y `docs/SUBMISSION-PLAN.md` quedan como registro histórico.
+- `server/leaderboard.ts`: CORS ahora acepta `https://onepixelhome.github.io` (con la URL vieja el leaderboard habría rechazado al juego). Aún no está desplegado, así que no hubo que redesplegar.
+
+## 2026-11-15 (PC de José) — Neon CLI y skills de Neon para Claude Code
+
+- Se siguió el skill oficial de Neon (https://neon.com/.well-known/agent-skills/neon/SKILL.md).
+- MCP de Neon: ya estaba disponible por el conector "claude.ai Neon" (OAuth, a nivel de cuenta). No se instaló otro para no duplicarlo; no se tocó ninguna configuración de MCP.
+- Neon CLI 9.5.0 instalado globalmente en la PC de José (`npm i -g neon`, por el espejo `registry.yarnpkg.com`). Es local de esta PC; no cambia el repo.
+- Skills `neon` y `neon-functions` instalados para Claude Code a nivel de proyecto: `.claude/skills/neon/`, `.claude/skills/neon-functions/` y `skills-lock.json` (fuente `neondatabase/agent-skills`). Solo Markdown, sin scripts. `.claude/settings.json` y los hooks no cambiaron.
+- Mantenimiento: `neon skills status` al empezar una sesión y `neon skills update -y` si hay versiones nuevas.
+- Pendiente: José inicia sesión con `neon login` (no lo puede hacer el agente) y corre `bash server/deploy.sh` para publicar el leaderboard.
+
 ## 2026-11-15 (Mac de Belle) — Repo movido a la organización One Pixel Home
 
 - Belle creó la organización `OnePixelHome` y el repo se transfirió de `belleavm/NASA` a **`OnePixelHome/NASA`** (`gh api repos/belleavm/NASA/transfer`). Es público, y el historial, las ramas y los PR se mantienen.

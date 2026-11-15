@@ -3,7 +3,7 @@
 import type { Choice } from '../engine/game'
 
 /** Kill switch: an empty URL hides every leaderboard button and form. */
-export const LEADERBOARD_URL = ''
+export const LEADERBOARD_URL = 'https://br-nameless-bread-bc9remdp-leaderboard.compute.c-16.us-east-1.aws.neon.tech/'
 export const leaderboardEnabled = Boolean(LEADERBOARD_URL)
 
 const TIMEOUT_MS = 6000
@@ -41,7 +41,9 @@ async function call(path: string, init?: RequestInit): Promise<Response | null> 
 export async function fetchBoard(scenarioId?: string): Promise<Board | null> {
   const res = await call(scenarioId ? `?scenario=${encodeURIComponent(scenarioId)}` : '')
   if (!res?.ok) return null
-  return (await res.json().catch(() => null)) as Board | null
+  const board = (await res.json().catch(() => null)) as Board | null
+  // Postgres bigint ids arrive as strings; normalize so comparisons with a saved id work.
+  return board && { ...board, entries: board.entries.map((e) => ({ ...e, id: Number(e.id) })) }
 }
 
 /** The server recomputes the score from the design; only the name, the design and the votes are sent. */
@@ -50,5 +52,5 @@ export async function saveScore(name: string, choice: Choice, goVotes: number): 
   if (!res) return { ok: false, error: 'The leaderboard is unavailable right now. Your game is not affected.' }
   const body = (await res.json().catch(() => null)) as { id: number; score: number; rank: number; total: number; error?: string } | null
   if (!res.ok || !body) return { ok: false, error: body?.error ?? 'The leaderboard is unavailable right now. Your game is not affected.' }
-  return { ok: true, id: body.id, score: body.score, rank: body.rank, total: body.total }
+  return { ok: true, id: Number(body.id), score: body.score, rank: body.rank, total: body.total }
 }

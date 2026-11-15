@@ -24,17 +24,17 @@ Whoever closes an item changes its status here and adds the evidence (link or da
       passwords and no `.env` files. Repeat it after the last merge.
 - [ ] The team is comfortable with what becomes visible: `BACKUP.md` and `AGENTS.md` are internal notes in Spanish and
       mention local folder paths. They contain no secrets, but judges will be able to read them.
-- [ ] `README.md` starts with the project description in English and links to the live demo.
+- [x] `README.md` starts with the project description in English and links to the live demo.
 - [ ] The repository description on GitHub is in English (today: "Proyecto personal NASA").
 
 ## Demo URL (item 2)
 
 - [x] `.github/workflows/deploy-pages.yml` runs `pnpm test` and `pnpm build` (base `/NASA/`) and publishes `dist` on every push to `main`.
-- [ ] Settings → Pages → Source is "GitHub Actions" (needs repo admin: Belle). The legacy branch source serves the raw `index.html` and the game does not load.
-- [ ] The Pages site is public, so judges are not asked to log in.
-- [ ] Tested on a real phone at about 390 px wide: no sideways scrolling, every button reachable with a thumb.
-- [ ] Tested in a second browser.
-- [ ] The URL is in the README, in the GitHub repository's "About" box and on the project page.
+- [x] Settings → Pages → Source is "GitHub Actions" (needs repo admin: Belle). The legacy branch source serves the raw `index.html` and the game does not load.
+- [x] The Pages site is public, so judges are not asked to log in (https://onepixelhome.github.io/NASA/).
+- [x] Tested on a real phone at about 390 px wide: no sideways scrolling, every button reachable with a thumb (José, 2026-11-15).
+- [x] Tested in a second browser: a full mission and a leaderboard save in Chrome, and the landing page in Edge (2026-11-15).
+- [x] The URL is in the README, in the GitHub repository's "About" box and on the project page.
 
 ## Video or slides (item 3)
 
