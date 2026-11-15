@@ -4,9 +4,10 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import type { MissionDay } from '../engine/missionDay'
 import { BTN_SECONDARY, SourceChips } from './components'
+import { DAY_ACT_SECONDS } from './film/timing'
 
-/** Seconds of real time for the 24-hour day. */
-const PLAY_SECONDS = 18
+/** Seconds of real time for the 24-hour day, the same as the film's day act. */
+const PLAY_SECONDS = DAY_ACT_SECONDS
 /** Draw one track point per minute; the engine samples every 20 s. */
 const DRAW_EVERY = 3
 
@@ -15,10 +16,13 @@ const Y = (latDeg: number) => 90 - latDeg
 const fmt = (n: number, d = 0) => n.toLocaleString('en-US', { maximumFractionDigits: d, minimumFractionDigits: d })
 const clock = (tS: number) => `${String(Math.floor(tS / 3600)).padStart(2, '0')}:${String(Math.floor((tS % 3600) / 60)).padStart(2, '0')}`
 
-export function DayView({ day, color, active }: { day: MissionDay; color: string; active: boolean }) {
+/** Pass syncIndex to follow another player (the mission film); without it the view runs its own clock. */
+export function DayView({ day, color, active, syncIndex }: { day: MissionDay; color: string; active: boolean; syncIndex?: number | null }) {
   const reduced = useMemo(() => typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches, [])
   const last = day.samples.length - 1
-  const [index, setIndex] = useState(reduced ? last : 0)
+  const [ownIndex, setIndex] = useState(reduced ? last : 0)
+  const synced = syncIndex !== undefined
+  const index = synced ? (syncIndex ?? 0) : ownIndex
   const [playing, setPlaying] = useState(!reduced)
   const startRef = useRef<{ at: number; from: number } | null>(null)
 
@@ -47,7 +51,7 @@ export function DayView({ day, color, active }: { day: MissionDay; color: string
   }, [day])
 
   useEffect(() => {
-    if (!active || !playing || reduced) return
+    if (!active || !playing || reduced || synced) return
     let frame = 0
     const tick = (now: number) => {
       if (!startRef.current) startRef.current = { at: now, from: index }
@@ -66,7 +70,7 @@ export function DayView({ day, color, active }: { day: MissionDay; color: string
     }
     // `index` is read only when a run starts; adding it would restart the clock on every frame.
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [active, playing, reduced, last])
+  }, [active, playing, reduced, synced, last])
 
   const s = day.samples[index]
   const done = index >= last
@@ -200,7 +204,7 @@ export function DayView({ day, color, active }: { day: MissionDay; color: string
       </p>
       <p className="text-caption text-ink-muted">A latitude and longitude plot, not a map: it shows where the spacecraft flies, not coastlines. {stationary ? 'A geostationary spacecraft stays over one point.' : 'Each lap lands further west because the Earth turns underneath.'}</p>
 
-      {!reduced && (
+      {!reduced && !synced && (
         <div className="flex flex-wrap gap-2">
           <button
             type="button"

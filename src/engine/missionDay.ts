@@ -33,6 +33,9 @@ export interface MissionDay {
   contactMin: number
   /** Ground station position; null for a continuous link, which has no single station. */
   station: { latDeg: number; lonDeg: number; reachDeg: number } | null
+  inclDeg: number
+  /** Distance from the Earth's centre to the spacecraft, in Earth radii (1 = the surface). */
+  orbitRadiusEarths: number
   /** How far from the point below it the spacecraft can see, as an angle at the Earth's centre. */
   viewDeg: number
   /** Highest latitude the mission must observe, and the highest the ground track reaches. */
@@ -119,6 +122,8 @@ export function missionDay(c: Choice): MissionDay | null {
     passes: continuous ? 'continuous' : (plan?.passes ?? 0),
     contactMin: continuous ? DAY_S / 60 : (plan?.contactSec ?? 0) / 60,
     station,
+    inclDeg: o.inclDeg,
+    orbitRadiusEarths: P.semiMajorKm(o.altKm) / P.RE_KM,
     viewDeg: P.horizonHalfAngleDeg(o.altKm),
     needLatDeg: s.needLatDeg,
     maxLatDeg: geo ? 0 : P.maxLatitudeDeg(o.inclDeg),

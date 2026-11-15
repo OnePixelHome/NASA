@@ -1,5 +1,16 @@
 # BACKUP - NASA
 
+## 2026-11-15 (PC de Edgar) — Película de la misión, renderizada cuadro a cuadro (`feat/mission-film`, PR sin merge, apilado sobre `feat/day-in-orbit`)
+
+- Edgar aclaró que quería ver la simulación como un video o una animación de juego, no como un gráfico. La pantalla 5 tiene ahora una película en canvas de 40 segundos, dibujada cuadro a cuadro con el diseño del jugador: (1) despegue del cohete elegido, con cuenta regresiva, humo y ascenso hasta el espacio; (2) la nave se separa y despliega sus paneles y antena; (3) primera imagen; (4 y 5) un día en órbita alrededor de la Tierra; (6) cierre.
+- La Tierra es una imagen real: NASA Earth Observatory, Blue Marble: Next Generation (agosto de 2004), reducida a 1024×512 en `src/assets/`. Se usa para el globo y para la "primera foto" (Groenlandia en Polar Ice, el medio oeste de EE. UU. en Crop Watch, el Caribe en Storm Watch). La página de NASA pide dar crédito a "NASA Earth Observatory"; el crédito aparece bajo la película, en About, en el README y en la página del proyecto. Nueva fuente `S12`.
+- El acto del día reproduce `missionDay()` del motor: la nave pasa sobre los mismos puntos, se oscurece exactamente cuando el motor dice que está en sombra, y el haz de datos aparece en las pasadas reales sobre la estación. La altura de la órbita está a escala (por eso la Tierra se ve pequeña en GEO). Tests en `src/ui/film/film.test.ts` comprueban esa coincidencia.
+- El gráfico "A day in orbit" queda debajo como telemetría y sigue el reloj de la película. Con `prefers-reduced-motion` no hay película: quedan las escenas fijas de Thais y el temporizador.
+- La estación de 35°N se movió de longitud −150 (caía en el Pacífico) a 0 (norte de África, en tierra). Con eso "Daily Pass" en SSO da 3 pasadas y 396 Gbit/día; ningún candado cambia y la prueba de balance pasa.
+- Los dibujos del cohete y la nave llevan la etiqueta "AI-generated"; la imagen de la Tierra no, porque es de NASA.
+- Verificado: 64 tests (9 nuevos), build, lint; cuadros capturados en Edge para SSO, LEO y GEO a 390 y 1280 px, a 120 cuadros por segundo, sin errores ni desbordes.
+- Pendiente: revisión de Edgar de los PR #16 y este; respuestas de los mentores.
+
 ## 2026-11-15 (PC de Edgar) — "A day in orbit": simulación visible y pasadas por geometría (`feat/day-in-orbit`, PR sin merge)
 
 - Se hizo merge de los PR #14 (Brief y Órbita) y #15 (About, equipo y etiqueta "AI-generated"). Se detuvo la revisión automática de PRs a pedido de Edgar.

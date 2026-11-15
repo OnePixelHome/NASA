@@ -46,12 +46,16 @@ simulation and a scorecard close the loop, so players can change one choice and 
    data downlink (Ground) and launch vehicle (Launch). An option that cannot work with the choices above it is locked,
    and tapping it shows why. Four live meters track budget, mass, power and data.
 4. **Go/No-Go poll.** Every role votes. A unanimous Go earns the full team score; launching over a No-Go costs points.
-5. **Mission simulation.** A short timeline plays the mission with the numbers of the chosen design.
+5. **Mission simulation.** A rendered film plays the player's own mission: their rocket lifts off, their spacecraft
+   unfolds its panels, takes a first picture, then circles a real image of the Earth for a day, dimming in Earth's
+   shadow and sending data down on each pass over the ground station. A timeline and a telemetry plot show the numbers.
 6. **Scorecard.** A 0–100 score split into science return, data delivered, budget and team, plus the primary constraint,
    the biggest point loss and a lesson. Players can revise the design and fly again.
 
 **How it works.** A small physics engine computes orbit period, eclipse time, reachable latitude, ground resolution and
-revisit time, ground-station contact time, transfer velocity and the rocket equation from the chosen design. Locks are
+revisit time, the ground track and ground-station passes over a turning Earth, transfer velocity and the rocket
+equation from the chosen design. The film and the locks use the same results, so what players watch is what the game
+scored. Locks are
 decided by those results, not by a lookup table. For example, a camera with 30 m pixels at 705 km would have about
 1.5 km pixels from geostationary altitude, so the game locks it there and says so.
 
@@ -80,6 +84,7 @@ and no player data is collected.
 | [NASA International Space Station FAQ](https://www.nasa.gov/?p=532244) | The 51.6° inclination of the Low Earth Orbit card, which is why that orbit never passes over the poles. |
 | [NASA CSLI, CubeSat 101](https://www.nasa.gov/wp-content/uploads/2017/03/nasa_csli_cubesat_101_508.pdf) | The budget rule. Page 13: "When possible, project reserves of at least 10% should be part of the budget to address any unexpected events." The game warns and removes points when a design eats into that reserve. |
 | [NASA, Design and Develop Science Missions](https://www.nasa.gov/wp-content/uploads/2025/04/250323-design-and-develop-science-mission.pdf) | The four mission segments (Launch, Space, Ground, User), used as the four team roles. |
+| [NASA Earth Observatory, Blue Marble: Next Generation](https://science.nasa.gov/earth/earth-observatory/blue-marble-next-generation/) | The image of the Earth in the mission film (August 2004, with topography and bathymetry), and the spacecraft's first picture. Credit: NASA Earth Observatory. |
 
 Resources from the challenge page that shaped the design but supply no game value: JPL Concept Maturity Levels and the
 GSFC Mission Design Lab (the brief → trade → point design → review flow), and the Webb "Build It Yourself" game
