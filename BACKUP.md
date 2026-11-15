@@ -1,5 +1,11 @@
 # BACKUP - NASA
 
+## 2026-11-15 (Mac de Belle) — Pitch: cierre sin "for free" y capturas para el video
+
+- Belle pidió quitar "for free". El cierre del video queda así: "Learn to manage a real mission — on any phone." Se cambió en el guion, en los subtítulos y en la frase del pitch de `docs/PITCH.md`. El guion baja a unas 70 palabras.
+- Capturas de respaldo para el video: 29 PNG en tamaño iPhone (1170×2532), tomadas del simulador público con Chrome headless controlado por DevTools Protocol. Incluyen recortes de la película y una guía que dice qué captura va con cada línea del guion. Están en `~/Desktop/Status GO - pitch screens/` (fuera del repo), junto con el script `capture.mjs`, que permite volver a tomarlas.
+- Pendiente: la página de inicio todavía dice "the game calculates…" (`PITCH` en `src/engine/sources.ts`). Si se cambia a "simulator", hay que volver a tomar las capturas `01` y `03`.
+
 ## 2026-11-15 (PC temporal de Edgar) — Los valores de los mentores salen de fuentes publicadas (S13–S19)
 
 - Respuesta del mentor: es un prototipo, no hace falta tanta precisión y ellos tampoco tienen esos datos. Hay que tomarlos de NASA o de otras agencias nacionales o internacionales, e indicar esas fuentes en la entrega; deben ser oficiales y verificables.
