@@ -149,8 +149,7 @@ orbit and resources your mission needs to succeed."
   → switch to SSO → radar + hybrid power turn green → Go/No-Go → score 86.
 - 22–30 s: "Built on NASA orbital data and Landsat 9 parameters. Trajectory Ladder — every choice has a consequence."
 
-**AI disclosure (project page):** "Code scaffolding, the physics engine and documentation were drafted with Claude (Anthropic)
-and reviewed, tested and adapted by the team. Physics formulas are covered by automated tests; illustrative values are labelled in the game."
+**AI disclosure (project page and About screen; updated Sat night to cover the visual design):** "Code scaffolding, the physics engine and documentation were drafted with Claude (Anthropic). The visual design and illustrations were drafted with Claude Design (Anthropic). All of it was reviewed, tested and adapted by the team. Physics formulas are covered by automated tests; illustrative values are labelled in the game."
 
 **Sources:** S1 NASA Earth Fact Sheet · S2 NASA CubeSat 101 · S3 NASA Design and Develop Science Missions · S6 NASA Landsat 9 ·
 S9 NASA SST State-of-the-Art Communications · S10 NASA ISS FAQ (URLs in `src/engine/sources.ts` and README).
