@@ -93,7 +93,7 @@ describe('sources (every number shown carries one)', () => {
     const card = evaluateMission(full, 4)
     // Landsat 9 orbit and lifetime [S6], constants [S1], roles [S3], reserve rule [S2] — but not the ISS source: this path never uses LEO.
     // S12: the Earth image in the mission film. S15: battery depth of discharge in a low orbit. S19: Earth's spin, lost by a polar launch.
-    expect(card.sources).toEqual(['S1', 'S2', 'S3', 'S6', 'S12', 'S15', 'S19', 'PHYS', 'GAME'])
+    expect(card.sources).toEqual(['S1', 'S2', 'S3', 'S6', 'S9', 'S12', 'S15', 'S19', 'PHYS', 'GAME']) // S9: the chosen downlink can carry the data
     const leo = evaluateMission({ scenarioId: 'crops', orbitId: 'leo', instrumentId: 'multispectral', powerId: 'standard', downlinkId: 'daily', launchId: 'small' }, 4)
     expect(leo.sources).toContain('S10')
   })
@@ -336,10 +336,17 @@ describe('CubeSat 101 lessons in lock reasons [S2]', () => {
     expect(more[1].cite).toContain('p. iv')
   })
 
-  it('every locked downlink cites the ground-station warning; open ones do not', () => {
+  it('every locked downlink cites the ground-station warning; every open one cites the high-data-rate guidance instead', () => {
     const dl = nodes('downlink', (c) => C.POWER.map((p) => ({ ...c, powerId: p.id })))
     expect(dl.some((n) => !n.ok)).toBe(true)
-    for (const n of dl) expect(citesS2(n)).toBe(!n.ok)
+    for (const n of dl) {
+      expect(citesS2(n)).toBe(!n.ok)
+      expect(n.reasons.some((r) => reasonSources(r).includes('S9'))).toBe(n.ok)
+      // The quote is word for word, and the capacity line keeps its own tags: the rate is not attributed to S9.
+      for (const r of n.reasons.filter((r) => r.source === 'S9')) expect(r.text).toContain(SOURCES.S9.quote!)
+      for (const r of n.reasons.filter((r) => r.text.includes('Gbit'))) expect(reasonSources(r)).not.toContain('S9')
+    }
+    expect(dl.some((n) => n.ok)).toBe(true)
   })
 
   it('fixed body panels that cannot power the spacecraft cite deployable panels; deployable ones never do', () => {

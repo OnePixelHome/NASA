@@ -57,9 +57,13 @@ export const SOURCES: Record<SourceId, Source> = {
   },
   S9: {
     id: 'S9',
-    title: 'NASA Small Spacecraft Technology State-of-the-Art — Communications',
+    title: 'NASA Small Spacecraft Technology State-of-the-Art — Communications (high data rates call for X-band and a high-gain antenna)',
     url: 'https://www.nasa.gov/smallsat-institute/sst-soa/communications',
-    use: 'Background reading on spacecraft radio links. No game value is taken from it yet.',
+    use: 'Why the Data downlink tier offers fast radio links to ground stations: a mission with a lot of data picks a high-frequency link. Shown when a downlink can carry the data. The data rates themselves stay illustrative values.',
+    // Verified against the page text on 2026-11-15 (2025 edition of the chapter).
+    cite: 'Section 9.2.4, Design Considerations',
+    quote: 'a mission with high data rate needs would select a high frequency such as X-band for downlink and a directional high-gain antenna',
+    more: [{ cite: 'Section 9.2.1, Frequency Bands', quote: 'NASA spacecraft, which use the government bands of S-band, X-band, and Ka-band, may use the NASA Near Space Network (NSN).' }],
   },
   S10: {
     id: 'S10',

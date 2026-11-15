@@ -204,8 +204,11 @@ function downlinkNode(o: C.Orbit, ins: C.Instrument, dl: C.Downlink): NodeState 
   const reasons: Reason[] = [cap.note]
   if (cap.gbitPerDay > 0 && !ok)
     reasons.push(reason(`Only ${fmt((100 * cap.gbitPerDay) / ins.dataGbitPerDay)}% of the ${fmt(ins.dataGbitPerDay)} Gbit collected per day reaches Earth.`, 'GAME', 'PHYS'))
-  if (ok) reasons.push(reason(`${fmt(cap.gbitPerDay)} Gbit/day capacity ≥ ${fmt(ins.dataGbitPerDay)} Gbit/day collected.`, 'GAME', 'PHYS'))
-  else reasons.push(reason(`NASA's CubeSat 101 warns: "Launching with an inadequate ground station is a mission killer."`, 'S2'))
+  if (ok) {
+    reasons.push(reason(`${fmt(cap.gbitPerDay)} Gbit/day capacity ≥ ${fmt(ins.dataGbitPerDay)} Gbit/day collected.`, 'GAME', 'PHYS'))
+    // Why the link is a fast one; the rate itself is a game value and is not attributed to this source.
+    reasons.push(reason(`NASA's small spacecraft guide: "a mission with high data rate needs would select a high frequency such as X-band for downlink and a directional high-gain antenna".`, 'S9'))
+  } else reasons.push(reason(`NASA's CubeSat 101 warns: "Launching with an inadequate ground station is a mission killer."`, 'S2'))
   return { id: dl.id, name: dl.name, tip: dl.tip, ok, reasons, facts: [`${fmt(cap.gbitPerDay)} Gbit/day`, `$${downlinkCostPerYear(o, dl)}M/yr`], factsSource: 'GAME' }
 }
 
