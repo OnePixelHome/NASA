@@ -1,5 +1,11 @@
 # BACKUP - NASA
 
+## 2026-11-15 (PC de José) — El repo pasó a `OnePixelHome/NASA`: URL nueva del juego
+
+- El repo se movió a la organización `OnePixelHome`. El juego ahora está en https://onepixelhome.github.io/NASA/ y la URL vieja (`belleavm.github.io/NASA`) da 404. GitHub redirige los push al repo nuevo.
+- Se actualizó la URL en `README.md`, `AGENTS.md`, `docs/PROJECT_PAGE.md`, `docs/SUBMISSION.md`, `docs/PITCH.md`, `server/README.md` y el comentario de `.github/workflows/deploy-pages.yml`. `docs/HANDOFF.md` y `docs/SUBMISSION-PLAN.md` quedan como registro histórico.
+- `server/leaderboard.ts`: CORS ahora acepta `https://onepixelhome.github.io` (con la URL vieja el leaderboard habría rechazado al juego). Aún no está desplegado, así que no hubo que redesplegar.
+
 ## 2026-11-15 (PC de José) — Neon CLI y skills de Neon para Claude Code
 
 - Se siguió el skill oficial de Neon (https://neon.com/.well-known/agent-skills/neon/SKILL.md).

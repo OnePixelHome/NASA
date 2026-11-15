@@ -33,7 +33,7 @@ leaving ~3 s of buffer. Read it aloud with a stopwatch before recording.
 | 0:20–0:30 | "Built on NASA orbital data, it lets any student think like a mission engineer — on any phone, for free." | Scorecard **86/100** → Earth from the film → play URL | — |
 
 **Recording notes**
-- Record the simulator from the **public URL** (https://belleavm.github.io/NASA/), not a local build.
+- Record the simulator from the **public URL** (https://onepixelhome.github.io/NASA/), not a local build.
 - Phone-shaped recording (390 px wide) reads best; zoom in on the lock reason so "511 m per pixel" is legible.
 - Gemini Flow clips: no NASA logos, no real mission markings, no flags. Watermark every clip.
 - HeyGen voice is synthetic → write "Voice and avatar: AI-generated (HeyGen)" in the YouTube description and in the file metadata.
@@ -141,7 +141,7 @@ Big type, few words, one visual per slide. Speaker notes are for a live pitch; t
 
 ### Slide 7 — What's next
 - More orbits (Molniya), Moon and Mars missions, a teacher mode with lesson plans, real-time multiplayer on separate phones
-- **Play it:** https://belleavm.github.io/NASA/ · **Code:** github.com/belleavm/NASA (MIT)
+- **Play it:** https://onepixelhome.github.io/NASA/ · **Code:** github.com/OnePixelHome/NASA (MIT)
 - *Built with help from SI tools (Claude, Claude Design, ChatGPT, HeyGen, Gemini Flow); reviewed and tested by the team. Not affiliated with or endorsed by NASA.*
 - Visual: QR code to the simulator
 

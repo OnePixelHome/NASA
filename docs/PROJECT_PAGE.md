@@ -33,7 +33,7 @@ simulation and a scorecard close the loop, so players can change one choice and 
 
 ## Link to final project
 
-**TODO:** confirm the public game URL (https://belleavm.github.io/NASA/) works, and add the public repository URL.
+**TODO:** confirm the public game URL (https://onepixelhome.github.io/NASA/) works, and add the public repository URL.
 
 ## Detailed description
 

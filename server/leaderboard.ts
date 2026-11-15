@@ -11,13 +11,13 @@ const pool = new Pool({ connectionString: process.env.DATABASE_URL, max: 5 })
 // An idle client dropped by scale-to-zero must not crash the function; the pool reconnects on the next query.
 pool.on('error', () => {})
 
-const ORIGINS = new Set(['https://belleavm.github.io', 'http://localhost:5173', 'http://localhost:4173'])
+const ORIGINS = new Set(['https://onepixelhome.github.io', 'http://localhost:5173', 'http://localhost:4173'])
 const TOP = 20
 const POSTS_PER_MINUTE = 6
 const recent = new Map<string, number[]>()
 
 function cors(origin: string | null): Record<string, string> {
-  const allow = origin && ORIGINS.has(origin) ? origin : 'https://belleavm.github.io'
+  const allow = origin && ORIGINS.has(origin) ? origin : 'https://onepixelhome.github.io'
   return { 'Access-Control-Allow-Origin': allow, 'Access-Control-Allow-Methods': 'GET, POST, OPTIONS', 'Access-Control-Allow-Headers': 'content-type', Vary: 'Origin' }
 }
 
