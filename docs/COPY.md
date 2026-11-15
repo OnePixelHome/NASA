@@ -110,6 +110,13 @@ These strings sit in the screen code. Edit only the words; leave tags, braces an
 | Header (`App`) | Status: GO |
 | Header (`App`) | Design a space mission. Watch every choice ripple down. |
 | Header (`App`) | About / ← Back / Resources |
+| Landing (`Home`) | NASA Space Apps Challenge 2026 · Space Mission Design Game |
+| Landing (`Home`) | Status: GO (pitch below it is `PITCH`; the steps are `HOW_TO_PLAY`) |
+| Landing (`Home`) | Start mission → / About & sources |
+| Landing (`Home`) | 1 to 4 players on one screen · no sign-up |
+| Landing (`Home`) | How to play |
+| Landing (`Home`) | Made by team One Pixel Home. Not affiliated with or endorsed by NASA. |
+| Landing (`Home`) | Earth image: NASA Earth Observatory, Blue Marble: Next Generation. |
 | 1 (`Brief`) | 1 · Pick your mission |
 | 1 (`Brief`) | Every mission starts with a science goal. It decides what “success” means. |
 | 2 (`OrbitPick`) | 2 · Choose a trajectory |

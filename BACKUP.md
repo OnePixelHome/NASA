@@ -1,5 +1,13 @@
 # BACKUP - NASA
 
+## 2026-11-15 (PC de José) — Página de inicio
+
+- Pedido de José: una página principal con el nombre del juego y un botón para empezar. Nueva pantalla `home` (sin número de paso) antes del Brief, en `src/App.tsx` (`Home`): etiqueta del reto, "Status: GO" grande con "GO" en amarillo, `PITCH`, botón "Start mission →", botón "About & sources", "1 to 4 players on one screen · no sign-up", los cuatro pasos de `HOW_TO_PLAY` y un pie con el equipo, el aviso de no afiliación y el crédito de la imagen de NASA.
+- Nuevo `src/ui/HomeHero.tsx`: la Tierra (Blue Marble, S12) girando dentro de un disco, con la órbita inclinada del favicon y un satélite que la recorre. Dibujo propio más imagen de NASA, así que no lleva la etiqueta "AI-generated". Con `prefers-reduced-motion` todo queda quieto (la animación se quita, no se acelera). Animación `home-spin` en `src/index.css`.
+- El nombre del encabezado vuelve a la página de inicio; en la página de inicio el encabezado no lo repite. "Replay mission" en el scorecard sigue yendo directo al Brief.
+- Verificado: 67 tests, build y lint en local (se instaló con `--registry=https://registry.yarnpkg.com/` porque esta red no llega a registry.npmjs.org); capturas en Edge a 390 px (en un iframe: Edge headless no baja de 518 px de ancho) y 1280 px, sin desbordes; en celular el botón "Start mission" queda en la primera pantalla.
+- Textos nuevos añadidos a `docs/COPY.md` §7 para la revisión de Belle.
+
 ## 2026-11-15 (PC de José) — El juego se llama "Status: GO" (antes "Trajectory Ladder")
 
 - José aclaró que "Status: GO" es el nombre completo del juego, no de la pantalla 5. Se revirtió el cambio de título de la pantalla 5 (vuelve a "5 · Mission simulation") y se renombró el juego en todo lo que ve el jugador o el jurado: encabezado y su `aria-label`, título de la pestaña (`index.html`), "What is Status: GO?" en About, `DISCLAIMER` (`src/engine/sources.ts`), título del favicon y README.
