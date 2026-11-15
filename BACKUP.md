@@ -1,5 +1,11 @@
 # BACKUP - NASA
 
+## 2026-11-15 (Mac de Belle) — Se desconecta Azure Static Web Apps (`chore/remove-azure`)
+
+- El commit `638eec1` agregó un workflow de Azure Static Web Apps que falló en cada push a `main`: buscaba la carpeta `build`, pero Vite compila en `dist`. El equipo publica solo en GitHub Pages, así que Belle pidió desconectar Azure.
+- Se desactivó el workflow "Azure Static Web Apps CI/CD" en GitHub, se canceló la ejecución que estaba corriendo, se borró el secreto `AZURE_STATIC_WEB_APPS_API_TOKEN_VICTORIOUS_PEBBLE_0FCF34B10` y, en esta rama, se borró `.github/workflows/azure-static-web-apps-victorious-pebble-0fcf34b10.yml`. "Deploy to GitHub Pages" no se tocó.
+- Pendiente (Belle): borrar en el portal de Azure el recurso Static Web App `victorious-pebble-0fcf34b10`. Desde aquí no hay acceso a Azure.
+
 ## 2026-11-15 (PC de José) — Favicon propio
 
 - `public/favicon.svg` reemplaza el rayo de la plantilla de Vite: planeta azul con tierras verdes, órbita inclinada en el ámbar de SSO y un satélite sobre la órbita, sobre el fondo `space-page`. Dibujo original, sin marcas de NASA; revisado en Edge a 200, 32 y 16 px.
