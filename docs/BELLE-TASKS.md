@@ -26,7 +26,7 @@ Branch: `belle` → PR into `main`. Every commit must include `BACKUP.md` (the p
   - Crop Watch: up to 60° latitude, revisit ≈ 16 days, global.
   - Storm Watch: up to 40° latitude, regional (the Americas).
   - Polar Ice: up to 80° latitude, revisit ≈ 3 days, works in polar night.
-- [ ] **Fix the Storm Watch inconsistency.** The story says "a new image every few minutes", but the engine target is `targetRevisitDays: 0.25` (6 hours). Decide with Edgar which one is true, and make the text match the number.
+- [x] (done 2026-11-15: the story now says "at least every 6 hours", matching the engine) **Fix the Storm Watch inconsistency.** The story says "a new image every few minutes", but the engine target is `targetRevisitDays: 0.25` (6 hours). Decide with Edgar which one is true, and make the text match the number.
 - [ ] Keep each brief to one or two sentences: it's the first screen judges see.
 
 ### 1c. Lessons (`why` in `instrumentFit`)

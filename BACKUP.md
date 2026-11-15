@@ -10,6 +10,14 @@
 - Pedido de Belle: el "GO" de "Status: GO" en el título de la página de inicio pasó de peso 400 a 600 (`font-semibold`, en `src/App.tsx`). Fredoka 600 ya venía incluida, así que no se carga ninguna fuente nueva. El resto del título no cambia.
 - Verificado: 73 tests, lint y build. La comparación antes/después se capturó a tamaño celular.
 - Si cambia la página de inicio, hay que volver a tomar las capturas `01` y `03` para el video.
+## 2026-11-15 (PC temporal de Edgar) — El brief de Storm Watch coincide con el motor
+
+- El brief decía "a new image every few minutes", pero el requisito que mide el motor es una revisita cada 6 horas (`targetRevisitDays: 0.25`) y así lo muestran las fichas de requisitos ("6 h"). Se cambió el texto, no el valor, para no tocar el puntaje ni el balance: "Follow hurricanes over the Americas with a new image at least every 6 hours." (`src/engine/catalog.ts`, `docs/COPY.md` §2; ítem marcado en `docs/BELLE-TASKS.md`).
+- La lección del Weather Imager ("sees storms evolve minute by minute") no cambia: describe lo que logra GEO, no el requisito.
+- La sección "Use of AI" del README ya coincidía con About; no hizo falta tocarla. La descripción del repo en GitHub se cambia aparte (no es un archivo).
+- Verificado: tests, build y lint.
+- Pendiente: si el video o las capturas del pitch muestran el brief de Storm Watch, volver a tomarlas; revisión de Belle del texto nuevo.
+
 ## 2026-11-15 (Mac de Belle) — Se reconecta Azure Static Web Apps (`ci/reconnect-azure`)
 
 - Belle pidió volver a conectar Azure. El recurso `victorious-pebble-0fcf34b10` sigue vivo (https://victorious-pebble-0fcf34b10.6.azurestaticapps.net/ responde 200, con la página de espera de Azure), así que no se creó uno nuevo.

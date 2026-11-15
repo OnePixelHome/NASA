@@ -47,7 +47,7 @@ export const SCENARIOS: Scenario[] = [
   {
     id: 'storms',
     title: 'Storm Watch',
-    story: 'Follow hurricanes over the Americas with a new image every few minutes.',
+    story: 'Follow hurricanes over the Americas with a new image at least every 6 hours.',
     needLatDeg: 40,
     coverage: 'regional',
     targetRevisitDays: 0.25,
