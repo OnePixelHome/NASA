@@ -6,6 +6,8 @@ import { AI_DISCLOSURE, AI_IMAGES_NOTE, DISCLAIMER, FOOTER_NOTES, HOW_TO_PLAY, P
 import { RoleCharacter } from './ui/Crew'
 import { DayView } from './ui/DayView'
 import { HomeHero } from './ui/HomeHero'
+import { leaderboardEnabled } from './leaderboard/api'
+import { LeaderboardScreen, SaveScore } from './ui/Leaderboard'
 import { MissionArt, OrbitDiagram } from './ui/MissionArt'
 import { MissionFilm, type FilmProgress } from './ui/MissionFilm'
 import { MissionScene } from './ui/MissionScene'
@@ -13,9 +15,9 @@ import { ShipSvg } from './ui/Ship'
 import { ROLE_UI, shipParts } from './ui/theme'
 import { AiGeneratedLabel, Bar, BTN_GO, BTN_PRIMARY, BTN_SECONDARY, BTN_WARNING, Gauge, Meter, ReasonList, ResourcePanel, RoleTag, SourceChip, SourceChips, Sourced } from './ui/components'
 
-type Screen = 'home' | 'brief' | 'orbit' | 'tree' | 'go' | 'run' | 'score'
-/** The landing page is not a step, so it has no number. */
-type Step = Exclude<Screen, 'home'>
+type Screen = 'home' | 'board' | 'brief' | 'orbit' | 'tree' | 'go' | 'run' | 'score'
+/** The landing page and the leaderboard are not steps, so they have no number. */
+type Step = Exclude<Screen, 'home' | 'board'>
 const SCREEN_NUMBER: Record<Step, number> = { brief: 1, orbit: 2, tree: 3, go: 4, run: 5, score: 6 }
 const ORBIT_COLOR: Record<string, string> = { leo: 'var(--color-orbit-leo)', sso: 'var(--color-orbit-sso)', geo: 'var(--color-orbit-geo)' }
 
@@ -107,7 +109,8 @@ export default function App() {
         </main>
       )}
       <main className="mx-auto max-w-5xl px-4 pb-24 pt-5" hidden={about}>
-        {screen === 'home' && <Home onStart={() => setScreen('brief')} onAbout={() => setAbout(true)} />}
+        {screen === 'home' && <Home onStart={() => setScreen('brief')} onAbout={() => setAbout(true)} onLeaderboard={() => setScreen('board')} />}
+        {screen === 'board' && <LeaderboardScreen onBack={() => setScreen('home')} onStart={() => setScreen('brief')} />}
         {screen === 'brief' && (
           <Brief
             onPick={(id) => {
@@ -175,7 +178,7 @@ function Notice({ kind, children }: { kind: 'warning' | 'error'; children: React
 }
 
 /** Landing page: the game's name, what it is, and one button to start. */
-function Home({ onStart, onAbout }: { onStart: () => void; onAbout: () => void }) {
+function Home({ onStart, onAbout, onLeaderboard }: { onStart: () => void; onAbout: () => void; onLeaderboard: () => void }) {
   return (
     <section className="flex flex-col gap-10">
       <div className="grid items-center gap-6 lg:grid-cols-[minmax(0,1fr)_320px] lg:gap-10">
@@ -189,6 +192,11 @@ function Home({ onStart, onAbout }: { onStart: () => void; onAbout: () => void }
             <button type="button" onClick={onStart} className={`${BTN_GO} min-h-[56px] px-8 text-[1.125rem]`}>
               Start mission →
             </button>
+            {leaderboardEnabled && (
+              <button type="button" onClick={onLeaderboard} className={BTN_SECONDARY}>
+                Leaderboard
+              </button>
+            )}
             <button type="button" onClick={onAbout} className={BTN_SECONDARY}>
               About & sources
             </button>
@@ -810,6 +818,7 @@ function Score({ choice, goVotes, onReplay, onRevise }: { choice: Choice; goVote
         <Insight title="Biggest impact" reason={card.biggestImpact} />
         <Insight title="Lesson learned" reason={card.lesson} />
       </div>
+      {leaderboardEnabled && <SaveScore choice={choice} goVotes={goVotes} />}
       <details className={`${CARD} mt-4 p-3.5 text-small`}>
         <summary className="min-h-[44px] cursor-pointer content-center font-display text-card">Sources & assumptions</summary>
         <ul className="mt-2 flex flex-col gap-2 text-ink-2">

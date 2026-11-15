@@ -1,5 +1,15 @@
 # BACKUP - NASA
 
+## 2026-11-15 (PC de José) — Leaderboard en línea (código listo, falta desplegar la función)
+
+- Pedido de José: tabla de puntajes compartida entre jugadores, pidiendo el nombre antes de guardar. Se eligió "en línea, compartida" (no solo en el dispositivo).
+- Base de datos: proyecto Neon `status-go-leaderboard-use1` (`crimson-shadow-12546769`, aws-us-east-1), tabla `scores` con CHECK de largo de nombre (2–24), puntaje 0–100 y votos 0–4, e índice por puntaje. Se creó primero `status-go-leaderboard` en aws-sa-east-1 pero Neon Functions no corre en esa región; quedó vacío y falta decidir si se borra.
+- API: `server/leaderboard.ts` (Neon Function `leaderboard`). GET devuelve los 20 mejores (filtro opcional por misión) y el total; POST recibe nombre, diseño y votos, **recalcula el puntaje con `evaluateMission()`** (el cliente nunca manda el puntaje), valida ids del catálogo, limita a 6 guardados por minuto por IP y responde el puesto. CORS solo para `https://belleavm.github.io` y local. `DATABASE_URL` lo inyecta Neon: no hay secretos en el repo.
+- Reglas de nombre compartidas en `src/leaderboard/name.ts` con tests: letras de cualquier idioma, dígitos y `. ' _ -`, lista corta de insultos en inglés y español (sin palabras que aparecen en nombres reales como Conor o Maricarmen).
+- Juego: `src/leaderboard/api.ts` (tiempo límite de 6 s; si falla, solo se avisa que el leaderboard no está disponible) y `src/ui/Leaderboard.tsx`: en el scorecard, formulario "Who flew this mission?" y, tras guardar, "You are #N of M" con la tabla (todas las misiones o por misión); botón "Leaderboard" en la página de inicio con su pantalla.
+- Interruptor: `LEADERBOARD_URL` vacío oculta todo. Queda vacío hasta desplegar la función.
+- Pendiente: José corre `bash server/deploy.sh` (pide iniciar sesión en Neon en el navegador; no se pudo hacer desde Claude); luego poner la URL en `LEADERBOARD_URL`, probar desde el sitio publicado y actualizar el aviso de privacidad y la tabla de herramientas de `docs/PROJECT_PAGE.md`.
+
 ## 2026-11-15 (Mac de Belle, rama `belle`) — Pull de main y rescate del trabajo local
 
 - `belle` avanzó de `8a4c4e5` a `07fdc3c` (PR #1 a #15) después a `eef686d` (PR #16 y #17, despliegue en GitHub Pages) y después a `a005892` (renombre a "Status: GO" y página de inicio, hechos por el equipo). Antes se guardó el trabajo local sin commitear en un stash: `belle local 2026-11-14: tooltip drafts, task checklist, submission plan`.
