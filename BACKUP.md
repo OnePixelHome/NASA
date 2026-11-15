@@ -1,5 +1,10 @@
 # BACKUP - NASA
 
+## 2026-11-15 (Mac de Belle) — Video del pitch fuera del repo
+
+- El commit `5b51c2e` (PR #24) incluyó por error `video/pitch-video.mp4` (34 MB), porque se hizo `git add -A` con ese archivo recién puesto en la carpeta. Se quitó del repo con `git rm --cached` y se agregó `video/` a `.gitignore`. El archivo sigue en el disco de Belle y en `~/Desktop/Status GO - video/1-pitch (HeyGen)/`; también sigue en el historial de git.
+- Edición del video: el pitch de HeyGen dura 28,0 s y es horizontal (1920×1080), con subtítulos ya incluidos. La grabación de pantalla del celular dura 3:39. La lista de cortes está en `~/Desktop/Status GO - video/EDIT-PLAN.md`. Falta agregar la etiqueta "AI-generated" y tapar el parche redondo del traje del avatar. Se instaló `ffmpeg` con Homebrew para editar.
+
 ## 2026-11-15 (PC temporal de Edgar) — Uso de IA por persona en la página del proyecto
 
 - Edgar confirmó quién usó qué: José y Edgar usaron Claude; Belle y Thais usaron HeyGen y ChatGPT.
