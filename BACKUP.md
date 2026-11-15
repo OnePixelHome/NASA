@@ -1,5 +1,11 @@
 # BACKUP - NASA
 
+## 2026-11-15 (Mac de Belle) — Página del proyecto lista salvo el enlace del video
+
+- `docs/PROJECT_PAGE.md`: se cerraron dos TODO. (1) Herramientas del video y de las diapositivas: HeyGen, Claude Code (edición con AVFoundation y diapositivas con Pillow), fuentes del sistema macOS (Arial Rounded Bold, Arial), Miro y efectos de sonido sintetizados por el script (sin audio ni música de terceros). (2) Uso de SI: lo de ChatGPT y HeyGen sale de lo que dijo Belle; se agregó la fila de Claude Code (guion, diapositivas y edición del video). En el resumen y en la descripción, "game" pasó a "simulator".
+- Solo falta el TODO del enlace del video, que se completa cuando Belle lo suba a YouTube.
+- Tablero de Miro "NASA Space Apps Template": se borró todo el contenido de la plantilla y quedaron solo las 7 diapositivas, bloqueadas.
+
 ## 2026-11-15 (Mac de Belle) — About: equipo, aviso de NASA y uso de SI en otro orden
 
 - Pedido de Belle: en About (`src/App.tsx`, `About`), las tres cajas del final de la columna derecha van ahora en este orden: "Team · One Pixel Home", "Not affiliated with NASA" y "Use of SI (Super Intelligence)". Antes era SI, NASA y equipo. Siguen debajo de "NASA and partner agency data and resources" (Belle eligió dejar las fuentes arriba). En celular, con una sola columna, aparecen en ese mismo orden después de las fuentes. Ningún texto cambió.
