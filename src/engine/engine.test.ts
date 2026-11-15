@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest'
 import * as P from './physics'
 import * as C from './catalog'
 import { budget, choose, evaluateMission, missionRequirements, orbitStats, resources, TEAM_POINTS_MAX, teamPoints, tierOptions, type Choice } from './game'
-import { AI_DISCLOSURE, reasonSources, SOURCES } from './sources'
+import { AI_DISCLOSURE, DISCLAIMER, HOW_TO_PLAY, reasonSources, SOURCES, TEAM } from './sources'
 
 const orbit = (id: string) => C.byId(C.ORBITS, id)!
 
@@ -216,6 +216,17 @@ describe('About screen content', () => {
       expect(s.use.length).toBeGreaterThan(20)
       if (s.id.startsWith('S')) expect(s.url).toMatch(/^https:\/\/.*nasa\.gov\//)
     }
+  })
+  it('names the four team members and gives each a different crew character', () => {
+    expect(TEAM.map((t) => t.name)).toEqual(['Edgar Cardona', 'José Gómez', 'Thais Rodríguez', 'Belle Vásquez Machado'])
+    expect(new Set(TEAM.map((t) => t.role)).size).toBe(4)
+    for (const t of TEAM) expect(t.name).not.toContain('[')
+  })
+  it('explains the game in four steps and says who is, and is not, behind it', () => {
+    expect(HOW_TO_PLAY).toHaveLength(4)
+    for (const s of HOW_TO_PLAY) expect(s.text.length).toBeLessThanOrEqual(90)
+    expect(DISCLAIMER).toContain('not affiliated with or endorsed by NASA')
+    expect(AI_DISCLOSURE).toContain('Claude Design (Anthropic)')
   })
   it('carries the AI-use disclosure required by the Space Apps rules', () => {
     expect(AI_DISCLOSURE).toContain('Claude (Anthropic)')

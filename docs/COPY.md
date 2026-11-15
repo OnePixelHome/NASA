@@ -115,7 +115,11 @@ These strings sit in the screen code. Edit only the words; leave tags, braces an
 | 2 (`OrbitPick`) | 2 · Choose a trajectory |
 | 2 (`OrbitPick`) | Bars are illustrative values for educational purposes, derived from the physics below. |
 | 2 (`OrbitPick`) | Bar labels: Fuel cost / Coverage / Lifetime |
+| 1 (`Brief`) | Pick the goal first. Its numbers are what your design will be scored against. |
+| 1 (`Brief`) | Mission requirements / Budget |
 | 2 (`OrbitPick`) | Fixed view of one hemisphere |
+| 2 (`OrbitPick`) | Tap to choose / ✓ Selected / Sources |
+| 2 (`OrbitPick`) | Why this matters · Higher orbits see more of Earth at once and last longer, but cost more fuel to reach. Check each card’s latitude reach against your mission’s numbers. |
 | 3 (`Tree`) | 3 · Build the mission tree |
 | 3 (`Tree`) | Each choice can lock the ones below it. Tap a locked option to see why. |
 | 3 (`Tree`) | ○ Available / ◉ Selected / Orbit · tap to change / … of 4 steps chosen. |
@@ -147,6 +151,24 @@ These strings sit in the screen code. Edit only the words; leave tags, braces an
 | About (`About`) | NASA data and resources / Use of AI |
 
 Resource panel words, in `src/ui/components.tsx`: ok / low reserve / over limit / waiting.
+
+About screen text added with the design, in `src/engine/sources.ts` (**Belle: please review "How to play"**):
+
+| Constant | Text |
+| --- | --- |
+| `HOW_TO_PLAY` 1 | Pick a mission — Choose a science goal. Its requirements set what success means. |
+| `HOW_TO_PLAY` 2 | Choose a trajectory — Compare the three orbits and pick the one that fits the mission. |
+| `HOW_TO_PLAY` 3 | Build the ladder — Pick instrument, power, downlink and launcher. Each choice can lock the next. |
+| `HOW_TO_PLAY` 4 | Vote Go / No-Go and watch the simulation — Every role votes. Then follow the mission and read your scorecard. |
+| `ROLES_NOTE` | Four roles, one for each of NASA’s four mission segments: Science, Spacecraft, Ground, Launch. |
+| `AI_IMAGES_NOTE` | Images marked “AI-generated” were drafted with AI and then checked and adapted by the team. |
+| `DISCLAIMER` | Trajectory Ladder is an independent project made by team One Pixel Home for the NASA Space Apps Challenge 2026. It is not affiliated with or endorsed by NASA. NASA does not endorse any non-U.S. Government entity. |
+| `TEAM` | Edgar Cardona, Software architect · José Gómez, Full-stack developer · Thais Rodríguez, Product designer · Belle Vásquez Machado, MarTech specialist |
+| `FOOTER_NOTES` | MIT License · No accounts, no cookies, no analytics. |
+
+About headings, in `src/App.tsx`: What is Trajectory Ladder? / How to play / Where the numbers come from / NASA data and resources / Use of AI / Not affiliated with NASA / Team · One Pixel Home.
+
+Requirement labels, in `src/engine/game.ts` (`missionRequirements`): latitude reach / coverage / revisit, and the values Global / Regional.
 
 ## 8. Generated sentences — `src/engine/game.ts` (ask Edgar before changing)
 

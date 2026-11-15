@@ -121,11 +121,13 @@ Code scaffolding, the physics engine and documentation were drafted with Claude 
 illustrations were drafted with Claude Design (Anthropic). All of it was reviewed, tested and adapted by the team.
 Physics formulas are covered by automated tests; illustrative values are labelled in the game.
 
-**TODO:** keep this identical to the text on the game's About screen (`AI_DISCLOSURE` in `src/engine/sources.ts`). If any
-AI-generated image, illustration, voice or video is used, name the tool here, and make sure every AI-generated image
-carries a visible "AI-generated" watermark and contains no NASA logos, insignia, flags or mission patches.
+Every illustration in the game (mission art, the spacecraft, the simulation scenes) carries a visible "AI-generated"
+label, and none contains NASA logos, insignia, flags or mission patches.
+
+**TODO:** keep the first paragraph identical to the game's About screen (`AI_DISCLOSURE` in `src/engine/sources.ts`).
+If the video or slides use any AI-generated image, voice or clip, name the tool here and watermark it the same way.
 
 ## Notice
 
-Trajectory Ladder is a hackathon project by team One Pixel Home for the NASA Space Apps Challenge 2026. It is not
-affiliated with or endorsed by NASA.
+Trajectory Ladder is an independent project made by team One Pixel Home for the NASA Space Apps Challenge 2026. It is
+not affiliated with or endorsed by NASA. NASA does not endorse any non-U.S. Government entity.

@@ -1,5 +1,17 @@
 # BACKUP - NASA
 
+## 2026-11-14 (PC de Edgar) — Paso 6 del diseño: About, equipo y etiqueta "AI-generated" (`feat/about-team`)
+
+- Se hizo merge del PR #14 (Brief y Órbita).
+- About con el diseño de dos columnas: "What is Trajectory Ladder?" con la tripulación y la nave, "How to play" en cuatro pasos, de dónde salen los números, fuentes NASA (contenido del motor, con la cita de CubeSat 101), caja de uso de IA, aviso de no afiliación, equipo y pie.
+- Nombres del equipo completados (antes `[Name]`): Edgar Cardona, José Gómez, Thais Rodríguez y Belle Vásquez Machado, con sus roles. Los textos viven en `src/engine/sources.ts` (`HOW_TO_PLAY`, `TEAM`, `ROLES_NOTE`, `AI_IMAGES_NOTE`, `FOOTER_NOTES`).
+- "How to play", paso 4: dice "Every role votes", no "Every role must say Go", porque el juego permite "Launch anyway". Belle debe revisar estos textos (`docs/COPY.md`).
+- `DISCLAIMER` añade "NASA does not endorse any non-U.S. Government entity", como pide `docs/DESIGN-RULES.md`.
+- Etiqueta visible "AI-generated" (`AiGeneratedLabel`) en las ilustraciones de misión, el panel de la nave, las escenas de la simulación y la imagen del About: las reglas del Space Apps la exigen en toda imagen hecha con IA y estas salieron de Claude Design.
+- Se corrigió `docs/REQUIREMENTS.md` (quedaba desactualizado desde los PR #1 a #14) y se añadieron a `docs/COPY.md` los textos nuevos; el cambio de estos dos archivos anunciado en el PR #14 no había entrado por un error del script.
+- Verificado: 43 tests (2 nuevos), build, lint y recorrido a 390 y 1280 px.
+- Pendiente: banner del scorecard y resumen del diseño en Go/No-Go; revisión de textos por Belle.
+
 ## 2026-11-14 (PC de Edgar) — Paso 4 del diseño: Brief y Órbita (`feat/brief-and-orbit`)
 
 - Se hizo merge del PR #13 (escenas de la simulación).
