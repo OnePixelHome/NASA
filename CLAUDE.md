@@ -5,7 +5,7 @@
 
 Browser game: pick a mission brief → choose a trajectory (LEO / SSO / GEO) → build a live dependency tree
 (instrument → power → downlink → launch vehicle) where options turn green or lock with a sourced reason →
-Go/No-Go poll → mission simulation → scorecard. Up to 4 players share one screen, one role per tier.
+Go/No-Go poll → mission simulation → scorecard. 1–4 players share one screen; the four roles are split among them (`playerRoles()`), and each player casts one Go/No-Go vote.
 
 ## Stack
 Vite + React 19 + TypeScript, Tailwind v4, Vitest. pnpm. Deploy: GitHub Pages (`.github/workflows/deploy-pages.yml`). No backend.

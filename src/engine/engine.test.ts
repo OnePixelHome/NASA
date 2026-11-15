@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import * as P from './physics'
 import * as C from './catalog'
-import { budget, choose, evaluateMission, missionRequirements, orbitStats, resources, TEAM_POINTS_MAX, teamPoints, tierOptions, type Choice } from './game'
+import { budget, choose, evaluateMission, missionRequirements, orbitStats, playerRoles, resources, TEAM_POINTS_MAX, teamPoints, tierOptions, type Choice } from './game'
 import { AI_DISCLOSURE, DISCLAIMER, HOW_TO_PLAY, reasonSources, SOURCES, TEAM, type Reason } from './sources'
 
 const orbit = (id: string) => C.byId(C.ORBITS, id)!
@@ -150,6 +150,23 @@ describe('Go/No-Go poll (team collaboration)', () => {
   it('vote counts outside 0–4 are clamped', () => {
     expect(teamPoints(9)).toBe(TEAM_POINTS_MAX)
     expect(teamPoints(-1)).toBe(0)
+  })
+  it('scales to the number of players: a unanimous Go is always the full team score', () => {
+    for (const n of [1, 2, 3, 4]) expect(teamPoints(n, n)).toBe(TEAM_POINTS_MAX)
+    expect(teamPoints(0, 1)).toBe(0) // a solo player who votes No-Go and launches anyway
+    expect(teamPoints(1, 2)).toBe(8) // half the team
+    expect(teamPoints(2, 3)).toBe(10)
+    expect(team(4)).toBe(evaluateMission(full, 1, 1).breakdown.find((b) => b.label === 'Team Go/No-Go')!.points)
+    expect(evaluateMission(full, 1, 1).score).toBe(evaluateMission(full, 4, 4).score)
+  })
+  it('every team size covers all four roles exactly once', () => {
+    for (const n of [1, 2, 3, 4]) {
+      const roles = playerRoles(n)
+      expect(roles).toHaveLength(n)
+      expect(roles.flat().sort()).toEqual(['ground', 'launch', 'science', 'space'])
+    }
+    expect(playerRoles(0)).toHaveLength(1) // clamped
+    expect(playerRoles(9)).toHaveLength(4)
   })
 })
 

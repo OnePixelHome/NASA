@@ -64,7 +64,7 @@ export function LeaderboardTable({ scenarioId, highlightId, refresh = 0 }: { sce
                   {mine && <span className="ml-2 text-caption text-st-selected">you</span>}
                 </div>
                 <div className="truncate text-caption text-ink-muted">
-                  {mission} · {orbit} · {e.success ? '✓ success' : '✕ failed'}
+                  {mission} · {orbit} · {e.players === 1 ? 'solo' : `${e.players ?? 4} players`} · {e.success ? '✓ success' : '✕ failed'}
                 </div>
               </div>
               <span className="font-display text-[1.25rem] tabular-nums">{e.score}</span>
@@ -80,7 +80,7 @@ export function LeaderboardTable({ scenarioId, highlightId, refresh = 0 }: { sce
 }
 
 /** Scorecard form: ask the player or crew name, then save. The server recomputes the score from the design. */
-export function SaveScore({ choice, goVotes }: { choice: Choice; goVotes: number }) {
+export function SaveScore({ choice, goVotes, players }: { choice: Choice; goVotes: number; players: number }) {
   const [name, setName] = useState('')
   const [touched, setTouched] = useState(false)
   const [busy, setBusy] = useState(false)
@@ -96,7 +96,7 @@ export function SaveScore({ choice, goVotes }: { choice: Choice; goVotes: number
     if (!check.ok || busy) return
     setBusy(true)
     setError(null)
-    const r = await saveScore(check.name, choice, goVotes)
+    const r = await saveScore(check.name, choice, goVotes, players)
     setBusy(false)
     if (r.ok) setResult({ id: r.id, rank: r.rank, total: r.total })
     else setError(r.error)

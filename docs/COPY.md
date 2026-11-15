@@ -120,7 +120,8 @@ These strings sit in the screen code. Edit only the words; leave tags, braces an
 | Landing (`Home`) | NASA Space Apps Challenge 2026 · Space Mission Design Game |
 | Landing (`Home`) | Status: GO (pitch below it is `PITCH`; the steps are `HOW_TO_PLAY`) |
 | Landing (`Home`) | Start mission → / About & sources |
-| Landing (`Home`) | 1 to 4 players on one screen · no sign-up |
+| Landing (`Home`) | How many players? / You hold all four roles and cast the launch vote. / The four roles are shared by N players; each player casts one vote. |
+| Landing (`Home`) | Everyone plays on one screen · no sign-up |
 | Landing (`Home`) | How to play |
 | Landing (`Home`) | Made by team One Pixel Home. Not affiliated with or endorsed by NASA. |
 | Landing (`Home`) | Earth image: NASA Earth Observatory, Blue Marble: Next Generation. |
@@ -149,7 +150,8 @@ These strings sit in the screen code. Edit only the words; leave tags, braces an
 | 3 (`Tree`) | Why it works / Why it is locked |
 | 3 (`Tree`) | Go to Go / No-Go → |
 | 4 (`GoNoGo`) | 4 · Go / No-Go poll |
-| 4 (`GoNoGo`) | Like a real launch, every role is polled. Playing as a team? Each player votes for their role. A unanimous Go earns the full team score. |
+| 4 (`GoNoGo`) | Solo: Like a real launch, the mission needs a Go. You hold all four roles, so your vote decides. / Team: Like a real launch, the team is polled. Each of the N players votes once for the roles they hold. A unanimous Go earns the full team score. |
+| 4 (`GoNoGo`) | Your call / Team poll / You / Player N / A No-Go means you see a problem. / A No-Go means someone sees a problem. |
 | 4 (`GoNoGo`) | … waiting… / ✓ GO / ✕ NO-GO / ✓ Go / ✕ No-Go |
 | 4 (`GoNoGo`) | Over budget by $…M. An over-budget mission cannot succeed. |
 | 4 (`GoNoGo`) | Budget reserve is …%. NASA’s CubeSat 101 guide advises project reserves of at least 10% of the budget. |
@@ -181,7 +183,7 @@ About screen text added with the design, in `src/engine/sources.ts` (**Belle: pl
 | `HOW_TO_PLAY` 1 | Pick a mission — Choose a science goal. Its requirements set what success means. |
 | `HOW_TO_PLAY` 2 | Choose a trajectory — Compare the three orbits and pick the one that fits the mission. |
 | `HOW_TO_PLAY` 3 | Build the ladder — Pick instrument, power, downlink and launcher. Each choice can lock the next. |
-| `HOW_TO_PLAY` 4 | Vote Go / No-Go and watch the simulation — Every role votes. Then follow the mission and read your scorecard. |
+| `HOW_TO_PLAY` 4 | Vote Go / No-Go and watch the simulation — Every player votes. Then follow the mission and read your scorecard. |
 | `ROLES_NOTE` | Four roles, one for each of NASA’s four mission segments: Science, Spacecraft, Ground, Launch. |
 | `AI_IMAGES_NOTE` | Images marked “AI-generated” were drafted with AI and then checked and adapted by the team. |
 | `DISCLAIMER` | Status: GO is an independent project made by team One Pixel Home for the NASA Space Apps Challenge 2026. It is not affiliated with or endorsed by NASA. NASA does not endorse any non-U.S. Government entity. |
