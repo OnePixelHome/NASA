@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="design_doc_mode" content="canvas">
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#070B1C;color:#F2F4FF;font-family:"Atkinson Hyperlegible",system-ui,sans-serif;}
+a{color:#62B4FF;} a:hover{color:#F2F4FF;}
+:focus-visible{outline:3px solid #F2F4FF;outline-offset:2px;}
+</style>
+</helmet>
+<section id="mobile" style="background:#070B1C;box-sizing:border-box;width:max-content;min-width:100%;display:flex;flex-direction:column;gap:24px;padding:48px;">
+<header style="display:flex;flex-direction:column;gap:8px;max-width:900px;">
+<span style="font:700 12px/1.2 'Atkinson Hyperlegible';letter-spacing:.12em;text-transform:uppercase;color:#969FCC;">Screen 3 · Build the mission tree</span>
+<h1 style="margin:0;font:600 40px/1.1 Fredoka,sans-serif;">The ship builds itself</h1>
+<p style="margin:0;font-size:17px;line-height:1.5;color:#C3CAEE;text-wrap:pretty;">Four states at 390 px, then the complete state at 1280 px. Every frame is live: tap options, the orbit chip, “?” and 🔒 cards. The lock rules here are a stand-in for <code>src/engine</code>. React handoff: <a href="handoff/MissionTree.tsx">handoff/MissionTree.tsx</a>, <a href="handoff/Ship.tsx">handoff/Ship.tsx</a>.</p>
+</header>
+<div style="display:flex;flex-wrap:wrap;gap:40px;align-items:flex-start;">
+<div id="a" style="display:flex;flex-direction:column;gap:12px;"><span style="align-self:flex-start;padding:4px 10px;border-radius:999px;background:#FFD166;color:#0B1026;font:700 13px 'Atkinson Hyperlegible';">a · Start</span><div style="border:1px solid #34407A;border-radius:24px;overflow:hidden;"><dc-import name="MissionTree" preset="start" layout="mobile" hint-size="390px,1100px"></dc-import></div></div>
+<div id="b" style="display:flex;flex-direction:column;gap:12px;"><span style="align-self:flex-start;padding:4px 10px;border-radius:999px;background:#FFD166;color:#0B1026;font:700 13px 'Atkinson Hyperlegible';">b · Mid-build, locked option explained</span><div style="border:1px solid #34407A;border-radius:24px;overflow:hidden;"><dc-import name="MissionTree" preset="mid" layout="mobile" hint-size="390px,1300px"></dc-import></div></div>
+<div id="c" style="display:flex;flex-direction:column;gap:12px;"><span style="align-self:flex-start;padding:4px 10px;border-radius:999px;background:#FFD166;color:#0B1026;font:700 13px 'Atkinson Hyperlegible';">c · Complete</span><div style="border:1px solid #34407A;border-radius:24px;overflow:hidden;"><dc-import name="MissionTree" preset="complete" layout="mobile" hint-size="390px,1400px"></dc-import></div></div>
+<div id="d" style="display:flex;flex-direction:column;gap:12px;"><span style="align-self:flex-start;padding:4px 10px;border-radius:999px;background:#FFD166;color:#0B1026;font:700 13px 'Atkinson Hyperlegible';">d · Conflict</span><div style="border:1px solid #34407A;border-radius:24px;overflow:hidden;"><dc-import name="MissionTree" preset="conflict" layout="mobile" hint-size="390px,1500px"></dc-import></div></div>
+</div>
+</section>
+<section id="desktop" style="background:#070B1C;box-sizing:border-box;width:max-content;min-width:100%;display:flex;flex-direction:column;gap:16px;padding:48px;">
+<span style="align-self:flex-start;padding:4px 10px;border-radius:999px;background:#FFD166;color:#0B1026;font:700 13px 'Atkinson Hyperlegible';">c · Complete at 1280 px</span>
+<div style="align-self:flex-start;border:1px solid #34407A;border-radius:24px;overflow:hidden;"><dc-import name="MissionTree" preset="complete" layout="desktop" hint-size="1280px,1100px"></dc-import></div>
+</section>
+<section id="ship" style="background:#070B1C;box-sizing:border-box;display:flex;flex-direction:column;gap:16px;padding:48px;max-width:none;">
+<h2 style="margin:0;font:600 28px/1.2 Fredoka,sans-serif;">Ship layers</h2>
+<p style="margin:0;font-size:15px;color:#C3CAEE;">One SVG, groups <code>#payload</code> <code>#power</code> <code>#antenna</code> <code>#launcher</code>, each with <code>data-variant</code> children, a dashed ghost and a ⚠ crack overlay.</p>
+<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:12px;">
+<sc-for list="{{ shipCells }}" as="c" hint-placeholder-count="12">
+<div style="display:flex;flex-direction:column;align-items:center;gap:8px;padding:12px;background:#151C3D;border:1px solid #34407A;border-radius:18px;">
+<dc-import name="Ship" payload="{{ c.payload }}" power="{{ c.power }}" antenna="{{ c.antenna }}" launcher="{{ c.launcher }}" bad="{{ c.bad }}" height="180" hint-size="135px,180px"></dc-import>
+<span style="font:700 13px 'Atkinson Hyperlegible';color:{{ c.color }};text-align:center;">{{ c.label }}</span>
+</div>
+</sc-for>
+</div>
+</section>
+<section id="crew" style="background:#070B1C;box-sizing:border-box;display:flex;flex-direction:column;gap:16px;padding:48px;max-width:none;">
+<h2 style="margin:0;font:600 28px/1.2 Fredoka,sans-serif;">Crew · one base, four roles</h2>
+<div style="display:flex;flex-wrap:wrap;gap:12px;">
+<sc-for list="{{ crew }}" as="m" hint-placeholder-count="5">
+<div style="display:flex;flex-direction:column;align-items:center;gap:8px;width:150px;padding:16px;background:#151C3D;border:1px solid #34407A;border-radius:18px;">
+<dc-import name="Character" role="{{ m.role }}" size="88" hint-size="88px,88px"></dc-import>
+<span style="font:600 16px Fredoka;color:{{ m.color }};">{{ m.icon }} {{ m.name }}</span>
+<span style="font-size:13px;color:#C3CAEE;">{{ m.acc }}</span>
+</div>
+</sc-for>
+</div>
+</section>
+<section id="structure" style="background:#070B1C;box-sizing:border-box;display:flex;flex-direction:column;gap:16px;padding:48px 48px 96px;max-width:none;">
+<h2 style="margin:0;font:600 28px/1.2 Fredoka,sans-serif;">React structure</h2>
+<pre style="margin:0;padding:16px;background:#151C3D;border:1px solid #34407A;border-radius:18px;overflow:auto;font:13px/1.6 ui-monospace,Menlo,monospace;color:#C3CAEE;">&lt;MissionTreeScreen choice orbit focus onFocus onPick onChangeOrbit onDone&gt;
+  &lt;ScreenHeader&gt; &lt;Meter label="Budget" … /&gt;
+  &lt;ShipPanel&gt;                       sticky; row on mobile, column ≥1024px
+    &lt;ShipSvg payload power antenna launcher bad /&gt;   role="img", live aria-label
+    &lt;PartsList /&gt;
+  &lt;OrbitChip orbit onChange /&gt;        planet spins once on tap
+  &lt;Ladder&gt;
+    &lt;LadderStep tier role enabled&gt; ×4
+      &lt;RoleCharacter role /&gt; + &lt;SpeechBubble /&gt;   waiting / locked only
+      &lt;OptionCard node state onPick onWhy /&gt; ×n   aria-pressed, aria-label "Name: state"
+      &lt;WhyPanel node mode="works|locked|conflict" /&gt;  ReasonList + SourceChip
+  &lt;GoButton disabled={!allChosen} onClick={onDone} /&gt;
+
+state per node = selected ? (ok ? "selected" : "conflict") : (ok ? "available" : "locked")
+step enabled   = tier === 0 || choice[tiers[tier-1]] != null</pre>
+</section>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  renderVals() {
+    const G = '#C3CAEE', Y = '#7FE28E', P = '#62B4FF', A = '#FF93B8', L = '#FF8552';
+    const c = (label, color, o) => ({ label, color, payload: null, power: null, antenna: null, launcher: null, bad: null, ...o });
+    return {
+      shipCells: [
+        c('Empty · all ghost slots', G, {}),
+        c('◎ Camera lens', Y, { payload: 'camera' }), c('◎ Multispectral prism', Y, { payload: 'prism' }),
+        c('◎ Radar dish', Y, { payload: 'radar' }), c('◎ Weather imager', Y, { payload: 'weather' }),
+        c('◆ Small panels', P, { power: 'small' }), c('◆ Big panels', P, { power: 'big' }), c('◆ Panels + battery', P, { power: 'hybrid' }),
+        c('▲ Small antenna', A, { antenna: 'small' }), c('▲ Polar-tracking dish', A, { antenna: 'polar' }), c('▲ Big relay dish', A, { antenna: 'relay' }),
+        c('▮ Small rocket', L, { launcher: 'small' }), c('▮ Medium rocket', L, { launcher: 'medium' }), c('▮ Heavy rocket', L, { launcher: 'heavy' }),
+        c('All placed', '#66E39A', { payload: 'radar', power: 'big', antenna: 'polar', launcher: 'medium' }),
+        c('⚠ Incompatible launcher', '#FFB547', { payload: 'camera', power: 'big', antenna: 'polar', launcher: 'small', bad: 'launcher' }),
+      ],
+      crew: [
+        { role: 'base', name: 'Base', icon: '', color: G, acc: 'Shared body' },
+        { role: 'science', name: 'Science', icon: '◎', color: Y, acc: 'Goggles' },
+        { role: 'spacecraft', name: 'Spacecraft', icon: '◆', color: P, acc: 'Wrench' },
+        { role: 'ground', name: 'Ground', icon: '▲', color: A, acc: 'Headset' },
+        { role: 'launch', name: 'Launch', icon: '▮', color: L, acc: 'Hard hat' },
+      ],
+    };
+  }
+}
+</script>
+</body>
+</html>

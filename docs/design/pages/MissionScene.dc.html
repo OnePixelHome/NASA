@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>
+@keyframes msLift{0%,30%{transform:translateY(0)}100%{transform:translateY(-78px)}}
+@keyframes msFlame{0%,25%{opacity:0;transform:scaleY(.2)}35%,100%{opacity:1;transform:scaleY(1)}}
+@keyframes msSmoke{0%,30%{opacity:0;transform:scale(.4)}60%{opacity:1}100%{opacity:.6;transform:scale(1.4)}}
+@keyframes msLap{from{transform:rotate(-90deg)}to{transform:rotate(270deg)}}
+@keyframes msFlash{0%,20%{opacity:0;transform:scale(.3)}35%{opacity:1}100%{opacity:0;transform:scale(2.2)}}
+@keyframes msPhoto{0%,45%{opacity:0;transform:translateY(16px) scale(.6)}75%{opacity:1;transform:translateY(-3px) scale(1.04)}100%{opacity:1;transform:none}}
+@keyframes msBeam{0%,10%{stroke-dashoffset:260}100%{stroke-dashoffset:0}}
+@keyframes msSweep{from{transform:translateX(-120px)}to{transform:translateX(0)}}
+@keyframes msSwept{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+@keyframes msWave{0%,100%{transform:rotate(0)}25%{transform:rotate(-10deg)}75%{transform:rotate(10deg)}}
+@keyframes msIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion: reduce){.ms *{animation:none!important}}
+</style>
+</helmet>
+<div class="ms" role="img" aria-label="{{ label }}" style="position:relative;width:100%;aspect-ratio:16/10;overflow:hidden;border-radius:18px;background:#151C3D;border:1px solid #34407A;">
+<svg viewBox="0 0 320 200" width="100%" height="100%" preserveAspectRatio="xMidYMid meet" aria-hidden="true" style="position:absolute;inset:0;display:block;">
+<g fill="#F2F4FF" opacity="0.7"><circle cx="24" cy="20" r="1.5"></circle><circle cx="70" cy="44" r="1"></circle><circle cx="288" cy="28" r="1.5"></circle><circle cx="250" cy="70" r="1"></circle><circle cx="140" cy="14" r="1"></circle><circle cx="200" cy="36" r="1.2"></circle><circle cx="300" cy="120" r="1"></circle><circle cx="16" cy="110" r="1"></circle></g>
+<g style="display:{{ s1 }};">
+<rect x="0" y="176" width="320" height="24" fill="#1F2852"></rect><path d="M0 176 H320" stroke="#34407A" stroke-width="3"></path>
+<rect x="196" y="74" width="10" height="102" rx="3" fill="#34407A" stroke="#0B1026" stroke-width="3"></rect><path d="M180 100 H196 M180 130 H196" stroke="#34407A" stroke-width="4" stroke-linecap="round"></path>
+<g style="transform-box:fill-box;transform-origin:center bottom;animation:msSmoke 2.6s ease-out both;"><circle cx="140" cy="180" r="16" fill="#C3CAEE"></circle><circle cx="180" cy="182" r="14" fill="#C3CAEE"></circle><circle cx="160" cy="186" r="18" fill="#F2F4FF"></circle></g>
+<g style="animation:msLift 2.6s cubic-bezier(.5,0,.75,0) both;">
+<path d="M152 168 Q160 196 168 168 Z" fill="#FFD166" stroke="#FF8552" stroke-width="3" style="transform-box:fill-box;transform-origin:center top;animation:msFlame 2.6s ease-out both;"></path>
+<path d="M146 150 L136 170 L146 166 Z M174 150 L184 170 L174 166 Z" fill="#FF8552" stroke="#0B1026" stroke-width="3" stroke-linejoin="round"></path>
+<rect x="146" y="92" width="28" height="76" rx="10" fill="#F2F4FF" stroke="#0B1026" stroke-width="3.5"></rect>
+<rect x="146" y="120" width="28" height="9" fill="#FF8552"></rect>
+<path d="M146 98 Q160 64 174 98 Z" fill="#62B4FF" stroke="#0B1026" stroke-width="3.5" stroke-linejoin="round"></path>
+</g>
+</g>
+<g style="display:{{ s2 }};">
+<ellipse cx="160" cy="104" rx="120" ry="44" fill="none" stroke="{{ color }}" stroke-width="3" stroke-dasharray="4 6" stroke-linecap="round"></ellipse>
+<circle cx="160" cy="104" r="46" fill="#62B4FF" stroke="#0B1026" stroke-width="4"></circle>
+<path d="M130 92 Q142 74 160 82 Q170 96 156 104 Q138 110 130 92 Z M168 116 Q186 108 192 122 Q188 136 174 134 Q164 128 168 116 Z" fill="#7FE28E" stroke="#0B1026" stroke-width="3"></path>
+<path d="M138 70 Q160 62 182 70" fill="none" stroke="#F2F4FF" stroke-width="4" stroke-linecap="round"></path>
+<g transform="translate(160 104) scale(1 0.3667) translate(-160 -104)">
+<g style="transform-origin:160px 104px;animation:msLap 2.8s cubic-bezier(.4,0,.3,1) both;">
+<g transform="translate(160 -16) scale(1 2.727)"><rect x="-14" y="-4" width="9" height="8" rx="2" fill="{{ color }}" stroke="#0B1026" stroke-width="2"></rect><rect x="5" y="-4" width="9" height="8" rx="2" fill="{{ color }}" stroke="#0B1026" stroke-width="2"></rect><rect x="-5.5" y="-5.5" width="11" height="11" rx="3" fill="#F2F4FF" stroke="#0B1026" stroke-width="2"></rect></g>
+</g>
+</g>
+</g>
+<g style="display:{{ s3 }};">
+<path d="M-20 200 Q160 120 340 200 Z" fill="#62B4FF" stroke="#0B1026" stroke-width="4"></path>
+<path d="M40 190 Q80 170 120 176 L130 200 L30 200 Z M190 172 Q230 162 270 182 L280 200 L200 200 Z" fill="#7FE28E" stroke="#0B1026" stroke-width="3"></path>
+<path d="M116 66 L92 168 L188 168 L164 66 Z" fill="#FFD166" opacity="0.18"></path>
+<g transform="translate(140 50)"><rect x="-22" y="-7" width="14" height="14" rx="3" fill="{{ color }}" stroke="#0B1026" stroke-width="2.5"></rect><rect x="8" y="-7" width="14" height="14" rx="3" fill="{{ color }}" stroke="#0B1026" stroke-width="2.5"></rect><rect x="-9" y="-10" width="18" height="20" rx="5" fill="#F2F4FF" stroke="#0B1026" stroke-width="2.5"></rect><circle cx="0" cy="12" r="5" fill="#1F2852" stroke="#0B1026" stroke-width="2.5"></circle></g>
+<circle cx="140" cy="62" r="14" fill="#F2F4FF" style="transform-box:fill-box;transform-origin:center;animation:msFlash 1.4s ease-out both;"></circle>
+<g style="transform-box:fill-box;transform-origin:center;animation:msPhoto 2.2s cubic-bezier(.3,1.3,.5,1) both;">
+<rect x="212" y="30" width="80" height="72" rx="8" fill="#F2F4FF" stroke="#0B1026" stroke-width="3.5"></rect>
+<rect x="220" y="38" width="30" height="24" rx="3" fill="#7FE28E"></rect><rect x="254" y="38" width="30" height="24" rx="3" fill="#FFB547"></rect><rect x="220" y="66" width="30" height="16" rx="3" fill="#FFD166"></rect><rect x="254" y="66" width="30" height="16" rx="3" fill="#66E39A"></rect>
+<rect x="220" y="88" width="40" height="6" rx="3" fill="#C3CAEE"></rect>
+</g>
+</g>
+<g style="display:{{ s4 }};">
+<path d="M-20 200 Q160 130 340 200 Z" fill="#62B4FF" stroke="#0B1026" stroke-width="4"></path>
+<g transform="translate(70 46)"><rect x="-20" y="-6" width="13" height="12" rx="3" fill="{{ color }}" stroke="#0B1026" stroke-width="2.5"></rect><rect x="7" y="-6" width="13" height="12" rx="3" fill="{{ color }}" stroke="#0B1026" stroke-width="2.5"></rect><rect x="-8" y="-8" width="16" height="16" rx="4" fill="#F2F4FF" stroke="#0B1026" stroke-width="2.5"></rect></g>
+<path d="M78 56 L234 148" fill="none" stroke="#FF93B8" stroke-width="4" stroke-linecap="round" stroke-dasharray="260" style="animation:msBeam 1.8s ease-out both;"></path>
+<path d="M78 56 L234 148" fill="none" stroke="#F2F4FF" stroke-width="1.5" stroke-dasharray="3 9" stroke-linecap="round" opacity="0.8"></path>
+<rect x="222" y="160" width="40" height="22" rx="4" fill="#C3CAEE" stroke="#0B1026" stroke-width="3"></rect>
+<path d="M226 152 Q242 170 262 140 Z" fill="#FF93B8" stroke="#0B1026" stroke-width="3" stroke-linejoin="round"></path>
+<path d="M244 150 L242 162" stroke="#0B1026" stroke-width="3" stroke-linecap="round"></path>
+</g>
+<g style="display:{{ s5 }};">
+<defs><clipPath id="msPlanet"><circle cx="160" cy="102" r="70"></circle></clipPath></defs>
+<circle cx="160" cy="102" r="70" fill="#62B4FF" stroke="#0B1026" stroke-width="4"></circle>
+<g clip-path="url(#msPlanet)">
+<path d="M110 70 Q130 50 160 62 Q174 84 150 96 Q120 104 110 70 Z M170 120 Q200 108 214 128 Q206 154 182 150 Q164 140 170 120 Z M96 120 Q110 112 120 124 Q114 140 100 136 Z" fill="#7FE28E" stroke="#0B1026" stroke-width="3"></path>
+<rect x="90" y="20" width="70" height="170" fill="{{ color }}" opacity="0.2" style="transform-box:fill-box;transform-origin:left center;animation:msSwept 2.6s ease-in-out both;"></rect>
+<g style="animation:msSweep 2.6s ease-in-out both;"><rect x="136" y="20" width="48" height="170" fill="{{ color }}" opacity="0.45"></rect><path d="M136 20 V190 M184 20 V190" stroke="{{ color }}" stroke-width="3"></path></g>
+</g>
+<circle cx="160" cy="102" r="70" fill="none" stroke="#0B1026" stroke-width="4"></circle>
+</g>
+</svg>
+<sc-if value="{{ isS6 }}" hint-placeholder-val="{{ false }}">
+<div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;">
+<div style="display:flex;gap:4px;align-items:flex-end;">
+<sc-for list="{{ crew }}" as="c" hint-placeholder-count="4">
+<div style="transform-origin:50% 90%;animation:msIn 400ms ease-out {{ c.d1 }} both, msWave 700ms ease-in-out {{ c.d2 }} 2;"><dc-import name="Character" role="{{ c.role }}" mood="cheer" size="{{ crewSize }}" hint-size="56px,56px"></dc-import></div>
+</sc-for>
+</div>
+<span style="font:600 16px Fredoka;color:#F2F4FF;animation:msIn 400ms ease-out 900ms both;">Mission complete</span>
+</div>
+</sc-if>
+<span style="position:absolute;left:10px;top:10px;padding:3px 10px;border-radius:999px;background:#0B1026;border:1px solid #34407A;font:700 12px 'Atkinson Hyperlegible';color:#F2F4FF;font-variant-numeric:tabular-nums;">{{ tag }}</span>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:358,&quot;height&quot;:224},&quot;step&quot;:{&quot;editor&quot;:&quot;int&quot;,&quot;default&quot;:1,&quot;min&quot;:1,&quot;max&quot;:6,&quot;tsType&quot;:&quot;1|2|3|4|5|6&quot;},&quot;orbitId&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;LEO&quot;,&quot;SSO&quot;,&quot;GEO&quot;],&quot;default&quot;:&quot;SSO&quot;,&quot;tsType&quot;:&quot;'LEO'|'SSO'|'GEO'&quot;}}">
+class Component extends DCLogic {
+  renderVals() {
+    const step = Math.max(1, Math.min(6, this.props.step ?? 1));
+    const orbit = this.props.orbitId ?? 'SSO';
+    const color = { LEO: '#4FD8C8', SSO: '#FFB547', GEO: '#C29BFF' }[orbit] || '#FFB547';
+    const names = ['Launch', 'Orbit reached', 'First light', 'Daily operations', 'Coverage', 'End of mission'];
+    const L = ['Rocket lifts off from the pad', 'Ship circles the planet on its ' + orbit + ' orbit', 'Camera flash and the first image', 'Data line from the ship to a ground station', 'Coverage band sweeps the planet', 'The crew waves goodbye to a finished mission'];
+    const d = n => (step === n ? 'inline' : 'none');
+    return {
+      color, label: 'Step ' + step + ' of 6, ' + names[step - 1] + ': ' + L[step - 1],
+      tag: step + ' · ' + names[step - 1],
+      s1: d(1), s2: d(2), s3: d(3), s4: d(4), s5: d(5), isS6: step === 6,
+      crewSize: this.props.crewSize ?? 56,
+      crew: ['science', 'spacecraft', 'ground', 'launch'].map((r, i) => ({ role: r, d1: (i * 120) + 'ms', d2: (500 + i * 120) + 'ms' })),
+    };
+  }
+}
+</script>
+</body>
+</html>

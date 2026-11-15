@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
+<style>
+@keyframes popA{0%{transform:scale(.7);opacity:.4}70%{transform:scale(1.1);opacity:1}100%{transform:none}}
+@keyframes popB{0%{transform:scale(.7);opacity:.4}70%{transform:scale(1.1);opacity:1}100%{transform:none}}
+@keyframes launchPulse{0%{box-shadow:0 0 0 0 #FFD166aa}60%{box-shadow:0 0 0 14px #FFD16600}100%{box-shadow:0 0 0 0 #FFD16600}}
+@media (prefers-reduced-motion: reduce){*{animation:none!important;transition:none!important}}
+</style>
+</helmet>
+<div style="box-sizing:border-box;width:{{ frameW }};background:#0B1026;color:#F2F4FF;font-family:'Atkinson Hyperlegible',system-ui,sans-serif;display:flex;flex-direction:column;">
+<dc-import name="AppHeader" hint-size="100%,57px"></dc-import>
+<header style="display:flex;flex-direction:column;gap:6px;padding:{{ pad }};padding-bottom:0;">
+<span style="font:700 12px/1.2 'Atkinson Hyperlegible';letter-spacing:.1em;text-transform:uppercase;color:#969FCC;">Screen 4 of 6</span>
+<h1 style="margin:0;font:600 {{ titleSize }}/1.15 Fredoka,sans-serif;">4 · Go / No-Go poll</h1>
+<p style="margin:0;max-width:62ch;font-size:16px;line-height:1.5;color:#C3CAEE;text-wrap:pretty;">Like a real launch: every role must say 'Go'. Playing as a team? Each player votes for their role.</p>
+</header>
+<div style="display:grid;grid-template-columns:{{ cols }};gap:{{ gap }};padding:{{ pad }};align-items:start;">
+<aside aria-label="Design under review" style="position:{{ asidePos }};top:16px;display:flex;flex-direction:column;gap:12px;padding:14px;background:#151C3D;border:1px solid #34407A;border-radius:18px;min-width:0;">
+<div style="display:flex;flex-direction:{{ recapDir }};align-items:center;gap:14px;">
+<dc-import name="Ship" payload="prism" power="small" antenna="polar" launcher="medium" height="{{ shipH }}" hint-size="90px,120px"></dc-import>
+<div style="flex:1;min-width:0;width:100%;display:flex;flex-direction:column;gap:8px;">
+<span style="align-self:flex-start;display:inline-flex;align-items:center;gap:8px;height:30px;padding:0 12px;border-radius:999px;border:2px solid #FFB547;font:600 14px Fredoka;color:#FFB547;"><span style="width:10px;height:10px;border-radius:999px;background:#FFB547;border:2px solid #0B1026;"></span>SSO · Sun-synchronous</span>
+<sc-for list="{{ parts }}" as="p" hint-placeholder-count="4">
+<div style="display:flex;align-items:baseline;gap:6px;font-size:13px;line-height:1.3;"><span style="width:14px;text-align:center;color:{{ p.color }};">{{ p.icon }}</span><span style="color:#C3CAEE;">{{ p.step }}</span><span style="color:#F2F4FF;font-weight:700;">{{ p.name }}</span></div>
+</sc-for>
+</div>
+</div>
+<div role="meter" aria-label="{{ budgetAria }}" style="display:flex;flex-direction:column;gap:6px;padding:12px;background:#1F2852;border-radius:12px;">
+<div style="display:flex;justify-content:space-between;gap:8px;font-size:14px;"><span style="color:#C3CAEE;">Budget</span><span style="font:600 15px Fredoka;font-variant-numeric:tabular-nums;">{{ budgetText }}</span></div>
+<div style="position:relative;height:12px;border-radius:999px;background:#0B1026;"><div style="height:100%;width:{{ budgetPct }};border-radius:999px;background:#FFB547;"></div><span style="position:absolute;top:-4px;left:90%;width:2px;height:20px;background:#969FCC;"></span></div>
+<span style="font:700 12px 'Atkinson Hyperlegible';color:#FFB547;">⚠ Close to budget · {{ reserveText }}</span>
+</div>
+<p role="note" style="margin:0;display:flex;flex-wrap:wrap;align-items:center;gap:6px 8px;padding:10px 12px;border:2px solid #FFB547;border-radius:12px;font-size:14px;line-height:1.45;color:#F2F4FF;"><span><span aria-hidden="true" style="color:#FFB547;">⚠ </span>Budget reserve is {{ reservePct }}. NASA guidance recommends keeping at least 10% in reserve.</span><a href="https://www.nasa.gov/wp-content/uploads/2017/03/nasa_csli_cubesat_101_508.pdf" target="_blank" rel="noreferrer" style="display:inline-flex;align-items:center;min-height:44px;margin:-10px 0;text-decoration:none;border-radius:999px;" style-focus="outline:3px solid #F2F4FF;outline-offset:2px;"><span style="display:inline-flex;align-items:center;height:24px;padding:0 10px;border-radius:999px;border:1px solid #34407A;background:#1F2852;font:700 12px 'Atkinson Hyperlegible';color:#C3CAEE;white-space:nowrap;">NASA S2 ↗</span></a></p>
+</aside>
+<div style="display:flex;flex-direction:column;gap:12px;min-width:0;">
+<div style="display:flex;justify-content:space-between;align-items:baseline;gap:8px;">
+<h2 style="margin:0;font:600 20px Fredoka;">Team poll</h2>
+<span role="status" style="font:600 15px Fredoka;color:{{ tallyColor }};font-variant-numeric:tabular-nums;">{{ tally }}</span>
+</div>
+<div style="display:grid;grid-template-columns:{{ cardCols }};gap:10px;">
+<sc-for list="{{ roles }}" as="r" hint-placeholder-count="4">
+<section aria-label="{{ r.aria }}" style="display:flex;flex-direction:column;align-items:center;gap:8px;padding:14px 10px 10px;background:{{ r.bg }};border:2px solid {{ r.border }};border-radius:18px;min-width:0;">
+<div style="animation:{{ r.pop }};"><dc-import name="Character" role="{{ r.charRole }}" mood="{{ r.mood }}" size="56" bg="{{ r.bg }}" hint-size="56px,56px"></dc-import></div>
+<span style="font:700 12px 'Atkinson Hyperlegible';color:{{ r.color }};white-space:nowrap;">{{ r.icon }} {{ r.label }}</span>
+<span style="font:600 18px Fredoka;letter-spacing:.04em;color:{{ r.statusColor }};white-space:nowrap;">{{ r.status }}</span>
+<div style="display:flex;gap:6px;width:100%;">
+<button type="button" onClick="{{ r.onGo }}" aria-pressed="{{ r.goPressed }}" aria-label="{{ r.goAria }}" style="all:unset;box-sizing:border-box;flex:1;min-height:48px;display:flex;align-items:center;justify-content:center;gap:4px;border-radius:12px;border:2px solid {{ r.goBorder }};background:{{ r.goBg }};color:{{ r.goColor }};font:600 16px Fredoka;cursor:pointer;transition:transform 120ms;" style-active="transform:scale(.92);" style-focus="outline:3px solid #F2F4FF;outline-offset:2px;">✓ Go</button>
+<button type="button" onClick="{{ r.onNo }}" aria-pressed="{{ r.noPressed }}" aria-label="{{ r.noAria }}" style="all:unset;box-sizing:border-box;flex:1;min-height:48px;display:flex;align-items:center;justify-content:center;gap:4px;border-radius:12px;border:2px solid {{ r.noBorder }};background:{{ r.noBg }};color:{{ r.noColor }};font:600 16px Fredoka;cursor:pointer;white-space:nowrap;transition:transform 120ms;" style-active="transform:scale(.92);" style-focus="outline:3px solid #F2F4FF;outline-offset:2px;">✕ No-Go</button>
+</div>
+</section>
+</sc-for>
+</div>
+<sc-if value="{{ anyNo }}" hint-placeholder-val="{{ false }}">
+<p role="alert" style="margin:0;display:flex;gap:8px;padding:12px 14px;border:2px solid #FF7070;background:#1F2852;border-radius:12px;font-size:15px;line-height:1.45;color:#F2F4FF;"><span aria-hidden="true" style="color:#FF7070;font-weight:700;">✕</span><span>A No-Go means someone sees a problem. Go back, discuss and change the design.</span></p>
+</sc-if>
+</div>
+</div>
+<footer style="position:sticky;bottom:0;display:flex;flex-wrap:wrap;align-items:center;justify-content:flex-end;gap:10px;padding:{{ pad }};background:#0B1026;border-top:1px solid #34407A;">
+<span role="status" style="flex:1 1 100%;font:700 13px 'Atkinson Hyperlegible';color:{{ footColor }};text-align:{{ footAlign }};">{{ footNote }}</span>
+<button type="button" onClick="{{ onBack }}" style="all:unset;box-sizing:border-box;flex:1 1 0;max-width:260px;min-height:52px;padding:0 12px;white-space:nowrap;display:flex;align-items:center;justify-content:center;border-radius:999px;border:2px solid #34407A;background:#151C3D;color:#F2F4FF;font:600 16px Fredoka,sans-serif;cursor:pointer;" style-hover="border-color:#62B4FF;" style-focus="outline:3px solid #F2F4FF;outline-offset:3px;">← Revise design</button>
+<sc-if value="{{ allGo }}" hint-placeholder-val="{{ false }}">
+<button type="button" onClick="{{ onLaunch }}" style="all:unset;box-sizing:border-box;flex:1 1 0;max-width:260px;min-height:52px;padding:0 12px;white-space:nowrap;display:flex;align-items:center;justify-content:center;border-radius:999px;border:2px solid #FFD166;background:#FFD166;color:#0B1026;font:600 16px Fredoka,sans-serif;cursor:pointer;animation:launchPulse 900ms ease-out 2;" style-focus="outline:3px solid #F2F4FF;outline-offset:3px;">🚀 Launch</button>
+</sc-if>
+<sc-if value="{{ notAllGo }}" hint-placeholder-val="{{ true }}">
+<button type="button" disabled="{{ true }}" aria-label="Launch, disabled until all four roles say Go" style="all:unset;box-sizing:border-box;flex:1 1 0;max-width:260px;min-height:52px;padding:0 12px;white-space:nowrap;display:flex;align-items:center;justify-content:center;border-radius:999px;border:2px solid #34407A;background:#1F2852;color:#C3CAEE;font:600 16px Fredoka,sans-serif;cursor:not-allowed;">🚀 Launch</button>
+</sc-if>
+</footer>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:390,&quot;height&quot;:1500},&quot;preset&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;none&quot;,&quot;three&quot;,&quot;nogo&quot;,&quot;allgo&quot;],&quot;default&quot;:&quot;none&quot;,&quot;tsType&quot;:&quot;'none'|'three'|'nogo'|'allgo'&quot;},&quot;layout&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;mobile&quot;,&quot;desktop&quot;],&quot;default&quot;:&quot;mobile&quot;,&quot;tsType&quot;:&quot;'mobile'|'desktop'&quot;}}">
+class Component extends DCLogic {
+  static PRESETS = {
+    none: { science: null, space: null, ground: null, launch: null },
+    three: { science: true, space: true, ground: true, launch: null },
+    nogo: { science: true, space: true, ground: false, launch: true },
+    allgo: { science: true, space: true, ground: true, launch: true },
+  };
+  constructor(p) {
+    super(p);
+    this.state = { votes: { ...(p.votes || Component.PRESETS[p.preset ?? 'none'] || Component.PRESETS.none) }, pops: {} };
+  }
+  vote(k, v) {
+    this.setState(s => ({ votes: { ...s.votes, [k]: v }, pops: { ...s.pops, [k]: (s.pops[k] || 0) + 1 } }));
+    this.props.setVotes?.({ ...this.state.votes, [k]: v });
+  }
+  renderVals() {
+    const desk = (this.props.layout ?? 'mobile') === 'desktop';
+    const { votes, pops } = this.state;
+    const R = [
+      { k: 'science', charRole: 'science', label: 'Science', icon: '◎', color: '#7FE28E' },
+      { k: 'space', charRole: 'spacecraft', label: 'Spacecraft', icon: '◆', color: '#62B4FF' },
+      { k: 'ground', charRole: 'ground', label: 'Ground', icon: '▲', color: '#FF93B8' },
+      { k: 'launch', charRole: 'launch', label: 'Launch', icon: '▮', color: '#FF8552' },
+    ];
+    const vals = R.map(r => votes[r.k]);
+    const go = vals.filter(v => v === true).length, no = vals.filter(v => v === false).length, wait = 4 - go - no;
+    const allGo = go === 4;
+    const cost = this.props.cost ?? 184, budget = this.props.budget ?? 200;
+    const reserve = Math.round((budget - cost) / budget * 100);
+    return {
+      frameW: desk ? '1280px' : '390px', pad: desk ? '28px 40px' : '20px 16px', titleSize: desk ? '40px' : '28px',
+      asidePos: desk ? 'sticky' : 'static', cols: desk ? '380px minmax(0,1fr)' : 'minmax(0,1fr)', gap: desk ? '32px' : '16px',
+      cardCols: desk ? 'repeat(4,minmax(0,1fr))' : 'repeat(2,minmax(0,1fr))', recapDir: desk ? 'column' : 'row', shipH: desk ? 240 : 120,
+      parts: [
+        { icon: '◎', color: '#7FE28E', step: 'Instrument', name: 'Multispectral Imager' },
+        { icon: '◆', color: '#62B4FF', step: 'Power', name: 'Standard' },
+        { icon: '▲', color: '#FF93B8', step: 'Downlink', name: 'Polar Station Network' },
+        { icon: '▮', color: '#FF8552', step: 'Launcher', name: 'Medium' },
+      ],
+      budgetText: '$' + cost + 'M / $' + budget + 'M', budgetPct: (cost / budget * 100) + '%',
+      budgetAria: 'Budget: $' + cost + 'M of $' + budget + 'M, reserve ' + reserve + '%',
+      reservePct: reserve + '%', reserveText: reserve + '% reserve',
+      tally: go + ' Go · ' + no + ' No-Go · ' + wait + ' waiting',
+      tallyColor: no ? '#FF7070' : allGo ? '#66E39A' : '#C3CAEE',
+      roles: R.map(r => {
+        const v = votes[r.k], n = pops[r.k] || 0;
+        const st = v === true ? 'GO' : v === false ? 'NO-GO' : 'waiting…';
+        return {
+          ...r, aria: r.label + ': ' + st,
+          mood: v === false ? 'worried' : v === true ? 'cheer' : 'neutral',
+          pop: n ? 'pop' + (n % 2 ? 'A' : 'B') + ' 420ms cubic-bezier(.3,1.3,.5,1)' : 'none',
+          status: v === true ? '✓ GO' : v === false ? '✕ NO-GO' : '… waiting…',
+          statusColor: v === true ? '#66E39A' : v === false ? '#FF7070' : '#C3CAEE',
+          bg: v === null || v === undefined ? '#151C3D' : '#1F2852',
+          border: v === true ? '#66E39A' : v === false ? '#FF7070' : '#34407A',
+          goPressed: String(v === true), noPressed: String(v === false),
+          goAria: r.label + ' votes Go', noAria: r.label + ' votes No-Go',
+          goBg: v === true ? '#66E39A' : '#151C3D', goColor: v === true ? '#0B1026' : '#F2F4FF', goBorder: v === true ? '#66E39A' : '#34407A',
+          noBg: v === false ? '#FF7070' : '#151C3D', noColor: v === false ? '#0B1026' : '#F2F4FF', noBorder: v === false ? '#FF7070' : '#34407A',
+          onGo: () => this.vote(r.k, true), onNo: () => this.vote(r.k, false),
+        };
+      }),
+      anyNo: no > 0, allGo, notAllGo: !allGo,
+      footNote: allGo ? '✓ All four roles say Go. Ready for launch.' : no ? '✕ Launch needs four Go votes.' : 'Launch unlocks when all four roles say Go (' + go + ' of 4).',
+      footColor: allGo ? '#66E39A' : no ? '#FF7070' : '#C3CAEE', footAlign: desk ? 'right' : 'left',
+      onBack: () => this.props.onBack?.(), onLaunch: () => allGo && this.props.onLaunch?.(),
+    };
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>
+@keyframes orbitSpin{to{transform:rotate(360deg)}}
+@media (prefers-reduced-motion: reduce){.od-sat{animation:none!important}}
+</style>
+</helmet>
+<svg viewBox="0 0 160 160" width="{{ size }}" height="{{ size }}" role="img" aria-label="{{ label }}" style="display:block;overflow:visible;">
+<g style="display:{{ isGeo }};"><circle cx="80" cy="80" r="66" fill="none" stroke="{{ color }}" stroke-width="3" stroke-dasharray="2 7" stroke-linecap="round"></circle></g>
+<g style="display:{{ isLeo }};"><circle cx="80" cy="80" r="31" fill="none" stroke="{{ color }}" stroke-width="3"></circle></g>
+<g style="display:{{ isSso }};"><ellipse cx="80" cy="80" rx="13" ry="36" fill="none" stroke="{{ color }}" stroke-width="3" transform="rotate(8 80 80)"></ellipse></g>
+<circle cx="80" cy="80" r="24" fill="#62B4FF" stroke="#0B1026" stroke-width="3.5"></circle>
+<path d="M64 72 Q70 62 80 66 Q86 74 78 80 Q68 84 64 72 Z M84 88 Q94 84 98 92 Q96 100 88 100 Q82 96 84 88 Z" fill="#7FE28E" stroke="#0B1026" stroke-width="2.5"></path>
+<path d="M70 58 Q80 54 90 58" fill="none" stroke="#F2F4FF" stroke-width="3" stroke-linecap="round"></path>
+<g transform="{{ outer }}">
+<g class="od-sat" style="transform-origin:80px 80px;animation:orbitSpin {{ dur }} linear infinite;">
+<g transform="translate(80 {{ satY }})">
+<rect x="-11" y="-4" width="7" height="8" rx="1.5" fill="{{ color }}" stroke="#0B1026" stroke-width="2"></rect>
+<rect x="4" y="-4" width="7" height="8" rx="1.5" fill="{{ color }}" stroke="#0B1026" stroke-width="2"></rect>
+<rect x="-4.5" y="-4.5" width="9" height="9" rx="2.5" fill="#F2F4FF" stroke="#0B1026" stroke-width="2"></rect>
+</g>
+</g>
+</g>
+<text x="80" y="156" text-anchor="middle" font-family="Fredoka" font-weight="600" font-size="13" fill="{{ color }}" style="display:{{ showCode }};">{{ code }}</text>
+</svg>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:160,&quot;height&quot;:160},&quot;orbitId&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;LEO&quot;,&quot;SSO&quot;,&quot;GEO&quot;],&quot;default&quot;:&quot;LEO&quot;,&quot;tsType&quot;:&quot;'LEO'|'SSO'|'GEO'&quot;},&quot;size&quot;:{&quot;editor&quot;:&quot;int&quot;,&quot;default&quot;:120,&quot;tsType&quot;:&quot;number&quot;},&quot;showCode&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;}}">
+class Component extends DCLogic {
+  renderVals() {
+    const id = this.props.orbitId ?? 'LEO';
+    const O = {
+      LEO: { color: '#4FD8C8', r: 31, dur: '8s', outer: '', label: 'LEO diagram: small circular orbit close to Earth' },
+      SSO: { color: '#FFB547', r: 36, dur: '10s', outer: 'translate(80 80) rotate(8) scale(0.36 1) translate(-80 -80)', label: 'SSO diagram: near-polar orbit passing over both poles' },
+      GEO: { color: '#C29BFF', r: 66, dur: '40s', outer: '', label: 'GEO diagram: large circular orbit far from Earth' },
+    }[id];
+    const d = k => (id === k ? 'inline' : 'none');
+    return {
+      size: this.props.size ?? 120, color: O.color, dur: O.dur, outer: O.outer, satY: 80 - O.r, label: O.label, code: id,
+      showCode: this.props.showCode ? 'inline' : 'none', isLeo: d('LEO'), isSso: d('SSO'), isGeo: d('GEO'),
+    };
+  }
+}
+</script>
+</body>
+</html>

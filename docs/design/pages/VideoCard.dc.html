@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
+</helmet>
+<div style="position:relative;overflow:hidden;box-sizing:border-box;width:{{ w }};height:{{ h }};background:#0B1026;color:#F2F4FF;font-family:'Atkinson Hyperlegible',system-ui,sans-serif;display:flex;flex-direction:{{ dir }};align-items:center;justify-content:center;gap:{{ gap }};padding:{{ pad }};">
+<svg viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true" style="position:absolute;inset:0;width:100%;height:100%;"><g fill="#F2F4FF" opacity="0.6"><circle cx="6" cy="8" r="0.25"></circle><circle cx="18" cy="30" r="0.18"></circle><circle cx="92" cy="12" r="0.25"></circle><circle cx="80" cy="44" r="0.18"></circle><circle cx="44" cy="6" r="0.18"></circle><circle cx="62" cy="20" r="0.2"></circle><circle cx="96" cy="70" r="0.18"></circle><circle cx="4" cy="64" r="0.2"></circle><circle cx="30" cy="92" r="0.18"></circle><circle cx="70" cy="94" r="0.2"></circle></g></svg>
+<sc-if value="{{ isTitle }}" hint-placeholder-val="{{ true }}">
+<div style="position:relative;display:flex;flex-direction:column;align-items:center;gap:24px;">
+<dc-import name="Ship" payload="prism" power="big" antenna="polar" launcher="medium" height="{{ shipH }}" hint-size="300px,400px"></dc-import>
+<div style="display:flex;gap:16px;align-items:flex-end;">
+<dc-import name="Character" role="science" mood="cheer" size="{{ crewS }}" bg="#0B1026" hint-size="120px,120px"></dc-import>
+<dc-import name="Character" role="spacecraft" size="{{ crewS }}" bg="#0B1026" hint-size="120px,120px"></dc-import>
+<dc-import name="Character" role="ground" size="{{ crewS }}" bg="#0B1026" hint-size="120px,120px"></dc-import>
+<dc-import name="Character" role="launch" mood="cheer" size="{{ crewS }}" bg="#0B1026" hint-size="120px,120px"></dc-import>
+</div>
+</div>
+<div style="position:relative;display:flex;flex-direction:column;align-items:{{ textAlign }};text-align:{{ textAlignT }};gap:28px;max-width:{{ textW }};">
+<h1 style="margin:0;font:700 {{ titleS }}/1 Fredoka,sans-serif;letter-spacing:-.01em;">Trajectory Ladder</h1>
+<p style="margin:0;font:500 {{ leadS }}/1.3 Fredoka,sans-serif;color:#C3CAEE;text-wrap:balance;">Design a space mission and watch every choice ripple down.</p>
+<span style="display:inline-flex;align-items:center;gap:14px;padding:14px 28px;border-radius:999px;border:3px solid #FFD166;font:600 {{ teamS }} Fredoka;color:#FFD166;">One Pixel Home</span>
+</div>
+</sc-if>
+<sc-if value="{{ isEnd }}" hint-placeholder-val="{{ false }}">
+<div style="position:relative;width:{{ gaugeS }};height:{{ gaugeS }};flex-shrink:0;">
+<svg viewBox="0 0 120 120" width="100%" height="100%" aria-hidden="true" style="transform:rotate(-90deg);"><circle cx="60" cy="60" r="52" fill="none" stroke="#1F2852" stroke-width="12"></circle><circle cx="60" cy="60" r="52" fill="none" stroke="#66E39A" stroke-width="12" stroke-linecap="round" stroke-dasharray="281 327"></circle></svg>
+<div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;"><span style="font:600 {{ scoreS }}/1 Fredoka;font-variant-numeric:tabular-nums;">86</span><span style="font:500 {{ ofS }} Fredoka;color:#C3CAEE;">of 100</span></div>
+</div>
+<div style="position:relative;display:flex;flex-direction:column;align-items:{{ textAlign }};text-align:{{ textAlignT }};gap:28px;max-width:{{ textW }};">
+<h1 style="margin:0;font:700 {{ endS }}/1.05 Fredoka,sans-serif;text-wrap:balance;">Every choice has a consequence.</h1>
+<p style="margin:0;font:500 {{ leadS }}/1.3 Fredoka,sans-serif;color:#C3CAEE;text-wrap:balance;">Built on NASA orbital data and Landsat 9 parameters.</p>
+<div style="display:flex;flex-wrap:wrap;gap:20px;align-items:center;justify-content:{{ textAlign }};">
+<span style="font:700 {{ teamS }} Fredoka;color:#F2F4FF;">Trajectory Ladder</span>
+<span style="display:inline-flex;align-items:center;padding:14px 28px;border-radius:999px;border:3px solid #FFD166;font:600 {{ teamS }} Fredoka;color:#FFD166;">One Pixel Home</span>
+</div>
+</div>
+</sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1920,&quot;height&quot;:1080},&quot;kind&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;title&quot;,&quot;end&quot;],&quot;default&quot;:&quot;title&quot;,&quot;tsType&quot;:&quot;'title'|'end'&quot;},&quot;format&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;landscape&quot;,&quot;portrait&quot;],&quot;default&quot;:&quot;landscape&quot;,&quot;tsType&quot;:&quot;'landscape'|'portrait'&quot;}}">
+class Component extends DCLogic {
+  renderVals() {
+    const P = (this.props.format ?? 'landscape') === 'portrait';
+    const title = (this.props.kind ?? 'title') === 'title';
+    return {
+      w: P ? '1080px' : '1920px', h: P ? '1920px' : '1080px', dir: P ? 'column' : 'row', gap: P ? '80px' : '120px', pad: P ? '120px 80px' : '80px 140px',
+      isTitle: title, isEnd: !title,
+      shipH: P ? 640 : 600, crewS: P ? 140 : 120,
+      textAlign: P ? 'center' : 'flex-start', textAlignT: P ? 'center' : 'left', textW: P ? '920px' : '820px',
+      titleS: P ? '128px' : '132px', leadS: P ? '56px' : '52px', teamS: P ? '40px' : '36px',
+      gaugeS: P ? '620px' : '560px', scoreS: P ? '240px' : '220px', ofS: P ? '48px' : '44px', endS: P ? '112px' : '104px',
+    };
+  }
+}
+</script>
+</body>
+</html>

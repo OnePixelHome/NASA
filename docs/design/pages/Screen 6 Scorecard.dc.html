@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="design_doc_mode" content="canvas">
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#070B1C;color:#F2F4FF;font-family:"Atkinson Hyperlegible",system-ui,sans-serif;}
+a{color:#62B4FF;} a:hover{color:#F2F4FF;}
+</style>
+</helmet>
+<section id="mobile" style="background:#070B1C;box-sizing:border-box;width:max-content;min-width:100%;display:flex;flex-direction:column;gap:24px;padding:48px;">
+<header style="display:flex;flex-direction:column;gap:8px;max-width:900px;">
+<span style="font:700 12px/1.2 'Atkinson Hyperlegible';letter-spacing:.12em;text-transform:uppercase;color:#969FCC;">Screen 6 · 390 px</span>
+<h1 style="margin:0;font:600 40px/1.1 Fredoka,sans-serif;">Mission scorecard</h1>
+<p style="margin:0;font-size:17px;line-height:1.5;color:#C3CAEE;">Values are placeholders shaped like <code>evaluateMission()</code>. React handoff: <a href="handoff/Score.tsx">handoff/Score.tsx</a>.</p>
+</header>
+<div style="display:flex;flex-wrap:wrap;gap:40px;align-items:flex-start;">
+<div style="display:flex;flex-direction:column;gap:12px;"><span style="align-self:flex-start;padding:4px 10px;border-radius:999px;background:#FFD166;color:#0B1026;font:700 13px 'Atkinson Hyperlegible';">a · Success, 86</span><div style="border:1px solid #34407A;border-radius:24px;overflow:hidden;"><dc-import name="Score" variant="success" layout="mobile" hint-size="390px,2000px"></dc-import></div></div>
+<div style="display:flex;flex-direction:column;gap:12px;"><span style="align-self:flex-start;padding:4px 10px;border-radius:999px;background:#FFD166;color:#0B1026;font:700 13px 'Atkinson Hyperlegible';">b · Failed, low score 38</span><div style="border:1px solid #34407A;border-radius:24px;overflow:hidden;"><dc-import name="Score" variant="failScore" layout="mobile" hint-size="390px,2100px"></dc-import></div></div>
+<div style="display:flex;flex-direction:column;gap:12px;"><span style="align-self:flex-start;padding:4px 10px;border-radius:999px;background:#FFD166;color:#0B1026;font:700 13px 'Atkinson Hyperlegible';">b2 · Failed, over budget (61)</span><div style="border:1px solid #34407A;border-radius:24px;overflow:hidden;"><dc-import name="Score" variant="failBudget" layout="mobile" hint-size="390px,2100px"></dc-import></div></div>
+<div style="display:flex;flex-direction:column;gap:12px;"><span style="align-self:flex-start;padding:4px 10px;border-radius:999px;background:#FFD166;color:#0B1026;font:700 13px 'Atkinson Hyperlegible';">c · Sources open</span><div style="border:1px solid #34407A;border-radius:24px;overflow:hidden;"><dc-import name="Score" variant="success" layout="mobile" sources-open="{{ true }}" hint-size="390px,2300px"></dc-import></div></div>
+</div>
+</section>
+<section id="desktop" style="background:#070B1C;box-sizing:border-box;width:max-content;min-width:100%;display:flex;flex-direction:column;gap:16px;padding:48px;">
+<span style="align-self:flex-start;padding:4px 10px;border-radius:999px;background:#FFD166;color:#0B1026;font:700 13px 'Atkinson Hyperlegible';">a · Success at 1280 px</span>
+<div style="align-self:flex-start;border:1px solid #34407A;border-radius:24px;overflow:hidden;"><dc-import name="Score" variant="success" layout="desktop" hint-size="1280px,1300px"></dc-import></div>
+<span style="align-self:flex-start;margin-top:24px;padding:4px 10px;border-radius:999px;background:#FFD166;color:#0B1026;font:700 13px 'Atkinson Hyperlegible';">b · Failed (low score) at 1280 px</span>
+<div style="align-self:flex-start;border:1px solid #34407A;border-radius:24px;overflow:hidden;"><dc-import name="Score" variant="failScore" layout="desktop" hint-size="1280px,1300px"></dc-import></div>
+</section>
+<section id="poses" style="background:#070B1C;box-sizing:border-box;display:flex;flex-direction:column;gap:16px;padding:48px;">
+<h2 style="margin:0;font:600 28px/1.2 Fredoka,sans-serif;">Crew reactions · mood="cheer" (success) | "worried" (failed)</h2>
+<div style="display:flex;flex-wrap:wrap;gap:12px;">
+<sc-for list="{{ poses }}" as="p" hint-placeholder-count="8">
+<div style="display:flex;flex-direction:column;align-items:center;gap:6px;width:120px;padding:14px;background:#151C3D;border:1px solid #34407A;border-radius:18px;">
+<dc-import name="Character" role="{{ p.role }}" mood="{{ p.mood }}" size="80" hint-size="80px,80px"></dc-import>
+<span style="font-size:13px;color:#C3CAEE;">{{ p.label }}</span>
+</div>
+</sc-for>
+</div>
+<h2 style="margin:24px 0 0;font:600 28px/1.2 Fredoka,sans-serif;">React structure</h2>
+<pre style="margin:0;padding:16px;background:#151C3D;border:1px solid #34407A;border-radius:18px;overflow:auto;font:13px/1.6 ui-monospace,Menlo,monospace;color:#C3CAEE;">&lt;Score choice goVotes onReplay onRevise&gt;        const r = evaluateMission(choice, goVotes)
+                                               failureReason = r.success ? null : overBudget ? "budget" : "score"
+  &lt;ResultBanner success score ship={choice}&gt;     ShipSvg (bad = failing layer) + 4× &lt;RoleCharacter mood /&gt;
+  &lt;Gauge score success /&gt;  "Illustrative score"   fills 0 → score once
+  &lt;Breakdown items={r.breakdown} /&gt;             4× Meter, staggered fill
+  &lt;InsightCard icon title speaker /&gt; ×2         primaryConstraint, biggestImpact
+  &lt;LessonCard text={r.lesson} /&gt;                most prominent
+  &lt;DesignRecap orbit parts /&gt;
+  &lt;SourcesDisclosure /&gt;                         SourceChip links from src/engine/sources.ts
+  &lt;ScoreActions onRevise onReplay primary={success ? "replay" : "revise"} /&gt;</pre>
+</section>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  renderVals() {
+    const roles = ['science', 'spacecraft', 'ground', 'launch'];
+    return { poses: [...roles.map(r => ({ role: r, mood: 'cheer', label: r + ' · cheer' })), ...roles.map(r => ({ role: r, mood: 'worried', label: r + ' · worried' }))] };
+  }
+}
+</script>
+</body>
+</html>
