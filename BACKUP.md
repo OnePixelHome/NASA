@@ -1,5 +1,14 @@
 # BACKUP - NASA
 
+## 2026-11-15 (PC de José) — Neon CLI y skills de Neon para Claude Code
+
+- Se siguió el skill oficial de Neon (https://neon.com/.well-known/agent-skills/neon/SKILL.md).
+- MCP de Neon: ya estaba disponible por el conector "claude.ai Neon" (OAuth, a nivel de cuenta). No se instaló otro para no duplicarlo; no se tocó ninguna configuración de MCP.
+- Neon CLI 9.5.0 instalado globalmente en la PC de José (`npm i -g neon`, por el espejo `registry.yarnpkg.com`). Es local de esta PC; no cambia el repo.
+- Skills `neon` y `neon-functions` instalados para Claude Code a nivel de proyecto: `.claude/skills/neon/`, `.claude/skills/neon-functions/` y `skills-lock.json` (fuente `neondatabase/agent-skills`). Solo Markdown, sin scripts. `.claude/settings.json` y los hooks no cambiaron.
+- Mantenimiento: `neon skills status` al empezar una sesión y `neon skills update -y` si hay versiones nuevas.
+- Pendiente: José inicia sesión con `neon login` (no lo puede hacer el agente) y corre `bash server/deploy.sh` para publicar el leaderboard.
+
 ## 2026-11-15 (PC de José) — Leaderboard en línea (código listo, falta desplegar la función)
 
 - Pedido de José: tabla de puntajes compartida entre jugadores, pidiendo el nombre antes de guardar. Se eligió "en línea, compartida" (no solo en el dispositivo).
