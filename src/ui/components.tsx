@@ -9,7 +9,9 @@ import { reasonSources, SOURCES, type Reason, type SourceId } from '../engine/so
 const BTN = 'inline-flex min-h-[48px] items-center justify-center gap-2 rounded-pill border-2 px-5 font-display text-[16px] transition duration-[var(--duration-fast)]'
 /** The one recommended action on a screen. */
 export const BTN_PRIMARY = `${BTN} border-st-selected bg-st-selected text-space-page hover:brightness-110 disabled:border-space-border disabled:bg-space-raised disabled:text-ink-2 disabled:hover:brightness-100`
-export const BTN_SECONDARY = `${BTN} border-space-border bg-space-card text-ink hover:border-st-available`
+/** The landing page's "Start mission": a green GO light (#7FE28E, the same green as the Science role). */
+export const BTN_GO = `${BTN} border-role-science bg-role-science text-space-page hover:brightness-110`
+export const BTN_SECONDARY =`${BTN} border-space-border bg-space-card text-ink hover:border-st-available`
 /** Allowed but costly, e.g. launching over a No-Go. Outlined so it never reads as the recommended action. */
 export const BTN_WARNING = `${BTN} border-st-warning bg-space-page text-st-warning hover:bg-space-raised disabled:border-space-border disabled:text-ink-2`
 

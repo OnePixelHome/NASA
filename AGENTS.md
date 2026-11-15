@@ -1,6 +1,6 @@
 # NASA
 
-Repositorio personal y privado de Belle (`belleavm/NASA`), en `C:\Lab\Belle\NASA` (Windows). Solo rama `main`. El proyecto explorará un juego educativo interactivo de diseño y simulación de misiones espaciales basado en el desafío Space Apps 2026. El stack y el alcance concreto todavía no están definidos.
+Repositorio personal y privado de Belle (`belleavm/NASA`), en `C:\Lab\Belle\NASA` (Windows). Ramas por persona/tema con PR a `main`. El proyecto explorará un juego educativo interactivo de diseño y simulación de misiones espaciales basado en el desafío Space Apps 2026. El stack y el alcance concreto todavía no están definidos.
 
 ## Al empezar
 
@@ -17,7 +17,7 @@ Repositorio personal y privado de Belle (`belleavm/NASA`), en `C:\Lab\Belle\NASA
 
 - Todo cambio se documenta en `BACKUP.md` en la misma sesión y antes del commit: qué cambió, por qué y qué quedó pendiente. Nunca incluir secretos.
 - Los secretos no van en el repo: van en `C:\Users\bvasquez\lab_secrets\nasa\` (en la Mac, `~/lab_secrets/nasa/`).
-- Trabajar directo en `main`; no crear otras ramas.
+- Desde el 2026-11-14 trabajan cuatro personas: cada cambio va en su propia rama (p. ej. `belle`, `feat/...`, `fix/...`) con PR a `main`. No hacer push directo a `main`.
 
 ## Harness del workspace
 
