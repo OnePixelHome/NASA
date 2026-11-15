@@ -1,4 +1,4 @@
-# Submission checklist — Trajectory Ladder
+# Submission checklist — Status: GO
 
 **Hard deadline:** Sunday 2026-11-15, 23:59 (final; late submissions are not eligible).
 **Team target:** submit Sunday 20:00. **Code freeze:** Sunday 18:00.

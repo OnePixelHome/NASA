@@ -1,4 +1,4 @@
-# Project page draft — Trajectory Ladder
+# Project page draft — Status: GO
 
 Draft text for the NASA Space Apps 2026 project page. Paste each section into the matching field.
 Owner: Edgar. Copy review: Belle. Status: **draft**, written Sat 2026-11-14 against the code in PRs #1 to #7.
@@ -9,7 +9,7 @@ Items marked **TODO** must be filled in or confirmed before submitting.
 
 ## Project name
 
-Trajectory Ladder
+Status: GO
 
 ## Team
 
@@ -21,7 +21,7 @@ Space Mission Design Game
 
 ## High-level summary
 
-Real missions fail when one choice breaks another, and students rarely get to see that. Trajectory Ladder is a browser game
+Real missions fail when one choice breaks another, and students rarely get to see that. Status: GO is a browser game
 where one to four players design an Earth-observation mission step by step: pick a science goal, choose an orbit, then build
 a dependency tree of instrument, power system, data downlink and launch vehicle. Every option is either available or locked,
 and every lock explains itself with a number computed from real orbital mechanics and NASA data. A Go/No-Go poll, a mission
@@ -46,7 +46,7 @@ simulation and a scorecard close the loop, so players can change one choice and 
    data downlink (Ground) and launch vehicle (Launch). An option that cannot work with the choices above it is locked,
    and tapping it shows why. Four live meters track budget, mass, power and data.
 4. **Go/No-Go poll.** Every role votes. A unanimous Go earns the full team score; launching over a No-Go costs points.
-5. **Status: GO (mission simulation).** A rendered film plays the player's own mission: their rocket lifts off, their spacecraft
+5. **Mission simulation.** A rendered film plays the player's own mission: their rocket lifts off, their spacecraft
    unfolds its panels, takes a first picture, then circles a real image of the Earth for a day, dimming in Earth's
    shadow and sending data down on each pass over the ground station. A timeline and a telemetry plot show the numbers.
 6. **Scorecard.** A 0–100 score split into science return, data delivered, budget and team, plus the primary constraint,
@@ -133,5 +133,5 @@ If the video or slides use any AI-generated image, voice or clip, name the tool 
 
 ## Notice
 
-Trajectory Ladder is an independent project made by team One Pixel Home for the NASA Space Apps Challenge 2026. It is
+Status: GO is an independent project made by team One Pixel Home for the NASA Space Apps Challenge 2026. It is
 not affiliated with or endorsed by NASA. NASA does not endorse any non-U.S. Government entity.

@@ -1,4 +1,4 @@
-/* Trajectory Ladder — design tokens (Tailwind v4). Source: docs/design/handoff/theme.css (Claude Design export).
+/* Status: GO — design tokens (Tailwind v4). Source: docs/design/handoff/theme.css (Claude Design export).
    Fonts are bundled from @fontsource (both OFL-1.1) instead of Google's CDN, so the game also works offline
    and in the single-file build. */
 @import '@fontsource/fredoka/latin-500.css';

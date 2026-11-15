@@ -51,8 +51,8 @@ export default function App() {
       <header className="sticky top-0 z-10 border-b border-space-border bg-space-page/95 px-4 py-2 backdrop-blur">
         <div className="mx-auto max-w-5xl">
           <div className="flex items-center justify-between gap-3">
-            <button type="button" onClick={restart} className="min-h-[44px] text-left" aria-label="Trajectory Ladder: start over">
-              <div className="font-display text-[18px] leading-tight">Trajectory Ladder</div>
+            <button type="button" onClick={restart} className="min-h-[44px] text-left" aria-label="Status: GO — start over">
+              <div className="font-display text-[18px] leading-tight">Status: GO</div>
               {/* The tagline gives way to the resource panel once a mission is picked, to save phone space. */}
               {!scenario && <div className="text-caption text-ink-muted">Design a space mission. Watch every choice ripple down.</div>}
             </button>
@@ -623,7 +623,7 @@ function MissionRun({ choice, goVotes, onDone }: { choice: Choice; goVotes: numb
   const done = film ? filmDone : step >= total
   return (
     <section>
-      <ScreenTitle screen="run" title="5 · Status: GO" />
+      <ScreenTitle screen="run" title="5 · Mission simulation" />
       <div className="mt-3 flex justify-between text-small">
         <span className="text-ink-2">Mission progress</span>
         <span className="font-display tabular-nums">
@@ -802,7 +802,7 @@ function About({ onBack }: { onBack: () => void }) {
         <div className="flex min-w-0 flex-col gap-4">
           <section aria-labelledby="h-what" className={box}>
             <h2 id="h-what" className="text-section">
-              What is Trajectory Ladder?
+              What is Status: GO?
             </h2>
             <p className="text-body text-ink-2">{PITCH}</p>
             <div className="relative flex flex-wrap items-end justify-center gap-1 pb-7 pt-2">

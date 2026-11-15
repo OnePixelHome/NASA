@@ -1,9 +1,11 @@
 # BACKUP - NASA
 
-## 2026-11-15 (PC de José) — La simulación se llama "Status: GO"
+## 2026-11-15 (PC de José) — El juego se llama "Status: GO" (antes "Trajectory Ladder")
 
-- Pedido de José: el título de la pantalla 5 pasa de "5 · Mission simulation" a "5 · Status: GO" (`src/App.tsx`). Se actualizaron `docs/COPY.md`, `docs/PROJECT_PAGE.md` y `docs/REQUIREMENTS.md`; `docs/design-prompts.md` no se tocó porque registra los prompts tal como se enviaron.
-- "How to play" sigue diciendo "watch the simulation" (descripción, no nombre). Pendiente: que Belle confirme el nombre y decida si "How to play" también lo usa.
+- José aclaró que "Status: GO" es el nombre completo del juego, no de la pantalla 5. Se revirtió el cambio de título de la pantalla 5 (vuelve a "5 · Mission simulation") y se renombró el juego en todo lo que ve el jugador o el jurado: encabezado y su `aria-label`, título de la pestaña (`index.html`), "What is Status: GO?" en About, `DISCLAIMER` (`src/engine/sources.ts`), título del favicon y README.
+- También en la documentación vigente: `CLAUDE.md`, `AGENTS.md`, `docs/COPY.md`, `docs/PROJECT_PAGE.md`, `docs/REQUIREMENTS.md`, `docs/SUBMISSION.md`, `docs/DESIGN-RULES.md` y `docs/HANDOFF.md` (decisión 9 y línea del pitch). `package.json` pasa a `status-go`.
+- No se tocaron los registros históricos: `docs/design-prompts.md`, el PRD de Miro citado en HANDOFF y las entradas anteriores de este archivo.
+- Pendiente: Belle debe usar el nombre nuevo en el video, la página del proyecto en Space Apps y la descripción del repo; las tarjetas del video de Claude Design todavía dicen "Trajectory Ladder".
 
 ## 2026-11-15 (PC de José) — Favicon propio
 
