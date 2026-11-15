@@ -6,7 +6,8 @@
 - `LEADERBOARD_URL` apunta ahora a esa URL, así que el botón "Leaderboard" de la página de inicio y el formulario del scorecard ya se ven. Los ids de Postgres llegan como texto y se convierten a número en `src/leaderboard/api.ts` para marcar la fila propia ("you").
 - Aviso de privacidad: `FOOTER_NOTES` añade "Saving a score sends only the name you type and your mission design to our leaderboard (a Neon database)." Neon y `pg` añadidos a la tabla de herramientas de `docs/PROJECT_PAGE.md`; textos nuevos en `docs/COPY.md` §7.
 - Verificado contra la función real: CORS para `https://onepixelhome.github.io`, lectura, rechazo de nombres prohibidos y de diseños falsos, y un guardado con `"score": 100` falso que el servidor ignoró (guardó 86, el puntaje real). En Chrome, partida completa (Storm Watch, GEO) hasta el scorecard: el nombre prohibido muestra el error y "QA test crew" se guardó como "#1 of 2" con la fila marcada. Build, lint y 70 tests.
-- Pendiente: borrar las dos filas de prueba ("Mission Control test" y "QA test crew") cuando José lo apruebe; revisión de textos por Belle.
+- Con el visto bueno de José se borraron las dos filas de prueba ("Mission Control test" y "QA test crew"); el leaderboard queda vacío para el jurado.
+- Pendiente: revisión de textos por Belle.
 
 ## 2026-11-15 (PC de José) — El repo pasó a `OnePixelHome/NASA`: URL nueva del juego
 
