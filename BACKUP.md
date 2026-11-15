@@ -1,5 +1,14 @@
 # BACKUP - NASA
 
+## 2026-11-14 (PC de Edgar) — Paso 3 del diseño: escenas de la simulación (`feat/mission-scenes`)
+
+- Se hizo merge del PR #12 (nave y tripulación).
+- Nuevo `src/ui/MissionScene.tsx` con las seis escenas animadas de `pages/MissionScene.dc.html`: despegue, órbita (en el color de la órbita elegida), primera imagen, enlace de datos, barrido de cobertura y la tripulación saludando. Solo se monta la escena del paso actual, así su animación corre una vez; con `prefers-reduced-motion` queda el cuadro final.
+- Pantalla 5: la escena va encima de la línea de tiempo en celular y en una columna fija a la izquierda desde 1024 px. El texto de cada paso sigue saliendo de `evaluateMission().timeline` con sus etiquetas de fuente.
+- Las animaciones `ms-*` están en `src/index.css`.
+- Verificado: 38 tests, build, lint; las seis escenas capturadas en Edge a 390 y 1280 px, sin desbordes ni errores.
+- Pendiente: banner y tripulación del scorecard, ilustraciones de misión en el Brief, resumen del diseño en Go/No-Go, "How to play" y equipo en About.
+
 ## 2026-11-14 (PC de Edgar) — Paso 1 del diseño: nave y tripulación (`feat/ship-and-crew`)
 
 - Se revisó y se hizo merge del PR #10 de Thais (solo documentación: exportación de diseño, guía y `docs/DESIGN-RULES.md`) y del PR #11 (paso 0). Se borró la rama `docs/design-handoff` ya integrada.

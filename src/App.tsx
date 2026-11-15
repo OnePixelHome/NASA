@@ -3,6 +3,7 @@ import * as C from './engine/catalog'
 import { budget, BUDGET_SOURCE, choose, evaluateMission, isComplete, orbitSources, orbitStats, resources, SUCCESS_SCORE_MIN, TEAM_POINTS_MAX, TEAM_ROLES, teamPoints, TIER_ORDER, tierOptions, type Choice, type NodeState } from './engine/game'
 import { AI_DISCLOSURE, DISCLAIMER, PITCH, SOURCE_ORDER, SOURCES, type Reason } from './engine/sources'
 import { RoleCharacter } from './ui/Crew'
+import { MissionScene } from './ui/MissionScene'
 import { ShipSvg } from './ui/Ship'
 import { ROLE_UI, shipParts } from './ui/theme'
 import { Bar, BTN_PRIMARY, BTN_SECONDARY, BTN_WARNING, Gauge, Meter, ReasonList, ResourcePanel, RoleTag, SourceChip, SourceChips, Sourced } from './ui/components'
@@ -520,6 +521,7 @@ function GoNoGo(props: { votes: Votes; setVotes: (v: Votes) => void; choice: Cho
 
 function MissionRun({ choice, goVotes, onDone }: { choice: Choice; goVotes: number; onDone: () => void }) {
   const card = useMemo(() => evaluateMission(choice, goVotes), [choice, goVotes])
+  const orbit = C.byId(C.ORBITS, choice.orbitId)!
   const total = card.timeline.length
   const [step, setStep] = useState(0)
   useEffect(() => {
@@ -547,7 +549,11 @@ function MissionRun({ choice, goVotes, onDone }: { choice: Choice; goVotes: numb
       >
         <div className="h-full rounded-pill bg-st-warning transition-[width] duration-700 ease-linear" style={{ width: `${(100 * step) / total}%` }} />
       </div>
-      <ol aria-live="polite" aria-label="Mission timeline" className="mt-4 flex flex-col gap-2.5">
+      <div className="mt-4 grid gap-4 lg:grid-cols-[minmax(0,1.15fr)_minmax(0,1fr)] lg:gap-6">
+        <div className="min-w-0 lg:sticky lg:top-36 lg:self-start">
+          <MissionScene step={Math.max(1, step)} name={card.timeline[Math.max(1, step) - 1].label} orbit={orbit.short} color={ORBIT_COLOR[orbit.id]} />
+        </div>
+      <ol aria-live="polite" aria-label="Mission timeline" className="flex min-w-0 flex-col gap-2.5">
         {card.timeline.map((e, i) =>
           i < step ? (
             <li key={i} className={`flex gap-3 rounded-md border-2 px-3.5 py-3 motion-safe:animate-card-in ${i === step - 1 && !done ? 'border-st-warning bg-space-raised' : 'border-space-border bg-space-card'}`}>
@@ -574,6 +580,7 @@ function MissionRun({ choice, goVotes, onDone }: { choice: Choice; goVotes: numb
           ),
         )}
       </ol>
+      </div>
       <div className="mt-5 flex flex-wrap justify-end gap-2.5">
         {!done && (
           <button type="button" onClick={() => setStep(total)} className={BTN_SECONDARY}>
