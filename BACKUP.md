@@ -1,5 +1,10 @@
 # BACKUP - NASA
 
+## 2026-11-15 (Mac de Belle) — Se desconecta Azure Static Web Apps (`chore/remove-azure`)
+
+- El commit `638eec1` agregó un workflow de Azure Static Web Apps que falló en cada push a `main`: buscaba la carpeta `build`, pero Vite compila en `dist`. El equipo publica solo en GitHub Pages, así que Belle pidió desconectar Azure.
+- Se desactivó el workflow "Azure Static Web Apps CI/CD" en GitHub, se canceló la ejecución que estaba corriendo, se borró el secreto `AZURE_STATIC_WEB_APPS_API_TOKEN_VICTORIOUS_PEBBLE_0FCF34B10` y, en esta rama, se borró `.github/workflows/azure-static-web-apps-victorious-pebble-0fcf34b10.yml`. "Deploy to GitHub Pages" no se tocó.
+- Pendiente (Belle): borrar en el portal de Azure el recurso Static Web App `victorious-pebble-0fcf34b10`. Desde aquí no hay acceso a Azure.
 ## 2026-11-15 (PC de José) — Página de inicio
 
 - Pedido de José: una página principal con el nombre del juego y un botón para empezar. Nueva pantalla `home` (sin número de paso) antes del Brief, en `src/App.tsx` (`Home`): etiqueta del reto, "Status: GO" grande con "GO" en amarillo, `PITCH`, botón "Start mission →", botón "About & sources", "1 to 4 players on one screen · no sign-up", los cuatro pasos de `HOW_TO_PLAY` y un pie con el equipo, el aviso de no afiliación y el crédito de la imagen de NASA.
