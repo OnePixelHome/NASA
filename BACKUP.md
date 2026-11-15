@@ -1,5 +1,11 @@
 # BACKUP - NASA
 
+## 2026-11-15 (Mac de Belle) — Presentación de 7 diapositivas
+
+- `docs/slides/`: las 7 diapositivas del pitch como PNG (1920×1080) y `Status-GO-slides.pdf`. Siguen `docs/PITCH.md`: título y equipo, el problema, para quién es, cómo funciona, la misión Polar Ice por recursos, los recursos de NASA y lo que sigue, con `statusgo.earth`. Se dibujaron con un script de Python (PIL) con la paleta del simulador y capturas tomadas de `statusgo.earth`; el script quedó en `~/Desktop/Status GO - video/6-slides/make.py`.
+- Los números se volvieron a comprobar con el motor: $210M de $250M, 390 kg de 1.207 kg, 170 W de 309 W, 200 de 396 Gbit/día y 86/100.
+- Están en el repo para tener un enlace público al PDF y para cargarlas en el tablero de Miro.
+
 ## 2026-11-15 (Mac de Belle) — `statusgo.earth` en todos lados
 
 - `https://statusgo.earth/` y `https://www.statusgo.earth/` responden 200 con el simulador (comprobado a las 17:10). El cuadro "About" del repo en GitHub apunta ahora a `https://statusgo.earth/` (antes, al host de Azure). `docs/SUBMISSION.md`: el punto 2 (demo público) pasa a ✅.
