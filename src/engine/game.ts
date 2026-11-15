@@ -157,6 +157,8 @@ function powerNode(o: C.Orbit, ins: C.Instrument, pw: C.PowerSystem): NodeState 
   if (b.genW < b.avgLoadW) {
     ok = false
     reasons.push(reason(`Panels make ~${fmt(b.genW)} W on average, but the spacecraft needs ${fmt(b.avgLoadW)} W.`, 'PHYS', 'GAME'))
+    if (!pw.deployable)
+      reasons.push(reason(`These panels are fixed to the body. NASA's CubeSat 101 describes deployable solar panels that "will nearly double the power input to the spacecraft".`, 'S2'))
   }
   if (pw.batteryWh < b.batteryNeedWh) {
     ok = false
@@ -198,6 +200,7 @@ function downlinkNode(o: C.Orbit, ins: C.Instrument, dl: C.Downlink): NodeState 
   if (cap.gbitPerDay > 0 && !ok)
     reasons.push(reason(`Only ${fmt((100 * cap.gbitPerDay) / ins.dataGbitPerDay)}% of the ${fmt(ins.dataGbitPerDay)} Gbit collected per day reaches Earth.`, 'GAME', 'PHYS'))
   if (ok) reasons.push(reason(`${fmt(cap.gbitPerDay)} Gbit/day capacity ≥ ${fmt(ins.dataGbitPerDay)} Gbit/day collected.`, 'GAME', 'PHYS'))
+  else reasons.push(reason(`NASA's CubeSat 101 warns: "Launching with an inadequate ground station is a mission killer."`, 'S2'))
   return { id: dl.id, name: dl.name, tip: dl.tip, ok, reasons, facts: [`${fmt(cap.gbitPerDay)} Gbit/day`, `$${downlinkCostPerYear(o, dl)}M/yr`], factsSource: 'GAME' }
 }
 

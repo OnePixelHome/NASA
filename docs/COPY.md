@@ -86,14 +86,14 @@ One sentence shown as "Lesson learned" on the scorecard, for the instrument the 
 
 `AI_DISCLOSURE` must match the project page. The tests check that it names Claude (Anthropic) and says the team reviewed the work.
 
-S2 also has `cite` and `quote`: the exact page and wording from CubeSat 101. Do not edit the quote; it is word for word.
+S2 also has `cite` and `quote`, plus two more in `more`: the exact pages and wording from CubeSat 101. Do not edit the quotes; they are word for word.
 
 Source descriptions, field `use` in `SOURCES` (also reusable for the "NASA Data" field of the project page):
 
 | Tag | Title (`title`) | How the game uses it (`use`) |
 | --- | --- | --- |
 | S1 | NASA Earth Fact Sheet (radius, GM, solar irradiance) | Earth's radius and gravitational parameter behind every orbit formula: period, eclipse, coverage, transfers. |
-| S2 | NASA CSLI — CubeSat 101 (project reserves of at least 10%) | The budget rule: keep at least 10% in reserve. The budget meter turns amber and the budget score drops when a design eats into it. |
+| S2 | NASA CSLI — CubeSat 101 (budget reserve, ground stations, deployable solar panels) | The budget rule: keep at least 10% in reserve. The budget meter turns amber and the budget score drops when a design eats into it. It also backs two lock reasons: a downlink too small for the data, and fixed body panels that cannot power the spacecraft. |
 | S3 | NASA — Design and Develop Science Missions (Launch, Space, Ground, User segments) | The four mission segments, used as the four team roles: Science, Spacecraft, Ground and Launch. |
 | S6 | NASA — Landsat 9 mission (705 km, 98.2°, 185 km swath, 16-day revisit) | The Sun-synchronous orbit card and the Multispectral Imager (30 m pixels, 185 km swath). The model reproduces its ~99-minute orbit and ~16-day revisit. |
 | S9 | NASA Small Spacecraft Technology State-of-the-Art — Communications | Background reading on spacecraft radio links. No game value is taken from it yet. |
@@ -179,3 +179,8 @@ Requirement labels, in `src/engine/game.ts` (`missionRequirements`): latitude re
 The lock and unlock reasons, the simulation steps, the resource panel labels and hints, and the scorecard breakdown labels are built in code
 with live numbers, for example “From 35,786 km each pixel would cover 511 m — too blurry (needs ≤ 50 m).”
 Each one carries source tags that must stay correct, so send wording changes for these to Edgar instead of editing them.
+
+Two fixed sentences quote CubeSat 101 [S2] (added 2026-11-15; the quoted part must stay word for word):
+
+- Locked downlink: NASA's CubeSat 101 warns: "Launching with an inadequate ground station is a mission killer."
+- Standard Power locked for lack of power: These panels are fixed to the body. NASA's CubeSat 101 describes deployable solar panels that "will nearly double the power input to the spacecraft".

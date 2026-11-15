@@ -157,15 +157,17 @@ export interface PowerSystem {
   tip: string
   peakW: number
   sunFactor: number // body-mounted panels rarely face the Sun; deployable arrays track it
+  /** Deployable solar wings (vs panels fixed to the body). */
+  deployable: boolean
   batteryWh: number
   massKg: number
   costM: number
 }
 
 export const POWER: PowerSystem[] = [
-  { id: 'standard', name: 'Standard Power', peakW: 400, sunFactor: 0.35, batteryWh: 300, massKg: 20, costM: 5, tip: "Solar cells fixed to the spacecraft body, with a small battery. Light and cheap, but they rarely face the Sun directly." },
-  { id: 'extended', name: 'Extended Power', peakW: 800, sunFactor: 0.8, batteryWh: 500, massKg: 60, costM: 15, tip: "Large solar wings that turn to follow the Sun. Plenty of power in sunlight, with a medium battery for the shadow." },
-  { id: 'hybrid', name: 'Solar + Battery Hybrid', peakW: 600, sunFactor: 0.8, batteryWh: 2000, massKg: 90, costM: 20, tip: "Sun-tracking solar wings plus a big battery. The battery keeps a power-hungry instrument running through Earth's shadow." },
+  { id: 'standard', name: 'Standard Power', peakW: 400, sunFactor: 0.35, deployable: false, batteryWh: 300, massKg: 20, costM: 5, tip: "Solar cells fixed to the spacecraft body, with a small battery. Light and cheap, but they rarely face the Sun directly." },
+  { id: 'extended', name: 'Extended Power', peakW: 800, sunFactor: 0.8, deployable: true, batteryWh: 500, massKg: 60, costM: 15, tip: "Large solar wings that turn to follow the Sun. Plenty of power in sunlight, with a medium battery for the shadow." },
+  { id: 'hybrid', name: 'Solar + Battery Hybrid', peakW: 600, sunFactor: 0.8, deployable: true, batteryWh: 2000, massKg: 90, costM: 20, tip: "Sun-tracking solar wings plus a big battery. The battery keeps a power-hungry instrument running through Earth's shadow." },
 ]
 export const BUS_POWER_W = 50
 export const BUS_MASS_KG = 150

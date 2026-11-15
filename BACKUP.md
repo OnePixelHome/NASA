@@ -1,5 +1,15 @@
 # BACKUP - NASA
 
+## 2026-11-15 (PC de José) — Dos citas más de CubeSat 101 (S2) en los motivos de bloqueo
+
+- Pedido de José: revisar si CubeSat 101 y Meteomatics aportan datos. CubeSat 101 ya era S2 (regla del 10% de reserva). Se leyó el PDF completo: es una guía de procesos con pocos números de ingeniería; se tomaron dos frases verificadas palabra por palabra.
+- Downlink bloqueado: se añade "Launching with an inadequate ground station is a mission killer." (cap. 2.10, p. 22, página 30 del PDF) [S2].
+- Standard Power bloqueado por falta de energía: se cita que los paneles desplegables "will nearly double the power input to the spacecraft" (índice, p. iv, página 6 del PDF; es el pie de foto del CubeSat ChargerSat-1, por eso el texto dice "describes", no presenta el dato como regla general). Nuevo campo `deployable` en `POWER`.
+- `Source.more` guarda citas adicionales del mismo documento y el About las muestra. Se actualizaron `docs/COPY.md`, `docs/PROJECT_PAGE.md` y `README.md`. Ningún número ni candado cambia; el balance es igual.
+- Meteomatics no se integra: es patrocinador, no dato de NASA (no cuenta para la elegibilidad); el acceso gratis dura solo el desafío y pide usuario y contraseña, que quedarían expuestos en un sitio estático sin backend.
+- Tests nuevos en `engine.test.ts` (citas exactas; todo downlink bloqueado cita S2 y ninguno abierto; Standard Power sin energía cita S2 y los desplegables nunca).
+- Pendiente: revisión de Belle de las dos frases nuevas (`docs/COPY.md` §8).
+
 ## 2026-11-15 (PC de José) — Despliegue en GitHub Pages en lugar de Vercel
 
 - El equipo decidió publicar el juego en GitHub Pages: https://belleavm.github.io/NASA/. Vercel quedó descartado: el repo es de `belleavm` y la app de Vercel de José solo ve su cuenta; además el plan Hobby bloquea despliegues de repos privados cuando el autor del commit no es del equipo de Vercel.

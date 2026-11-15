@@ -12,6 +12,8 @@ export interface Source {
   cite?: string
   /** The cited statement, word for word. */
   quote?: string
+  /** Further statements from the same document that the game also uses, word for word. */
+  more?: { cite: string; quote: string }[]
 }
 
 export const SOURCES: Record<SourceId, Source> = {
@@ -23,12 +25,17 @@ export const SOURCES: Record<SourceId, Source> = {
   },
   S2: {
     id: 'S2',
-    title: 'NASA CSLI — CubeSat 101 (project reserves of at least 10%)',
+    title: 'NASA CSLI — CubeSat 101 (budget reserve, ground stations, deployable solar panels)',
     url: 'https://www.nasa.gov/wp-content/uploads/2017/03/nasa_csli_cubesat_101_508.pdf',
-    use: 'The budget rule: keep at least 10% in reserve. The budget meter turns amber and the budget score drops when a design eats into it.',
+    use: 'The budget rule: keep at least 10% in reserve. The budget meter turns amber and the budget score drops when a design eats into it. It also backs two lock reasons: a downlink too small for the data, and fixed body panels that cannot power the spacecraft.',
     // Verified against the PDF text on 2026-11-14 (search for "reserve": this is the only match in the document).
     cite: 'Chapter 2, p. 13 (page 21 of the PDF)',
     quote: 'When possible, project reserves of at least 10% should be part of the budget to address any unexpected events.',
+    // Verified against the PDF text on 2026-11-15. The solar statement is a caption about the student CubeSat ChargerSat-1.
+    more: [
+      { cite: 'Chapter 2.10, p. 22 (page 30 of the PDF)', quote: 'Launching with an inadequate ground station is a mission killer.' },
+      { cite: 'Contents, p. iv (page 6 of the PDF), ChargerSat-1 caption', quote: 'deployable solar panels will nearly double the power input to the spacecraft' },
+    ],
   },
   S3: {
     id: 'S3',

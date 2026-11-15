@@ -882,6 +882,11 @@ function About({ onBack }: { onBack: () => void }) {
                       “{SOURCES[id].quote}” <span className="whitespace-nowrap text-ink-muted">— {SOURCES[id].cite}</span>
                     </blockquote>
                   )}
+                  {SOURCES[id].more?.map((m) => (
+                    <blockquote key={m.cite} className="mt-2 border-l-2 border-space-border pl-3 text-ink-2">
+                      “{m.quote}” <span className="whitespace-nowrap text-ink-muted">— {m.cite}</span>
+                    </blockquote>
+                  ))}
                 </li>
               ))}
             </ul>

@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest'
 import * as P from './physics'
 import * as C from './catalog'
 import { budget, choose, evaluateMission, missionRequirements, orbitStats, resources, TEAM_POINTS_MAX, teamPoints, tierOptions, type Choice } from './game'
-import { AI_DISCLOSURE, DISCLAIMER, HOW_TO_PLAY, reasonSources, SOURCES, TEAM } from './sources'
+import { AI_DISCLOSURE, DISCLAIMER, HOW_TO_PLAY, reasonSources, SOURCES, TEAM, type Reason } from './sources'
 
 const orbit = (id: string) => C.byId(C.ORBITS, id)!
 
@@ -288,3 +288,34 @@ describe('game balance', () => {
   }
 })
 
+
+describe('CubeSat 101 lessons in lock reasons [S2]', () => {
+  const nodes = (tier: C.Tier, pick: (c: Choice) => Choice[]) =>
+    C.ORBITS.flatMap((o) => C.INSTRUMENTS.flatMap((i) => pick({ scenarioId: 'ice', orbitId: o.id, instrumentId: i.id })))
+      .flatMap((c) => tierOptions(tier, c))
+  const citesS2 = (n: { reasons: Reason[] }) => n.reasons.some((r) => reasonSources(r).includes('S2'))
+
+  it('quotes both extra statements word for word, with their pages', () => {
+    const more = SOURCES.S2.more!
+    expect(more.map((m) => m.quote)).toEqual([
+      'Launching with an inadequate ground station is a mission killer.',
+      'deployable solar panels will nearly double the power input to the spacecraft',
+    ])
+    expect(more[0].cite).toContain('p. 22')
+    expect(more[1].cite).toContain('p. iv')
+  })
+
+  it('every locked downlink cites the ground-station warning; open ones do not', () => {
+    const dl = nodes('downlink', (c) => C.POWER.map((p) => ({ ...c, powerId: p.id })))
+    expect(dl.some((n) => !n.ok)).toBe(true)
+    for (const n of dl) expect(citesS2(n)).toBe(!n.ok)
+  })
+
+  it('fixed body panels that cannot power the spacecraft cite deployable panels; deployable ones never do', () => {
+    const pw = nodes('power', (c) => [c])
+    const short = pw.filter((n) => n.id === 'standard' && n.reasons.some((r) => r.text.startsWith('Panels make')))
+    expect(short.length).toBeGreaterThan(0)
+    for (const n of short) expect(citesS2(n)).toBe(true)
+    for (const n of pw.filter((n) => C.byId(C.POWER, n.id)!.deployable)) expect(citesS2(n)).toBe(false)
+  })
+})
