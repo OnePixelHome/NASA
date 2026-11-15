@@ -6,7 +6,7 @@ A game where you design a space mission and it calculates the orbit and resource
 Pick a science goal, choose a trajectory, then watch a live dependency tree show which instruments, power systems,
 data links and rockets still work — and exactly why the others are locked.
 
-**Play it:** https://onepixelhome.github.io/NASA/
+**Play it:** https://victorious-pebble-0fcf34b10.6.azurestaticapps.net/
 
 ## How to play
 1. **Choose the team.** On the start page, pick 1 to 4 players. The four mission roles (Science, Spacecraft, Ground,
@@ -54,7 +54,7 @@ rate-limited. If the leaderboard is unreachable, the game keeps working. Deploy 
 - `src/ui/` and `src/App.tsx` — screens and components (React + Tailwind v4).
 - `src/leaderboard/` — leaderboard client and the shared name rules.
 - `server/` — the leaderboard function and its deploy script.
-- Every push to `main` is tested, built and published to GitHub Pages by `.github/workflows/deploy-pages.yml`.
+- Every push to `main` is tested, built and published to Azure Static Web Apps by `.github/workflows/azure-static-web-apps.yml`.
 
 ## NASA and partner agency data & resources
 - S1 NASA Earth Fact Sheet — https://nssdc.gsfc.nasa.gov/planetary/factsheet/earthfact.html

@@ -11,7 +11,7 @@ Whoever closes an item changes its status here and adds the evidence (link or da
 | # | Item | Owner | Status | How to verify |
 | --- | --- | --- | --- | --- |
 | 1 | Public repository | Belle (repo owner) | ✅ | `github.com/OnePixelHome/NASA` is public (moved to the One Pixel Home org on 2026-11-15). Open it in a private window, signed out, to re-check. |
-| 2 | Public demo URL (GitHub Pages, https://onepixelhome.github.io/NASA/) that works on a phone | José | 🟡 | Open the URL on a phone on mobile data, signed out of GitHub. Play one mission to the scorecard. |
+| 2 | Public demo URL (Azure Static Web Apps, https://victorious-pebble-0fcf34b10.6.azurestaticapps.net/) that works on a phone | José | 🟡 | Open the URL on a phone on mobile data, signed out of GitHub. Play one mission to the scorecard. |
 | 3 | 30-second video with English subtitles | Belle, Thais | ❌ | Length is 30 s or less. Subtitles are in English and burned in or enabled by default. The link opens signed out. |
 | 4 | All sources cited | Edgar | 🟡 | In the game: every number has a source tag and the About screen lists every source (PRs #1, #4, #7). On the project page: the "NASA data" table from `docs/PROJECT_PAGE.md` is pasted in. |
 | 5 | No NASA logos, insignia, flags or mission patches | Thais, Edgar | 🟡 | The code has none today. Re-check after the visual redesign: the game, the video, the slides, the favicon and every image. |
@@ -25,16 +25,15 @@ Whoever closes an item changes its status here and adds the evidence (link or da
 - [ ] The team is comfortable with what becomes visible: `BACKUP.md` and `AGENTS.md` are internal notes in Spanish and
       mention local folder paths. They contain no secrets, but judges will be able to read them.
 - [x] `README.md` starts with the project description in English and links to the live demo.
-- [ ] The repository description on GitHub is in English (today: "Proyecto personal NASA").
+- [x] The repository description on GitHub is in English: "Status: GO — design a space mission and see why each choice works or fails. NASA Space Apps 2026."
 
 ## Demo URL (item 2)
 
-- [x] `.github/workflows/deploy-pages.yml` runs `pnpm test` and `pnpm build` (base `/NASA/`) and publishes `dist` on every push to `main`.
-- [x] Settings → Pages → Source is "GitHub Actions" (needs repo admin: Belle). The legacy branch source serves the raw `index.html` and the game does not load.
-- [x] The Pages site is public, so judges are not asked to log in (https://onepixelhome.github.io/NASA/).
+- [x] `.github/workflows/azure-static-web-apps.yml` runs `pnpm test` and `pnpm build` and publishes `dist` to Azure Static Web Apps on every push to `main` (GitHub Pages is no longer used, 2026-11-15).
+- [x] The Azure site is public, so judges are not asked to log in (https://victorious-pebble-0fcf34b10.6.azurestaticapps.net/).
 - [x] Tested on a real phone at about 390 px wide: no sideways scrolling, every button reachable with a thumb (José, 2026-11-15).
 - [x] Tested in a second browser: a full mission and a leaderboard save in Chrome, and the landing page in Edge (2026-11-15).
-- [x] The URL is in the README, in the GitHub repository's "About" box and on the project page.
+- [x] The Azure URL is in the README, in the GitHub repository's "About" box and on the project page (2026-11-15).
 
 ## Video or slides (item 3)
 

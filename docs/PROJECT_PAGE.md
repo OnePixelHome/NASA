@@ -33,7 +33,7 @@ simulation and a scorecard close the loop, so players can change one choice and 
 
 ## Link to final project
 
-https://onepixelhome.github.io/NASA/ · Code: https://github.com/OnePixelHome/NASA
+https://victorious-pebble-0fcf34b10.6.azurestaticapps.net/ · Code: https://github.com/OnePixelHome/NASA
 
 ## Detailed description
 
@@ -125,7 +125,8 @@ No third-party or commercial data is used.
 | Fredoka (via @fontsource/fredoka) | Font for titles and numbers, bundled with the game | SIL Open Font License 1.1 |
 | Atkinson Hyperlegible (via @fontsource/atkinson-hyperlegible) | Font for body text, bundled with the game | SIL Open Font License 1.1 |
 | Claude Design (Anthropic) | Visual system, screen designs and illustrations | Hosted service |
-| GitHub | Source code hosting; GitHub Pages and GitHub Actions host and build the public demo | Hosted service |
+| GitHub | Source code hosting; GitHub Actions builds and tests every push | Hosted service |
+| Azure Static Web Apps (Microsoft) | Hosting of the public demo | Hosted service |
 | Neon (Postgres + Neon Functions) | Online leaderboard: stores the player or crew name and the design; the server recalculates every score with the game engine | Hosted service |
 | pg (node-postgres) | Database driver bundled into the leaderboard function | MIT |
 

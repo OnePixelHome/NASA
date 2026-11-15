@@ -9,11 +9,11 @@ dependency tree (instrument → power → downlink → launch vehicle) where opt
 (save to the online leaderboard, try another design, replay, Home). The four roles are split among the players
 (`playerRoles()`); a solo player holds all four and needs a single Go.
 
-Live: https://onepixelhome.github.io/NASA/ · Repo: `OnePixelHome/NASA`.
+Live: https://victorious-pebble-0fcf34b10.6.azurestaticapps.net/ · Repo: `OnePixelHome/NASA`.
 
 ## Stack
-Vite + React 19 + TypeScript, Tailwind v4, Vitest, oxlint. pnpm. Deploy: GitHub Pages
-(`.github/workflows/deploy-pages.yml`, every push to `main`). Only backend: the leaderboard Neon Function
+Vite + React 19 + TypeScript, Tailwind v4, Vitest, oxlint. pnpm. Deploy: Azure Static Web Apps only
+(`.github/workflows/azure-static-web-apps.yml`, every push to `main`; secret `AZURE_STATIC_WEB_APPS_API_TOKEN`). Only backend: the leaderboard Neon Function
 (`server/leaderboard.ts`) with a Neon Postgres table `scores` (project `crimson-shadow-12546769`, aws-us-east-1).
 
 ## Layout

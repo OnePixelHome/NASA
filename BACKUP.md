@@ -1,5 +1,15 @@
 # BACKUP - NASA
 
+## 2026-11-15 (PC de José) — Solo Azure: se deja de publicar en GitHub Pages
+
+- Pedido de José: el equipo trabaja solo con Azure. El juego queda en https://victorious-pebble-0fcf34b10.6.azurestaticapps.net/ (Static Web App `victorious-pebble-0fcf34b10`, conectada por Belle en el PR #23).
+- Se borró `.github/workflows/deploy-pages.yml`; `.github/workflows/azure-static-web-apps.yml` es el único despliegue (tests, build y subida de `dist`).
+- Leaderboard: la función publicada aún aceptaba solo `onepixelhome.github.io` (el cambio de Belle en el código no se había desplegado), así que desde Azure el leaderboard no funcionaba. Ahora el origen permitido es solo el sitio de Azure (más local); desplegado como deployment 4 y verificado (CORS devuelve el origen de Azure).
+- Enlaces cambiados a la URL de Azure en `README.md`, `CLAUDE.md`, `AGENTS.md`, `server/README.md`, `docs/PITCH.md`, `docs/PROJECT_PAGE.md` (con Azure en la tabla de herramientas) y `docs/SUBMISSION.md`; comentario de `vite.config.ts` y del workflow de Azure. `docs/HANDOFF.md` y `docs/SUBMISSION-PLAN.md` quedan como historia.
+- José ahora es admin del repo: se cambió el "website" del repo a la URL de Azure y la descripción a inglés.
+- El sitio viejo de GitHub Pages (https://onepixelhome.github.io/NASA/) sigue publicado con la última versión, pero su leaderboard ya no funciona. Pendiente: decidir si se despublica.
+- Verificado: 73 tests, build y lint.
+
 ## 2026-11-15 (Mac de Belle) — Órbita translúcida detrás del planeta en las tarjetas de órbita
 
 - Pedido de Belle, en la tarjeta de órbita de la pantalla 2 (`OrbitDiagram` en `src/ui/MissionArt.tsx`). Antes la órbita se dibujaba debajo del planeta y en SSO desaparecía sobre él. Ahora la mitad de adelante y el satélite van sólidos por encima, y la mitad de atrás se ve al 20 % donde cruza el planeta. Es el mismo método de la página de inicio: dos copias sincronizadas con máscaras SVG, con ids únicos por instancia (`useId`). En LEO y GEO la órbita no se cruza con el planeta, así que se ven igual que antes.
