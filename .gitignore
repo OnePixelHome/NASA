@@ -10,3 +10,6 @@ dist-ssr/
 *.local
 *.log
 api-build/
+
+# Pitch video sources and exports stay out of the repo (too large)
+video/

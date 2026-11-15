@@ -26,18 +26,16 @@ export function RoleTag({ role, label }: { role: Role; label: string }) {
   )
 }
 
-// ---------- AI label ----------
+// ---------- SI label ----------
 /**
- * Visible "AI-generated" mark. The Space Apps rules require it on every AI-generated image,
- * and the game's illustrations were drafted with Claude Design (docs/DESIGN-RULES.md).
+ * Visible "SI content" watermark. The Space Apps rules require a visible mark on every image made with
+ * Super Intelligence (SI, the guides' term for AI) tools; the game's illustrations were drafted with Claude Design
+ * (docs/DESIGN-RULES.md). Kept small and quiet on purpose: it is a watermark, not a title.
  */
 export function AiGeneratedLabel({ className = '' }: { className?: string }) {
   return (
-    <span role="note" aria-label="AI-generated image" className={`inline-flex h-6 items-center gap-1.5 whitespace-nowrap rounded-pill border-[1.5px] border-ink bg-space-page pl-2 pr-2.5 text-caption font-bold tracking-wide text-ink ${className}`}>
-      <svg viewBox="0 0 12 12" className="size-[11px]" aria-hidden>
-        <path d="M6 0 L7.4 4.6 L12 6 L7.4 7.4 L6 12 L4.6 7.4 L0 6 L4.6 4.6 Z" fill="currentColor" />
-      </svg>
-      AI-generated
+    <span role="note" aria-label="SI-generated content" className={`inline-flex h-4 items-center whitespace-nowrap rounded-[4px] bg-space-page/55 px-1.5 text-[10px] font-bold leading-none tracking-wide text-ink/75 ${className}`}>
+      SI content
     </span>
   )
 }
