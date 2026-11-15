@@ -140,6 +140,19 @@
   }
 }
 
+/* Simulation scenes (src/ui/MissionScene.tsx) */
+@keyframes ms-lift { 0%, 30% { transform: translateY(0); } 100% { transform: translateY(-78px); } }
+@keyframes ms-flame { 0%, 25% { opacity: 0; transform: scaleY(0.2); } 35%, 100% { opacity: 1; transform: scaleY(1); } }
+@keyframes ms-smoke { 0%, 30% { opacity: 0; transform: scale(0.4); } 60% { opacity: 1; } 100% { opacity: 0.6; transform: scale(1.4); } }
+@keyframes ms-lap { from { transform: rotate(-90deg); } to { transform: rotate(270deg); } }
+@keyframes ms-flash { 0%, 20% { opacity: 0; transform: scale(0.3); } 35% { opacity: 1; } 100% { opacity: 0; transform: scale(2.2); } }
+@keyframes ms-photo { 0%, 45% { opacity: 0; transform: translateY(16px) scale(0.6); } 75% { opacity: 1; transform: translateY(-3px) scale(1.04); } 100% { opacity: 1; transform: none; } }
+@keyframes ms-beam { 0%, 10% { stroke-dashoffset: 260; } 100% { stroke-dashoffset: 0; } }
+@keyframes ms-sweep { from { transform: translateX(-120px); } to { transform: translateX(0); } }
+@keyframes ms-swept { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+@keyframes ms-wave { 0%, 100% { transform: rotate(0); } 25% { transform: rotate(-10deg); } 75% { transform: rotate(10deg); } }
+@keyframes ms-in { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+
 @layer base {
   body {
     background: var(--color-space-page);
