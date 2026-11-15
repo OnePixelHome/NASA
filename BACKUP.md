@@ -3,7 +3,7 @@
 ## 2026-11-15 (Mac de Belle) — URL pública `statusgo.earth` en la documentación
 
 - Belle indicó que el demo público queda en **https://statusgo.earth/**. Se reemplazó la URL de Azure (y dos de GitHub Pages que quedaban) en `README.md`, `CLAUDE.md`, `AGENTS.md`, `docs/PITCH.md`, `docs/PROJECT_PAGE.md`, `docs/SUBMISSION.md`, `docs/HANDOFF.md` y `docs/SUBMISSION-PLAN.md`. El host de Azure queda mencionado en `AGENTS.md`, `CLAUDE.md` y `docs/SUBMISSION.md` como respaldo. `server/handler.ts` ya aceptaba el dominio en su CORS y no se tocó.
-- **Pendiente bloqueante**: al momento de este cambio `statusgo.earth` todavía resuelve al estacionamiento de Porkbun (207.207.210.107 / .229) y no carga; el simulador responde en `https://victorious-pebble-0fcf34b10.6.azurestaticapps.net/`. Faltan los pasos de Azure y Porkbun de la entrada "Dominio `statusgo.earth`". No enviar esta URL al jurado hasta comprobar que abre en una ventana privada.
+- Verificado después: `https://statusgo.earth/` responde 200 con el simulador ("Status: GO — One Pixel Home") y `http://` redirige a `https://`. El DNS pasó a Cloudflare (NS `candy`/`wells`): la raíz apunta a Azure (52.252.74.253) y `www` es CNAME a la Static Web App. En Azure (`az staticwebapp hostname list -n Nasa -g Nasa`), `statusgo.earth` está "Ready" y `www.statusgo.earth` todavía "Validating": el certificado de `www` aún no existe, así que se usa solo el dominio raíz.
 - GitHub Pages ya no existe (`onepixelhome.github.io/NASA` da 404).
 
 ## 2026-11-15 (Mac de Belle) — Marca de agua "SI content" en lugar de "AI-generated"
