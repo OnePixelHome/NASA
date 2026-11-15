@@ -1,5 +1,10 @@
 # BACKUP - NASA
 
+## 2026-11-15 (Mac de Belle) — Órbita translúcida detrás del planeta en las tarjetas de órbita
+
+- Pedido de Belle, en la tarjeta de órbita de la pantalla 2 (`OrbitDiagram` en `src/ui/MissionArt.tsx`). Antes la órbita se dibujaba debajo del planeta y en SSO desaparecía sobre él. Ahora la mitad de adelante y el satélite van sólidos por encima, y la mitad de atrás se ve al 20 % donde cruza el planeta. Es el mismo método de la página de inicio: dos copias sincronizadas con máscaras SVG, con ids únicos por instancia (`useId`). En LEO y GEO la órbita no se cruza con el planeta, así que se ven igual que antes.
+- Verificado: 73 tests, lint y build. Se capturaron 4 cuadros de la tarjeta SSO a tamaño celular; el satélite se atenúa al pasar por detrás.
+
 ## 2026-11-15 (Mac de Belle) — "GO" más grueso en la página de inicio
 
 - Pedido de Belle: el "GO" de "Status: GO" en el título de la página de inicio pasó de peso 400 a 600 (`font-semibold`, en `src/App.tsx`). Fredoka 600 ya venía incluida, así que no se carga ninguna fuente nueva. El resto del título no cambia.

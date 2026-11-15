@@ -1,5 +1,7 @@
 // Mission illustrations and orbit diagrams for screens 1 and 2.
 // Drawings from docs/design/pages/MissionArt.dc.html and docs/design/handoff/BriefOrbit.tsx (Claude Design export).
+import { useId } from 'react'
+
 const O = '#0B1026'
 
 const ART_LABEL: Record<string, string> = {
@@ -62,22 +64,27 @@ export function MissionArt({ id }: { id: string }) {
 }
 
 // The three orbits differ in shape, not only color: a small circle, a polar ellipse, a wide dotted ring.
-const DIAGRAM: Record<string, { r: number; seconds: number; tilt?: string }> = {
-  leo: { r: 31, seconds: 8 },
-  sso: { r: 36, seconds: 10, tilt: 'translate(80 80) rotate(8) scale(0.36 1) translate(-80 -80)' },
-  geo: { r: 66, seconds: 40 },
+// `tiltDeg` is the on-screen tilt of the orbit's long axis; its left half is the far side, behind the planet.
+const DIAGRAM: Record<string, { r: number; seconds: number; tilt?: string; tiltDeg: number }> = {
+  leo: { r: 31, seconds: 8, tiltDeg: 0 },
+  sso: { r: 36, seconds: 10, tilt: 'translate(80 80) rotate(8) scale(0.36 1) translate(-80 -80)', tiltDeg: 8 },
+  geo: { r: 66, seconds: 40, tiltDeg: 0 },
 }
+/** The far half of the planet disc (radius 24 plus its outline), where the orbit passes behind it. */
+const BEHIND_PLANET = 'M80 54 A26 26 0 0 0 80 106 Z'
+const BEHIND_OPACITY = 0.2
 
 /** `id` is an orbit id from the catalog; `color` its token. Not to scale, and labelled so. */
 export function OrbitDiagram({ id, short, color, className }: { id: string; short: string; color: string; className?: string }) {
   const d = DIAGRAM[id] ?? DIAGRAM.leo
-  return (
-    <svg viewBox="0 0 160 160" className={className} style={{ overflow: 'visible' }} role="img" aria-label={`${short} orbit diagram, not to scale`}>
+  const uid = useId().replace(/[^a-zA-Z0-9_-]/g, '')
+  const behind = <path d={BEHIND_PLANET} transform={`rotate(${d.tiltDeg} 80 80)`} />
+  // Orbit line and satellite are drawn twice, in sync: solid in front, faded where they pass behind the planet.
+  const orbit = (
+    <>
       {id === 'geo' && <circle cx="80" cy="80" r="66" fill="none" stroke={color} strokeWidth="3" strokeDasharray="2 7" strokeLinecap="round" />}
       {id === 'leo' && <circle cx="80" cy="80" r="31" fill="none" stroke={color} strokeWidth="3" />}
       {id === 'sso' && <ellipse cx="80" cy="80" rx="13" ry="36" fill="none" stroke={color} strokeWidth="3" transform="rotate(8 80 80)" />}
-      <circle cx="80" cy="80" r="24" fill="#62B4FF" stroke={O} strokeWidth="3.5" />
-      <path d="M64 72 Q70 62 80 66 Q86 74 78 80 Q68 84 64 72 Z M84 88 Q94 84 98 92 Q96 100 88 100 Q82 96 84 88 Z" fill="#7FE28E" stroke={O} strokeWidth="2.5" />
       <g transform={d.tilt}>
         <g className="motion-safe:animate-spin" style={{ transformOrigin: '80px 80px', animationDuration: `${d.seconds}s` }}>
           <g transform={`translate(80 ${80 - d.r})`}>
@@ -87,6 +94,23 @@ export function OrbitDiagram({ id, short, color, className }: { id: string; shor
           </g>
         </g>
       </g>
+    </>
+  )
+  return (
+    <svg viewBox="0 0 160 160" className={className} style={{ overflow: 'visible' }} role="img" aria-label={`${short} orbit diagram, not to scale`}>
+      <defs>
+        <mask id={`${uid}-front`} maskUnits="userSpaceOnUse" x="-40" y="-40" width="240" height="240">
+          <rect x="-40" y="-40" width="240" height="240" fill="white" />
+          <g fill="black">{behind}</g>
+        </mask>
+        <mask id={`${uid}-behind`} maskUnits="userSpaceOnUse" x="-40" y="-40" width="240" height="240">
+          <g fill="white">{behind}</g>
+        </mask>
+      </defs>
+      <circle cx="80" cy="80" r="24" fill="#62B4FF" stroke={O} strokeWidth="3.5" />
+      <path d="M64 72 Q70 62 80 66 Q86 74 78 80 Q68 84 64 72 Z M84 88 Q94 84 98 92 Q96 100 88 100 Q82 96 84 88 Z" fill="#7FE28E" stroke={O} strokeWidth="2.5" />
+      <g mask={`url(#${uid}-front)`}>{orbit}</g>
+      <g mask={`url(#${uid}-behind)`} opacity={BEHIND_OPACITY}>{orbit}</g>
     </svg>
   )
 }
