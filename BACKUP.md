@@ -1,5 +1,11 @@
 # BACKUP - NASA
 
+## 2026-11-15 (Mac de Belle) — `statusgo.earth` en todos lados
+
+- `https://statusgo.earth/` y `https://www.statusgo.earth/` responden 200 con el simulador (comprobado a las 17:10). El cuadro "About" del repo en GitHub apunta ahora a `https://statusgo.earth/` (antes, al host de Azure). `docs/SUBMISSION.md`: el punto 2 (demo público) pasa a ✅.
+- Video: `status-go-pitch-v4.mp4` ya muestra `statusgo.earth` en el cierre. Las guías de la carpeta de video (`EDIT-PLAN.md`, `00-GUIDE.md`) también usan el dominio nuevo.
+- Falta poner `https://statusgo.earth/` en la página del proyecto de Space Apps (lo hace quien la edite).
+
 ## 2026-11-15 (Mac de Belle) — URL pública `statusgo.earth` en la documentación
 
 - Belle indicó que el demo público queda en **https://statusgo.earth/**. Se reemplazó la URL de Azure (y dos de GitHub Pages que quedaban) en `README.md`, `CLAUDE.md`, `AGENTS.md`, `docs/PITCH.md`, `docs/PROJECT_PAGE.md`, `docs/SUBMISSION.md`, `docs/HANDOFF.md` y `docs/SUBMISSION-PLAN.md`. El host de Azure queda mencionado en `AGENTS.md`, `CLAUDE.md` y `docs/SUBMISSION.md` como respaldo. `server/handler.ts` ya aceptaba el dominio en su CORS y no se tocó.
