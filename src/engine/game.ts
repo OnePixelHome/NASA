@@ -61,6 +61,34 @@ function sortSources(ids: SourceId[]): SourceId[] {
   return SOURCE_ORDER.filter((id) => set.has(id))
 }
 
+// ---------------- Mission requirements ----------------
+export interface MissionRequirement {
+  id: 'latitude' | 'coverage' | 'revisit'
+  value: string
+  label: string
+}
+
+/** A revisit target as short text: hours below one day, days otherwise. */
+const fmtRevisit = (days: number) => (days < 1 ? `${fmt(days * 24)} h` : `${fmt(days)} d`)
+
+/**
+ * What a mission asks for, as the numbers the scorecard later measures against:
+ * how far from the equator it must see, whether it needs the whole globe, and how often it must look again.
+ * These targets are game values [GAME].
+ */
+export function missionRequirements(s: C.Scenario): { items: MissionRequirement[]; summary: string; source: SourceId } {
+  const items: MissionRequirement[] = [
+    { id: 'latitude', value: `±${fmt(s.needLatDeg)}°`, label: 'latitude reach' },
+    { id: 'coverage', value: s.coverage === 'global' ? 'Global' : 'Regional', label: 'coverage' },
+    { id: 'revisit', value: fmtRevisit(s.targetRevisitDays), label: 'revisit' },
+  ]
+  return {
+    items,
+    summary: `observe up to ${fmt(s.needLatDeg)}° latitude, ${s.coverage} coverage, revisit every ${s.targetRevisitDays < 1 ? `${fmt(s.targetRevisitDays * 24)} hours` : `${fmt(s.targetRevisitDays)} days`}, budget $${fmt(s.budgetM)}M`,
+    source: 'GAME',
+  }
+}
+
 // ---------------- Act 2: per-option viability ----------------
 export interface NodeState {
   id: string
