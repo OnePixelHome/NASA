@@ -13,8 +13,10 @@ Live: https://statusgo.earth/ (custom domain of the Azure Static Web App `victor
 
 ## Stack
 Vite + React 19 + TypeScript, Tailwind v4, Vitest, oxlint. pnpm. Deploy: Azure Static Web Apps only
-(`.github/workflows/azure-static-web-apps.yml`, every push to `main`; secret `AZURE_STATIC_WEB_APPS_API_TOKEN`). Only backend: the leaderboard Neon Function
-(`server/leaderboard.ts`) with a Neon Postgres table `scores` (project `crimson-shadow-12546769`, aws-us-east-1).
+(`.github/workflows/azure-static-web-apps.yml`, every push to `main`; secret `AZURE_STATIC_WEB_APPS_API_TOKEN`). Only backend: the leaderboard API, a managed
+function of the same Static Web App (`server/azure/`, `/api/leaderboard`), with the table `scores` (`server/schema.ts`, created by the API on first use) in
+Azure Database for PostgreSQL (`statusgo-db`, resource group `Nasa`). The old Neon Function (`server/leaderboard.ts`) is
+no longer used by the game.
 
 ## Layout
 - `src/engine/` — pure TS, no React. `physics.ts` (formulas), `catalog.ts` (all game data),
@@ -28,7 +30,8 @@ Vite + React 19 + TypeScript, Tailwind v4, Vitest, oxlint. pnpm. Deploy: Azure S
   `MissionFilm.tsx` + `film/` (canvas film), `DayView.tsx`, `MissionScene.tsx`, `Ship.tsx`, `Crew.tsx`, `MissionArt.tsx`.
 - `src/leaderboard/` — `api.ts` (client, `LEADERBOARD_URL` kill switch, 6 s timeout) and `name.ts` (name rules shared
   with the server).
-- `server/` — `leaderboard.ts` (Neon Function), `deploy.sh`, `README.md`.
+- `server/` — `handler.ts` (API logic), `azure/` (Azure Functions entry + build), `schema.ts`, `README.md`;
+  `leaderboard.ts` + `deploy.sh` are the old Neon Function.
 
 ## Rules
 - UI, code and docs in English (`BACKUP.md` stays in Spanish: internal log).
@@ -41,8 +44,8 @@ Vite + React 19 + TypeScript, Tailwind v4, Vitest, oxlint. pnpm. Deploy: Azure S
 - Keep the engine free of UI code; the UI calls engine functions (`orbitStats`, `tierOptions`, `choose`, `budget`,
   `resources`, `evaluateMission`, `playerRoles`, `teamPoints`…) and never re-implements game rules.
 - Leaderboard: the server recalculates every score with `evaluateMission(choice, goVotes, players)`; the client never
-  sends a score. Changing scoring or the catalog means redeploying the function (`bash server/deploy.sh`, needs
-  `neon login`). No secrets in the repo: `DATABASE_URL` is injected by Neon.
+  sends a score. The API ships with every push to `main`, so scoring and catalog changes reach it automatically.
+  No secrets in the repo: `DATABASE_URL` is an app setting of the Static Web App.
 - The game must work with the leaderboard down; `LEADERBOARD_URL = ''` hides every leaderboard control.
 
 ## Commands
