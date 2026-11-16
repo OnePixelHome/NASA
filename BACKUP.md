@@ -1,5 +1,12 @@
 # BACKUP - NASA
 
+## 2026-11-15 (Mac de Belle) — Vista previa al compartir el enlace (Open Graph)
+
+- `index.html` y `public/demo/index.html`: etiquetas `description`, Open Graph y Twitter, con título, texto, URL (`statusgo.earth` y `/demo/`) e imagen. Así WhatsApp, Slack, LinkedIn o X muestran una tarjeta al compartir el enlace.
+- Nuevo `public/og-image.png` (1200×630): "Status: GO — Mission Simulator", la frase "Design a space mission and balance its budget, mass, power and data", la Tierra de NASA Blue Marble con la órbita, `statusgo.earth` y el crédito "Earth: NASA Blue Marble". No tiene logos de NASA.
+- Estos archivos aparecieron sin commitear en la Mac de Belle y se commitearon a su pedido. Verificado: el build pasa y la imagen se copia a `dist/`.
+- También quedó lista la descripción para YouTube del video del pitch (en inglés, con la divulgación de SI).
+
 ## 2026-11-15 (Mac de Belle) — Demo para la entrega en `statusgo.earth/demo/`
 
 - Pedido de Belle: el campo "Project Demonstration" pide 7 diapositivas como máximo o un video de 30 s, con un enlace público. Se armó `public/demo/index.html`, servido en **https://statusgo.earth/demo/**, con 7 diapositivas: la 1 junta el título y el equipo de la antigua diapositiva 1 con el video de YouTube (https://youtu.be/V_0HTTzQpbY, público y embebible; se usa `youtube-nocookie.com`), y las 2–7 son las PNG de `docs/slides/` copiadas a `public/demo/`, con texto alternativo. La numeración 1/7–7/7 no cambia.
