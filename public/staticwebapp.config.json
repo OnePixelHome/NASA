@@ -1,4 +1,5 @@
 {
   "platform": { "apiRuntime": "node:20" },
+  "routes": [{ "route": "/demo", "redirect": "/demo/", "statusCode": 301 }],
   "globalHeaders": { "X-Content-Type-Options": "nosniff" }
 }
