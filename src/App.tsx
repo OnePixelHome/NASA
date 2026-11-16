@@ -3,6 +3,8 @@ import * as C from './engine/catalog'
 import { budget, BUDGET_SOURCE, choose, clampPlayers, evaluateMission, isComplete, MAX_PLAYERS, missionRequirements, orbitSources, orbitStats, playerRoles, resources, SUCCESS_SCORE_MIN, TEAM_POINTS_MAX, teamPoints, TIER_ORDER, tierOptions, type Choice, type NodeState } from './engine/game'
 import { missionDay } from './engine/missionDay'
 import { AI_DISCLOSURE, AI_IMAGES_NOTE, DISCLAIMER, FOOTER_NOTES, HOW_TO_PLAY, PITCH, ROLES_NOTE, SOURCE_ORDER, SOURCES, TEAM, type Reason } from './engine/sources'
+import { useFlownMission } from './achievements/useFlownMission'
+import { BadgeCelebration, MissionBadges, MissionLogPanel } from './ui/Badges'
 import { RoleCharacter } from './ui/Crew'
 import { DayView } from './ui/DayView'
 import { HomeHero } from './ui/HomeHero'
@@ -235,6 +237,8 @@ function Home({ players, setPlayers, onStart, onAbout, onLeaderboard }: { player
         </div>
         <HomeHero className="order-first mx-auto max-w-[210px] sm:max-w-[300px] lg:order-none lg:max-w-[320px]" />
       </div>
+
+      <MissionLogPanel />
 
       <section aria-labelledby="h-home-how">
         <h2 id="h-home-how" className="text-section">
@@ -819,12 +823,14 @@ function MissionRun({ choice, goVotes, players, onDone }: { choice: Choice; goVo
 
 function Score({ choice, goVotes, players, onReplay, onRevise, onHome }: { choice: Choice; goVotes: number; players: number; onReplay: () => void; onRevise: () => void; onHome: () => void }) {
   const card = evaluateMission(choice, goVotes, players)
+  const mission = useFlownMission(choice, goVotes, players)
   const b = budget(choice)
   // The engine only says success or not; the screen explains which of the two rules failed.
   const failure = card.success ? null : b.spentM > b.totalM ? 'budget' : 'score'
   return (
     <section>
       <ScreenTitle screen="score" title="6 · Mission scorecard" />
+      <BadgeCelebration fresh={mission.fresh} />
       <div className={`${CARD} mt-4 flex flex-col items-center gap-4 p-4 sm:flex-row sm:items-start`}>
         <div className="flex flex-col items-center gap-1">
           <Gauge score={card.score} success={card.success} />
@@ -862,6 +868,7 @@ function Score({ choice, goVotes, players, onReplay, onRevise, onHome }: { choic
         <Insight title="Biggest impact" reason={card.biggestImpact} />
         <Insight title="Lesson learned" reason={card.lesson} />
       </div>
+      <MissionBadges mission={mission} />
       {leaderboardEnabled && <SaveScore choice={choice} goVotes={goVotes} players={players} />}
       <details className={`${CARD} mt-4 p-3.5 text-small`}>
         <summary className="min-h-[44px] cursor-pointer content-center font-display text-card">Sources & assumptions</summary>

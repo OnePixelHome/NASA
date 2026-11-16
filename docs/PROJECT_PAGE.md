@@ -73,7 +73,7 @@ with an icon and words as well as color, every control works from the keyboard, 
 NASA science mission. The Go/No-Go poll turns disagreement into a visible decision.
 
 **Tools.** TypeScript, React, Vite, Tailwind CSS and Vitest. The game runs entirely in the browser; there is no backend
-and no player data is collected.
+and no player data is collected. Badges earned are kept only in the player's own browser.
 
 ## NASA data and resources
 

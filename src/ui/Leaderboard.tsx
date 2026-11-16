@@ -65,6 +65,7 @@ export function LeaderboardTable({ scenarioId, highlightId, refresh = 0 }: { sce
                 </div>
                 <div className="truncate text-caption text-ink-muted">
                   {mission} · {orbit} · {e.players === 1 ? 'solo' : `${e.players ?? 4} players`} · {e.success ? '✓ success' : '✕ failed'}
+                  {e.badges && e.badges.length > 0 && ` · ★ ${e.badges.length} ${e.badges.length === 1 ? 'badge' : 'badges'}`}
                 </div>
               </div>
               <span className="font-display text-[1.25rem] tabular-nums">{e.score}</span>

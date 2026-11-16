@@ -382,12 +382,15 @@ export interface TimelineStep extends Reason {
   label: string
 }
 
+/** The four parts of the score, in display order. */
+export type ScorePart = 'science' | 'data' | 'budget' | 'team'
+
 export interface Scorecard {
   score: number
   success: boolean
   /** The score and its breakdown are an illustrative game formula. */
   scoreSource: SourceId
-  breakdown: { label: string; points: number; max: number }[]
+  breakdown: { id: ScorePart; label: string; points: number; max: number }[]
   primaryConstraint: Reason
   biggestImpact: Reason
   lesson: Reason
@@ -465,10 +468,10 @@ export function evaluateMission(c: Choice, goVotes: number, players: number = TE
     success: !overBudget && score >= SUCCESS_SCORE_MIN,
     scoreSource: 'GAME',
     breakdown: [
-      { label: 'Science return', points: sciencePts, max: 50 },
-      { label: 'Data delivered', points: dataPts, max: 20 },
-      { label: 'Budget & reserve', points: budgetPts, max: 15 },
-      { label: 'Team Go/No-Go', points: teamPts, max: TEAM_POINTS_MAX },
+      { id: 'science', label: 'Science return', points: sciencePts, max: 50 },
+      { id: 'data', label: 'Data delivered', points: dataPts, max: 20 },
+      { id: 'budget', label: 'Budget & reserve', points: budgetPts, max: 15 },
+      { id: 'team', label: 'Team Go/No-Go', points: teamPts, max: TEAM_POINTS_MAX },
     ],
     primaryConstraint,
     biggestImpact,

@@ -188,7 +188,7 @@ About screen text added with the design, in `src/engine/sources.ts` (**Belle: pl
 | `AI_IMAGES_NOTE` | Images marked “SI content” were drafted with Super Intelligence (SI) tools and then checked and adapted by the team. |
 | `DISCLAIMER` | Status: GO is an independent project made by team One Pixel Home for the NASA Space Apps Challenge 2026. It is not affiliated with or endorsed by NASA. NASA does not endorse any non-U.S. Government entity. |
 | `TEAM` | Edgar Cardona, Software architect · José Gómez, Full-stack developer · Thais Rodríguez, Product designer · Belle Vásquez Machado, MarTech specialist |
-| `FOOTER_NOTES` | MIT License · No accounts, no cookies, no analytics. · Saving a score sends only the name you type and your mission design to our leaderboard (an Azure database). |
+| `FOOTER_NOTES` | MIT License · No accounts, no cookies, no analytics. · Your badges are kept only in this browser and are never sent anywhere. (new 2026-11-15) · Saving a score sends only the name you type and your mission design to our leaderboard (an Azure database). |
 
 About headings, in `src/App.tsx`: What is Status: GO? / How to play / Where the numbers come from / NASA and partner agency data and resources / Use of AI / Not affiliated with NASA / Team · One Pixel Home.
 
@@ -210,3 +210,29 @@ Two fixed sentences quote CubeSat 101 [S2] (added 2026-11-15; the quoted part mu
 - Imaging Radar out of range (added 2026-11-15, cites NISAR [S17] and Sentinel-1 [ESA S18]; for Belle's review): Real imaging radars fly much lower: NISAR at 747 km and Sentinel-1 at 693 km.
 - Downlink that can carry the data (added 2026-11-15, quotes the Communications chapter [S9]; the quoted part must stay word for word): NASA's small spacecraft guide: "a mission with high data rate needs would select a high frequency such as X-band for downlink and a directional high-gain antenna".
 - Standard Power locked for lack of power: These panels are fixed to the body. NASA's CubeSat 101 describes deployable solar panels that "will nearly double the power input to the spacecraft".
+
+## 9. Badges — `src/engine/achievements.ts`, fields `name` and `hint` (new 2026-11-15, for Belle's review)
+
+One sentence per hint, 70 characters at most (a test checks it). A number in a hint needs a source tag, so only
+"Reserve keeper" has one (the 10% rule of CubeSat 101, S2).
+
+| Badge (`name`) | How to earn it (`hint`) |
+| --- | --- |
+| Right tool | Fly the instrument that fits the mission best. |
+| Full science | Earn every Science return point. |
+| Full downlink | Bring all of the data collected each day down to Earth. |
+| Reserve keeper | Keep at least 10% of the budget in reserve. |
+| Unanimous Go | Launch with a Go from every player, in a crew of two or more. |
+| Full crew | Succeed with a crew of four. |
+| Solo commander | Succeed on your own. |
+| Small rocket | Succeed with the Small Launcher. |
+| Perfect mission | Score 100 out of 100. |
+| Mission planner | Succeed in every mission. |
+| Orbit explorer | Succeed in every orbit. |
+| Comeback | Succeed in a mission after failing it. |
+| Badge collector | Earn every mission badge. |
+
+Screen text in `src/ui/Badges.tsx`: Badges / This mission earned N of 9. / Badges are earned by successful missions. /
+New / Locked / N more to earn / Mission log / Mission log: N of 13 badges collected in this browser. It is kept only here
+and never sent anywhere. / New badge earned! / N new badges earned! / See my badges / Your mission log / N of 13 badges. Kept only in this browser. / Clear my log.
+Leaderboard row, in `src/ui/Leaderboard.tsx`: ★ N badges.

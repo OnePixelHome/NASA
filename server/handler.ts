@@ -1,9 +1,10 @@
 // Leaderboard API logic, shared by the Neon Function (server/leaderboard.ts) and the Azure Static Web Apps API
 // (server/azure/index.ts). See server/README.md.
-// GET  → top scores (optional ?scenario=<id>) and the total count
+// GET  → top scores (optional ?scenario=<id>) with the badges each one earned, and the total count
 // POST → { name, choice, goVotes, players } → the server recomputes the score with the game engine, saves it, returns the rank
 // The score is never taken from the client: it comes from evaluateMission(), so a forged request cannot post a fake 100.
 import type { Pool } from 'pg'
+import { missionBadges } from '../src/engine/achievements'
 import * as C from '../src/engine/catalog'
 import { evaluateMission, isComplete, MAX_PLAYERS, type Choice } from '../src/engine/game'
 import { checkName } from '../src/leaderboard/name'
@@ -50,15 +51,31 @@ function readChoice(raw: unknown): Choice | null {
   return valid && isComplete(c) ? c : null
 }
 
+/**
+ * Badges are never stored: like the score, they are worked out from the saved design, so they cannot be forged and
+ * they follow the rules of the engine that is deployed. The rest of the design stays out of the public list.
+ */
+export function withBadges(row: Record<string, unknown>) {
+  const { instrument_id, power_id, downlink_id, launch_id, go_votes, ...entry } = row
+  let badges: string[] = []
+  try {
+    const choice = { scenarioId: row.scenario_id, orbitId: row.orbit_id, instrumentId: instrument_id, powerId: power_id, downlinkId: downlink_id, launchId: launch_id } as Choice
+    badges = missionBadges(choice, Number(go_votes), Number(row.players))
+  } catch {
+    // A row saved with an older catalog simply shows no badges.
+  }
+  return { ...entry, badges }
+}
+
 async function top(pool: Pool, scenario: string | null) {
   const where = scenario ? 'WHERE scenario_id = $1' : ''
   const params = scenario ? [scenario] : []
   const rows = await pool.query(
-    `SELECT id, name, score, success, scenario_id, orbit_id, players, created_at FROM scores ${where} ORDER BY score DESC, created_at ASC LIMIT ${TOP}`,
+    `SELECT id, name, score, success, scenario_id, orbit_id, instrument_id, power_id, downlink_id, launch_id, go_votes, players, created_at FROM scores ${where} ORDER BY score DESC, created_at ASC LIMIT ${TOP}`,
     params,
   )
   const count = await pool.query(`SELECT count(*)::int AS n FROM scores ${where}`, params)
-  return { entries: rows.rows, total: count.rows[0].n as number }
+  return { entries: rows.rows.map(withBadges), total: count.rows[0].n as number }
 }
 
 /** The whole API as a web-standard handler, so Neon Functions and Azure Functions run the same code. */

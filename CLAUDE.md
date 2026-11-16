@@ -28,6 +28,10 @@ no longer used by the game.
 - `src/App.tsx` — screens (Home, Brief, Orbit, Tree, GoNoGo, MissionRun, Score, About, leaderboard screen).
 - `src/ui/` — `components.tsx` (Bar, Gauge, Meter, SourceChip, ReasonList…), `HomeHero.tsx`, `Leaderboard.tsx`,
   `MissionFilm.tsx` + `film/` (canvas film), `DayView.tsx`, `MissionScene.tsx`, `Ship.tsx`, `Crew.tsx`, `MissionArt.tsx`.
+- `src/engine/achievements.ts` — badges: `missionBadges(choice, goVotes, players)` (one mission) and
+  `recordMission(log, …)` (collection on one device). `src/achievements/store.ts` keeps that log in localStorage;
+  `src/ui/Badges.tsx` draws the new-badge celebration, the scorecard block and the mission log on the start page
+  (`src/achievements/useFlownMission.ts` records the mission and says which badges are new).
 - `src/leaderboard/` — `api.ts` (client, `LEADERBOARD_URL` kill switch, 6 s timeout) and `name.ts` (name rules shared
   with the server).
 - `server/` — `handler.ts` (API logic), `azure/` (Azure Functions entry + build), `schema.ts`, `README.md`;
@@ -46,6 +50,9 @@ no longer used by the game.
 - Leaderboard: the server recalculates every score with `evaluateMission(choice, goVotes, players)`; the client never
   sends a score. The API ships with every push to `main`, so scoring and catalog changes reach it automatically.
   No secrets in the repo: `DATABASE_URL` is an app setting of the Static Web App.
+- Badges are computed, never stored or sent by the client: the scorecard and the leaderboard API both call
+  `missionBadges()`. A new badge must be earnable by a design the game allows (`achievements.test.ts` checks it).
+  The mission log stays in the browser; nothing about it goes to the server.
 - The game must work with the leaderboard down; `LEADERBOARD_URL = ''` hides every leaderboard control.
 
 ## Commands

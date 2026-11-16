@@ -17,6 +17,8 @@ export interface BoardEntry {
   scenario_id: string
   orbit_id: string
   players?: number
+  /** Badge ids the server worked out from the saved design (src/engine/achievements.ts). */
+  badges?: string[]
   created_at: string
 }
 
