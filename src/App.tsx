@@ -260,6 +260,11 @@ function Home({ players, setPlayers, onStart, onAbout, onLeaderboard }: { player
       <footer className="flex flex-col gap-1 border-t border-space-border pt-4 text-caption text-ink-muted">
         <p>Made by team One Pixel Home. Not affiliated with or endorsed by NASA.</p>
         <p>Earth image: NASA Earth Observatory, Blue Marble: Next Generation.</p>
+        <p>
+          <a href="/terms/" className="underline underline-offset-2 hover:text-ink">
+            Terms and privacy
+          </a>
+        </p>
       </footer>
     </section>
   )

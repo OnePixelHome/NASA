@@ -1,5 +1,20 @@
 # BACKUP - NASA
 
+## 2026-11-15 (Mac de Belle) — Imagen para compartir el enlace y página de términos y privacidad
+
+- Imagen de vista previa (Open Graph): `public/og-image.png`, 1200×630, en el estilo del simulador: "Status: GO", "Mission Simulator", la frase "Design a space mission and balance its budget, mass, power and data.", el botón `statusgo.earth` y la Tierra (Blue Marble de NASA, en proyección ortográfica) con la órbita dorada y el satélite de la página de inicio. Se generó con Python (Pillow) y Arial Rounded; el script quedó fuera del repo. Belle escribió "Space: Go", pero se usó el nombre real, "Status: GO".
+- Etiquetas `og:*` y `twitter:card` en `index.html` (juego) y en `public/demo/index.html`, con URL absolutas a `https://statusgo.earth/og-image.png`.
+- Space Apps no pide términos, pero el leaderboard guarda y muestra los nombres que escriben los jugadores, así que se agregó **https://statusgo.earth/terms/** (`public/terms/index.html`): qué es el proyecto, no afiliación con NASA y crédito de Blue Marble, uso "as is" y licencia MIT, qué guarda y muestra el leaderboard (la IP solo se usa unos minutos en memoria para el límite de guardados; no se guarda), sin cookies ni analítica, el video de YouTube en modo privacidad mejorada y el contacto por GitHub Issues para pedir que se borre una entrada. Sin correos personales. No es asesoría legal.
+- Enlaces "Terms and privacy" en el pie de la página de inicio del juego (`src/App.tsx`, `Home`) y en la página del demo; `/terms` redirige a `/terms/` (`public/staticwebapp.config.json`).
+- Verificado: 73 tests (en una corrida fallaron 2 por tiempo, como ya pasaba en esta Mac; al repetir pasan todos), build y lint; capturas de la imagen y de la página de términos en un marco de 390 px.
+
+## 2026-11-15 (Mac de Belle) — Vista previa al compartir el enlace (Open Graph)
+
+- `index.html` y `public/demo/index.html`: etiquetas `description`, Open Graph y Twitter, con título, texto, URL (`statusgo.earth` y `/demo/`) e imagen. Así WhatsApp, Slack, LinkedIn o X muestran una tarjeta al compartir el enlace.
+- Nuevo `public/og-image.png` (1200×630): "Status: GO — Mission Simulator", la frase "Design a space mission and balance its budget, mass, power and data", la Tierra de NASA Blue Marble con la órbita, `statusgo.earth` y el crédito "Earth: NASA Blue Marble". No tiene logos de NASA.
+- Estos archivos aparecieron sin commitear en la Mac de Belle y se commitearon a su pedido. Verificado: el build pasa y la imagen se copia a `dist/`.
+- También quedó lista la descripción para YouTube del video del pitch (en inglés, con la divulgación de SI).
+
 ## 2026-11-15 (Mac de Belle) — Demo para la entrega en `statusgo.earth/demo/`
 
 - Pedido de Belle: el campo "Project Demonstration" pide 7 diapositivas como máximo o un video de 30 s, con un enlace público. Se armó `public/demo/index.html`, servido en **https://statusgo.earth/demo/**, con 7 diapositivas: la 1 junta el título y el equipo de la antigua diapositiva 1 con el video de YouTube (https://youtu.be/V_0HTTzQpbY, público y embebible; se usa `youtube-nocookie.com`), y las 2–7 son las PNG de `docs/slides/` copiadas a `public/demo/`, con texto alternativo. La numeración 1/7–7/7 no cambia.
