@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Status: GO — Demo (NASA Space Apps 2026)</title>
+<meta name="description" content="Status: GO, a mission simulator by team One Pixel Home for the NASA Space Apps Challenge 2026: 30-second video and 7 slides.">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<style>
+  :root {
+    --page: #0b1026; --raised: #1b2452; --border: #2f3a7a;
+    --ink: #f3f5ff; --ink-2: #b9c0e8; --gold: #ffd166; --green: #7fe28e;
+    --display: "Arial Rounded MT Bold", "Fredoka", "Nunito", ui-rounded, system-ui, sans-serif;
+  }
+  * { box-sizing: border-box; }
+  html { background: var(--page); color-scheme: dark; }
+  body { margin: 0; background: var(--page); color: var(--ink); font-family: Arial, "Helvetica Neue", system-ui, sans-serif; }
+  main { max-width: 1280px; margin: 0 auto; padding: 16px; display: flex; flex-direction: column; gap: 16px; }
+  .slide { position: relative; width: 100%; aspect-ratio: 16 / 9; border-radius: 12px; overflow: hidden;
+           border: 1px solid var(--border); background: var(--page); container-type: inline-size; }
+  .slide img { display: block; width: 100%; height: 100%; object-fit: cover; }
+  /* Slide 1 is drawn in HTML so the video can play inside it; sizes in cqw match the 1920 px slides (1 cqw = 19.2 px). */
+  .s1 { background: radial-gradient(circle at 20% 30%, #141c44 0, var(--page) 60%); }
+  .s1 .brand { position: absolute; left: 3.65cqw; top: 1.9cqw; font: 1.6cqw/1 var(--display); }
+  .s1 .left { position: absolute; left: 3.65cqw; top: 7.5cqw; width: 50cqw; }
+  .s1 h1 { margin: 0; font: 7.3cqw/1 var(--display); letter-spacing: -0.02em; }
+  .s1 h2 { margin: 0.8cqw 0 0; font: 3cqw/1.1 var(--display); }
+  .s1 .tag { margin: 1.6cqw 0 0; color: var(--green); font: 2cqw/1.3 var(--display); }
+  .s1 .team { margin-top: 2.4cqw; padding: 1.6cqw 1.7cqw; border: 0.12cqw solid var(--border); border-radius: 1.2cqw; background: #151d45; }
+  .s1 .team h3 { margin: 0; font: 1.9cqw/1.2 var(--display); }
+  .s1 .team p { margin: 0.5cqw 0 0; color: var(--ink-2); font-size: 1.25cqw; }
+  .s1 .team ul { list-style: none; margin: 1.3cqw 0 0; padding: 0; display: grid; grid-template-columns: 1fr 1fr; gap: 1cqw 2cqw; }
+  .s1 .team b { display: block; color: var(--gold); font: 1.55cqw/1.2 var(--display); }
+  .s1 .team span { color: var(--ink-2); font-size: 1.2cqw; }
+  .s1 .video { position: absolute; right: 3.65cqw; top: 50%; transform: translateY(-50%); width: 39cqw; }
+  .s1 .frame { position: relative; aspect-ratio: 16 / 9; border-radius: 1cqw; overflow: hidden; border: 0.25cqw solid var(--gold); background: #000; }
+  .s1 iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+  .s1 .cap { margin: 0.8cqw 0 0; color: var(--ink-2); font-size: 1.1cqw; text-align: center; }
+  .s1 .foot, .s1 .num { position: absolute; bottom: 1.9cqw; color: var(--ink-2); font-size: 1.15cqw; }
+  .s1 .foot { left: 3.65cqw; } .s1 .num { right: 3.65cqw; color: var(--ink); font-family: var(--display); }
+  /* Phones: slide 1 stops being a fixed 16:9 picture so the video can use the full width. */
+  @media (max-width: 700px) {
+    .s1 { aspect-ratio: auto; padding: 20px 16px; display: flex; flex-direction: column; gap: 14px; }
+    .s1 .brand, .s1 .foot { display: none; }
+    .s1 .left, .s1 .video, .s1 .num { position: static; width: auto; transform: none; }
+    .s1 h1 { font-size: 44px; } .s1 h2 { font-size: 22px; margin-top: 6px; } .s1 .tag { font-size: 16px; margin-top: 10px; }
+    .s1 .team { margin-top: 14px; padding: 12px 14px; border-width: 1px; border-radius: 10px; }
+    .s1 .team h3 { font-size: 16px; } .s1 .team p { font-size: 13px; margin-top: 4px; }
+    .s1 .team ul { margin-top: 10px; gap: 8px 12px; } .s1 .team b { font-size: 14px; } .s1 .team span { font-size: 12px; }
+    .s1 .frame { border-width: 2px; border-radius: 10px; } .s1 .cap { font-size: 12px; margin-top: 6px; }
+    .s1 .num { align-self: flex-end; font-size: 13px; }
+  }
+  .links { display: flex; flex-wrap: wrap; gap: 8px 20px; justify-content: center; padding: 8px 0 24px; color: var(--ink-2); font-size: 15px; }
+  .links a { color: var(--ink); }
+</style>
+</head>
+<body>
+<main>
+  <section class="slide s1" aria-label="Slide 1 of 7: title, team and 30-second video">
+    <div class="brand">Status: <span style="color:var(--gold)">GO</span></div>
+    <div class="left">
+      <h1>Status: <span style="color:var(--gold)">GO</span></h1>
+      <h2>Mission Simulator</h2>
+      <p class="tag">Learn to manage a mission's budget, mass, power and data.</p>
+      <div class="team">
+        <h3>Team One Pixel Home, Lima, Peru</h3>
+        <p>NASA Space Apps Challenge 2026 &nbsp;|&nbsp; Challenge: Space Mission Design Game</p>
+        <ul>
+          <li><b>Edgar Cardona</b><span>Software architect</span></li>
+          <li><b>José Gómez</b><span>Full-stack developer</span></li>
+          <li><b>Thais Rodríguez</b><span>Product designer</span></li>
+          <li><b>Belle Vásquez Machado</b><span>MarTech specialist</span></li>
+        </ul>
+      </div>
+    </div>
+    <div class="video">
+      <div class="frame">
+        <iframe src="https://www.youtube-nocookie.com/embed/V_0HTTzQpbY?rel=0" title="Status: GO — 30-second demo video" loading="lazy"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+          referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+      </div>
+      <p class="cap">30-second demo · presenter and voice are SI content (HeyGen) · <a href="https://youtu.be/V_0HTTzQpbY" style="color:var(--ink)">watch on YouTube</a></p>
+    </div>
+    <div class="foot">Team One Pixel Home &nbsp;|&nbsp; NASA Space Apps Challenge 2026 &nbsp;|&nbsp; Space Mission Design Game</div>
+    <div class="num">1 / 7</div>
+  </section>
+
+  <section class="slide" aria-label="Slide 2 of 7"><img src="slide-2.png" width="1920" height="1080" loading="lazy" alt="The problem: every mission has a fixed budget, mass, power and data. One choice uses up what the next one needs, and overspending one makes the mission fail."></section>
+  <section class="slide" aria-label="Slide 3 of 7"><img src="slide-3.png" width="1920" height="1080" loading="lazy" alt="Who it's for: high-school and early university students, alone or in a group of up to four with one role each (Science, Spacecraft, Ground, Launch), in the browser with no install and no accounts."></section>
+  <section class="slide" aria-label="Slide 4 of 7"><img src="slide-4.png" width="1920" height="1080" loading="lazy" alt="How it works: pick a science goal, choose an orbit, choose instrument, power, downlink and rocket, vote Go or No-Go, watch the mission fly and get a scorecard. Four live meters; anything that no longer fits locks and says why."></section>
+  <section class="slide" aria-label="Slide 5 of 7"><img src="slide-5.png" width="1920" height="1080" loading="lazy" alt="One mission, Polar Ice: $210M of $250M budget, a 390 kg spacecraft on a 1,207 kg medium rocket, 170 W of 309 W power, 200 of 396 Gbit per day of data. Result: 86 out of 100, mission success."></section>
+  <section class="slide" aria-label="Slide 6 of 7"><img src="slide-6.png" width="1920" height="1080" loading="lazy" alt="NASA resources used: Landsat 9, the NASA Earth Fact Sheet, CubeSat 101, the ISS, Design and Develop Science Missions and Blue Marble. Automated tests check the engine against real orbits."></section>
+  <section class="slide" aria-label="Slide 7 of 7"><img src="slide-7.png" width="1920" height="1080" loading="lazy" alt="What's next: more orbits, Moon and Mars missions, a teacher mode and real-time multiplayer. Fly your own mission at statusgo.earth; code at github.com/OnePixelHome/NASA under the MIT licence. Built with help from SI tools; not affiliated with or endorsed by NASA."></section>
+
+  <p class="links">
+    <a href="/">Fly the simulator: statusgo.earth</a>
+    <a href="https://github.com/OnePixelHome/NASA">Code: github.com/OnePixelHome/NASA</a>
+    <a href="https://youtu.be/V_0HTTzQpbY">Video on YouTube</a>
+  </p>
+</main>
+</body>
+</html>

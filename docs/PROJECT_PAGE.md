@@ -29,7 +29,7 @@ simulation and a scorecard close the loop, so players can change one choice and 
 
 ## Link to demo
 
-**TODO:** 30-second video with English subtitles, or 7 slides at most. Paste the public link here.
+https://statusgo.earth/demo/ — 7 slides; slide 1 plays the 30-second video (https://youtu.be/V_0HTTzQpbY).
 
 ## Link to final project
 

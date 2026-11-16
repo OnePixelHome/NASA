@@ -16,6 +16,14 @@
 - Sin verificar: el paquete de la API de Azure no se armó en esta PC (faltan sus dependencias y esta red no llega a registry.npmjs.org) y la lista con insignias no se probó contra la base real; lo cubre el test con base simulada y lo arma el workflow al hacer merge.
 - Pendiente: revisión de Belle de los textos (`docs/COPY.md` §9); decidir con el equipo si se hace merge antes o después de la entrega (el plan tenía congelamiento a las 18:00); tras el merge, guardar un puntaje en el sitio publicado y comprobar que la fila muestra sus insignias.
 
+## 2026-11-15 (Mac de Belle) — Demo para la entrega en `statusgo.earth/demo/`
+
+- Pedido de Belle: el campo "Project Demonstration" pide 7 diapositivas como máximo o un video de 30 s, con un enlace público. Se armó `public/demo/index.html`, servido en **https://statusgo.earth/demo/**, con 7 diapositivas: la 1 junta el título y el equipo de la antigua diapositiva 1 con el video de YouTube (https://youtu.be/V_0HTTzQpbY, público y embebible; se usa `youtube-nocookie.com`), y las 2–7 son las PNG de `docs/slides/` copiadas a `public/demo/`, con texto alternativo. La numeración 1/7–7/7 no cambia.
+- La diapositiva 1 está en HTML (tamaños en `cqw`, para que escale como las imágenes); en celular (menos de 700 px) deja de ser 16:9 y el video ocupa todo el ancho.
+- `public/staticwebapp.config.json`: `/demo` redirige a `/demo/`. `docs/PROJECT_PAGE.md`: el campo del demo tiene ya el enlace.
+- Verificado: build; capturas con Chrome a 1280 px y en un marco de 390 px, sin desbordes; el video carga en el marco.
+- Pendiente: merge del PR de `belle` para publicarlo antes del cierre (domingo 15/11, 23:59), y comprobar el enlace en el sitio publicado.
+
 ## 2026-11-15 (Mac de Belle) — Página del proyecto lista salvo el enlace del video
 
 - `docs/PROJECT_PAGE.md`: se cerraron dos TODO. (1) Herramientas del video y de las diapositivas: HeyGen, Claude Code (edición con AVFoundation y diapositivas con Pillow), fuentes del sistema macOS (Arial Rounded Bold, Arial), Miro y efectos de sonido sintetizados por el script (sin audio ni música de terceros). (2) Uso de SI: lo de ChatGPT y HeyGen sale de lo que dijo Belle; se agregó la fila de Claude Code (guion, diapositivas y edición del video). En el resumen y en la descripción, "game" pasó a "simulator".
