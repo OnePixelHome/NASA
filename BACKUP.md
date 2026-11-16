@@ -1,5 +1,13 @@
 # BACKUP - NASA
 
+## 2026-11-15 (Mac de Belle) — Imagen para compartir el enlace y página de términos y privacidad
+
+- Imagen de vista previa (Open Graph): `public/og-image.png`, 1200×630, en el estilo del simulador: "Status: GO", "Mission Simulator", la frase "Design a space mission and balance its budget, mass, power and data.", el botón `statusgo.earth` y la Tierra (Blue Marble de NASA, en proyección ortográfica) con la órbita dorada y el satélite de la página de inicio. Se generó con Python (Pillow) y Arial Rounded; el script quedó fuera del repo. Belle escribió "Space: Go", pero se usó el nombre real, "Status: GO".
+- Etiquetas `og:*` y `twitter:card` en `index.html` (juego) y en `public/demo/index.html`, con URL absolutas a `https://statusgo.earth/og-image.png`.
+- Space Apps no pide términos, pero el leaderboard guarda y muestra los nombres que escriben los jugadores, así que se agregó **https://statusgo.earth/terms/** (`public/terms/index.html`): qué es el proyecto, no afiliación con NASA y crédito de Blue Marble, uso "as is" y licencia MIT, qué guarda y muestra el leaderboard (la IP solo se usa unos minutos en memoria para el límite de guardados; no se guarda), sin cookies ni analítica, el video de YouTube en modo privacidad mejorada y el contacto por GitHub Issues para pedir que se borre una entrada. Sin correos personales. No es asesoría legal.
+- Enlaces "Terms and privacy" en el pie de la página de inicio del juego (`src/App.tsx`, `Home`) y en la página del demo; `/terms` redirige a `/terms/` (`public/staticwebapp.config.json`).
+- Verificado: 73 tests (en una corrida fallaron 2 por tiempo, como ya pasaba en esta Mac; al repetir pasan todos), build y lint; capturas de la imagen y de la página de términos en un marco de 390 px.
+
 ## 2026-11-15 (Mac de Belle) — Vista previa al compartir el enlace (Open Graph)
 
 - `index.html` y `public/demo/index.html`: etiquetas `description`, Open Graph y Twitter, con título, texto, URL (`statusgo.earth` y `/demo/`) e imagen. Así WhatsApp, Slack, LinkedIn o X muestran una tarjeta al compartir el enlace.
