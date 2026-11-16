@@ -2,7 +2,9 @@
   "platform": { "apiRuntime": "node:20" },
   "routes": [
     { "route": "/demo", "redirect": "/demo/", "statusCode": 301 },
-    { "route": "/terms", "redirect": "/terms/", "statusCode": 301 }
+    { "route": "/terms", "redirect": "/terms/", "statusCode": 301 },
+    { "route": "/nasa-data", "redirect": "/nasa-data/", "statusCode": 301 },
+    { "route": "/credits", "redirect": "/credits/", "statusCode": 301 }
   ],
   "globalHeaders": { "X-Content-Type-Options": "nosniff" }
 }

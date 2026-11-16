@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Partner data, tools and credits — Status: GO</title>
+<meta name="description" content="Space agency partner data, code libraries, fonts, images and tools used to build Status: GO, with their licenses.">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<meta property="og:title" content="Partner data, tools and credits — Status: GO">
+<meta property="og:description" content="Space agency partner data, code libraries, fonts, images and tools used to build Status: GO, with their licenses.">
+<meta property="og:image" content="https://statusgo.earth/og-image.png">
+<style>
+  :root { --page:#0b1026; --raised:#151d45; --border:#2f3a7a; --ink:#f3f5ff; --ink-2:#b9c0e8; --gold:#ffd166; --green:#7fe28e;
+          --display:"Arial Rounded MT Bold","Fredoka","Nunito",ui-rounded,system-ui,sans-serif; }
+  * { box-sizing: border-box; }
+  html { background: var(--page); color-scheme: dark; }
+  body { margin: 0; background: var(--page); color: var(--ink); font: 17px/1.6 Arial, "Helvetica Neue", system-ui, sans-serif; }
+  main { max-width: 820px; margin: 0 auto; padding: 24px 16px 48px; }
+  a { color: var(--ink); overflow-wrap: break-word; }
+  .brand { font: 20px/1 var(--display); text-decoration: none; }
+  h1 { margin: 28px 0 4px; font: 36px/1.15 var(--display); }
+  h2 { margin: 32px 0 4px; font: 24px/1.2 var(--display); }
+  .lead { margin: 8px 0 0; color: var(--ink-2); }
+  article, table { margin-top: 14px; }
+  article { padding: 16px 18px; border: 1px solid var(--border); border-radius: 12px; background: var(--raised); }
+  h3 { margin: 0; font: 19px/1.3 var(--display); }
+  .tag { display: inline-block; margin-right: 6px; padding: 1px 8px; border-radius: 999px; background: var(--page); border: 1px solid var(--border); color: var(--gold); font: 13px/1.6 var(--display); vertical-align: 2px; }
+  p { margin: 6px 0 0; color: var(--ink-2); }
+  blockquote { margin: 8px 0 0; padding-left: 12px; border-left: 2px solid var(--border); color: var(--ink-2); }
+  blockquote span { color: #8f97c7; }
+  table { width: 100%; border-collapse: collapse; font-size: 15px; }
+  th, td { padding: 8px 10px; border-bottom: 1px solid var(--border); text-align: left; vertical-align: top; }
+  th { color: var(--ink); font-family: var(--display); } td { color: var(--ink-2); } td:first-child { color: var(--ink); }
+  .scroll { overflow-x: auto; }
+  nav { display: flex; flex-wrap: wrap; gap: 8px 20px; margin-top: 32px; font-size: 15px; }
+</style>
+</head>
+<body>
+<main>
+  <a class="brand" href="/">Status: <span style="color:var(--gold)">GO</span></a>
+
+  <h1>Partner data, tools and credits</h1>
+  <p class="lead">Everything besides NASA data that we used to build Status: GO: space agency partner data, code, fonts,
+    images and tools, each with its license. NASA sources are listed on <a href="/nasa-data/">NASA data and resources</a>.</p>
+
+  <h2>Space agency partner data</h2>
+  <div class="scroll"><table>
+    <thead><tr><th>Name</th><th>How we used it</th><th>License</th></tr></thead>
+    <tbody>
+      <tr><td><a href="https://www.goes-r.gov/spacesegment/spacecraft.html">NOAA and NASA — GOES-R Series spacecraft</a></td><td>The 15-year mission in geostationary orbit: “Spacecraft on-orbit life of 15 years”. GOES-R is a joint NOAA and NASA program.</td><td>Public U.S. Government information</td></tr>
+      <tr><td><a href="https://www.esa.int/Applications/Observing_the_Earth/Copernicus/Sentinel-1/Facts_and_figures">ESA — Sentinel-1 facts and figures</a></td><td>A second imaging radar, from the European Space Agency, flying at 693 km.</td><td>Quoted fact, with attribution</td></tr>
+      <tr><td><a href="https://science.nasa.gov/mission/nisar/mission-overview/">ISRO — NISAR (with NASA)</a></td><td>NASA’s partner in NISAR, the imaging radar at 747 km.</td><td>Quoted fact, with attribution</td></tr>
+    </tbody>
+  </table></div>
+  <p class="lead">No third-party or commercial data is used.</p>
+
+  <h2>Images</h2>
+  <div class="scroll"><table>
+    <thead><tr><th>Name</th><th>How we used it</th><th>License</th></tr></thead>
+    <tbody>
+      <tr><td><a href="https://science.nasa.gov/earth/earth-observatory/blue-marble-next-generation/">NASA Earth Observatory — Blue Marble: Next Generation</a></td><td>The Earth in the mission film, the start page and the link preview image.</td><td>NASA image, credited as requested</td></tr>
+      <tr><td>Spacecraft, crew and mission illustrations</td><td>Drawn as SVG for the simulator from designs made with Claude Design; labelled “SI content”.</td><td>Our own work, MIT</td></tr>
+    </tbody>
+  </table></div>
+
+  <h2>Code libraries</h2>
+  <div class="scroll"><table>
+    <thead><tr><th>Name</th><th>How we used it</th><th>License</th></tr></thead>
+    <tbody>
+      <tr><td><a href="https://react.dev">React and React DOM</a></td><td>User interface</td><td>MIT</td></tr>
+      <tr><td><a href="https://vite.dev">Vite</a>, @vitejs/plugin-react, vite-plugin-singlefile</td><td>Build and development server</td><td>MIT</td></tr>
+      <tr><td><a href="https://tailwindcss.com">Tailwind CSS</a></td><td>Styling</td><td>MIT</td></tr>
+      <tr><td><a href="https://www.typescriptlang.org">TypeScript</a></td><td>Language and type checking</td><td>Apache-2.0</td></tr>
+      <tr><td><a href="https://vitest.dev">Vitest</a></td><td>Automated tests</td><td>MIT</td></tr>
+      <tr><td><a href="https://oxc.rs">oxlint</a></td><td>Linting</td><td>MIT</td></tr>
+      <tr><td><a href="https://pnpm.io">pnpm</a></td><td>Package manager</td><td>MIT</td></tr>
+      <tr><td><a href="https://github.com/Azure/azure-functions-nodejs-library">Azure Functions for Node.js</a></td><td>Leaderboard API runtime library</td><td>MIT</td></tr>
+      <tr><td><a href="https://node-postgres.com">pg (node-postgres)</a></td><td>Database driver in the leaderboard API</td><td>MIT</td></tr>
+    </tbody>
+  </table></div>
+
+  <h2>Fonts</h2>
+  <div class="scroll"><table>
+    <thead><tr><th>Name</th><th>How we used it</th><th>License</th></tr></thead>
+    <tbody>
+      <tr><td><a href="https://fonts.google.com/specimen/Fredoka">Fredoka</a> (via @fontsource)</td><td>Titles and numbers in the simulator</td><td>SIL Open Font License 1.1</td></tr>
+      <tr><td><a href="https://fonts.google.com/specimen/Atkinson+Hyperlegible">Atkinson Hyperlegible</a> (via @fontsource)</td><td>Body text in the simulator</td><td>SIL Open Font License 1.1</td></tr>
+      <tr><td>Arial Rounded Bold, Arial</td><td>Text in the video overlays and the slides</td><td>macOS system fonts</td></tr>
+    </tbody>
+  </table></div>
+
+  <h2>Services and tools</h2>
+  <div class="scroll"><table>
+    <thead><tr><th>Name</th><th>How we used it</th><th>License</th></tr></thead>
+    <tbody>
+      <tr><td><a href="https://github.com/OnePixelHome/NASA">GitHub</a></td><td>Source code hosting; GitHub Actions builds, tests and deploys every change</td><td>Hosted service</td></tr>
+      <tr><td><a href="https://azure.microsoft.com/products/app-service/static">Azure Static Web Apps</a></td><td>Hosting of statusgo.earth</td><td>Hosted service</td></tr>
+      <tr><td><a href="https://azure.microsoft.com/products/postgresql">Azure Database for PostgreSQL</a></td><td>Leaderboard database</td><td>Hosted service</td></tr>
+      <tr><td><a href="https://www.cloudflare.com">Cloudflare</a></td><td>DNS for statusgo.earth</td><td>Hosted service</td></tr>
+      <tr><td><a href="https://youtu.be/V_0HTTzQpbY">YouTube</a></td><td>Hosting of the 30-second demo video</td><td>Hosted service</td></tr>
+      <tr><td><a href="https://miro.com">Miro</a></td><td>Presenting the slides</td><td>Hosted service</td></tr>
+    </tbody>
+  </table></div>
+
+  <h2>SI (Super Intelligence) tools</h2>
+  <div class="scroll"><table>
+    <thead><tr><th>Name</th><th>How we used it</th><th>License</th></tr></thead>
+    <tbody>
+      <tr><td><a href="https://claude.ai">Claude</a> (Anthropic)</td><td>Drafts of the code, the physics engine, the tests and the documentation; video edit and slides</td><td>Hosted service</td></tr>
+      <tr><td><a href="https://claude.ai">Claude Design</a> (Anthropic)</td><td>Visual system, screen designs and illustrations</td><td>Hosted service</td></tr>
+      <tr><td><a href="https://chatgpt.com">ChatGPT</a> (OpenAI)</td><td>Drafts of written material</td><td>Hosted service</td></tr>
+      <tr><td><a href="https://www.heygen.com">HeyGen</a></td><td>The SI presenter, its synthetic voice and the cockpit scene in the demo video</td><td>Hosted service</td></tr>
+    </tbody>
+  </table></div>
+  <p class="lead">Everything produced with these tools was reviewed, tested and adapted by the team. Sound effects in the
+    video were synthesized by our own script; no third-party music or audio is used.</p>
+
+  <h2>Our code</h2>
+  <p class="lead">Status: GO is open source under the <a href="https://github.com/OnePixelHome/NASA/blob/main/LICENSE">MIT License</a>.</p>
+
+  <nav>
+    <a href="/">Fly the simulator</a>
+    <a href="/nasa-data/">NASA data</a>
+    <a href="/credits/">Partner data, tools and credits</a>
+    <a href="/demo/">Demo</a>
+    <a href="/terms/">Terms and privacy</a>
+    <a href="https://github.com/OnePixelHome/NASA">Code on GitHub</a>
+  </nav>
+</main>
+</body>
+</html>
