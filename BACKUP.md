@@ -30,6 +30,13 @@
 - `https://statusgo.earth/` y `https://www.statusgo.earth/` responden 200 con el simulador (comprobado a las 17:10). El cuadro "About" del repo en GitHub apunta ahora a `https://statusgo.earth/` (antes, al host de Azure). `docs/SUBMISSION.md`: el punto 2 (demo público) pasa a ✅.
 - Video: `status-go-pitch-v4.mp4` ya muestra `statusgo.earth` en el cierre. Las guías de la carpeta de video (`EDIT-PLAN.md`, `00-GUIDE.md`) también usan el dominio nuevo.
 - Falta poner `https://statusgo.earth/` en la página del proyecto de Space Apps (lo hace quien la edite).
+## 2026-11-15 (Mac de Belle) — `statusgo.earth` funcionando: DNS en Cloudflare y dominios validados en Azure
+
+- Se resolvió el pendiente bloqueante de la entrada anterior. El DNS de `statusgo.earth` pasó de Porkbun a **Cloudflare** (plan Free, cuenta de Belle; NS `candy` y `wells.ns.cloudflare.com`). El dominio sigue registrado en Porkbun; solo cambiaron los nameservers.
+- Registros en Cloudflare, todos **sin proxy** (si Cloudflare hace de proxy, Azure no puede validar ni emitir el certificado): `statusgo.earth` CNAME (aplanado por Cloudflare) y `www` CNAME a `victorious-pebble-0fcf34b10.6.azurestaticapps.net`, y TXT `_dnsauth` con el token de validación de Azure. No borrar ese TXT.
+- En la Static Web App `Nasa`: `statusgo.earth` (validado por TXT) y `www.statusgo.earth` (validado por CNAME) quedaron en **Ready**, con certificado de Azure.
+- Verificado: `https://statusgo.earth/` y `https://www.statusgo.earth/` responden 200 con HTTPS válido y el título "Status: GO — One Pixel Home". El sitio publicado llama a `/api/leaderboard` y `GET https://statusgo.earth/api/leaderboard` devuelve `{"entries":[],"total":0}`: la API se conecta a `statusgo-db` y la tabla `scores` ya existe. No se probó un guardado para no dejar una fila de prueba en el leaderboard del jurado.
+- Pendiente: probar un guardado real desde el juego; opcional, marcar `statusgo.earth` como dominio predeterminado en el portal.
 
 ## 2026-11-15 (Mac de Belle) — URL pública `statusgo.earth` en la documentación
 
