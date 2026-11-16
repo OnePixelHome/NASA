@@ -1,5 +1,18 @@
 # BACKUP - NASA
 
+## 2026-11-15 (PC temporal de Edgar) — Honores del leaderboard, fase 3 de los logros (`feat/leaderboard-honors`, apilado sobre `feat/achievements`)
+
+- Edgar pidió intentar la fase 3. Es para después del hackatón, igual que el PR #34 (lo dice su comentario en ese PR); este PR va apilado sobre él.
+- Tres honores por misión, que dependen de lo que guardaron todos los equipos y por eso solo los da el servidor: Mission leader (mejor puntaje exitoso), Trailblazer (primer éxito) y First perfect (primer 100). Solo cuentan misiones exitosas. En un empate gana el guardado más antiguo, así que el líder conserva el honor hasta que alguien lo supere por al menos un punto.
+- Motor: `HONORS`, `honorById` y `honorHolders(saved)` en `src/engine/achievements.ts`. La regla vive ahí, como función pura, para probarla con el juego.
+- Servidor (`server/handler.ts`): `honors(pool)` hace una sola consulta que trae como máximo tres filas por misión (`DISTINCT ON (scenario_id)`: mejor puntaje, primer éxito y primer 100) y le aplica `honorHolders`. El GET añade `honors` a cada fila y el POST responde con los honores de la fila recién guardada. No cambia la tabla. Si esa consulta falla, el leaderboard responde igual, sin honores.
+- Pantallas: cada fila del leaderboard muestra sus honores como etiquetas doradas con nombre; la pantalla Leaderboard tiene una leyenda "Honors" que explica cada uno; al guardar un puntaje que tiene algún honor aparece "You hold N leaderboard honors!" con la misma lluvia de estrellas de las insignias (`StarShower`, ahora exportado de `src/ui/Badges.tsx`). Un id de honor que esta versión no conoce se ignora.
+- Los honores no se guardan en el registro del navegador: pueden cambiar de dueño y solo el servidor los conoce.
+- Tests: 101 en total. Nuevos en `achievements.test.ts` (reglas de empate, misiones fallidas, primer 100, ids como texto) y en `server/handler.test.ts` (GET y POST con una base simulada, y que el leaderboard sigue respondiendo si falla la consulta de honores). Build y lint pasan.
+- Verificado en el navegador a 375 px con una respuesta simulada del leaderboard: etiquetas en las filas, leyenda y celebración al guardar; sin desbordes.
+- **Sin verificar**: la consulta SQL nunca se ejecutó contra PostgreSQL real (no hay base local ni acceso a la de Azure desde esta PC). Los tests cubren la regla y la forma de la consulta, no su ejecución. Antes del merge conviene probarla una vez en la base real o en una copia.
+- Pendiente: revisión de Belle de los textos (`docs/COPY.md` §9); probar la consulta en la base real; merge del PR #34 primero y luego este.
+
 ## 2026-11-15 (PC temporal de Edgar) — Insignias (logros): por misión y colección en el dispositivo (`feat/achievements`)
 
 - Pedido de Edgar: logros para los jugadores, ahora que hay leaderboard. El juego no tiene cuentas (un jugador es solo el nombre que escribe al guardar), así que se hicieron dos tipos: insignias por misión (calculadas) e insignias de colección (guardadas en el navegador). Las de "primero en el leaderboard" quedaron fuera a propósito.

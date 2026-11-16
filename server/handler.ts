@@ -1,10 +1,11 @@
 // Leaderboard API logic, shared by the Neon Function (server/leaderboard.ts) and the Azure Static Web Apps API
 // (server/azure/index.ts). See server/README.md.
-// GET  → top scores (optional ?scenario=<id>) with the badges each one earned, and the total count
+// GET  → top scores (optional ?scenario=<id>) with the badges each one earned and the honors it holds, and the total count
 // POST → { name, choice, goVotes, players } → the server recomputes the score with the game engine, saves it, returns the rank
+//        and the honors the new row holds (mission leader, first success, first perfect)
 // The score is never taken from the client: it comes from evaluateMission(), so a forged request cannot post a fake 100.
 import type { Pool } from 'pg'
-import { missionBadges } from '../src/engine/achievements'
+import { honorHolders, missionBadges, type HonorId } from '../src/engine/achievements'
 import * as C from '../src/engine/catalog'
 import { evaluateMission, isComplete, MAX_PLAYERS, type Choice } from '../src/engine/game'
 import { checkName } from '../src/leaderboard/name'
@@ -67,6 +68,24 @@ export function withBadges(row: Record<string, unknown>) {
   return { ...entry, badges }
 }
 
+// The only rows that can hold an honor: per mission, the best successful score, the first success and the first 100.
+// At most three rows per mission whatever the table size; honorHolders() then applies the rule itself.
+const CANDIDATE = 'SELECT DISTINCT ON (scenario_id) id, scenario_id, score, success, created_at FROM scores WHERE success'
+const HONOR_CANDIDATES = `
+  (${CANDIDATE} ORDER BY scenario_id, score DESC, created_at ASC, id ASC)
+  UNION (${CANDIDATE} ORDER BY scenario_id, created_at ASC, id ASC)
+  UNION (${CANDIDATE} AND score = 100 ORDER BY scenario_id, created_at ASC, id ASC)`
+
+/** Honors by row id. They are an extra: if this query fails, the leaderboard still answers, without honors. */
+export async function honors(pool: Pool): Promise<Map<string, HonorId[]>> {
+  try {
+    const found = await pool.query(HONOR_CANDIDATES)
+    return honorHolders(found.rows.map((r) => ({ id: r.id, scenarioId: r.scenario_id, score: r.score, success: r.success, savedAt: r.created_at })))
+  } catch {
+    return new Map()
+  }
+}
+
 async function top(pool: Pool, scenario: string | null) {
   const where = scenario ? 'WHERE scenario_id = $1' : ''
   const params = scenario ? [scenario] : []
@@ -75,7 +94,8 @@ async function top(pool: Pool, scenario: string | null) {
     params,
   )
   const count = await pool.query(`SELECT count(*)::int AS n FROM scores ${where}`, params)
-  return { entries: rows.rows.map(withBadges), total: count.rows[0].n as number }
+  const held = await honors(pool)
+  return { entries: rows.rows.map((row) => ({ ...withBadges(row), honors: held.get(String(row.id)) ?? [] })), total: count.rows[0].n as number }
 }
 
 /** The whole API as a web-standard handler, so Neon Functions and Azure Functions run the same code. */
@@ -110,7 +130,8 @@ export function createLeaderboard(pool: Pool) {
         )
         const rank = await pool.query('SELECT count(*)::int + 1 AS r FROM scores WHERE score > $1', [card.score])
         const total = await pool.query('SELECT count(*)::int AS n FROM scores')
-        return json({ id: saved.rows[0].id, score: card.score, rank: rank.rows[0].r, total: total.rows[0].n }, 201, origin)
+        const held = (await honors(pool)).get(String(saved.rows[0].id)) ?? []
+        return json({ id: saved.rows[0].id, score: card.score, rank: rank.rows[0].r, total: total.rows[0].n, honors: held }, 201, origin)
       }
       return json({ error: 'Method not allowed' }, 405, origin)
     } catch {

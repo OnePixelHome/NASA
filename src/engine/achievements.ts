@@ -42,6 +42,55 @@ export const COLLECTION_BADGES: (Badge & { id: CollectionBadgeId })[] = [
 export const ALL_BADGES: Badge[] = [...MISSION_BADGES, ...COLLECTION_BADGES]
 export const badgeById = (id: string) => ALL_BADGES.find((b) => b.id === id)
 
+// ---------------- Leaderboard honors: held against every other saved mission ----------------
+// Unlike a badge, an honor depends on what other crews saved, so only the leaderboard server can award it
+// (server/handler.ts) and a mission leader can lose it to a better score. One holder per mission for each honor.
+export type HonorId = 'mission-leader' | 'first-success' | 'first-perfect'
+
+export interface Honor {
+  id: HonorId
+  name: string
+  /** How to hold it, in one plain sentence. Copy owner: Belle (see docs/COPY.md). */
+  hint: string
+  source: SourceId
+}
+
+export const HONORS: Honor[] = [
+  { id: 'mission-leader', name: 'Mission leader', hint: 'Hold the best score saved for a mission.', source: 'GAME' },
+  { id: 'first-success', name: 'Trailblazer', hint: 'Be the first crew to succeed in a mission.', source: 'GAME' },
+  { id: 'first-perfect', name: 'First perfect', hint: 'Be the first crew to score 100 in a mission.', source: 'GAME' },
+]
+export const honorById = (id: string) => HONORS.find((h) => h.id === id)
+
+/** One saved mission, as far as honors care. Ids are compared as text: Postgres bigints arrive as strings. */
+export interface SavedMission {
+  id: string | number
+  scenarioId: string
+  score: number
+  success: boolean
+  /** When it was saved; anything `Date` can read, or a number. Earlier wins a tie. */
+  savedAt: string | number | Date
+}
+
+/**
+ * Who holds each honor, per mission: the rule the server's query follows, kept here so it is tested with the game.
+ * Only successful missions count. Best score leads, and the earlier save wins a tie, so a leader keeps the honor
+ * until someone scores strictly higher.
+ */
+export function honorHolders(saved: SavedMission[]): Map<string, HonorId[]> {
+  const when = (m: SavedMission) => new Date(m.savedAt).getTime()
+  const earlier = (a: SavedMission, b: SavedMission) => when(a) - when(b) || Number(a.id) - Number(b.id)
+  const out = new Map<string, HonorId[]>()
+  const give = (m: SavedMission | undefined, honor: HonorId) => m && out.set(String(m.id), [...(out.get(String(m.id)) ?? []), honor])
+  for (const scenarioId of new Set(saved.map((m) => m.scenarioId))) {
+    const wins = saved.filter((m) => m.scenarioId === scenarioId && m.success)
+    give([...wins].sort((a, b) => b.score - a.score || earlier(a, b))[0], 'mission-leader')
+    give([...wins].sort(earlier)[0], 'first-success')
+    give(wins.filter((m) => m.score === 100).sort(earlier)[0], 'first-perfect')
+  }
+  return out
+}
+
 const TIER_FIELD: Record<C.Tier, keyof Choice> = { instrument: 'instrumentId', power: 'powerId', downlink: 'downlinkId', launch: 'launchId' }
 
 const designKey = (c: Choice) => [c.scenarioId, c.orbitId, c.instrumentId, c.powerId, c.downlinkId, c.launchId].join('|')

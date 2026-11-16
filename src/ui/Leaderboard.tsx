@@ -5,7 +5,9 @@ import * as C from '../engine/catalog'
 import type { Choice } from '../engine/game'
 import { fetchBoard, saveScore, type Board } from '../leaderboard/api'
 import { checkName, NAME_MAX } from '../leaderboard/name'
-import { BTN_PRIMARY, BTN_SECONDARY } from './components'
+import { honorById, HONORS, type Honor } from '../engine/achievements'
+import { StarShower } from './Badges'
+import { BTN_PRIMARY, BTN_SECONDARY, SourceChip } from './components'
 
 const CARD = 'rounded-lg border border-space-border bg-space-card'
 
@@ -43,6 +45,42 @@ function Filter({ value, onChange }: { value: string | undefined; onChange: (id:
   )
 }
 
+/** The honors a row holds, as known ones only: a newer server may send ids this build does not know. */
+const knownHonors = (ids: string[] | undefined) => (ids ?? []).map(honorById).filter((h): h is Honor => Boolean(h))
+
+/** An honor as a small gold tag with its name, so it never depends on color alone. */
+function HonorTag({ honor }: { honor: Honor }) {
+  return (
+    <span title={honor.hint} className="inline-flex h-5 items-center gap-1 whitespace-nowrap rounded-pill border border-st-selected px-1.5 text-[11px] font-bold leading-none text-st-selected">
+      <span aria-hidden>★</span>
+      {honor.name}
+    </span>
+  )
+}
+
+/** What each honor means. Shown under the board, because the tags on the rows only carry the name. */
+export function HonorLegend() {
+  return (
+    <section aria-labelledby="h-honors" className={`${CARD} flex flex-col gap-2 p-4`}>
+      <h2 id="h-honors" className="text-section">
+        Honors
+      </h2>
+      <p className="text-small text-ink-2">
+        One crew holds each honor in every mission. Only successful missions count.
+        <SourceChip id="GAME" />
+      </p>
+      <ul className="flex flex-col gap-2 text-small">
+        {HONORS.map((h) => (
+          <li key={h.id} className="flex flex-wrap items-center gap-x-2 gap-y-1">
+            <HonorTag honor={h} />
+            <span className="text-ink-2">{h.hint}</span>
+          </li>
+        ))}
+      </ul>
+    </section>
+  )
+}
+
 export function LeaderboardTable({ scenarioId, highlightId, refresh = 0 }: { scenarioId?: string; highlightId?: number; refresh?: number }) {
   const { board, loading } = useBoard(scenarioId, refresh)
   if (loading && !board) return <p className="text-small text-ink-muted">Loading the leaderboard…</p>
@@ -67,6 +105,13 @@ export function LeaderboardTable({ scenarioId, highlightId, refresh = 0 }: { sce
                   {mission} · {orbit} · {e.players === 1 ? 'solo' : `${e.players ?? 4} players`} · {e.success ? '✓ success' : '✕ failed'}
                   {e.badges && e.badges.length > 0 && ` · ★ ${e.badges.length} ${e.badges.length === 1 ? 'badge' : 'badges'}`}
                 </div>
+                {knownHonors(e.honors).length > 0 && (
+                  <div className="mt-1 flex flex-wrap gap-1">
+                    {knownHonors(e.honors).map((h) => (
+                      <HonorTag key={h.id} honor={h} />
+                    ))}
+                  </div>
+                )}
               </div>
               <span className="font-display text-[1.25rem] tabular-nums">{e.score}</span>
             </li>
@@ -85,7 +130,7 @@ export function SaveScore({ choice, goVotes, players }: { choice: Choice; goVote
   const [name, setName] = useState('')
   const [touched, setTouched] = useState(false)
   const [busy, setBusy] = useState(false)
-  const [result, setResult] = useState<{ id: number; rank: number; total: number } | null>(null)
+  const [result, setResult] = useState<{ id: number; rank: number; total: number; honors: Honor[] } | null>(null)
   const [error, setError] = useState<string | null>(null)
   const [scope, setScope] = useState<string | undefined>(undefined)
   const check = checkName(name)
@@ -99,7 +144,7 @@ export function SaveScore({ choice, goVotes, players }: { choice: Choice; goVote
     setError(null)
     const r = await saveScore(check.name, choice, goVotes, players)
     setBusy(false)
-    if (r.ok) setResult({ id: r.id, rank: r.rank, total: r.total })
+    if (r.ok) setResult({ id: r.id, rank: r.rank, total: r.total, honors: knownHonors(r.honors) })
     else setError(r.error)
   }
 
@@ -109,9 +154,26 @@ export function SaveScore({ choice, goVotes, players }: { choice: Choice; goVote
         Leaderboard
       </h2>
       {result ? (
-        <p role="status" className="font-display text-card">
-          Saved! You are #{result.rank} of {result.total}.
-        </p>
+        <div role="status" className="flex flex-col gap-2">
+          <p className="font-display text-card">
+            Saved! You are #{result.rank} of {result.total}.
+          </p>
+          {result.honors.length > 0 && (
+            // A new honor is celebrated like a new badge: stars fall once and the honor pops in.
+            <div className="flex flex-col gap-2 rounded-md border-2 border-st-selected bg-space-raised p-3" style={{ animation: 'pop 480ms ease-out both, badge-glow 1600ms ease-out 300ms 2' }}>
+              <StarShower />
+              <p className="font-display">{result.honors.length === 1 ? 'You hold a leaderboard honor!' : `You hold ${result.honors.length} leaderboard honors!`}</p>
+              <ul className="flex flex-col gap-1.5 text-small">
+                {result.honors.map((h) => (
+                  <li key={h.id} className="flex flex-wrap items-center gap-x-2 gap-y-1">
+                    <HonorTag honor={h} />
+                    <span className="text-ink-2">{h.hint}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+        </div>
       ) : (
         <form onSubmit={submit} noValidate className="flex flex-col gap-2">
           <label htmlFor="crew-name" className="text-small text-ink-2">
@@ -170,6 +232,7 @@ export function LeaderboardScreen({ onBack, onStart }: { onBack: () => void; onS
       <div className={`${CARD} p-4`}>
         <LeaderboardTable scenarioId={scope} />
       </div>
+      <HonorLegend />
       <div>
         <button type="button" onClick={onStart} className={BTN_PRIMARY}>
           Start mission →

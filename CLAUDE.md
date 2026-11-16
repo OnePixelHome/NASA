@@ -53,6 +53,8 @@ no longer used by the game.
 - Badges are computed, never stored or sent by the client: the scorecard and the leaderboard API both call
   `missionBadges()`. A new badge must be earnable by a design the game allows (`achievements.test.ts` checks it).
   The mission log stays in the browser; nothing about it goes to the server.
+- Leaderboard honors (`HONORS`, `honorHolders()`) depend on other crews' saves, so only the API awards them
+  (`honors()` in `server/handler.ts`). They are an extra: if their query fails, the list and the save still answer.
 - The game must work with the leaderboard down; `LEADERBOARD_URL = ''` hides every leaderboard control.
 
 ## Commands
