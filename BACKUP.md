@@ -1,5 +1,14 @@
 # BACKUP - NASA
 
+## 2026-11-15 (Mac de Belle) — Páginas `/nasa-data/` y `/credits/` para la entrega
+
+- Para los campos "NASA Data" y "Space Agency Partner & Other Data" de la página del proyecto se crearon dos páginas estáticas: **https://statusgo.earth/nasa-data/** (`public/nasa-data/index.html`) y **https://statusgo.earth/credits/** (`public/credits/index.html`).
+- `/nasa-data/` se generó desde `src/engine/sources.ts` (el mismo archivo que usa About), así que coincide con el simulador: las 12 fuentes de NASA (S1, S2, S3, S6, S9, S10, S12, S13, S15, S16, S17, S19) con su enlace, su uso y las citas textuales; las dos de agencias socias (NOAA S14, ESA S18); y las etiquetas "physics" e "illustrative". Si cambian las fuentes, hay que regenerarla (el script quedó fuera del repo, en el scratchpad de la sesión; también se puede editar a mano).
+- `/credits/` sale de `docs/PROJECT_PAGE.md`: datos de agencias socias (NOAA, ESA, ISRO), imágenes, librerías, fuentes tipográficas, servicios (GitHub, Azure, Cloudflare, YouTube, Miro) y herramientas de SI, cada una con su licencia.
+- Redirecciones `/nasa-data` y `/credits` en `public/staticwebapp.config.json`; enlaces en la página del demo.
+- Verificado: build; capturas a 1100 px y en un marco de 390 px.
+- Pendiente: merge a `main` para publicarlas antes del cierre.
+
 ## 2026-11-15 (Mac de Belle) — Imagen para compartir el enlace y página de términos y privacidad
 
 - Imagen de vista previa (Open Graph): `public/og-image.png`, 1200×630, en el estilo del simulador: "Status: GO", "Mission Simulator", la frase "Design a space mission and balance its budget, mass, power and data.", el botón `statusgo.earth` y la Tierra (Blue Marble de NASA, en proyección ortográfica) con la órbita dorada y el satélite de la página de inicio. Se generó con Python (Pillow) y Arial Rounded; el script quedó fuera del repo. Belle escribió "Space: Go", pero se usó el nombre real, "Status: GO".
