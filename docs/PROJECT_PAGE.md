@@ -21,7 +21,7 @@ Space Mission Design Game
 
 ## High-level summary
 
-Real missions fail when one choice breaks another, and students rarely get to see that. Status: GO is a browser game
+Real missions fail when one choice breaks another, and students rarely get to see that. Status: GO is a browser mission simulator
 where one to four players design an Earth-observation mission step by step: pick a science goal, choose an orbit, then build
 a dependency tree of instrument, power system, data downlink and launch vehicle. Every option is either available or locked,
 and every lock explains itself with a number computed from real orbital mechanics and NASA data. A Go/No-Go poll, a mission
@@ -37,7 +37,7 @@ https://statusgo.earth/ · Code: https://github.com/OnePixelHome/NASA
 
 ## Detailed description
 
-**What it does.** The game has six steps.
+**What it does.** The simulator has six steps.
 
 1. **Mission brief.** Choose a science objective: Crop Watch, Storm Watch or Polar Ice. Each has its own budget.
 2. **Trajectory.** Choose Low Earth Orbit, Sun-synchronous orbit or geostationary orbit. Each card shows period, reachable
@@ -135,8 +135,15 @@ No third-party or commercial data is used.
 
 Our own code is released under the MIT License.
 
-**TODO (Thais, Belle):** add the design and video tools actually used (for example Figma, a video editor, fonts and their
-licenses), and any music or sound with its license.
+Demo video and slides:
+
+| Tool | Use | License |
+| --- | --- | --- |
+| HeyGen | SI presenter, synthetic voice and cockpit scene of the 30-second video | Hosted service |
+| Claude Code (Anthropic) | Video edit (cuts, phone inset, bubbles, "SI content" watermark) with macOS AVFoundation, and the 7 slides drawn with Python Pillow | Hosted service |
+| Arial Rounded Bold, Arial | Text in the video overlays and the slides | macOS system fonts |
+| Miro | Presenting the slides | Hosted service |
+| Sound effects (pops, swishes, clicks, chime) | Video | Synthesised by the team's script; no third-party audio or music |
 
 ## Use of artificial intelligence
 
@@ -153,14 +160,15 @@ Who used which tool:
 | --- | --- | --- |
 | Claude (Anthropic) | Edgar Cardona, José Gómez | Drafts of the game code, the physics engine, the tests and the documentation |
 | Claude Design (Anthropic) | The team | Visual design and the illustrations in the game |
-| ChatGPT (OpenAI) | Belle Vásquez Machado, Thais Rodríguez | Drafts of written material |
-| HeyGen | Belle Vásquez Machado, Thais Rodríguez | The AI presenter and its synthetic voice in the demo video |
+| ChatGPT (OpenAI) | Belle Vásquez Machado, Thais Rodríguez | Drafts of documentation and written material |
+| HeyGen | Belle Vásquez Machado, Thais Rodríguez | The SI presenter (Belle's avatar), its synthetic voice and the cockpit scene in the demo video |
+| Claude Code (Anthropic) | Belle Vásquez Machado | Pitch script, slides and video edit |
 
 The presenter and the voice in the demo video are SI-generated with HeyGen and are marked "SI content" on screen.
 Everything produced with these tools was reviewed, tested and adapted by the team.
 
 **Keep in sync:** the first paragraph must stay identical to the game's About screen (`AI_DISCLOSURE` in
-`src/engine/sources.ts`). **TODO (Belle, Thais):** confirm the two "Used for" lines for ChatGPT and HeyGen.
+`src/engine/sources.ts`). The ChatGPT, HeyGen and Claude Code lines come from Belle (Sun 15 Nov).
 Gemini Flow, named in the early plan, was not used (confirmed by Edgar, Sun 15 Nov).
 
 ## Notice

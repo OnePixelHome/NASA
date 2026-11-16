@@ -1017,27 +1017,6 @@ function About({ onBack }: { onBack: () => void }) {
             </ul>
           </section>
 
-          <section aria-labelledby="h-ai" className="flex flex-col gap-3 rounded-lg border-2 border-st-available bg-space-raised p-4">
-            <h2 id="h-ai" className="flex items-center gap-2.5 text-section">
-              <span aria-hidden className="grid size-8 place-items-center rounded-[10px] bg-st-available text-space-page">
-                ✦
-              </span>
-              Use of SI (Super Intelligence)
-            </h2>
-            <p className="text-[15px]">{AI_DISCLOSURE}</p>
-            <p className="flex flex-wrap items-center gap-2 text-[15px]">
-              {AI_IMAGES_NOTE}
-              <AiGeneratedLabel />
-            </p>
-          </section>
-
-          <section aria-labelledby="h-nasa" className={box}>
-            <h2 id="h-nasa" className="text-section">
-              Not affiliated with NASA
-            </h2>
-            <p className="text-[15px] text-ink-2">{DISCLAIMER}</p>
-          </section>
-
           <section aria-labelledby="h-team" className={box}>
             <h2 id="h-team" className="text-section">
               Team · One Pixel Home
@@ -1051,6 +1030,27 @@ function About({ onBack }: { onBack: () => void }) {
                 </li>
               ))}
             </ul>
+          </section>
+
+          <section aria-labelledby="h-nasa" className={box}>
+            <h2 id="h-nasa" className="text-section">
+              Not affiliated with NASA
+            </h2>
+            <p className="text-[15px] text-ink-2">{DISCLAIMER}</p>
+          </section>
+
+          <section aria-labelledby="h-ai" className="flex flex-col gap-3 rounded-lg border-2 border-st-available bg-space-raised p-4">
+            <h2 id="h-ai" className="flex items-center gap-2.5 text-section">
+              <span aria-hidden className="grid size-8 place-items-center rounded-[10px] bg-st-available text-space-page">
+                ✦
+              </span>
+              Use of SI (Super Intelligence)
+            </h2>
+            <p className="text-[15px]">{AI_DISCLOSURE}</p>
+            <p className="flex flex-wrap items-center gap-2 text-[15px]">
+              {AI_IMAGES_NOTE}
+              <AiGeneratedLabel />
+            </p>
           </section>
         </div>
       </div>

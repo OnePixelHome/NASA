@@ -16,10 +16,40 @@
 - Sin verificar: el paquete de la API de Azure no se armó en esta PC (faltan sus dependencias y esta red no llega a registry.npmjs.org) y la lista con insignias no se probó contra la base real; lo cubre el test con base simulada y lo arma el workflow al hacer merge.
 - Pendiente: revisión de Belle de los textos (`docs/COPY.md` §9); decidir con el equipo si se hace merge antes o después de la entrega (el plan tenía congelamiento a las 18:00); tras el merge, guardar un puntaje en el sitio publicado y comprobar que la fila muestra sus insignias.
 
+## 2026-11-15 (Mac de Belle) — Página del proyecto lista salvo el enlace del video
+
+- `docs/PROJECT_PAGE.md`: se cerraron dos TODO. (1) Herramientas del video y de las diapositivas: HeyGen, Claude Code (edición con AVFoundation y diapositivas con Pillow), fuentes del sistema macOS (Arial Rounded Bold, Arial), Miro y efectos de sonido sintetizados por el script (sin audio ni música de terceros). (2) Uso de SI: lo de ChatGPT y HeyGen sale de lo que dijo Belle; se agregó la fila de Claude Code (guion, diapositivas y edición del video). En el resumen y en la descripción, "game" pasó a "simulator".
+- Solo falta el TODO del enlace del video, que se completa cuando Belle lo suba a YouTube.
+- Tablero de Miro "NASA Space Apps Template": se borró todo el contenido de la plantilla y quedaron solo las 7 diapositivas, bloqueadas.
+
+## 2026-11-15 (Mac de Belle) — About: equipo, aviso de NASA y uso de SI en otro orden
+
+- Pedido de Belle: en About (`src/App.tsx`, `About`), las tres cajas del final de la columna derecha van ahora en este orden: "Team · One Pixel Home", "Not affiliated with NASA" y "Use of SI (Super Intelligence)". Antes era SI, NASA y equipo. Siguen debajo de "NASA and partner agency data and resources" (Belle eligió dejar las fuentes arriba). En celular, con una sola columna, aparecen en ese mismo orden después de las fuentes. Ningún texto cambió.
+- Verificado: 73 tests, build y lint.
+
+## 2026-11-15 (Mac de Belle) — Presentación de 7 diapositivas
+
+- `docs/slides/`: las 7 diapositivas del pitch como PNG (1920×1080) y `Status-GO-slides.pdf`. Siguen `docs/PITCH.md`: título y equipo, el problema, para quién es, cómo funciona, la misión Polar Ice por recursos, los recursos de NASA y lo que sigue, con `statusgo.earth`. Se dibujaron con un script de Python (PIL) con la paleta del simulador y capturas tomadas de `statusgo.earth`; el script quedó en `~/Desktop/Status GO - video/6-slides/make.py`.
+- Los números se volvieron a comprobar con el motor: $210M de $250M, 390 kg de 1.207 kg, 170 W de 309 W, 200 de 396 Gbit/día y 86/100.
+- Están en el repo para tener un enlace público al PDF y para cargarlas en el tablero de Miro.
+
+## 2026-11-15 (Mac de Belle) — `statusgo.earth` en todos lados
+
+- `https://statusgo.earth/` y `https://www.statusgo.earth/` responden 200 con el simulador (comprobado a las 17:10). El cuadro "About" del repo en GitHub apunta ahora a `https://statusgo.earth/` (antes, al host de Azure). `docs/SUBMISSION.md`: el punto 2 (demo público) pasa a ✅.
+- Video: `status-go-pitch-v4.mp4` ya muestra `statusgo.earth` en el cierre. Las guías de la carpeta de video (`EDIT-PLAN.md`, `00-GUIDE.md`) también usan el dominio nuevo.
+- Falta poner `https://statusgo.earth/` en la página del proyecto de Space Apps (lo hace quien la edite).
+## 2026-11-15 (Mac de Belle) — `statusgo.earth` funcionando: DNS en Cloudflare y dominios validados en Azure
+
+- Se resolvió el pendiente bloqueante de la entrada anterior. El DNS de `statusgo.earth` pasó de Porkbun a **Cloudflare** (plan Free, cuenta de Belle; NS `candy` y `wells.ns.cloudflare.com`). El dominio sigue registrado en Porkbun; solo cambiaron los nameservers.
+- Registros en Cloudflare, todos **sin proxy** (si Cloudflare hace de proxy, Azure no puede validar ni emitir el certificado): `statusgo.earth` CNAME (aplanado por Cloudflare) y `www` CNAME a `victorious-pebble-0fcf34b10.6.azurestaticapps.net`, y TXT `_dnsauth` con el token de validación de Azure. No borrar ese TXT.
+- En la Static Web App `Nasa`: `statusgo.earth` (validado por TXT) y `www.statusgo.earth` (validado por CNAME) quedaron en **Ready**, con certificado de Azure.
+- Verificado: `https://statusgo.earth/` y `https://www.statusgo.earth/` responden 200 con HTTPS válido y el título "Status: GO — One Pixel Home". El sitio publicado llama a `/api/leaderboard` y `GET https://statusgo.earth/api/leaderboard` devuelve `{"entries":[],"total":0}`: la API se conecta a `statusgo-db` y la tabla `scores` ya existe. No se probó un guardado para no dejar una fila de prueba en el leaderboard del jurado.
+- Pendiente: probar un guardado real desde el juego; opcional, marcar `statusgo.earth` como dominio predeterminado en el portal.
+
 ## 2026-11-15 (Mac de Belle) — URL pública `statusgo.earth` en la documentación
 
 - Belle indicó que el demo público queda en **https://statusgo.earth/**. Se reemplazó la URL de Azure (y dos de GitHub Pages que quedaban) en `README.md`, `CLAUDE.md`, `AGENTS.md`, `docs/PITCH.md`, `docs/PROJECT_PAGE.md`, `docs/SUBMISSION.md`, `docs/HANDOFF.md` y `docs/SUBMISSION-PLAN.md`. El host de Azure queda mencionado en `AGENTS.md`, `CLAUDE.md` y `docs/SUBMISSION.md` como respaldo. `server/handler.ts` ya aceptaba el dominio en su CORS y no se tocó.
-- **Pendiente bloqueante**: al momento de este cambio `statusgo.earth` todavía resuelve al estacionamiento de Porkbun (207.207.210.107 / .229) y no carga; el simulador responde en `https://victorious-pebble-0fcf34b10.6.azurestaticapps.net/`. Faltan los pasos de Azure y Porkbun de la entrada "Dominio `statusgo.earth`". No enviar esta URL al jurado hasta comprobar que abre en una ventana privada.
+- Verificado después: `https://statusgo.earth/` responde 200 con el simulador ("Status: GO — One Pixel Home") y `http://` redirige a `https://`. El DNS pasó a Cloudflare (NS `candy`/`wells`): la raíz apunta a Azure (52.252.74.253) y `www` es CNAME a la Static Web App. En Azure (`az staticwebapp hostname list -n Nasa -g Nasa`), `statusgo.earth` está "Ready" y `www.statusgo.earth` todavía "Validating": el certificado de `www` aún no existe, así que se usa solo el dominio raíz.
 - GitHub Pages ya no existe (`onepixelhome.github.io/NASA` da 404).
 
 ## 2026-11-15 (Mac de Belle) — Leaderboard en Azure: base PostgreSQL creada y juego apuntando a `/api/leaderboard` (`feat/azure-leaderboard-db`)
