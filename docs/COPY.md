@@ -236,3 +236,14 @@ Screen text in `src/ui/Badges.tsx`: Badges / This mission earned N of 9. / Badge
 New / Locked / N more to earn / Mission log / Mission log: N of 13 badges collected in this browser. It is kept only here
 and never sent anywhere. / New badge earned! / N new badges earned! / See my badges / Your mission log / N of 13 badges. Kept only in this browser. / Clear my log.
 Leaderboard row, in `src/ui/Leaderboard.tsx`: ★ N badges.
+
+Leaderboard honors — `HONORS` in `src/engine/achievements.ts` (new 2026-11-15, for Belle's review). Same limits as the hints above.
+
+| Honor (`name`) | How to hold it (`hint`) |
+| --- | --- |
+| Mission leader | Hold the best score saved for a mission. |
+| Trailblazer | Be the first crew to succeed in a mission. |
+| First perfect | Be the first crew to score 100 in a mission. |
+
+Screen text in `src/ui/Leaderboard.tsx`: Honors / One crew holds each honor in every mission. Only successful missions
+count. / You hold a leaderboard honor! / You hold N leaderboard honors!

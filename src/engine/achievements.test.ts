@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import * as C from './catalog'
-import { ALL_BADGES, badgeById, EMPTY_LOG, isViable, MISSION_BADGES, missionBadges, recordMission, sanitizeLog, type MissionLog } from './achievements'
+import { ALL_BADGES, badgeById, EMPTY_LOG, honorById, honorHolders, HONORS, isViable, MISSION_BADGES, missionBadges, recordMission, sanitizeLog, type MissionLog, type SavedMission } from './achievements'
 import { choose, evaluateMission, tierOptions, type Choice } from './game'
 import { SOURCES } from './sources'
 
@@ -142,5 +142,52 @@ describe('mission log (collection on one device)', () => {
     })
     const log = fly(EMPTY_LOG, demo)
     expect(sanitizeLog(JSON.parse(JSON.stringify(log)))).toEqual(log)
+  })
+})
+
+describe('leaderboard honors', () => {
+  const save = (id: number, scenarioId: string, score: number, day: number, success = true): SavedMission => ({ id, scenarioId, score, success, savedAt: `2026-11-${10 + day}T00:00:00Z` })
+  const held = (saved: SavedMission[]) => Object.fromEntries(honorHolders(saved))
+
+  it('nothing saved, or nothing successful, means no honors', () => {
+    expect(held([])).toEqual({})
+    expect(held([save(1, 'ice', 40, 1, false), save(2, 'ice', 30, 2, false)])).toEqual({})
+  })
+  it('the first success of a mission is also its leader', () => {
+    expect(held([save(1, 'ice', 86, 1)])).toEqual({ 1: ['mission-leader', 'first-success'] })
+  })
+  it('a better score takes the lead; the first success keeps its honor', () => {
+    expect(held([save(1, 'ice', 71, 1), save(2, 'ice', 86, 2)])).toEqual({ 1: ['first-success'], 2: ['mission-leader'] })
+  })
+  it('an equal score does not take the lead: the earlier save keeps it', () => {
+    expect(held([save(1, 'ice', 86, 1), save(2, 'ice', 86, 2)])).toEqual({ 1: ['mission-leader', 'first-success'] })
+    // Same instant: the lower id was saved first.
+    expect(held([save(5, 'ice', 86, 1), save(4, 'ice', 86, 1)])).toEqual({ 4: ['mission-leader', 'first-success'] })
+  })
+  it('a failed mission never holds an honor, even with the highest number', () => {
+    expect(held([save(1, 'ice', 90, 1, false), save(2, 'ice', 60, 2)])).toEqual({ 2: ['mission-leader', 'first-success'] })
+  })
+  it('First perfect goes to the first 100, not to a later one', () => {
+    expect(held([save(1, 'crops', 80, 1), save(2, 'crops', 100, 2), save(3, 'crops', 100, 3)])).toEqual({ 1: ['first-success'], 2: ['mission-leader', 'first-perfect'] })
+  })
+  it('each mission has its own holders', () => {
+    expect(held([save(1, 'ice', 86, 1), save(2, 'crops', 100, 2), save(3, 'storms', 70, 3)])).toEqual({
+      1: ['mission-leader', 'first-success'],
+      2: ['mission-leader', 'first-success', 'first-perfect'],
+      3: ['mission-leader', 'first-success'],
+    })
+  })
+  it('ids from the database arrive as text and still match', () => {
+    expect(held([{ ...save(1, 'ice', 86, 1), id: '12' }, { ...save(2, 'ice', 90, 2), id: '9', savedAt: new Date('2026-11-20T00:00:00Z') }])).toEqual({ 12: ['first-success'], 9: ['mission-leader'] })
+  })
+  it('every honor has a short hint and a known source, and none shares an id with a badge', () => {
+    for (const h of HONORS) {
+      expect(h.name.length).toBeLessThanOrEqual(18)
+      expect(h.hint.length).toBeLessThanOrEqual(70)
+      expect(h.hint.split('. ').length).toBe(1)
+      expect(SOURCES).toHaveProperty(h.source)
+      expect(badgeById(h.id)).toBeUndefined()
+      expect(honorById(h.id)).toBe(h)
+    }
   })
 })

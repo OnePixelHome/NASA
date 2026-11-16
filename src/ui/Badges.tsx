@@ -39,6 +39,23 @@ const GRID = 'grid gap-2 sm:grid-cols-2 lg:grid-cols-3'
 // Where each star of the shower starts, how big it is and when it falls. Fixed numbers, so every render draws the same shower.
 const STARS = Array.from({ length: 22 }, (_, i) => ({ left: (i * 37 + 11) % 100, size: 14 + ((i * 7) % 5) * 5, delay: (i % 8) * 110, duration: 1900 + ((i * 13) % 6) * 160 }))
 
+/** Stars falling once over the whole screen. They never take a tap, and reduced motion skips them (index.css). */
+export function StarShower() {
+  return (
+    <div aria-hidden className="pointer-events-none fixed inset-0 z-50 overflow-hidden">
+      {STARS.map((s, i) => (
+        <span
+          key={i}
+          className={`absolute top-0 leading-none ${i % 3 === 0 ? 'text-ink' : 'text-st-selected'}`}
+          style={{ left: `${s.left}%`, fontSize: s.size, opacity: 0, animation: `badge-fall ${s.duration}ms ease-in ${s.delay}ms both` }}
+        >
+          ★
+        </span>
+      ))}
+    </div>
+  )
+}
+
 /**
  * Top of the scorecard, only when this mission brought a badge this browser did not have: a banner that names the
  * new badges and a short shower of stars. The banner stays; the stars fall once. With reduced motion the stars are
@@ -48,17 +65,7 @@ export function BadgeCelebration({ fresh }: { fresh: Badge[] }) {
   if (fresh.length === 0) return null
   return (
     <>
-      <div aria-hidden className="pointer-events-none fixed inset-0 z-50 overflow-hidden">
-        {STARS.map((s, i) => (
-          <span
-            key={i}
-            className={`absolute top-0 leading-none ${i % 3 === 0 ? 'text-ink' : 'text-st-selected'}`}
-            style={{ left: `${s.left}%`, fontSize: s.size, opacity: 0, animation: `badge-fall ${s.duration}ms ease-in ${s.delay}ms both` }}
-          >
-            ★
-          </span>
-        ))}
-      </div>
+      <StarShower />
       <div
         role="status"
         className="mt-4 flex flex-col gap-3 rounded-lg border-2 border-st-selected bg-space-raised p-4 sm:flex-row sm:items-center"

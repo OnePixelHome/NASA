@@ -19,6 +19,8 @@ export interface BoardEntry {
   players?: number
   /** Badge ids the server worked out from the saved design (src/engine/achievements.ts). */
   badges?: string[]
+  /** Honor ids this row holds against every other saved mission (HONORS in src/engine/achievements.ts). */
+  honors?: string[]
   created_at: string
 }
 
@@ -27,7 +29,7 @@ export interface Board {
   total: number
 }
 
-export type SaveResult = { ok: true; id: number; score: number; rank: number; total: number } | { ok: false; error: string }
+export type SaveResult = { ok: true; id: number; score: number; rank: number; total: number; honors: string[] } | { ok: false; error: string }
 
 async function call(path: string, init?: RequestInit): Promise<Response | null> {
   if (!LEADERBOARD_URL) return null
@@ -54,7 +56,9 @@ export async function fetchBoard(scenarioId?: string): Promise<Board | null> {
 export async function saveScore(name: string, choice: Choice, goVotes: number, players: number): Promise<SaveResult> {
   const res = await call('', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ name, choice, goVotes, players }) })
   if (!res) return { ok: false, error: 'The leaderboard is unavailable right now. Your game is not affected.' }
-  const body = (await res.json().catch(() => null)) as { id: number; score: number; rank: number; total: number; error?: string } | null
+  const body = (await res.json().catch(() => null)) as { id: number; score: number; rank: number; total: number; honors?: unknown; error?: string } | null
   if (!res.ok || !body) return { ok: false, error: body?.error ?? 'The leaderboard is unavailable right now. Your game is not affected.' }
-  return { ok: true, id: Number(body.id), score: body.score, rank: body.rank, total: body.total }
+  // An older server does not send honors.
+  const honors = Array.isArray(body.honors) ? body.honors.filter((h): h is string => typeof h === 'string') : []
+  return { ok: true, id: Number(body.id), score: body.score, rank: body.rank, total: body.total, honors }
 }

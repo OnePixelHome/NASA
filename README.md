@@ -50,6 +50,10 @@ typed in. The scorecard shows them, with a banner and a short shower of stars wh
 only** (localStorage): nothing about it is sent anywhere, and "Clear my log" erases it. The leaderboard shows how many
 badges each saved mission earned; the server recomputes them from the saved design.
 
+The leaderboard also awards three **honors** per mission, which depend on what every crew saved: Mission leader (best
+successful score), Trailblazer (first success) and First perfect (first 100). Only the server can award them, a leader
+loses the honor to a strictly better score, and saving a score that holds one is celebrated on the scorecard.
+
 ## Online leaderboard
 Saving a score sends only the name the player types and the mission design. The server (an Azure Static Web Apps function next to
 an Azure Database for PostgreSQL, `server/handler.ts`) **recalculates every score with the game engine**, so a forged
